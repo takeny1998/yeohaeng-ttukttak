@@ -1,6 +1,6 @@
 package com.yeohaeng_ttukttak.server;
 
-import com.yeohaeng_ttukttak.server.user.client.GoogleOAuthProperties;
+import com.yeohaeng_ttukttak.server.user.service.client.property.GoogleOAuthProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
