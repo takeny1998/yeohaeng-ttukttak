@@ -31,6 +31,12 @@ public class HttpInterfaceConfig {
                             new InputStreamReader(response.getBody()))) {
 
                         log.error("[{}] >> {} {}", shortUUID, request.getMethod(), request.getURI());
+
+                        request.getHeaders()
+                                .forEach((key, values) -> {
+                                    log.error("[{}] >> -- {}: {}", shortUUID, key, values);
+                                });
+
                         log.error("[{}] << {}", shortUUID, response.getStatusCode());
 
                         String line;
