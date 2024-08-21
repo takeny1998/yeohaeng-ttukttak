@@ -4,7 +4,7 @@ import java.util.Base64;
 
 import static java.util.UUID.randomUUID;
 
-public class MyStringUtil {
+public class StringUtil {
 
     public static String generateShortUUID() {
 
@@ -21,9 +21,7 @@ public class MyStringUtil {
     }
 
     public static String fromBase64Url(String string) {
-
         return new String(Base64.getUrlDecoder().decode(string));
-
     }
 
 
