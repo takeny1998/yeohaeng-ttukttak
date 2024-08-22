@@ -1,7 +1,7 @@
 package com.yeohaeng_ttukttak.server;
 
 import com.yeohaeng_ttukttak.server.user.service.client.property.GoogleOAuthProperties;
-import com.yeohaeng_ttukttak.server.user.service.property.JwtProperties;
+import com.yeohaeng_ttukttak.server.user.service.token.property.JwtProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

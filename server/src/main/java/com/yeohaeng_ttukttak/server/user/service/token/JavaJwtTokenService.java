@@ -2,11 +2,11 @@ package com.yeohaeng_ttukttak.server.user.service.token;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.RSAKeyProvider;
-import com.yeohaeng_ttukttak.server.user.service.property.JwtProperties;
+import com.yeohaeng_ttukttak.server.user.service.token.dto.IdTokenClaim;
+import com.yeohaeng_ttukttak.server.user.service.token.property.JwtProperties;
 
-import java.security.interfaces.RSAPrivateKey;
-import java.security.interfaces.RSAPublicKey;
 import java.time.Instant;
 
 public class JavaJwtTokenService implements TokenService {
@@ -52,10 +52,14 @@ public class JavaJwtTokenService implements TokenService {
     }
 
     @Override
-    public String decodeIdToken(String idToken) {
+    public IdTokenClaim decodeIdToken(String idToken) {
 
+        DecodedJWT jwt = JWT.decode(idToken);
 
-        return null;
+        return new IdTokenClaim(
+                jwt.getSubject(),
+                jwt.getClaim("name").asString());
+
     }
 
     @Override

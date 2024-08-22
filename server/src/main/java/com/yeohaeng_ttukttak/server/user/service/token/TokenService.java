@@ -1,5 +1,7 @@
 package com.yeohaeng_ttukttak.server.user.service.token;
 
+import com.yeohaeng_ttukttak.server.user.service.token.dto.IdTokenClaim;
+
 public interface TokenService {
 
     String issueAccessToken(String openId);
@@ -8,6 +10,6 @@ public interface TokenService {
 
     String renewAccessToken();
 
-    String decodeIdToken(String idToken);
+    IdTokenClaim decodeIdToken(String idToken);
 
 }

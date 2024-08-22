@@ -25,6 +25,7 @@ spring:
 
 oauth:
   google:
+    domain: https://dev.yeohaeng-ttukttak.com
     client-id: 951324022006-eigc5h6tj71rm2v31eqr5u0v07cbmpn1.apps.googleusercontent.com
     client-secret: ${oauth.google.client-secret}
     scope: https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/user.gender.read https://www.googleapis.com/auth/user.birthday.read

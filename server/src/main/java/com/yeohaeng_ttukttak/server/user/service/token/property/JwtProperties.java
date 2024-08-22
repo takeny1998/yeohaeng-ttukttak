@@ -1,4 +1,4 @@
-package com.yeohaeng_ttukttak.server.user.service.property;
+package com.yeohaeng_ttukttak.server.user.service.token.property;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

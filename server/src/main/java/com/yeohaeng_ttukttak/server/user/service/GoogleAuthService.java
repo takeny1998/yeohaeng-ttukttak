@@ -1,33 +1,31 @@
 package com.yeohaeng_ttukttak.server.user.service;
 
 import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.yeohaeng_ttukttak.server.common.exception.exception.EntityNotFoundException;
 import com.yeohaeng_ttukttak.server.user.domain.User;
 import com.yeohaeng_ttukttak.server.user.domain.auth.OAuth;
 import com.yeohaeng_ttukttak.server.user.domain.auth.OAuthProvider;
 import com.yeohaeng_ttukttak.server.user.repository.UserRepository;
 import com.yeohaeng_ttukttak.server.user.service.client.GoogleOAuthClient;
+import com.yeohaeng_ttukttak.server.user.service.client.dto.RevokeTokenRequest;
 import com.yeohaeng_ttukttak.server.user.service.client.property.GoogleOAuthProperties;
 import com.yeohaeng_ttukttak.server.user.service.client.GoogleProfileClient;
 import com.yeohaeng_ttukttak.server.user.service.client.dto.ExchangeTokenRequest;
 import com.yeohaeng_ttukttak.server.user.service.client.dto.ExchangeTokenResponse;
 import com.yeohaeng_ttukttak.server.user.service.client.dto.GetProfileResponse;
 import com.yeohaeng_ttukttak.server.user.service.dto.RegisterResult;
-import com.yeohaeng_ttukttak.server.user.service.property.JwtProperties;
 import com.yeohaeng_ttukttak.server.user.service.token.TokenService;
+import com.yeohaeng_ttukttak.server.user.service.token.dto.IdTokenClaim;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.time.Instant;
-import java.util.function.Supplier;
 
 
 @Slf4j
 @Service
 @AllArgsConstructor
-public class GoogleAuthService {
+public class GoogleAuthService implements AuthService {
 
     private final GoogleOAuthProperties oauthProps;
     private final GoogleOAuthClient googleOAuthClient;
@@ -38,6 +36,7 @@ public class GoogleAuthService {
 
     private final TokenService tokenService;
 
+    @Override
     public RegisterResult register(String code) {
 
         ExchangeTokenResponse tokenResponse = googleOAuthClient.exchangeToken(
@@ -45,14 +44,12 @@ public class GoogleAuthService {
 
         log.debug("response={}", tokenResponse);
 
-        DecodedJWT jwt = JWT.decode(tokenResponse.idToken());
-        String openId = jwt.getSubject();
+        IdTokenClaim idTokenClaim = tokenService.decodeIdToken(tokenResponse.idToken());
+        String openId = idTokenClaim.openId();
+        String name = idTokenClaim.name();
 
-        User user = userRepository.findByOpenId(openId)
+        User user = userRepository.findByOpenId(idTokenClaim.openId())
                 .orElseGet(() -> {
-
-                    String nickname = jwt.getClaim("name").asString();
-                    String name = String.valueOf(nickname);
 
                     GetProfileResponse profileResponse = googleProfileClient.getProfile();
 
@@ -75,9 +72,28 @@ public class GoogleAuthService {
 
     }
 
+    @Override
     public void revoke(String code) {
 
+        ExchangeTokenResponse tokenResponse = googleOAuthClient.exchangeToken(
+                new ExchangeTokenRequest(
+                        code,
+                        oauthProps.clientId(),
+                        oauthProps.clientSecret(),
+                        oauthProps.grantType(),
+                        oauthProps.domain() + "/api/v2/users/google/revoke"));
 
+        log.debug("response={}", tokenResponse);
+
+        IdTokenClaim idTokenClaim = tokenService.decodeIdToken(tokenResponse.idToken());
+
+        googleOAuthClient.revokeToken(new RevokeTokenRequest(tokenResponse.accessToken()));
+
+        User user = userRepository.findByOpenId(idTokenClaim.openId())
+                .orElseThrow(() -> new EntityNotFoundException(User.class));
+
+        // TODO: Soft Delete 를 구현해 회원 탈퇴/정지 기록을 보존한다.
+        userRepository.delete(user);
 
     }
 

@@ -5,6 +5,7 @@ import com.yeohaeng_ttukttak.server.user.service.GoogleAuthService;
 import com.yeohaeng_ttukttak.server.user.service.dto.RegisterResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,14 +21,18 @@ public class UserController {
 
     @GetMapping("/google/register")
     public RegisterResult register(@RequestParam String code) {
+        log.debug("Google Register");
         log.debug("code={}", code);
         RegisterResult result = googleAuthService.register(code);
         return result;
     }
 
     @GetMapping("/google/revoke")
-    public void revoke(@RequestParam String code) {
+    public ResponseEntity<Void> revoke(@RequestParam String code) {
+        log.debug("code={}", code);
+        googleAuthService.revoke(code);
 
+        return ResponseEntity.noContent().build();
     }
 
 }
