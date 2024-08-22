@@ -1,5 +1,7 @@
 package com.yeohaeng_ttukttak.server.user.controller.dto;
 
+import com.yeohaeng_ttukttak.server.common.util.my_jwt.MyJwtUtil;
+import com.yeohaeng_ttukttak.server.user.domain.User;
 import com.yeohaeng_ttukttak.server.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +21,13 @@ public class UserController {
     @GetMapping("/sign-up")
     public void signUp(@RequestParam String code) {
         log.info("code={}", code);
-        userService.signUp(code);
+        User user = userService.signUp(code);
+
+    }
+
+    @GetMapping("/revoke")
+    public void revoke(@RequestParam String code) {
+
     }
 
 }

@@ -21,7 +21,7 @@ scp "$JAR_PATH" bastion:"$DEPLOY_PATH"
 printf "\n\n"
 
 echo "[$DEPLOY_ID] 새로운 서버 배포를 시작합니다."
-ssh bastion "bash -s" < "$SCRIPT_PATH"/launch_application.sh "$DEPLOY_ID"
+ssh bastion "bash -s" < "$SCRIPT_PATH"/launch_application.sh "$DEPLOY_ID" dev
 printf "\n\n"
 
 echo "[$DEPLOY_ID] 성공적으로 배포가 완료되었습니다."
