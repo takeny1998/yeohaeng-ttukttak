@@ -1,7 +1,8 @@
 package com.yeohaeng_ttukttak.server.common.config;
 
 import com.yeohaeng_ttukttak.server.common.util.MyStringUtil;
-import com.yeohaeng_ttukttak.server.user.client.GoogleOAuthClient;
+import com.yeohaeng_ttukttak.server.user.service.client.GoogleOAuthClient;
+import com.yeohaeng_ttukttak.server.user.service.client.GoogleProfileClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,6 +32,12 @@ public class HttpInterfaceConfig {
                             new InputStreamReader(response.getBody()))) {
 
                         log.error("[{}] >> {} {}", shortUUID, request.getMethod(), request.getURI());
+
+                        request.getHeaders()
+                                .forEach((key, values) -> {
+                                    log.error("[{}] >> -- {}: {}", shortUUID, key, values);
+                                });
+
                         log.error("[{}] << {}", shortUUID, response.getStatusCode());
 
                         String line;
@@ -57,6 +64,14 @@ public class HttpInterfaceConfig {
 
         return httpServiceProxyFactory
                 .createClient(GoogleOAuthClient.class);
+
+    }
+
+    @Bean
+    public GoogleProfileClient googleProfileClient(
+            HttpServiceProxyFactory httpServiceProxyFactory) {
+
+        return httpServiceProxyFactory.createClient(GoogleProfileClient.class);
 
     }
 

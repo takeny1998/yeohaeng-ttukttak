@@ -1,7 +1,7 @@
-package com.yeohaeng_ttukttak.server.user.client.dto;
+package com.yeohaeng_ttukttak.server.user.service.client.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.yeohaeng_ttukttak.server.user.client.GoogleOAuthProperties;
+import com.yeohaeng_ttukttak.server.user.service.client.property.GoogleOAuthProperties;
 
 public record ExchangeTokenRequest (
         String code,

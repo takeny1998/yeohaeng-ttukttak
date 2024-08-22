@@ -1,4 +1,4 @@
-package com.yeohaeng_ttukttak.server.user.client;
+package com.yeohaeng_ttukttak.server.user.service.client.property;
 
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.boot.context.properties.ConfigurationProperties;

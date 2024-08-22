@@ -14,7 +14,6 @@ spring:
     activate.on-profile: dev
     import: aws-parameterstore:/yeohaeng-ttukttak/server_dev/
 
-
 management:
   server.port: 8081
 
@@ -29,6 +28,6 @@ oauth:
   google:
     client-id: 951324022006-eigc5h6tj71rm2v31eqr5u0v07cbmpn1.apps.googleusercontent.com
     client-secret: ${GoogleOAuthProperties}
-    scope: https://www.googleapis.com/auth/user.gender.read https://www.googleapis.com/auth/user.birthday.read
+    scope: https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/user.gender.read https://www.googleapis.com/auth/user.birthday.read
     redirect-uri: https://dev.yeohaeng-ttukttak.com/api/v2/users/sign-up
     grant-type: authorization_code

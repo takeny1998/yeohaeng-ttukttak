@@ -1,4 +1,4 @@
-package com.yeohaeng_ttukttak.server.user.client.dto;
+package com.yeohaeng_ttukttak.server.user.service.client.dto;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
