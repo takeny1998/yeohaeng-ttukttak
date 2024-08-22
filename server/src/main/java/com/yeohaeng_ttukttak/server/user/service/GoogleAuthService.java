@@ -1,6 +1,7 @@
 package com.yeohaeng_ttukttak.server.user.service;
 
 import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.yeohaeng_ttukttak.server.user.domain.User;
 import com.yeohaeng_ttukttak.server.user.domain.auth.OAuth;
@@ -12,32 +13,39 @@ import com.yeohaeng_ttukttak.server.user.service.client.GoogleProfileClient;
 import com.yeohaeng_ttukttak.server.user.service.client.dto.ExchangeTokenRequest;
 import com.yeohaeng_ttukttak.server.user.service.client.dto.ExchangeTokenResponse;
 import com.yeohaeng_ttukttak.server.user.service.client.dto.GetProfileResponse;
+import com.yeohaeng_ttukttak.server.user.service.dto.RegisterResult;
+import com.yeohaeng_ttukttak.server.user.service.property.JwtProperties;
+import com.yeohaeng_ttukttak.server.user.service.token.TokenService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.time.Instant;
+import java.util.function.Supplier;
 
 
 @Slf4j
 @Service
 @AllArgsConstructor
-public class UserService {
+public class GoogleAuthService {
 
-    private final GoogleOAuthProperties oauthClient;
+    private final GoogleOAuthProperties oauthProps;
     private final GoogleOAuthClient googleOAuthClient;
 
     private final GoogleProfileClient googleProfileClient;
 
     private final UserRepository userRepository;
 
-    public User signUp(String code) {
+    private final TokenService tokenService;
+
+    public RegisterResult register(String code) {
 
         ExchangeTokenResponse tokenResponse = googleOAuthClient.exchangeToken(
-                new ExchangeTokenRequest(oauthClient, code));
+                new ExchangeTokenRequest(oauthProps, code));
 
-        log.info("response={}", tokenResponse);
+        log.debug("response={}", tokenResponse);
 
         DecodedJWT jwt = JWT.decode(tokenResponse.idToken());
-
         String openId = jwt.getSubject();
 
         User user = userRepository.findByOpenId(openId)
@@ -48,25 +56,28 @@ public class UserService {
 
                     GetProfileResponse profileResponse = googleProfileClient.getProfile();
 
-                    log.info("profile={}", profileResponse);
+                    log.debug("profile={}", profileResponse);
 
                     User newUser = new User(new OAuth(openId, OAuthProvider.GOOGLE),
                             name, profileResponse.gender(), profileResponse.birthday());
 
                     userRepository.save(newUser);
                     return newUser;
-                    
+
                 });
 
-        log.info("user={}", user);
+        log.debug("user={}", user);
 
-        return user;
+        String accessToken = tokenService.issueAccessToken(openId);
+        String refreshToken = tokenService.issueRefreshToken(openId);
+
+        return new RegisterResult(accessToken, refreshToken);
+
     }
 
     public void revoke(String code) {
 
-        ExchangeTokenResponse tokenResponse = googleOAuthClient.exchangeToken(
-                new ExchangeTokenRequest(oauthClient, code));
+
 
     }
 

@@ -1,18 +1,6 @@
-spring.cloud.aws:
-  region.static: ap-northeast-2
----
 spring:
+  cloud.aws.region.static: ap-northeast-2
   application.name: server
-
-  datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:testdb;MODE=MYSQL;
-    username: sa
-    password:
-
-  config:
-    activate.on-profile: dev
-    import: aws-parameterstore:/yeohaeng-ttukttak/server_dev/
 
 management:
   server.port: 8081
@@ -23,11 +11,30 @@ management:
 
   endpoint:
     health.enabled: true
+---
+spring:
+  config:
+    activate.on-profile: dev
+    import: aws-parameterstore:/yeohaeng-ttukttak/server_dev/
+
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:testdb;MODE=MYSQL;
+    username: sa
+    password:
 
 oauth:
   google:
     client-id: 951324022006-eigc5h6tj71rm2v31eqr5u0v07cbmpn1.apps.googleusercontent.com
-    client-secret: ${GoogleOAuthProperties}
+    client-secret: ${oauth.google.client-secret}
     scope: https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/user.gender.read https://www.googleapis.com/auth/user.birthday.read
-    redirect-uri: https://dev.yeohaeng-ttukttak.com/api/v2/users/sign-up
+    redirect-uri: https://dev.yeohaeng-ttukttak.com/api/v2/users/google/register
     grant-type: authorization_code
+
+jwt:
+  issuer: yeohaeng-ttukttak.com
+  secret: ${jwt.secret}
+  access-token:
+    expiration: 30m
+  refresh-token:
+    expiration: 14d
