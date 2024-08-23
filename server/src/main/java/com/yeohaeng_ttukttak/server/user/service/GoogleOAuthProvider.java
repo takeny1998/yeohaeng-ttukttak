@@ -7,7 +7,7 @@ import com.yeohaeng_ttukttak.server.user.service.client.dto.ExchangeTokenRequest
 import com.yeohaeng_ttukttak.server.user.service.client.dto.ExchangeTokenResponse;
 import com.yeohaeng_ttukttak.server.user.service.client.dto.GetProfileResponse;
 import com.yeohaeng_ttukttak.server.user.service.client.dto.RevokeTokenRequest;
-import com.yeohaeng_ttukttak.server.user.service.client.property.GoogleOAuthProperties;
+import com.yeohaeng_ttukttak.server.user.service.client.property.GoogleOAuthProps;
 import com.yeohaeng_ttukttak.server.user.service.dto.GetIdentificationCommand;
 import com.yeohaeng_ttukttak.server.user.service.dto.Identification;
 import com.yeohaeng_ttukttak.server.user.service.dto.Profile;
@@ -15,14 +15,15 @@ import com.yeohaeng_ttukttak.server.user.service.token.TokenService;
 import com.yeohaeng_ttukttak.server.user.service.token.dto.IdTokenClaim;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 @Slf4j
-@Service
+@Component
 @RequiredArgsConstructor
 public class GoogleOAuthProvider implements OAuthProvidable {
 
-    private final GoogleOAuthProperties oauthProps;
+    private final GoogleOAuthProps oauthProps;
     private final GoogleOAuthClient googleOAuthClient;
     private final GoogleProfileClient googleProfileClient;
     private final TokenService tokenService;

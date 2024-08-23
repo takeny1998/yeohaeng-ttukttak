@@ -1,5 +1,6 @@
 package com.yeohaeng_ttukttak.server.common.config;
 
+import com.yeohaeng_ttukttak.server.user.service.client.AppleOAuthClient;
 import com.yeohaeng_ttukttak.server.user.service.client.GoogleOAuthClient;
 import com.yeohaeng_ttukttak.server.user.service.client.GoogleProfileClient;
 import lombok.extern.slf4j.Slf4j;
@@ -48,6 +49,12 @@ public class HttpInterfaceConfig {
             HttpServiceProxyFactory googleClientFactory)  {
 
         return googleClientFactory.createClient(GoogleProfileClient.class);
+    }
+
+    @Bean
+    public AppleOAuthClient appleOAuthClient(HttpServiceProxyFactory googleClientFactory) {
+
+        return googleClientFactory.createClient(AppleOAuthClient.class);
     }
 
 }

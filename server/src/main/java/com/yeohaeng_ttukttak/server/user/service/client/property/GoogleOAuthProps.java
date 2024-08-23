@@ -6,11 +6,10 @@ import org.springframework.validation.annotation.Validated;
 
 @Validated
 @ConfigurationProperties(prefix = "oauth.google")
-public record GoogleOAuthProperties(
-        @NotBlank String domain,
+public record GoogleOAuthProps(
         @NotBlank String clientId,
         @NotBlank String clientSecret,
         @NotBlank String redirectUri,
         @NotBlank String grantType,
         @NotBlank String scope
-) {}
+) { }
