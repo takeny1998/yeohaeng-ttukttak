@@ -28,5 +28,5 @@ echo "  > 새 애플리케이션을 배포합니다. [JAR: $JAR_PATH]"
 
 mkdir -p "$DEPLOY_PATH"/log
 
-nohup java -jar "$JAR_PATH" --spring.profiles.active="$DEPLOY_PROFILE" --logging.file.name="$DEPLOY_PATH/log/application.log" >> "$DEPLOY_PATH/log/deploy.log" 2> "$DEPLOY_PATH/log/deploy_error.log" &
+nohup java -jar "$JAR_PATH" --spring.profiles.active="$DEPLOY_PROFILE" --logging.level.com.yeohaeng_ttukttak.server=debug --logging.file.name="$DEPLOY_PATH/log/application.log" >> "$DEPLOY_PATH/log/deploy.log" 2> "$DEPLOY_PATH/log/deploy_error.log" &
 echo "  > 새로운 서버 배포가 완료되었습니다."
