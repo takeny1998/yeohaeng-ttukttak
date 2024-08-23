@@ -37,7 +37,7 @@ public class HttpInterfaceConfig {
     }
 
     @Bean
-    public GoogleOAuthClient googleOAuthService(
+    public GoogleOAuthClient googleOAuthClient(
             HttpServiceProxyFactory googleClientFactory) {
 
         return googleClientFactory.createClient(GoogleOAuthClient.class);

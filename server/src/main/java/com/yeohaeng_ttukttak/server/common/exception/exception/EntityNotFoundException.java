@@ -4,7 +4,7 @@ import org.springframework.http.HttpStatus;
 
 public class EntityNotFoundException extends ApiException {
 
-    private final Class clazz;
+    private final Class target;
 
     public EntityNotFoundException(Class clazz) {
         this("ENTITY_NOT_FOUND", clazz);
@@ -12,11 +12,11 @@ public class EntityNotFoundException extends ApiException {
 
     protected EntityNotFoundException(String code, Class clazz) {
         super(code, HttpStatus.NOT_FOUND);
-        this.clazz = clazz;
+        this.target = clazz;
     }
 
-    public String getEntityName() {
-        return clazz.getSimpleName();
+    public String getTarget() {
+        return target.getSimpleName();
     }
 
 }
