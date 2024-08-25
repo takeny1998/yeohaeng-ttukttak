@@ -1,7 +1,7 @@
 package com.yeohaeng_ttukttak.server.common.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.yeohaeng_ttukttak.server.user.service.client.dto.ExchangeTokenResponse;
+import com.yeohaeng_ttukttak.server.oauth2.service.provider.google.client.dto.exchange_token.ExchangeTokenResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatusCode;

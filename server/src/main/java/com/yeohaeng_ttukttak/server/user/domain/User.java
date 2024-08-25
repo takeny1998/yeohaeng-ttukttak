@@ -1,7 +1,7 @@
 package com.yeohaeng_ttukttak.server.user.domain;
 
 import com.yeohaeng_ttukttak.server.common.entity.TimeAuditableEntity;
-import com.yeohaeng_ttukttak.server.user.domain.auth.OAuth;
+import com.yeohaeng_ttukttak.server.oauth2.domain.OAuth;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
