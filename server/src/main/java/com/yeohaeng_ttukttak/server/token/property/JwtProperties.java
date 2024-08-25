@@ -15,7 +15,6 @@ public record JwtProperties(
         TokenProperties accessToken,
         TokenProperties refreshToken) {
 
-
     public record TokenProperties(
             @NotNull Duration expiration
     ) {}

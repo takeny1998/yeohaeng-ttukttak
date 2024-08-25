@@ -10,7 +10,7 @@ import com.yeohaeng_ttukttak.server.oauth2.service.dto.get_id.GetIdCommand;
 import com.yeohaeng_ttukttak.server.oauth2.service.dto.get_id.GetIdResult;
 import com.yeohaeng_ttukttak.server.oauth2.service.dto.get_profile.GetProfileResult;
 import com.yeohaeng_ttukttak.server.oauth2.service.dto.RegisterResult;
-import com.yeohaeng_ttukttak.server.token.TokenService;
+import com.yeohaeng_ttukttak.server.token.provider.JwtProvidable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -25,7 +25,7 @@ public class OAuthService {
 
     private final OAuthProvidable oauthProvider;
     private final UserRepository userRepository;
-    private final TokenService tokenService;
+    private final JwtProvidable jwtProvider;
 
     public RegisterResult register(String code) {
 
@@ -50,8 +50,8 @@ public class OAuthService {
         Map<String, Object> claims = Map.of("open_id", openId);
 
         return new RegisterResult(
-                tokenService.issueByHS256(jwtProps.accessToken().expiration(), claims),
-                tokenService.issueByHS256(jwtProps.refreshToken().expiration(), claims));
+                jwtProvider.issueByHS256(jwtProps.accessToken().expiration(), claims),
+                jwtProvider.issueByHS256(jwtProps.refreshToken().expiration(), claims));
     }
 
     public void revoke(String code) {

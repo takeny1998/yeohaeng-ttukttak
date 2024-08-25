@@ -8,8 +8,7 @@ import com.yeohaeng_ttukttak.server.oauth2.domain.OAuthProvider;
 import com.yeohaeng_ttukttak.server.oauth2.service.dto.get_id.GetIdCommand;
 import com.yeohaeng_ttukttak.server.oauth2.service.dto.get_id.GetIdResult;
 import com.yeohaeng_ttukttak.server.oauth2.service.dto.get_profile.GetProfileResult;
-import com.yeohaeng_ttukttak.server.token.TokenService;
-import com.yeohaeng_ttukttak.server.token.dto.IdTokenClaim;
+import com.yeohaeng_ttukttak.server.token.provider.JwtProvidable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -25,7 +24,7 @@ public class AppleOAuthProvider implements OAuthProvidable {
     private final AppleOAuthClient oauthClient;
     private final AppleOAuthProps oauthProps;
 
-    private final TokenService tokenService;
+    private final JwtProvidable jwtProvidable;
 
     @Override
     public GetIdResult getIdentification(GetIdCommand command) {
@@ -40,7 +39,7 @@ public class AppleOAuthProvider implements OAuthProvidable {
                 oauthProps.redirectUri());
 
         log.debug("token={}", response);
-        Map<String, Object> claims = tokenService.decode(response.idToken());
+        Map<String, Object> claims = jwtProvidable.decode(response.idToken());
 
         String openId = claims.get("sub").toString();
 

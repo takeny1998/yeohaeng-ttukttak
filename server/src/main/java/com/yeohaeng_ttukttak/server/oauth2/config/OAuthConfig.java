@@ -5,7 +5,7 @@ import com.yeohaeng_ttukttak.server.token.property.JwtProperties;
 import com.yeohaeng_ttukttak.server.user.repository.UserRepository;
 import com.yeohaeng_ttukttak.server.oauth2.service.provider.apple.AppleOAuthProvider;
 import com.yeohaeng_ttukttak.server.oauth2.service.provider.google.GoogleOAuthProvider;
-import com.yeohaeng_ttukttak.server.token.TokenService;
+import com.yeohaeng_ttukttak.server.token.provider.JwtProvidable;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -17,9 +17,9 @@ public class OAuthConfig {
             JwtProperties jwtProps,
             GoogleOAuthProvider provider,
             UserRepository userRepository,
-            TokenService tokenService) {
+            JwtProvidable jwtProvidable) {
 
-        return new OAuthService(jwtProps, provider, userRepository, tokenService);
+        return new OAuthService(jwtProps, provider, userRepository, jwtProvidable);
     }
 
     @Bean
@@ -27,9 +27,9 @@ public class OAuthConfig {
             JwtProperties jwtProps,
             AppleOAuthProvider provider,
             UserRepository userRepository,
-            TokenService tokenService) {
+            JwtProvidable jwtProvidable) {
 
-        return new OAuthService(jwtProps, provider, userRepository, tokenService);
+        return new OAuthService(jwtProps, provider, userRepository, jwtProvidable);
     }
 
 }

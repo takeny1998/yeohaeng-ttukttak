@@ -1,9 +1,9 @@
-package com.yeohaeng_ttukttak.server.token;
+package com.yeohaeng_ttukttak.server.token.provider;
 
 import java.time.Duration;
 import java.util.Map;
 
-public interface TokenService {
+public interface JwtProvidable {
 
     String issueByHS256(Duration expiration, Map<String, Object> claims);
 

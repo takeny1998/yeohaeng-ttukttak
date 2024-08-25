@@ -1,10 +1,8 @@
-package com.yeohaeng_ttukttak.server.token;
+package com.yeohaeng_ttukttak.server.token.provider;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.yeohaeng_ttukttak.server.common.util.KeyUtils;
-import com.yeohaeng_ttukttak.server.oauth2.service.provider.apple.AppleOAuthProps;
 import com.yeohaeng_ttukttak.server.token.exception.JwtSignatureFailedException;
 import com.yeohaeng_ttukttak.server.token.property.JwtProperties;
 import lombok.extern.slf4j.Slf4j;
@@ -21,12 +19,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
-public class JavaJwtTokenService implements TokenService {
+public class JavaJwtProvider implements JwtProvidable {
 
     private final JwtProperties jwtProps;
     private final Algorithm algorithm;
 
-    public JavaJwtTokenService(JwtProperties jwtProps) {
+    public JavaJwtProvider(JwtProperties jwtProps) {
         this.jwtProps = jwtProps;
         algorithm = Algorithm.HMAC256(jwtProps.secret());
     }

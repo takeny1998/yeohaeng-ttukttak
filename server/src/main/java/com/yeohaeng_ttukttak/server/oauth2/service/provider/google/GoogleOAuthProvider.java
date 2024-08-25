@@ -12,8 +12,7 @@ import com.yeohaeng_ttukttak.server.oauth2.service.provider.google.client.dto.re
 import com.yeohaeng_ttukttak.server.oauth2.service.dto.get_id.GetIdCommand;
 import com.yeohaeng_ttukttak.server.oauth2.service.dto.get_id.GetIdResult;
 import com.yeohaeng_ttukttak.server.oauth2.service.dto.get_profile.GetProfileResult;
-import com.yeohaeng_ttukttak.server.token.TokenService;
-import com.yeohaeng_ttukttak.server.token.dto.IdTokenClaim;
+import com.yeohaeng_ttukttak.server.token.provider.JwtProvidable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -28,7 +27,7 @@ public class GoogleOAuthProvider implements OAuthProvidable {
     private final GoogleOAuthProps oauthProps;
     private final GoogleOAuthClient googleOAuthClient;
     private final GoogleProfileClient googleProfileClient;
-    private final TokenService tokenService;
+    private final JwtProvidable jwtProvidable;
 
     @Override
     public GetIdResult getIdentification(GetIdCommand command) {
@@ -38,7 +37,7 @@ public class GoogleOAuthProvider implements OAuthProvidable {
 
         log.debug("identification={}", tokenResponse);
 
-        Map<String, Object> claims = tokenService.decode(tokenResponse.idToken());
+        Map<String, Object> claims = jwtProvidable.decode(tokenResponse.idToken());
 
         String openId = claims.get("sub").toString();
         String name = claims.get("name").toString();
