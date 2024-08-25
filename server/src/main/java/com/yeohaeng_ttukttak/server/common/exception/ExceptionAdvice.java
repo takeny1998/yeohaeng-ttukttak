@@ -3,6 +3,7 @@ package com.yeohaeng_ttukttak.server.common.exception;
 import com.yeohaeng_ttukttak.server.common.exception.dto.ErrorResponse;
 import com.yeohaeng_ttukttak.server.common.exception.exception.ApiException;
 import com.yeohaeng_ttukttak.server.common.exception.exception.EntityNotFoundException;
+import com.yeohaeng_ttukttak.server.common.exception.exception.RequiredFieldMissingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
@@ -27,7 +28,19 @@ public class ExceptionAdvice {
         String message = messageSource.getMessage(code, null, locale);
 
         return ResponseEntity.status(ex.getStatus())
-                .body(new ErrorResponse(code, message, ex.getEntityName()));
+                .body(new ErrorResponse(code, message, ex.getTarget()));
+
+    }
+
+    @ExceptionHandler(RequiredFieldMissingException.class)
+    public ResponseEntity<ErrorResponse> handleRequiredFieldMissingException(
+            RequiredFieldMissingException ex, Locale locale) {
+
+        String code = ex.getCode();
+        String message = messageSource.getMessage(code, null, locale);
+
+        return ResponseEntity.status(ex.getStatus())
+                .body(new ErrorResponse(code, message, ex.getTarget()));
 
     }
 

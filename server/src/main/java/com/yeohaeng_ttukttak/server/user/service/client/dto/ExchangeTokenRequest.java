@@ -1,7 +1,7 @@
 package com.yeohaeng_ttukttak.server.user.service.client.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.yeohaeng_ttukttak.server.user.service.client.property.GoogleOAuthProperties;
+import com.yeohaeng_ttukttak.server.user.service.client.property.GoogleOAuthProps;
 
 public record ExchangeTokenRequest (
         String code,
@@ -11,7 +11,7 @@ public record ExchangeTokenRequest (
         @JsonProperty("redirect_uri") String redirectUri
 ) {
 
-    public ExchangeTokenRequest(GoogleOAuthProperties client, String code) {
+    public ExchangeTokenRequest(GoogleOAuthProps client, String code) {
         this(code, client.clientId(), client.clientSecret(),
                 client.grantType(), client.redirectUri());
     }
