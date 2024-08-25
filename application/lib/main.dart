@@ -40,7 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
       'client_id': 'com.yeohaeng-ttukttak.application.sign-in',
       'response_mode': 'form_post',
       'response_type': 'code',
-      'redirect_uri':  'https://bug-steady-reliably.ngrok-free.app/api/v2/users/apple',
+      'redirect_uri':  'https://bug-steady-reliably.ngrok-free.app/api/v2/oauth2/apple',
       'scope': 'email name',
       'state': 'action=register'
     });
@@ -58,7 +58,7 @@ class _MyHomePageState extends State<MyHomePage> {
       'client_id': 'com.yeohaeng-ttukttak.application.sign-in',
       'response_mode': 'form_post',
       'response_type': 'code',
-      'redirect_uri':  'https://bug-steady-reliably.ngrok-free.app/api/v2/users/apple',
+      'redirect_uri':  'https://bug-steady-reliably.ngrok-free.app/api/v2/oauth2/apple',
       'scope': 'email name',
       'state': 'action=revoke'
     });

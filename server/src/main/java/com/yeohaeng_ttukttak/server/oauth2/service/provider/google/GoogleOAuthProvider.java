@@ -18,6 +18,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.Map;
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -36,10 +38,11 @@ public class GoogleOAuthProvider implements OAuthProvidable {
 
         log.debug("identification={}", tokenResponse);
 
-        IdTokenClaim idTokenClaim = tokenService.decodeIdToken(tokenResponse.idToken());
+        Map<String, Object> claims = tokenService.decode(tokenResponse.idToken());
 
-        String openId = idTokenClaim.openId();
-        String name = idTokenClaim.name();
+        String openId = claims.get("sub").toString();
+        String name = claims.get("name").toString();
+
         String token = tokenResponse.accessToken();
 
         return new GetIdResult(openId, name, token);

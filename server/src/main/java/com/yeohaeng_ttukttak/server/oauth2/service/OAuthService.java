@@ -2,6 +2,7 @@ package com.yeohaeng_ttukttak.server.oauth2.service;
 
 import com.yeohaeng_ttukttak.server.common.exception.exception.EntityNotFoundException;
 import com.yeohaeng_ttukttak.server.oauth2.service.dto.RevokeCommand;
+import com.yeohaeng_ttukttak.server.token.property.JwtProperties;
 import com.yeohaeng_ttukttak.server.user.domain.User;
 import com.yeohaeng_ttukttak.server.oauth2.domain.OAuth;
 import com.yeohaeng_ttukttak.server.user.repository.UserRepository;
@@ -13,15 +14,17 @@ import com.yeohaeng_ttukttak.server.token.TokenService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Map;
+
 
 @Slf4j
 @RequiredArgsConstructor
 public class OAuthService {
 
+    private final JwtProperties jwtProps;
+
     private final OAuthProvidable oauthProvider;
-
     private final UserRepository userRepository;
-
     private final TokenService tokenService;
 
     public RegisterResult register(String code) {
@@ -44,10 +47,11 @@ public class OAuthService {
 
         log.debug("user={}", user);
 
-        return new RegisterResult(
-                tokenService.issueAccessToken(openId),
-                tokenService.issueRefreshToken(openId));
+        Map<String, Object> claims = Map.of("open_id", openId);
 
+        return new RegisterResult(
+                tokenService.issueByHS256(jwtProps.accessToken().expiration(), claims),
+                tokenService.issueByHS256(jwtProps.refreshToken().expiration(), claims));
     }
 
     public void revoke(String code) {

@@ -1,18 +1,16 @@
 package com.yeohaeng_ttukttak.server.token;
 
-import com.yeohaeng_ttukttak.server.oauth2.service.provider.apple.AppleOAuthProps;
-import com.yeohaeng_ttukttak.server.token.dto.IdTokenClaim;
+import java.time.Duration;
+import java.util.Map;
 
 public interface TokenService {
 
-    String issueAccessToken(String openId);
+    String issueByHS256(Duration expiration, Map<String, Object> claims);
 
-    String issueRefreshToken(String openId);
+    String issueByES256(
+            String privateKey, Duration expiration,
+            Map<String, Object> headers, Map<String, Object> claims);
 
-    String renewAccessToken();
-
-    IdTokenClaim decodeIdToken(String idToken);
-
-    String generateClientSecret(AppleOAuthProps props);
+    Map<String, Object> decode(String token);
 
 }
