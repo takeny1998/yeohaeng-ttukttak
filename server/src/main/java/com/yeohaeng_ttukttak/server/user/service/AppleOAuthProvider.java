@@ -12,8 +12,10 @@ import com.yeohaeng_ttukttak.server.user.service.dto.Profile;
 import com.yeohaeng_ttukttak.server.user.service.token.TokenService;
 import com.yeohaeng_ttukttak.server.user.service.token.dto.IdTokenClaim;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class AppleOAuthProvider implements OAuthProvidable{
@@ -29,13 +31,15 @@ public class AppleOAuthProvider implements OAuthProvidable{
 
         String clientSecret = clientSecretProvider.clientSecret();
 
-        ExchangeTokenRequest request = new ExchangeTokenRequest(command.code(),
+        ExchangeTokenResponse response = oauthClient.exchangeToken(
+                command.code(),
                 oauthProps.clientId(),
                 clientSecret,
                 "authorization_code",
                 oauthProps.redirectUri());
 
-        ExchangeTokenResponse response = oauthClient.exchangeToken(request);
+        log.debug("token={}", response);
+
         IdTokenClaim claim = tokenService.decodeIdToken(response.idToken());
 
         return new Identification(claim.openId(), claim.name(), response.accessToken());
@@ -52,7 +56,13 @@ public class AppleOAuthProvider implements OAuthProvidable{
         return OAuthProvider.APPLE;
     }
 
-    // TODO: revoke 기능 구현해야 함
     @Override
-    public void revoke(Identification id) { }
+    public void revoke(Identification id) {
+
+        String clientSecret = clientSecretProvider.clientSecret();
+
+        oauthClient.revokeToken(
+                id.token(), oauthProps.clientId(), clientSecret);
+
+    }
 }

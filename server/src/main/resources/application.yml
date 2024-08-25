@@ -32,10 +32,10 @@ oauth:
     grant-type: authorization_code
 
   apple:
-    client-id: app.yeohaeng.ttukttak.com
-    key-id: 8VM2AMQ9NU
+    client-id: com.yeohaeng-ttukttak.application.sign-in
+    key-id: BZTAVU6WPU
     team-id: V962884Y3R
-    redirect-uri: https://0a8b-221-160-191-58.ngrok-free.app/api/v2/users/apple
+    redirect-uri: https://bug-steady-reliably.ngrok-free.app/api/v2/users/apple
     private-key: ${oauth.apple.private-key}
 
 jwt:

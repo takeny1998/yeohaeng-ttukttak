@@ -87,7 +87,7 @@ public class JavaJwtTokenService implements TokenService {
 
         return JWT.create()
                 .withKeyId(props.keyId())
-                .withIssuer(props.keyId())
+                .withIssuer(props.teamId())
                 .withSubject(props.clientId())
                 .withAudience("https://appleid.apple.com")
                 .withIssuedAt(issuedAt)

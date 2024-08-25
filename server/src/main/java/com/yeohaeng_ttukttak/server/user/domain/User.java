@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.time.LocalDate;
 
@@ -16,18 +17,16 @@ import static lombok.AccessLevel.PROTECTED;
 @Entity
 @Table(name = "users")
 @NoArgsConstructor(access = PROTECTED)
+@ToString(of = {"id", "nickname", "gender", "birthday"})
 public class User extends TimeAuditableEntity {
 
     @Id @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @NotNull
     private String nickname;
 
-    @NotNull
     private Gender gender;
 
-    @NotNull
     private LocalDate birthday;
 
     @NotNull @OneToOne(cascade = CascadeType.ALL)

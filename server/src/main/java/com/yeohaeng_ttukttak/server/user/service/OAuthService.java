@@ -43,10 +43,9 @@ public class OAuthService {
 
         log.debug("user={}", user);
 
-        String accessToken = tokenService.issueAccessToken(openId);
-        String refreshToken = tokenService.issueRefreshToken(openId);
-
-        return new RegisterResult(accessToken, refreshToken);
+        return new RegisterResult(
+                tokenService.issueAccessToken(openId),
+                tokenService.issueRefreshToken(openId));
 
     }
 

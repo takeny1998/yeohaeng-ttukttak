@@ -52,7 +52,7 @@ public class OAuthController {
 
     }
 
-    @GetMapping("/apple")
+    @PostMapping("/apple")
     public ResponseEntity apple(@RequestParam Map<String, String> params) {
 
         log.debug("Apple");
