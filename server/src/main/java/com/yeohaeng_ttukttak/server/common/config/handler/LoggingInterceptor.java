@@ -1,4 +1,4 @@
-package com.yeohaeng_ttukttak.server.common.config;
+package com.yeohaeng_ttukttak.server.common.config.handler;
 
 import com.yeohaeng_ttukttak.server.common.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;

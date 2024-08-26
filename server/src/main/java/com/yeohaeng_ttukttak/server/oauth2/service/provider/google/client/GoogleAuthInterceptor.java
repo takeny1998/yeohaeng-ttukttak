@@ -1,6 +1,7 @@
-package com.yeohaeng_ttukttak.server.common.config;
+package com.yeohaeng_ttukttak.server.oauth2.service.provider.google.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.yeohaeng_ttukttak.server.common.config.handler.ReusableClientHttpResponseWrapper;
 import com.yeohaeng_ttukttak.server.oauth2.service.provider.google.client.dto.exchange_token.ExchangeTokenResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpRequest;

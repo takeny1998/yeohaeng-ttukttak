@@ -1,7 +1,5 @@
 package com.yeohaeng_ttukttak.server.oauth2.controller;
 
-import com.yeohaeng_ttukttak.server.common.exception.exception.RequiredFieldMissingException;
-import com.yeohaeng_ttukttak.server.common.util.MapUtil;
 import com.yeohaeng_ttukttak.server.oauth2.controller.dto.OAuthResponse;
 import com.yeohaeng_ttukttak.server.oauth2.service.OAuthService;
 import com.yeohaeng_ttukttak.server.oauth2.service.dto.RegisterResult;
@@ -9,10 +7,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
 
 @Slf4j
 @RestController
