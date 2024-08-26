@@ -11,7 +11,7 @@ public class EntityNotFoundException extends ApiException {
     }
 
     protected EntityNotFoundException(String code, Class clazz) {
-        super(code, HttpStatus.NOT_FOUND);
+        super(code, HttpStatus.NOT_FOUND, null, null);
         this.target = clazz;
     }
 

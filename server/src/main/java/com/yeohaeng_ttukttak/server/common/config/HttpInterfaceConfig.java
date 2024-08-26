@@ -1,8 +1,8 @@
 package com.yeohaeng_ttukttak.server.common.config;
 
-import com.yeohaeng_ttukttak.server.user.service.client.AppleOAuthClient;
-import com.yeohaeng_ttukttak.server.user.service.client.GoogleOAuthClient;
-import com.yeohaeng_ttukttak.server.user.service.client.GoogleProfileClient;
+import com.yeohaeng_ttukttak.server.oauth2.service.provider.apple.client.AppleOAuthClient;
+import com.yeohaeng_ttukttak.server.oauth2.service.provider.google.client.GoogleOAuthClient;
+import com.yeohaeng_ttukttak.server.oauth2.service.provider.google.client.GoogleProfileClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

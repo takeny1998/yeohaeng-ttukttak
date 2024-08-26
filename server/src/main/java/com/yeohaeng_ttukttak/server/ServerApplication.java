@@ -1,8 +1,8 @@
 package com.yeohaeng_ttukttak.server;
 
-import com.yeohaeng_ttukttak.server.user.service.client.property.AppleOAuthProps;
-import com.yeohaeng_ttukttak.server.user.service.client.property.GoogleOAuthProps;
-import com.yeohaeng_ttukttak.server.user.service.token.property.JwtProperties;
+import com.yeohaeng_ttukttak.server.oauth2.service.provider.apple.AppleOAuthProps;
+import com.yeohaeng_ttukttak.server.oauth2.service.provider.google.GoogleOAuthProps;
+import com.yeohaeng_ttukttak.server.token.property.JwtProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

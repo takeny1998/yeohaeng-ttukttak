@@ -9,7 +9,7 @@ public class BadRequestException extends ApiException {
     }
 
     protected BadRequestException(String code) {
-        super(code, HttpStatus.BAD_REQUEST);
+        super(code, HttpStatus.BAD_REQUEST, null, null);
     }
 
 }
