@@ -28,7 +28,7 @@ public class OAuthService {
     public RegisterResult register(String code) {
 
         GetIdResult getIdResult = oauthProvider.getIdentification(
-                new GetIdCommand(code));
+                new GetIdCommand(code, "register"));
 
         String openId = getIdResult.id();
         String name = getIdResult.name();
@@ -45,8 +45,10 @@ public class OAuthService {
 
         log.debug("user={}", user);
 
+        String userId = user.getId().toString();
+
         IssueAuthTokensResult authTokensResult =
-                jwtService.issueAuthTokens(new IssueAuthTokensCommand(openId));
+                jwtService.issueAuthTokens(new IssueAuthTokensCommand(userId));
 
         return new RegisterResult(
                 authTokensResult.accessToken(),
@@ -55,8 +57,8 @@ public class OAuthService {
 
     public void revoke(String code) {
 
-        GetIdResult getIdResult =
-                oauthProvider.getIdentification(new GetIdCommand(code));
+        GetIdResult getIdResult = oauthProvider.getIdentification(
+                new GetIdCommand(code, "revoke"));
 
         oauthProvider.revoke(new RevokeCommand(getIdResult.token()));
 

@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.net.URI;
 import java.util.Map;
 
 @Slf4j
@@ -30,13 +31,15 @@ public class AppleOAuthProvider implements OAuthProvidable {
     public GetIdResult getIdentification(GetIdCommand command) {
 
         String clientSecret = clientSecretProvider.clientSecret();
+        String redirectUri =
+                oauthProps.redirectUri() + "/" + command.action();
 
         ExchangeTokenResponse response = oauthClient.exchangeToken(
                 command.code(),
                 oauthProps.clientId(),
                 clientSecret,
                 "authorization_code",
-                oauthProps.redirectUri());
+                redirectUri);
 
         log.debug("token={}", response);
         Map<String, Object> claims = jwtProvidable.decode(response.idToken());

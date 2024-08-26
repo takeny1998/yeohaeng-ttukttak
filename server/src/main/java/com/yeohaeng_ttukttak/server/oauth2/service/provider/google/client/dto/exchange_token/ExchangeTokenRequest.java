@@ -9,11 +9,4 @@ public record ExchangeTokenRequest (
         @JsonProperty("client_secret") String clientSecret,
         @JsonProperty("grant_type") String grantType,
         @JsonProperty("redirect_uri") String redirectUri
-) {
-
-    public ExchangeTokenRequest(GoogleOAuthProps client, String code) {
-        this(code, client.clientId(), client.clientSecret(),
-                client.grantType(), client.redirectUri());
-    }
-
-}
+) { }

@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
@@ -20,8 +21,8 @@ import static lombok.AccessLevel.PROTECTED;
 @ToString(of = {"id", "nickname", "gender", "birthday"})
 public class User extends TimeAuditableEntity {
 
-    @Id @GeneratedValue(strategy = IDENTITY)
-    private Long id;
+    @Id @GeneratedValue
+    private UUID id;
 
     private String nickname;
 

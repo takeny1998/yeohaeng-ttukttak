@@ -18,7 +18,7 @@ public class JwtService {
 
     public IssueAuthTokensResult issueAuthTokens(IssueAuthTokensCommand command) {
 
-        Map<String, Object> claims = Map.of("open_id", command.openId());
+        Map<String, Object> claims = Map.of("sub", command.openId());
 
         String accessToken = jwtProvider.issueByHS256(
                 jwtProps.accessToken().expiration(), claims);

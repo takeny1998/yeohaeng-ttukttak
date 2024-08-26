@@ -16,7 +16,10 @@ import com.yeohaeng_ttukttak.server.token.provider.JwtProvidable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.web.util.UriBuilder;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.Map;
 
 @Slf4j
@@ -32,17 +35,30 @@ public class GoogleOAuthProvider implements OAuthProvidable {
     @Override
     public GetIdResult getIdentification(GetIdCommand command) {
 
-        ExchangeTokenResponse tokenResponse = googleOAuthClient.exchangeToken(
-                new ExchangeTokenRequest(oauthProps, command.code()));
+        String redirectUri =
+                oauthProps.redirectUri() + "/" + command.action();
 
-        log.debug("identification={}", tokenResponse);
+        String grantType = "authorization_code";
 
-        Map<String, Object> claims = jwtProvidable.decode(tokenResponse.idToken());
+        ExchangeTokenRequest request = new ExchangeTokenRequest(
+                command.code(),
+                oauthProps.clientId(),
+                oauthProps.clientSecret(),
+                grantType,
+                redirectUri);
+
+        log.debug("request={}", request);
+
+        ExchangeTokenResponse response = googleOAuthClient.exchangeToken(request);
+
+        log.debug("identification={}", response);
+
+        Map<String, Object> claims = jwtProvidable.decode(response.idToken());
 
         String openId = claims.get("sub").toString();
         String name = claims.get("name").toString();
 
-        String token = tokenResponse.accessToken();
+        String token = response.accessToken();
 
         return new GetIdResult(openId, name, token);
 
