@@ -24,13 +24,19 @@ public class AppleClientSecretProvider {
     @Scheduled(fixedRate = 14, timeUnit = TimeUnit.DAYS)
     protected void renew() {
 
+        Duration expiration = Duration.ofDays(21);
+
+        Map<String, Object> headerClaims = Map.of("kid", props.keyId());
+        Map<String, Object> payloadClaims = Map.of(
+                "aud", "https://appleid.apple.com",
+                "iss", props.teamId(),
+                "sub", props.clientId());
+
         this.clientSecret = jwtProvidable.issueByES256(
                 props.privateKey(),
-                Duration.ofDays(21),
-                Map.of("kid", props.keyId()),
-                Map.of("aud", "https://appleid.apple.com",
-                        "iss", props.teamId(),
-                        "sub", props.clientId())
+                expiration,
+                headerClaims,
+                payloadClaims
         );
 
         log.debug("Apple Client Secret Issued");
