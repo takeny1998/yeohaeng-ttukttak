@@ -24,7 +24,7 @@ public class OAuthConfig {
 
     @Bean
     public OAuthService appleOAuthService(
-            GoogleOAuthProvider provider,
+            AppleOAuthProvider provider,
             UserRepository userRepository,
             JwtService jwtService) {
 

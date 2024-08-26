@@ -9,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 import static com.yeohaeng_ttukttak.server.oauth2.domain.OAuthProvider.GOOGLE;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -24,6 +25,7 @@ class UserTest {
 
     Profile profile;
     OAuth auth;
+
 
     @BeforeEach
     void setup() {

@@ -11,6 +11,7 @@ management:
 
   endpoint:
     health.enabled: true
+
 ---
 spring:
   config:
@@ -22,6 +23,20 @@ spring:
     url: jdbc:h2:mem:testdb;MODE=MYSQL;
     username: sa
     password:
+
+  sql:
+    init:
+      mode: embedded
+      data-locations: classpath:initial_data.sql
+  jpa:
+
+    hibernate:
+      ddl-auto: create
+
+    defer-datasource-initialization: true
+    show-sql: true
+
+
 
 oauth:
   google:
@@ -46,5 +61,7 @@ jwt:
   refresh-token:
     expiration: 14d
 
+
 logging.level:
+    org.hibernate.sql: debug
     com.yeohaeng_ttukttak.server: debug
