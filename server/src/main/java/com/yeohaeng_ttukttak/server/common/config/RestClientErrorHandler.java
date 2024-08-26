@@ -1,5 +1,6 @@
 package com.yeohaeng_ttukttak.server.common.config;
 
+import com.yeohaeng_ttukttak.server.common.exception.exception.ExternalApiErrorException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpResponse;
@@ -40,6 +41,8 @@ public class RestClientErrorHandler implements  ErrorHandler {
         } catch(IOException e) {
             log.error("[{}] [!] {}", shortUUID, e.getMessage());
         }
+
+        throw new ExternalApiErrorException();
     }
 
 }

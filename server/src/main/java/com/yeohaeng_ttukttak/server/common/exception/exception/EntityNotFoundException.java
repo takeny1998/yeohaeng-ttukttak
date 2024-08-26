@@ -2,7 +2,7 @@ package com.yeohaeng_ttukttak.server.common.exception.exception;
 
 import org.springframework.http.HttpStatus;
 
-public class EntityNotFoundException extends ApiException {
+public class EntityNotFoundException extends BusinessException {
 
     private final Class target;
 
@@ -11,7 +11,7 @@ public class EntityNotFoundException extends ApiException {
     }
 
     protected EntityNotFoundException(String code, Class clazz) {
-        super(code, HttpStatus.NOT_FOUND, null, null);
+        super(code, HttpStatus.NOT_FOUND);
         this.target = clazz;
     }
 

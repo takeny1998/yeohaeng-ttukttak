@@ -2,6 +2,7 @@ package com.yeohaeng_ttukttak.server.common.exception;
 
 import com.yeohaeng_ttukttak.server.common.exception.dto.ErrorResponse;
 import com.yeohaeng_ttukttak.server.common.exception.exception.ApiException;
+import com.yeohaeng_ttukttak.server.common.exception.exception.BusinessException;
 import com.yeohaeng_ttukttak.server.common.exception.exception.EntityNotFoundException;
 import com.yeohaeng_ttukttak.server.common.exception.exception.RequiredFieldMissingException;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.Locale;
+import java.util.Objects;
 
 @Slf4j
 @RestControllerAdvice
