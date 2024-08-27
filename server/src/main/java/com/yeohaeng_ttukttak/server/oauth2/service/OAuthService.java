@@ -2,7 +2,9 @@ package com.yeohaeng_ttukttak.server.oauth2.service;
 
 import com.yeohaeng_ttukttak.server.common.exception.exception.EntityNotFoundException;
 import com.yeohaeng_ttukttak.server.oauth2.service.dto.RevokeCommand;
-import com.yeohaeng_ttukttak.server.token.property.JwtProperties;
+import com.yeohaeng_ttukttak.server.token.service.JwtService;
+import com.yeohaeng_ttukttak.server.token.service.dto.issue_auth_token.IssueAuthTokensCommand;
+import com.yeohaeng_ttukttak.server.token.service.dto.issue_auth_token.IssueAuthTokensResult;
 import com.yeohaeng_ttukttak.server.user.domain.User;
 import com.yeohaeng_ttukttak.server.oauth2.domain.OAuth;
 import com.yeohaeng_ttukttak.server.user.repository.UserRepository;
@@ -10,27 +12,22 @@ import com.yeohaeng_ttukttak.server.oauth2.service.dto.get_id.GetIdCommand;
 import com.yeohaeng_ttukttak.server.oauth2.service.dto.get_id.GetIdResult;
 import com.yeohaeng_ttukttak.server.oauth2.service.dto.get_profile.GetProfileResult;
 import com.yeohaeng_ttukttak.server.oauth2.service.dto.RegisterResult;
-import com.yeohaeng_ttukttak.server.token.provider.JwtProvidable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
-import java.util.Map;
-
 
 @Slf4j
 @RequiredArgsConstructor
 public class OAuthService {
 
-    private final JwtProperties jwtProps;
-
     private final OAuthProvidable oauthProvider;
     private final UserRepository userRepository;
-    private final JwtProvidable jwtProvider;
+
+    private final JwtService jwtService;
 
     public RegisterResult register(String code) {
 
         GetIdResult getIdResult = oauthProvider.getIdentification(
-                new GetIdCommand(code));
+                new GetIdCommand(code, "register"));
 
         String openId = getIdResult.id();
         String name = getIdResult.name();
@@ -47,17 +44,20 @@ public class OAuthService {
 
         log.debug("user={}", user);
 
-        Map<String, Object> claims = Map.of("open_id", openId);
+        String userId = user.getId().toString();
+
+        IssueAuthTokensResult authTokensResult =
+                jwtService.issueAuthTokens(new IssueAuthTokensCommand(userId));
 
         return new RegisterResult(
-                jwtProvider.issueByHS256(jwtProps.accessToken().expiration(), claims),
-                jwtProvider.issueByHS256(jwtProps.refreshToken().expiration(), claims));
+                authTokensResult.accessToken(),
+                authTokensResult.refreshToken());
     }
 
     public void revoke(String code) {
 
-        GetIdResult getIdResult =
-                oauthProvider.getIdentification(new GetIdCommand(code));
+        GetIdResult getIdResult = oauthProvider.getIdentification(
+                new GetIdCommand(code, "revoke"));
 
         oauthProvider.revoke(new RevokeCommand(getIdResult.token()));
 

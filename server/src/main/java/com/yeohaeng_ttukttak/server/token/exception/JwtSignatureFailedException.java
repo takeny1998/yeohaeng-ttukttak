@@ -1,6 +1,6 @@
 package com.yeohaeng_ttukttak.server.token.exception;
 
-import com.yeohaeng_ttukttak.server.common.exception.exception.InternalServerErrorException;
+import com.yeohaeng_ttukttak.server.common.exception.exception.internal_server_error.InternalServerErrorException;
 
 public class JwtSignatureFailedException extends InternalServerErrorException {
 

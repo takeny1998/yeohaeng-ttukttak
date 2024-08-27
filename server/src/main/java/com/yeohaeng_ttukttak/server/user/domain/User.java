@@ -4,11 +4,13 @@ import com.yeohaeng_ttukttak.server.common.entity.TimeAuditableEntity;
 import com.yeohaeng_ttukttak.server.oauth2.domain.OAuth;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
@@ -17,14 +19,17 @@ import static lombok.AccessLevel.PROTECTED;
 @Entity
 @Table(name = "users")
 @NoArgsConstructor(access = PROTECTED)
-@ToString(of = {"id", "nickname", "gender", "birthday"})
+@AllArgsConstructor
+@ToString(of = {"id", "nickname", "gender", "birthday", "auth"})
 public class User extends TimeAuditableEntity {
 
-    @Id @GeneratedValue(strategy = IDENTITY)
-    private Long id;
+    @Id @GeneratedValue(generator = "uuid2")
+    @Column(columnDefinition = "BINARY(16)")
+    private UUID id;
 
     private String nickname;
 
+    @Enumerated(EnumType.STRING)
     private Gender gender;
 
     private LocalDate birthday;

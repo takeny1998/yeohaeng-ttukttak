@@ -11,10 +11,11 @@ management:
 
   endpoint:
     health.enabled: true
+
 ---
 spring:
   config:
-    activate.on-profile: dev
+    activate.on-profile: local
     import: aws-parameterstore:/yeohaeng-ttukttak/server_dev/
 
   datasource:
@@ -23,12 +24,26 @@ spring:
     username: sa
     password:
 
+  sql:
+    init:
+      mode: embedded
+      data-locations: classpath:initial_data.sql
+  jpa:
+
+    hibernate:
+      ddl-auto: create
+
+    defer-datasource-initialization: true
+    show-sql: true
+
+
+
 oauth:
   google:
     client-id: 951324022006-eigc5h6tj71rm2v31eqr5u0v07cbmpn1.apps.googleusercontent.com
     client-secret: ${oauth.google.client-secret}
     scope: https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/user.gender.read https://www.googleapis.com/auth/user.birthday.read
-    redirect-uri: https://dev.yeohaeng-ttukttak.com/api/v2/oauth2/google
+    redirect-uri: https://bug-steady-reliably.ngrok-free.app/api/v2/oauth2/google
     grant-type: authorization_code
 
   apple:
@@ -46,5 +61,7 @@ jwt:
   refresh-token:
     expiration: 14d
 
+
 logging.level:
+    org.hibernate.sql: debug
     com.yeohaeng_ttukttak.server: debug

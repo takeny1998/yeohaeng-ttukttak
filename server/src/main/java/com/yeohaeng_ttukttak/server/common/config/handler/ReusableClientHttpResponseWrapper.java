@@ -1,4 +1,4 @@
-package com.yeohaeng_ttukttak.server.common.config;
+package com.yeohaeng_ttukttak.server.common.config.handler;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

@@ -1,10 +1,18 @@
-package com.yeohaeng_ttukttak.server.token.provider;
+package com.yeohaeng_ttukttak.server.token.provider.java_jwt;
 
 import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.exceptions.TokenExpiredException;
+import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.yeohaeng_ttukttak.server.common.exception.exception.unauthorized.AuthorizationExpiredException;
+import com.yeohaeng_ttukttak.server.common.exception.exception.unauthorized.AuthorizeFailedException;
 import com.yeohaeng_ttukttak.server.token.exception.JwtSignatureFailedException;
 import com.yeohaeng_ttukttak.server.token.property.JwtProperties;
+import com.yeohaeng_ttukttak.server.token.provider.JwtClaim;
+import com.yeohaeng_ttukttak.server.token.provider.JwtProvidable;
 import lombok.extern.slf4j.Slf4j;
 
 import java.security.KeyFactory;
@@ -17,16 +25,17 @@ import java.time.Instant;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 public class JavaJwtProvider implements JwtProvidable {
 
     private final JwtProperties jwtProps;
-    private final Algorithm algorithm;
+    private final Algorithm hs256;
 
     public JavaJwtProvider(JwtProperties jwtProps) {
         this.jwtProps = jwtProps;
-        algorithm = Algorithm.HMAC256(jwtProps.secret());
+        hs256 = Algorithm.HMAC256(jwtProps.secret());
     }
 
     @Override
@@ -40,7 +49,7 @@ public class JavaJwtProvider implements JwtProvidable {
                 .withPayload(claims)
                 .withIssuedAt(issuedAt)
                 .withExpiresAt(expiresAt)
-                .sign(algorithm);
+                .sign(hs256);
     }
 
     @Override
@@ -86,5 +95,30 @@ public class JavaJwtProvider implements JwtProvidable {
         return new HashMap<>(jwt.getClaims());
 
     }
+
+    @Override
+    public Map<String, JwtClaim> verifyByHS256(String token) {
+
+        JWTVerifier verifier = JWT.require(hs256)
+                .withIssuer("yeohaeng-ttukttak.com")
+                .build();
+
+        final Map<String, Claim> claims;
+
+        try {
+            claims = verifier.verify(token).getClaims();
+        } catch (TokenExpiredException ex) {
+            throw new AuthorizationExpiredException(ex);
+        } catch (JWTVerificationException ex) {
+            throw new AuthorizeFailedException(ex);
+        }
+
+        return claims.entrySet().stream()
+                .collect(Collectors.toMap(Map.Entry::getKey,
+                        e -> new JavaJwtClaim(e.getValue())));
+
+    }
+
+
 
 }
