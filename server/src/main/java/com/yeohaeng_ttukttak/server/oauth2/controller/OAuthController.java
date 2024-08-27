@@ -1,12 +1,16 @@
 package com.yeohaeng_ttukttak.server.oauth2.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.yeohaeng_ttukttak.server.common.util.StringUtil;
 import com.yeohaeng_ttukttak.server.oauth2.controller.dto.OAuthResponse;
 import com.yeohaeng_ttukttak.server.oauth2.service.OAuthService;
 import com.yeohaeng_ttukttak.server.oauth2.service.dto.RegisterResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @Slf4j
 @RestController
@@ -18,9 +22,18 @@ public class OAuthController {
     private final OAuthService appleOAuthService;
 
     @PostMapping("/apple/register")
-    public OAuthResponse registerApple(@RequestParam String code) {
+    public ResponseEntity<Void> registerApple(@RequestParam String code) throws JsonProcessingException {
         RegisterResult result = appleOAuthService.register(code);
-        return new OAuthResponse(result.accessToken(), result.refreshToken());
+
+        String redirectUri = UriComponentsBuilder
+                .fromUriString("com.yeohaeng-ttukttak.application:/")
+                .queryParam("response", StringUtil.toJsonString(result))
+                .encode()
+                .toUriString();
+
+        return ResponseEntity.status(HttpStatus.FOUND)
+                .header("Location", redirectUri)
+                .build();
     }
 
     @PostMapping("/apple/revoke")
@@ -30,9 +43,18 @@ public class OAuthController {
     }
 
     @GetMapping("/google/register")
-    public OAuthResponse registerGoogle(@RequestParam String code) {
+    public ResponseEntity<Void> registerGoogle(@RequestParam String code) {
         RegisterResult result = googleOAuthService.register(code);
-        return new OAuthResponse(result.accessToken(), result.refreshToken());
+
+        String redirectUri = UriComponentsBuilder
+                .fromUriString("com.yeohaeng-ttukttak.application:/")
+                .queryParam("response", result)
+                .encode()
+                .toUriString();
+
+        return ResponseEntity.status(HttpStatus.FOUND)
+                .header("Location", redirectUri)
+                .build();
     }
 
     @GetMapping("/google/revoke")

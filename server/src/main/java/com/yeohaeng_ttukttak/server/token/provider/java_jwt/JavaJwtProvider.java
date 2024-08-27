@@ -70,9 +70,7 @@ public class JavaJwtProvider implements JwtProvidable {
                     (ECPrivateKey) keyFactory.generatePrivate(keySpec));
 
         } catch (NoSuchAlgorithmException | InvalidKeySpecException ex) {
-
-            throw new JwtSignatureFailedException(ex.getMessage(), ex.getCause());
-
+            throw new JwtSignatureFailedException(ex);
         }
 
         Instant issuedAt = Instant.now();
