@@ -13,4 +13,6 @@ public interface JwtProvidable {
 
     Map<String, Object> decode(String token);
 
+    Map<String, JwtClaim> verifyByHS256(String token);
+
 }

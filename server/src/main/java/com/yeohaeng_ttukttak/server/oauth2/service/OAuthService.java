@@ -2,7 +2,6 @@ package com.yeohaeng_ttukttak.server.oauth2.service;
 
 import com.yeohaeng_ttukttak.server.common.exception.exception.EntityNotFoundException;
 import com.yeohaeng_ttukttak.server.oauth2.service.dto.RevokeCommand;
-import com.yeohaeng_ttukttak.server.token.property.JwtProperties;
 import com.yeohaeng_ttukttak.server.token.service.JwtService;
 import com.yeohaeng_ttukttak.server.token.service.dto.issue_auth_token.IssueAuthTokensCommand;
 import com.yeohaeng_ttukttak.server.token.service.dto.issue_auth_token.IssueAuthTokensResult;

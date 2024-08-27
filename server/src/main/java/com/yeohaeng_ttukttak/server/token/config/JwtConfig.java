@@ -1,6 +1,6 @@
 package com.yeohaeng_ttukttak.server.token.config;
 
-import com.yeohaeng_ttukttak.server.token.provider.JavaJwtProvider;
+import com.yeohaeng_ttukttak.server.token.provider.java_jwt.JavaJwtProvider;
 import com.yeohaeng_ttukttak.server.token.provider.JwtProvidable;
 import com.yeohaeng_ttukttak.server.token.property.JwtProperties;
 import org.springframework.context.annotation.Bean;

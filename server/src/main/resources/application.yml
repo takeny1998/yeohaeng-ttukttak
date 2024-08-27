@@ -15,7 +15,7 @@ management:
 ---
 spring:
   config:
-    activate.on-profile: dev
+    activate.on-profile: local
     import: aws-parameterstore:/yeohaeng-ttukttak/server_dev/
 
   datasource:
