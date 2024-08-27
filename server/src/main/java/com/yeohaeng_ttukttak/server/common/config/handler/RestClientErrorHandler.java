@@ -1,6 +1,6 @@
 package com.yeohaeng_ttukttak.server.common.config.handler;
 
-import com.yeohaeng_ttukttak.server.common.exception.exception.ExternalApiErrorException;
+import com.yeohaeng_ttukttak.server.common.exception.exception.internal_server_error.ExternalApiErrorException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpResponse;

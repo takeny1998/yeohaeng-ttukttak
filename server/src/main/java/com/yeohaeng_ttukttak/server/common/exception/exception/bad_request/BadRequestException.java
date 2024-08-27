@@ -1,8 +1,9 @@
-package com.yeohaeng_ttukttak.server.common.exception.exception;
+package com.yeohaeng_ttukttak.server.common.exception.exception.bad_request;
 
+import com.yeohaeng_ttukttak.server.common.exception.exception.ApiException;
 import org.springframework.http.HttpStatus;
 
-public class BadRequestException extends BusinessException {
+public class BadRequestException extends ApiException {
 
     public BadRequestException() {
         this("BAD_REQUEST");

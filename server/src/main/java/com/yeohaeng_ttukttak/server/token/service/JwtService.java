@@ -1,7 +1,7 @@
 package com.yeohaeng_ttukttak.server.token.service;
 
-import com.yeohaeng_ttukttak.server.common.exception.exception.AuthorizationExpiredException;
-import com.yeohaeng_ttukttak.server.common.exception.exception.AuthorizeFailedException;
+import com.yeohaeng_ttukttak.server.common.exception.exception.unauthorized.AuthorizationExpiredException;
+import com.yeohaeng_ttukttak.server.common.exception.exception.unauthorized.AuthorizeFailedException;
 import com.yeohaeng_ttukttak.server.token.domain.RefreshToken;
 import com.yeohaeng_ttukttak.server.token.property.JwtProperties;
 import com.yeohaeng_ttukttak.server.token.provider.JwtClaim;

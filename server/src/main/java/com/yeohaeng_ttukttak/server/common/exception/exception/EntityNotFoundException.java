@@ -1,8 +1,9 @@
 package com.yeohaeng_ttukttak.server.common.exception.exception;
 
+import com.yeohaeng_ttukttak.server.common.exception.interfaces.TargetException;
 import org.springframework.http.HttpStatus;
 
-public class EntityNotFoundException extends BusinessException {
+public class EntityNotFoundException extends ApiException implements TargetException {
 
     private final Class target;
 
@@ -15,6 +16,7 @@ public class EntityNotFoundException extends BusinessException {
         this.target = clazz;
     }
 
+    @Override
     public String getTarget() {
         return target.getSimpleName();
     }
