@@ -39,7 +39,14 @@ public class OAuthController {
     @PostMapping("/apple/revoke")
     public ResponseEntity<Void> revokeApple(@RequestParam String code) {
         appleOAuthService.revoke(code);
-        return ResponseEntity.noContent().build();
+
+        String redirectUri = UriComponentsBuilder
+                .fromUriString("com.yeohaeng-ttukttak.application:/")
+                .encode().toUriString();
+
+        return ResponseEntity.status(HttpStatus.FOUND)
+                .header("Location", redirectUri)
+                .build();
     }
 
     @GetMapping("/google/register")
@@ -60,6 +67,13 @@ public class OAuthController {
     @GetMapping("/google/revoke")
     public ResponseEntity<Void> revokeGoogle(@RequestParam String code) {
         googleOAuthService.revoke(code);
-        return ResponseEntity.noContent().build();
+
+        String redirectUri = UriComponentsBuilder
+                .fromUriString("com.yeohaeng-ttukttak.application:/")
+                .encode().toUriString();
+
+        return ResponseEntity.status(HttpStatus.FOUND)
+                .header("Location", redirectUri)
+                .build();
     }
 }

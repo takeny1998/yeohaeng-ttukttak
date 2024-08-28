@@ -4,6 +4,6 @@ abstract interface class AuthService {
 
   Future<AuthCredentials> register();
 
-  void revoke();
+  Future<void> revoke();
 
 }

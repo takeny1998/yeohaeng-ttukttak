@@ -1,7 +1,7 @@
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import 'dio_provider.dart';
+import '../database/dio_provider.dart';
 import 'remote_api.dart';
 
 part 'remote_api_provider.g.dart';

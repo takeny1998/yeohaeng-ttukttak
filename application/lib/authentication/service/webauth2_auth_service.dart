@@ -30,8 +30,20 @@ class WebAuth2AuthService implements AuthService {
   }
 
   @override
-  void revoke() {
-    // TODO: implement revoke
+  Future<void> revoke() async {
+
+    final uri = Uri.https("appleid.apple.com", "/auth/authorize", {
+      'client_id': 'com.yeohaeng-ttukttak.application.sign-in',
+      'response_mode': 'form_post',
+      'response_type': 'code',
+      'redirect_uri':  'https://bug-steady-reliably.ngrok-free.app/api/v2/oauth2/apple/revoke',
+      'scope': 'email name',
+    });
+
+    await FlutterWebAuth2.authenticate(
+        url: '$uri',
+        callbackUrlScheme: 'com.yeohaeng-ttukttak.application');
+
   }
 
 }
