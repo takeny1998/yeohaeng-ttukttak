@@ -1,4 +1,5 @@
 import 'package:application/authentication/client/dto/token_renew_request.dart';
+import 'package:application/authentication/client/oauth_client_provider.dart';
 import 'package:application/authentication/client/token_client_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -10,44 +11,42 @@ part 'register_provider.g.dart';
 
 @riverpod
 class Register extends _$Register {
-
   @override
   FutureOr<AuthCredentials?> build() async {
-
-    final authCredentialsRepository = ref.read(authCredentialsRepositoryProvider);
+    final authCredentialsRepository =
+        ref.read(authCredentialsRepositoryProvider);
 
     final authCredentials = await authCredentialsRepository.find();
     if (authCredentials == null) return null;
 
-    final response = await ref.read(tokenClientProvider)
-        .renew(TokenRenewRequest(refreshToken: authCredentials.refreshToken));
-
-    authCredentialsRepository.save(response);
-
-    return response;
-
+    return ref.read(tokenClientProvider)
+        .renew(TokenRenewRequest(refreshToken: authCredentials.refreshToken))
+        .then((value) {
+          authCredentialsRepository.save(value);
+          return value;
+        });
   }
 
   Future<void> register() async {
     state = const AsyncLoading();
 
     state = await AsyncValue.guard(() async {
-      final auth = await ref.read(authServiceProvider).register();
+      final response = await ref.read(oauthClientProvider).apple('register');
+      final auth =
+          await ref.read(authServiceProvider).register(response.redirectUri);
+
       ref.read(authCredentialsRepositoryProvider).save(auth);
       return auth;
     });
   }
 
   Future<void> revoke() async {
-
     state = const AsyncLoading();
     await ref.read(authServiceProvider).revoke();
     state = const AsyncData(null);
-
   }
 
   Future<void> logout() async {
-
     state = const AsyncLoading();
 
     state.whenOrNull(data: (auth) {
@@ -56,6 +55,5 @@ class Register extends _$Register {
     });
 
     state = const AsyncData(null);
-
   }
 }
