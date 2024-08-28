@@ -1,6 +1,11 @@
 package com.yeohaeng_ttukttak.server.oauth2.service;
 
 import com.yeohaeng_ttukttak.server.common.exception.exception.EntityNotFoundException;
+import com.yeohaeng_ttukttak.server.common.exception.exception.bad_request.RequiredFieldMissingException;
+import com.yeohaeng_ttukttak.server.common.exception.exception.unauthorized.AuthorizationExpiredException;
+import com.yeohaeng_ttukttak.server.common.exception.exception.unauthorized.AuthorizeFailedException;
+import com.yeohaeng_ttukttak.server.oauth2.domain.OAuthSession;
+import com.yeohaeng_ttukttak.server.oauth2.repository.OAuthSessionRepository;
 import com.yeohaeng_ttukttak.server.oauth2.service.dto.RevokeCommand;
 import com.yeohaeng_ttukttak.server.token.service.JwtService;
 import com.yeohaeng_ttukttak.server.token.service.dto.issue_auth_token.IssueAuthTokensCommand;
@@ -14,6 +19,11 @@ import com.yeohaeng_ttukttak.server.oauth2.service.dto.get_profile.GetProfileRes
 import com.yeohaeng_ttukttak.server.oauth2.service.dto.RegisterResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.util.Objects;
+import java.util.UUID;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -21,10 +31,15 @@ public class OAuthService {
 
     private final OAuthProvidable oauthProvider;
     private final UserRepository userRepository;
+    private final OAuthSessionRepository sessionRepository;
 
     private final JwtService jwtService;
 
-    public RegisterResult register(String code) {
+    @Transactional
+    public RegisterResult register(String code, String state) {
+
+        OAuthSession session = sessionRepository.findById(UUID.fromString(state))
+                .orElseThrow(() -> new RequiredFieldMissingException("state"));
 
         GetIdResult getIdResult = oauthProvider.getIdentification(
                 new GetIdCommand(code, "register"));
@@ -49,11 +64,18 @@ public class OAuthService {
         IssueAuthTokensResult authTokensResult =
                 jwtService.issueAuthTokens(new IssueAuthTokensCommand(userId));
 
+        session.setUserId(userId);
+        session.setRefreshToken(
+                authTokensResult.refreshToken(), authTokensResult.expiresAt());
+
+        log.debug("session={}", session);
+
         return new RegisterResult(
                 authTokensResult.accessToken(),
                 authTokensResult.refreshToken());
     }
 
+    @Transactional
     public void revoke(String code) {
 
         GetIdResult getIdResult = oauthProvider.getIdentification(

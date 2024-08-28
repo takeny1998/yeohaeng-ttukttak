@@ -2,6 +2,7 @@ package com.yeohaeng_ttukttak.server.token.service;
 
 import com.yeohaeng_ttukttak.server.common.exception.exception.unauthorized.AuthorizationExpiredException;
 import com.yeohaeng_ttukttak.server.common.exception.exception.unauthorized.AuthorizeFailedException;
+import com.yeohaeng_ttukttak.server.oauth2.repository.OAuthSessionRepository;
 import com.yeohaeng_ttukttak.server.token.domain.RefreshToken;
 import com.yeohaeng_ttukttak.server.token.property.JwtProperties;
 import com.yeohaeng_ttukttak.server.token.provider.JwtClaim;
@@ -41,28 +42,7 @@ public class JwtService {
         LocalDateTime expiresAt = LocalDateTime.now()
                 .plusSeconds(expiration.toSeconds());
 
-        RefreshToken refreshToken = new RefreshToken(command.uuid(), expiresAt);
-        refreshTokenRepository.save(refreshToken);
-
-        return new IssueAuthTokensResult(accessToken, refreshToken.value());
-
-    }
-
-    public IssueAuthTokensResult renewAuthToken(String refreshToken) {
-
-        RefreshToken foundToken = refreshTokenRepository
-                .findById(UUID.fromString(refreshToken))
-                .orElseThrow(AuthorizeFailedException::new);
-
-        LocalDateTime now = LocalDateTime.now();
-
-        if (foundToken.expiresAt().isBefore(now)) {
-            refreshTokenRepository.delete(foundToken);
-            throw new AuthorizationExpiredException();
-        }
-
-        refreshTokenRepository.delete(foundToken);
-        return issueAuthTokens(new IssueAuthTokensCommand(foundToken.userId()));
+        return new IssueAuthTokensResult(accessToken, command.uuid(), expiresAt);
 
     }
 
