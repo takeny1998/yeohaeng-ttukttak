@@ -2,8 +2,9 @@ package com.yeohaeng_ttukttak.server.token.controller;
 
 import com.yeohaeng_ttukttak.server.token.controller.dto.RenewTokenRequest;
 import com.yeohaeng_ttukttak.server.token.controller.dto.RenewTokenResponse;
-import com.yeohaeng_ttukttak.server.token.service.TokenService;
+import com.yeohaeng_ttukttak.server.token.service.JwtService;
 import com.yeohaeng_ttukttak.server.token.service.dto.RenewTokenCommand;
+import com.yeohaeng_ttukttak.server.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,17 +13,19 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class TokenController {
 
-    private final TokenService tokenService;
+    private final JwtService jwtService;
 
     @PostMapping("/renew")
     public RenewTokenResponse renew(
             @RequestHeader("Device-Id") String deviceId,
-            @RequestBody RenewTokenRequest request) {
+            @RequestHeader("Device-Name") String deviceName,
+            @RequestBody RenewTokenRequest request,
+            User user) {
 
         RenewTokenCommand command =
-                new RenewTokenCommand(request.refreshToken(), deviceId);
+                new RenewTokenCommand(request.refreshToken(), user.getId().toString(), deviceId, deviceName);
 
-        return tokenService.renew(command).toResponse();
+        return jwtService.renew(command).toResponse();
 
     }
 

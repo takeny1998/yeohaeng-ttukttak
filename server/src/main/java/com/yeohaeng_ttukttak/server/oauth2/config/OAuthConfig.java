@@ -1,8 +1,6 @@
 package com.yeohaeng_ttukttak.server.oauth2.config;
 
-import com.yeohaeng_ttukttak.server.oauth2.repository.OAuthSessionRepository;
 import com.yeohaeng_ttukttak.server.oauth2.service.OAuthService;
-import com.yeohaeng_ttukttak.server.token.service.JwtService;
 import com.yeohaeng_ttukttak.server.user.repository.UserRepository;
 import com.yeohaeng_ttukttak.server.oauth2.service.provider.apple.AppleOAuthProvider;
 import com.yeohaeng_ttukttak.server.oauth2.service.provider.google.GoogleOAuthProvider;
@@ -14,22 +12,16 @@ public class OAuthConfig {
 
     @Bean
     public OAuthService googleOAuthService(
-            GoogleOAuthProvider provider,
-            UserRepository userRepository,
-            JwtService jwtService,
-            OAuthSessionRepository sessionRepository) {
+            GoogleOAuthProvider provider, UserRepository userRepository) {
 
-        return new OAuthService(provider, userRepository, sessionRepository,jwtService);
+        return new OAuthService(provider, userRepository);
     }
 
     @Bean
     public OAuthService appleOAuthService(
-            AppleOAuthProvider provider,
-            UserRepository userRepository,
-            JwtService jwtService,
-            OAuthSessionRepository sessionRepository) {
+            AppleOAuthProvider provider, UserRepository userRepository) {
 
-        return new OAuthService(provider, userRepository, sessionRepository,jwtService);
+        return new OAuthService(provider, userRepository);
     }
 
 }
