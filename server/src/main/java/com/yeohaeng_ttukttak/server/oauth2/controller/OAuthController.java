@@ -33,12 +33,14 @@ public class OAuthController {
 
         log.debug("code={}", request.authorizationCode());
 
-        RegisterResult result = appleOAuthService.register(request.authorizationCode());
+        RegisterResult registerResult = appleOAuthService.register(request.authorizationCode());
 
-        log.debug("result={}", result);
+        log.debug("register={}", registerResult);
 
         IssueAuthTokensResult tokenResult = jwtService.issueAuthTokens(
-                new IssueAuthTokensCommand(result.userId(), deviceId, deviceName));
+                new IssueAuthTokensCommand(registerResult.userId(), deviceId, deviceName));
+
+        log.debug("tokens={}", tokenResult);
 
         return new OAuthResponse(tokenResult.accessToken(), tokenResult.refreshToken());
 

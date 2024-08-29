@@ -13,18 +13,18 @@ part 'register_provider.g.dart';
 class Register extends _$Register {
   @override
   FutureOr<AuthCredentials?> build() async {
-    // final authCredentialsRepository =
-    //     ref.read(authCredentialsRepositoryProvider);
-    //
-    // final authCredentials = await authCredentialsRepository.find();
-    // if (authCredentials == null) return null;
-    //
-    // return ref.read(tokenClientProvider)
-    //     .renew(TokenRenewRequest(refreshToken: authCredentials.refreshToken))
-    //     .then((value) {
-    //       authCredentialsRepository.save(value);
-    //       return value;
-    //     });
+    final authCredentialsRepository =
+        ref.read(authCredentialsRepositoryProvider);
+
+    final authCredentials = await authCredentialsRepository.find();
+    if (authCredentials == null) return null;
+
+    return ref.read(tokenClientProvider)
+        .renew(TokenRenewRequest(refreshToken: authCredentials.refreshToken))
+        .then((value) {
+          authCredentialsRepository.save(value);
+          return value;
+        });
   }
 
   Future<void> register() async {
@@ -32,7 +32,6 @@ class Register extends _$Register {
 
     state = await AsyncValue.guard(() async {
       final auth = await ref.read(oauthServiceProvider).register();
-
       ref.read(authCredentialsRepositoryProvider).save(auth);
       return auth;
     });

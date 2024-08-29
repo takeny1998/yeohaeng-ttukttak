@@ -49,27 +49,30 @@ public class JwtService {
     @Transactional
     public RenewTokenResult renew(RenewTokenCommand command) {
 
-        String deviceName = command.deviceName();
-        String userId = command.userId();
-        String deviceId = command.deviceId();
-        UUID tokenId = UUID.fromString(command.refreshToken());
+        final String deviceName = command.deviceName();
+        final String deviceId = command.deviceId();
 
-        RefreshToken refreshToken = refreshTokenRepository
-                .findById(tokenId)
+        final UUID tokenId = UUID.fromString(command.refreshToken());
+        final RefreshToken refreshToken = refreshTokenRepository.findById(tokenId)
                 .orElseThrow(AuthorizeFailedException::new);
 
-        refreshToken.expire();
+        log.debug("command={}", command);
+        log.debug("existToken={}", refreshToken);
 
-        if (!Objects.equals(refreshToken.deviceId(), deviceId)) {
+        final boolean isDeviceMatched = Objects.equals(refreshToken.deviceId(), deviceId);
+
+        if (!isDeviceMatched) {
             // TODO: 리프레시 토큰이 탈취된 것, 추가 동작을 수행한다.
             throw new AuthorizeFailedException();
         }
 
-        if (refreshToken.expiresAt().isBefore(LocalDateTime.now())) {
+        final boolean isExpired = refreshToken.expiresAt().isBefore(LocalDateTime.now());
+
+        if (isExpired) {
             throw new AuthorizationExpiredException();
         }
 
-        // TODO: User ID에 대해서 검증 코드를 추가한다.
+        final String userId = refreshToken.userId();
 
         return new RenewTokenResult(
                 issueAccessToken(userId),
