@@ -15,7 +15,8 @@ Dio dio(DioRef ref) {
   return Dio(BaseOptions(
     headers: {
       'Device-Id': deviceId,
-      'Device-Name': deviceName
+      'Device-Name': deviceName,
+      'Accept': 'application/json'
     }
   ));
 

@@ -22,19 +22,21 @@ class _OAuthClient implements OAuthClient {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<OAuthRedirectResponse> apple(String action) async {
+  Future<OAuthRegisterResponse> register(OAuthRegisterRequest request) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'action': action};
-    final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<OAuthRedirectResponse>(Options(
-      method: 'GET',
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'Content-Type': 'application/json'};
+    _headers.removeWhere((k, v) => v == null);
+    final _data = request;
+    final _options = _setStreamType<OAuthRegisterResponse>(Options(
+      method: 'POST',
       headers: _headers,
       extra: _extra,
+      contentType: 'application/json',
     )
         .compose(
           _dio.options,
-          '/api/v2/oauth2/apple',
+          '/api/v2/oauth2/apple/register',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -44,9 +46,9 @@ class _OAuthClient implements OAuthClient {
           baseUrl,
         )));
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late OAuthRedirectResponse _value;
+    late OAuthRegisterResponse _value;
     try {
-      _value = OAuthRedirectResponse.fromJson(_result.data!);
+      _value = OAuthRegisterResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;

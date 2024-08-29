@@ -1,8 +1,8 @@
 import 'package:application/authentication/domain/auth_credentials.dart';
 
-abstract interface class AuthService {
+abstract interface class OAuthService {
 
-  Future<AuthCredentials> register(String uri);
+  Future<AuthCredentials> register();
 
   Future<void> revoke();
 

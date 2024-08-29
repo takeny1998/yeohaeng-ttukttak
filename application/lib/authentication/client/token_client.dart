@@ -1,5 +1,5 @@
 
-import 'package:application/authentication/client/dto/token_renew_request.dart';
+import 'package:application/authentication/client/dto/token_renew/token_renew_request.dart';
 import 'package:dio/dio.dart' hide Headers;
 import 'package:retrofit/retrofit.dart';
 

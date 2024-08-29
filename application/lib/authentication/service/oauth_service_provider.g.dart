@@ -1,24 +1,24 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'auth_service_provider.dart';
+part of 'oauth_service_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$authServiceHash() => r'3b4703d11d21ec82852338d187f5f2f9a0c888ab';
+String _$oauthServiceHash() => r'ba32d99d7d6adaa51c00c8932b31132a2e5a1fd2';
 
-/// See also [authService].
-@ProviderFor(authService)
-final authServiceProvider = AutoDisposeProvider<AuthService>.internal(
-  authService,
-  name: r'authServiceProvider',
+/// See also [oauthService].
+@ProviderFor(oauthService)
+final oauthServiceProvider = AutoDisposeProvider<OAuthService>.internal(
+  oauthService,
+  name: r'oauthServiceProvider',
   debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$authServiceHash,
+      const bool.fromEnvironment('dart.vm.product') ? null : _$oauthServiceHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef AuthServiceRef = AutoDisposeProviderRef<AuthService>;
+typedef OauthServiceRef = AutoDisposeProviderRef<OAuthService>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
