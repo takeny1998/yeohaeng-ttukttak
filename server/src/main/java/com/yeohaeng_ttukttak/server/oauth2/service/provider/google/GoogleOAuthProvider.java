@@ -1,7 +1,7 @@
 package com.yeohaeng_ttukttak.server.oauth2.service.provider.google;
 
-import com.yeohaeng_ttukttak.server.oauth2.service.OAuthProvidable;
-import com.yeohaeng_ttukttak.server.oauth2.service.dto.RevokeCommand;
+import com.yeohaeng_ttukttak.server.oauth2.service.provider.OAuthProvidable;
+import com.yeohaeng_ttukttak.server.oauth2.service.provider.dto.RevokeCommand;
 import com.yeohaeng_ttukttak.server.oauth2.service.provider.google.client.GoogleOAuthClient;
 import com.yeohaeng_ttukttak.server.oauth2.service.provider.google.client.GoogleProfileClient;
 import com.yeohaeng_ttukttak.server.oauth2.domain.OAuthProvider;
@@ -12,14 +12,12 @@ import com.yeohaeng_ttukttak.server.oauth2.service.provider.google.client.dto.re
 import com.yeohaeng_ttukttak.server.oauth2.service.dto.get_id.GetIdCommand;
 import com.yeohaeng_ttukttak.server.oauth2.service.dto.get_id.GetIdResult;
 import com.yeohaeng_ttukttak.server.oauth2.service.dto.get_profile.GetProfileResult;
+import com.yeohaeng_ttukttak.server.token.provider.JwtClaim;
 import com.yeohaeng_ttukttak.server.token.provider.JwtProvidable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import org.springframework.web.util.UriBuilder;
-import org.springframework.web.util.UriComponentsBuilder;
 
-import java.net.URI;
 import java.util.Map;
 
 @Slf4j
@@ -53,14 +51,14 @@ public class GoogleOAuthProvider implements OAuthProvidable {
 
         log.debug("identification={}", response);
 
-        Map<String, Object> claims = jwtProvidable.decode(response.idToken());
+        final Map<String, JwtClaim> claims = jwtProvidable.decode(response.idToken());
 
-        String openId = claims.get("sub").toString();
-        String name = claims.get("name").toString();
+        String openId = claims.get("sub").asString();
+        String name = claims.get("name").asString();
 
         String token = response.accessToken();
 
-        return new GetIdResult(openId, name, token);
+        return new GetIdResult(openId, name, null, token);
 
     }
 
@@ -73,7 +71,7 @@ public class GoogleOAuthProvider implements OAuthProvidable {
     public void revoke(RevokeCommand revokeCommand) {
 
         googleOAuthClient.revokeToken(
-                new RevokeTokenRequest(revokeCommand.token()));
+                new RevokeTokenRequest(revokeCommand.accessToken()));
 
     }
 

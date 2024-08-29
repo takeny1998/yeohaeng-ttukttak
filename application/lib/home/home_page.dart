@@ -8,9 +8,9 @@ class HomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
 
-
     return Scaffold(
       appBar: AppBar(
+        title: const Text('Home'),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
       body: Center(
@@ -18,8 +18,11 @@ class HomePage extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             TextButton(onPressed: () =>
-              ref.read(registerProvider.notifier).call()
-            , child: const Text('Apple 로그인')),
+                ref.read(registerProvider.notifier).logout()
+                , child: const Text('로그아웃')),
+            TextButton(onPressed: () =>
+              ref.read(registerProvider.notifier).revoke()
+            , child: const Text('Apple 연동 해제')),
           ],
         ),
       ),

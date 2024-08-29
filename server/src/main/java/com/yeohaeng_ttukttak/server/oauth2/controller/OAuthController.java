@@ -1,10 +1,15 @@
 package com.yeohaeng_ttukttak.server.oauth2.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.yeohaeng_ttukttak.server.common.util.StringUtil;
-import com.yeohaeng_ttukttak.server.oauth2.controller.dto.OAuthResponse;
+import com.yeohaeng_ttukttak.server.common.aop.annotation.Authorization;
+import com.yeohaeng_ttukttak.server.oauth2.controller.dto.OAuthRegisterRequest;
+import com.yeohaeng_ttukttak.server.oauth2.controller.dto.OAuthRegisterResponse;
+import com.yeohaeng_ttukttak.server.oauth2.controller.dto.OAuthRevokeRequest;
 import com.yeohaeng_ttukttak.server.oauth2.service.OAuthService;
+import com.yeohaeng_ttukttak.server.oauth2.service.dto.OAuthRevokeCommand;
 import com.yeohaeng_ttukttak.server.oauth2.service.dto.RegisterResult;
+import com.yeohaeng_ttukttak.server.token.service.JwtService;
+import com.yeohaeng_ttukttak.server.token.service.dto.issue_auth_token.IssueAuthTokensCommand;
+import com.yeohaeng_ttukttak.server.token.service.dto.issue_auth_token.IssueAuthTokensResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -20,46 +25,33 @@ public class OAuthController {
 
     private final OAuthService googleOAuthService;
     private final OAuthService appleOAuthService;
+    private final JwtService jwtService;
+
 
     @PostMapping("/apple/register")
-    public ResponseEntity<Void> registerApple(@RequestParam String code) throws JsonProcessingException {
-        RegisterResult result = appleOAuthService.register(code);
+    public OAuthRegisterResponse registerApple(
+            @RequestHeader("Device-Id") String deviceId,
+            @RequestHeader("Device-Name") String deviceName,
+            @RequestBody OAuthRegisterRequest request) {
 
-        String redirectUri = UriComponentsBuilder
-                .fromUriString("com.yeohaeng-ttukttak.application:/")
-                .queryParam("response", StringUtil.toJsonString(result))
-                .encode()
-                .toUriString();
+        RegisterResult registerResult = appleOAuthService.register(request.authorizationCode());
 
-        return ResponseEntity.status(HttpStatus.FOUND)
-                .header("Location", redirectUri)
-                .build();
+        IssueAuthTokensResult tokenResult = jwtService.issueAuthTokens(
+                new IssueAuthTokensCommand(registerResult.userId(), deviceId, deviceName));
+
+        return new OAuthRegisterResponse(tokenResult.accessToken(), tokenResult.refreshToken());
+
     }
 
     @PostMapping("/apple/revoke")
-    public ResponseEntity<Void> revokeApple(@RequestParam String code) {
-        appleOAuthService.revoke(code);
+    public ResponseEntity<Void> revokeApple(
+            @RequestBody OAuthRevokeRequest request,
+            @Authorization String userId) {
+
+        OAuthRevokeCommand command = new OAuthRevokeCommand(request.authorizationCode(), userId);
+        appleOAuthService.revoke(command);
+
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/google/register")
-    public ResponseEntity<Void> registerGoogle(@RequestParam String code) {
-        RegisterResult result = googleOAuthService.register(code);
-
-        String redirectUri = UriComponentsBuilder
-                .fromUriString("com.yeohaeng-ttukttak.application:/")
-                .queryParam("response", result)
-                .encode()
-                .toUriString();
-
-        return ResponseEntity.status(HttpStatus.FOUND)
-                .header("Location", redirectUri)
-                .build();
-    }
-
-    @GetMapping("/google/revoke")
-    public ResponseEntity<Void> revokeGoogle(@RequestParam String code) {
-        googleOAuthService.revoke(code);
-        return ResponseEntity.noContent().build();
-    }
 }

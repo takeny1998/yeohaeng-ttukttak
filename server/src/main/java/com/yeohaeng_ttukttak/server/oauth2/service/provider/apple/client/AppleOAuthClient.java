@@ -15,8 +15,7 @@ public interface AppleOAuthClient {
             @RequestParam String code,
             @RequestParam("client_id") String clientId,
             @RequestParam("client_secret") String clientSecret,
-            @RequestParam("grant_type") String grantType,
-            @RequestParam("redirect_uri") String redirectUri);
+            @RequestParam("grant_type") String grantType);
 
     @PostExchange(value = "/auth/revoke", contentType = "application/x-www-form-urlencoded")
     void revokeToken(

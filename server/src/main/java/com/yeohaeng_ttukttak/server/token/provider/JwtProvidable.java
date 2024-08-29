@@ -11,7 +11,7 @@ public interface JwtProvidable {
             String privateKey, Duration expiration,
             Map<String, Object> headers, Map<String, Object> claims);
 
-    Map<String, Object> decode(String token);
+    Map<String, JwtClaim> decode(String token);
 
     Map<String, JwtClaim> verifyByHS256(String token);
 

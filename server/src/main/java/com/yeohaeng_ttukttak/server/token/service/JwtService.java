@@ -7,6 +7,8 @@ import com.yeohaeng_ttukttak.server.token.property.JwtProperties;
 import com.yeohaeng_ttukttak.server.token.provider.JwtClaim;
 import com.yeohaeng_ttukttak.server.token.provider.JwtProvidable;
 import com.yeohaeng_ttukttak.server.token.repository.RefreshTokenRepository;
+import com.yeohaeng_ttukttak.server.token.service.dto.RenewTokenCommand;
+import com.yeohaeng_ttukttak.server.token.service.dto.RenewTokenResult;
 import com.yeohaeng_ttukttak.server.token.service.dto.decode_auth_token.DecodeAuthTokenCommand;
 import com.yeohaeng_ttukttak.server.token.service.dto.decode_auth_token.DecodeAuthTokenResult;
 import com.yeohaeng_ttukttak.server.token.service.dto.issue_auth_token.IssueAuthTokensCommand;
@@ -14,10 +16,12 @@ import com.yeohaeng_ttukttak.server.token.service.dto.issue_auth_token.IssueAuth
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 @Slf4j
@@ -32,40 +36,50 @@ public class JwtService {
 
     public IssueAuthTokensResult issueAuthTokens(IssueAuthTokensCommand command) {
 
-        Map<String, Object> claims = Map.of("sub", command.uuid());
+        String accessToken = issueAccessToken(command.userId());
 
-        String accessToken = jwtProvider.issueByHS256(
-                jwtProps.accessToken().expiration(), claims);
+        String refreshToken = issueRefreshToken(
+                command.userId(), command.deviceId(), command.deviceName())
+                .id().toString();
 
-        Duration expiration = jwtProps.refreshToken().expiration();
-        LocalDateTime expiresAt = LocalDateTime.now()
-                .plusSeconds(expiration.toSeconds());
-
-        RefreshToken refreshToken = new RefreshToken(command.uuid(), expiresAt);
-        refreshTokenRepository.save(refreshToken);
-
-        return new IssueAuthTokensResult(accessToken, refreshToken.value());
+        return new IssueAuthTokensResult(accessToken, refreshToken);
 
     }
 
-    public IssueAuthTokensResult renewAuthToken(String refreshToken) {
+    @Transactional
+    public RenewTokenResult renew(RenewTokenCommand command) {
 
-        RefreshToken foundToken = refreshTokenRepository
-                .findById(UUID.fromString(refreshToken))
+        final String deviceName = command.deviceName();
+        final String deviceId = command.deviceId();
+
+        final UUID tokenId = UUID.fromString(command.refreshToken());
+        final RefreshToken refreshToken = refreshTokenRepository.findById(tokenId)
                 .orElseThrow(AuthorizeFailedException::new);
 
-        LocalDateTime now = LocalDateTime.now();
+        log.debug("command={}", command);
+        log.debug("existToken={}", refreshToken);
 
-        if (foundToken.expiresAt().isBefore(now)) {
-            refreshTokenRepository.delete(foundToken);
+        final boolean isDeviceMatched = Objects.equals(refreshToken.deviceId(), deviceId);
+
+        if (!isDeviceMatched) {
+            // TODO: 리프레시 토큰이 탈취된 것, 추가 동작을 수행한다.
+            throw new AuthorizeFailedException();
+        }
+
+        final boolean isExpired = refreshToken.expiresAt().isBefore(LocalDateTime.now());
+
+        if (isExpired) {
             throw new AuthorizationExpiredException();
         }
 
-        refreshTokenRepository.delete(foundToken);
-        return issueAuthTokens(new IssueAuthTokensCommand(foundToken.userId()));
+        final String userId = refreshToken.userId();
+
+        return new RenewTokenResult(
+                issueAccessToken(userId),
+                issueRefreshToken(userId, deviceId, deviceName).id().toString()
+        );
 
     }
-
     public DecodeAuthTokenResult decodeAuthToken(DecodeAuthTokenCommand command) {
 
         Map<String, JwtClaim> claims = jwtProvider.verifyByHS256(command.token());
@@ -75,4 +89,29 @@ public class JwtService {
 
     }
 
+
+    private String issueAccessToken(String userId) {
+
+        Map<String, Object> claims = Map.of("sub", userId);
+
+        Duration expiration = jwtProps.accessToken().expiration();
+
+        return jwtProvider.issueByHS256(expiration, claims);
+
+    }
+
+    private RefreshToken issueRefreshToken(String userId, String deviceId, String deviceName) {
+
+        Duration expiration = jwtProps.refreshToken().expiration();
+        LocalDateTime expiresAt = LocalDateTime.now()
+                .plusSeconds(expiration.toSeconds());
+
+        RefreshToken refreshToken =
+                new RefreshToken(expiresAt, userId, deviceId, deviceName);
+
+        refreshTokenRepository.save(refreshToken);
+
+        return refreshToken;
+
+    }
 }

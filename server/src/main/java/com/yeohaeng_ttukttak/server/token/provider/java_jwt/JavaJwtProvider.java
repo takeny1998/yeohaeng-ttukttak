@@ -86,11 +86,13 @@ public class JavaJwtProvider implements JwtProvidable {
     }
 
     @Override
-    public Map<String, Object> decode(String token) {
+    public Map<String, JwtClaim> decode(String token) {
 
         DecodedJWT jwt = JWT.decode(token);
 
-        return new HashMap<>(jwt.getClaims());
+        return jwt.getClaims().entrySet().stream()
+                .collect(Collectors.toMap(Map.Entry::getKey,
+                        e -> new JavaJwtClaim(e.getValue())));
 
     }
 

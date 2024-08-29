@@ -1,11 +1,27 @@
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'config/router/router_provider.dart';
 
-void main() {
+part 'main.g.dart';
+
+@riverpod
+BaseDeviceInfo baseDeviceInfo(BaseDeviceInfoRef ref) {
+  throw UnimplementedError();
+}
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final deviceInfoPlugin = DeviceInfoPlugin();
+  final deviceInfo = await deviceInfoPlugin.deviceInfo;
+
   runApp(
-    const ProviderScope(child: MyApp())
+    ProviderScope(
+        overrides: [baseDeviceInfoProvider.overrideWithValue(deviceInfo)],
+        child: const MyApp())
   );
 }
 

@@ -20,7 +20,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Table(name = "users")
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor
-@ToString(of = {"id", "nickname", "gender", "birthday", "auth"})
+@ToString(of = {"id", "nickname", "gender", "birthday", "email", "auth"})
 public class User extends TimeAuditableEntity {
 
     @Id @GeneratedValue(generator = "uuid2")
@@ -34,12 +34,15 @@ public class User extends TimeAuditableEntity {
 
     private LocalDate birthday;
 
+    private String email;
+
     @NotNull @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "auth_id", updatable = false)
     private OAuth auth;
 
-    public User(OAuth auth, String nickname, Gender gender, LocalDate birthday) {
+    public User(OAuth auth, String nickname, String email, Gender gender, LocalDate birthday) {
         this.nickname = nickname;
+        this.email = email;
         this.gender = gender;
         this.birthday = birthday;
         this.auth = auth;
