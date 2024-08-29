@@ -1,19 +1,19 @@
 package com.yeohaeng_ttukttak.server.oauth2.service.provider.apple;
 
-import com.yeohaeng_ttukttak.server.oauth2.service.OAuthProvidable;
-import com.yeohaeng_ttukttak.server.oauth2.service.dto.RevokeCommand;
+import com.yeohaeng_ttukttak.server.oauth2.service.provider.OAuthProvidable;
+import com.yeohaeng_ttukttak.server.oauth2.service.provider.dto.RevokeCommand;
 import com.yeohaeng_ttukttak.server.oauth2.service.provider.apple.client.AppleOAuthClient;
 import com.yeohaeng_ttukttak.server.oauth2.service.provider.google.client.dto.exchange_token.ExchangeTokenResponse;
 import com.yeohaeng_ttukttak.server.oauth2.domain.OAuthProvider;
 import com.yeohaeng_ttukttak.server.oauth2.service.dto.get_id.GetIdCommand;
 import com.yeohaeng_ttukttak.server.oauth2.service.dto.get_id.GetIdResult;
 import com.yeohaeng_ttukttak.server.oauth2.service.dto.get_profile.GetProfileResult;
+import com.yeohaeng_ttukttak.server.token.provider.JwtClaim;
 import com.yeohaeng_ttukttak.server.token.provider.JwtProvidable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.net.URI;
 import java.util.Map;
 
 @Slf4j
@@ -30,23 +30,25 @@ public class AppleOAuthProvider implements OAuthProvidable {
     @Override
     public GetIdResult getIdentification(GetIdCommand command) {
 
-        String clientSecret = clientSecretProvider.clientSecret();
-        String redirectUri =
-                oauthProps.redirectUri() + "/" + command.action();
+        final String clientSecret = clientSecretProvider.clientSecret();
 
-        ExchangeTokenResponse response = oauthClient.exchangeToken(
+        final ExchangeTokenResponse response = oauthClient.exchangeToken(
                 command.code(),
                 oauthProps.clientId(),
                 clientSecret,
-                "authorization_code",
-                redirectUri);
+                "authorization_code");
 
-        log.debug("token={}", response);
-        Map<String, Object> claims = jwtProvidable.decode(response.idToken());
+        log.debug("accessToken={}", response);
 
-        String openId = claims.get("sub").toString();
+        final Map<String, JwtClaim> claims = jwtProvidable.decode(response.idToken());
 
-        return new GetIdResult(openId, null, response.accessToken());
+        log.debug("claims={}", claims);
+
+        final String openId = claims.get("sub").asString();
+        final String email = claims.get("email").asString();
+        final String accessToken = response.accessToken();
+
+        return new GetIdResult(openId, null, email, accessToken);
 
     }
 
@@ -66,7 +68,7 @@ public class AppleOAuthProvider implements OAuthProvidable {
         String clientSecret = clientSecretProvider.clientSecret();
 
         oauthClient.revokeToken(
-                command.token(), oauthProps.clientId(), clientSecret);
+                command.accessToken(), oauthProps.clientId(), clientSecret);
 
     }
 }

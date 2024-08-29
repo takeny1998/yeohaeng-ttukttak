@@ -1,6 +1,6 @@
-package com.yeohaeng_ttukttak.server.oauth2.service;
+package com.yeohaeng_ttukttak.server.oauth2.service.provider;
 
-import com.yeohaeng_ttukttak.server.oauth2.service.dto.RevokeCommand;
+import com.yeohaeng_ttukttak.server.oauth2.service.provider.dto.RevokeCommand;
 import com.yeohaeng_ttukttak.server.oauth2.domain.OAuthProvider;
 import com.yeohaeng_ttukttak.server.oauth2.service.dto.get_id.GetIdCommand;
 import com.yeohaeng_ttukttak.server.oauth2.service.dto.get_id.GetIdResult;

@@ -57,8 +57,8 @@ public class GoogleAuthInterceptor implements ClientHttpRequestInterceptor {
             return response;
         }
 
-        // 요청이 POST /token 이 아닌 경우 조기 리턴한다.
-        boolean isPathMatched = Objects.equals(request.getURI().getPath(), "/token");
+        // 요청이 POST /accessToken 이 아닌 경우 조기 리턴한다.
+        boolean isPathMatched = Objects.equals(request.getURI().getPath(), "/accessToken");
         boolean isMethodMatched = request.getMethod().matches("POST");
         if (!isPathMatched || !isMethodMatched) return response;
 
