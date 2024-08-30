@@ -1,11 +1,13 @@
 import 'dart:io';
 
+import 'package:application/authentication/client/dto/token_renew/token_renew_request.dart';
 import 'package:application/authentication/domain/auth_credentials_state_provider.dart';
 import 'package:application/authentication/repository/auth_credentials_repository_provider.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../authentication/client/token_client.dart';
 import '../../authentication/domain/auth_credentials.dart';
 
 final class DioAuthInterceptor extends Interceptor {
@@ -13,9 +15,12 @@ final class DioAuthInterceptor extends Interceptor {
 
   final Dio _dio;
 
+  final TokenClient _tokenClient;
+
   DioAuthInterceptor({required AutoDisposeRef ref, required Dio dio})
       : _ref = ref,
-        _dio = dio;
+        _dio = dio,
+        _tokenClient = TokenClient(dio);
 
   @override
   void onRequest(
@@ -47,38 +52,35 @@ final class DioAuthInterceptor extends Interceptor {
 
     if (statusCode == HttpStatus.unauthorized &&
         errorCode == "AUTHORIZATION_EXPIRED") {
-      debugPrint('[DioAuthInterceptor.onRequest] Expired, try renewing token.');
+
+      debugPrint('[DioAuthInterceptor.onError] Expired, try renewing token.');
       await credentialsRepository.delete();
 
-      final response = await _dio.post('/api/v2/tokens/renew',
-          data: {'refreshToken': credentials.refreshToken}).catchError((err) {
-        final Response(statusCode: statusCode, data: {'code': errorCode}) =
-            err.response;
+      Response? retriedResponse;
 
-        if (statusCode == HttpStatus.unauthorized) {
-          debugPrint('[DioAuthInterceptor.onRequest] Renewing token Failed.');
-          _ref.invalidate(authCredentialsStateProvider);
-        }
+      await _tokenClient.renew(
+          TokenRenewRequest(refreshToken: credentials.refreshToken))
+      .then((renewedCredentials) async {
+
+        final AuthCredentials(accessToken: accessToken) = renewedCredentials;
+        await credentialsRepository.save(renewedCredentials);
+
+        err.requestOptions.headers['Authorization'] = 'Bearer $accessToken';
+        debugPrint(
+            '[DioAuthInterceptor.onError] Renewing token Successfully, options=${err.requestOptions.headers}');
+
+        retriedResponse = await _dio.fetch(err.requestOptions);
+      })
+      .catchError((err) async {
+        debugPrint('[DioAuthInterceptor.onError] Renewing token Failed.');
       });
 
-      final Response(statusCode: statusCode) = response;
+      _ref.invalidate(authCredentialsStateProvider);
 
-      if (statusCode == 200) {
-        await credentialsRepository.save(AuthCredentials(
-            accessToken: response.data['accessToken'],
-            refreshToken: response.data['refreshToken']));
-        _ref.invalidate(authCredentialsStateProvider);
-
-        err.requestOptions.headers['Authorization'] =
-            'Bearer ${response.data['accessToken']}';
-
-        debugPrint(
-            '[DioAuthInterceptor.onRequest] Renewing token Successfully, options=${err.requestOptions.headers}');
-
-        final retriedResponse = await _dio.fetch(err.requestOptions);
-
-        return handler.resolve(retriedResponse);
+      if (retriedResponse != null) {
+        return handler.resolve(retriedResponse!);
       }
+
     }
 
     return handler.next(err);
