@@ -1,5 +1,5 @@
 import 'package:application/authentication/client/oauth_client_provider.dart';
-import 'package:application/authentication/service/apple_oauth_service.dart';
+import 'package:application/authentication/service/oauth/apple_oauth_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'oauth_service.dart';

@@ -14,10 +14,8 @@ class SecureStorageAuthCredentialsRepository implements AuthCredentialsRepositor
   SecureStorageAuthCredentialsRepository(this._secureStorage);
 
   @override
-  Future<void> delete(AuthCredentials authCredentials) async {
-
-    _secureStorage.delete(key: key);
-
+  Future<void> delete() async {
+    await _secureStorage.delete(key: key);
   }
 
   @override

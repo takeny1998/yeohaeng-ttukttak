@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'register_provider.dart';
+import '../domain/auth_credentials_state_provider.dart';
 
 class RegisterPage extends ConsumerWidget {
   const RegisterPage({super.key});
@@ -19,7 +19,7 @@ class RegisterPage extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             TextButton(onPressed: () =>
-                ref.read(registerProvider.notifier).register()
+                ref.read(authCredentialsStateProvider.notifier).login()
                 , child: const Text('Apple 로그인')),
           ],
         ),

@@ -1,8 +1,10 @@
 import 'package:application/authentication/client/dto/oauth_register/oauth_register_request.dart';
 import 'package:application/authentication/client/oauth_client.dart';
 import 'package:application/authentication/domain/auth_credentials.dart';
-import 'package:application/authentication/service/oauth_service.dart';
+import 'package:application/authentication/service/oauth/oauth_service.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+
+import '../../client/dto/oauth_revoke/oauth_revoke_request.dart';
 
 class AppleOAuthService implements OAuthService {
   final OAuthClient oauthClient;
@@ -15,7 +17,6 @@ class AppleOAuthService implements OAuthService {
 
   @override
   Future<AuthCredentials> register() async {
-
     final credential = await _authorize();
 
     final response = await oauthClient.register(
@@ -23,12 +24,13 @@ class AppleOAuthService implements OAuthService {
 
     return AuthCredentials(
         accessToken: response.accessToken, refreshToken: response.refreshToken);
-
   }
 
   @override
-  Future<void> revoke() {
-    // TODO: implement revoke
-    throw UnimplementedError();
+  Future<void> revoke() async {
+    final credential = await _authorize();
+
+    await oauthClient.revoke(
+        OAuthRevokeRequest(authorizationCode: credential.authorizationCode));
   }
 }
