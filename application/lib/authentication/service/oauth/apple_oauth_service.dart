@@ -22,8 +22,7 @@ class AppleOAuthService implements OAuthService {
     final response = await oauthClient.register(
         OAuthRegisterRequest(authorizationCode: credential.authorizationCode));
 
-    return AuthCredentials(
-        accessToken: response.accessToken, refreshToken: response.refreshToken);
+    return AuthCredentials.fromResponse(response);
   }
 
   @override

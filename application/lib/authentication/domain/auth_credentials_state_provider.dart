@@ -11,8 +11,7 @@ class AuthCredentialsState extends _$AuthCredentialsState {
 
   @override
   FutureOr<AuthCredentials?> build() async {
-    await ref.read(authServiceProvider).renew();
-    return ref.read(authCredentialsRepositoryProvider).find();
+    return ref.read(authServiceProvider).find();
   }
 
   Future<void> login() async {

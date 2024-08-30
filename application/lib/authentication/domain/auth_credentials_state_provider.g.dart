@@ -7,7 +7,7 @@ part of 'auth_credentials_state_provider.dart';
 // **************************************************************************
 
 String _$authCredentialsStateHash() =>
-    r'9a749b7ddf07214f3f61321f5a6782e8e496aaa9';
+    r'9c16088349fcceba58ad5348b3178c3c18771694';
 
 /// See also [AuthCredentialsState].
 @ProviderFor(AuthCredentialsState)

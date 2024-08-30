@@ -22,6 +22,7 @@ AuthCredentials _$AuthCredentialsFromJson(Map<String, dynamic> json) {
 mixin _$AuthCredentials {
   String get accessToken => throw _privateConstructorUsedError;
   String get refreshToken => throw _privateConstructorUsedError;
+  DateTime get expiresAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,7 +36,7 @@ abstract class $AuthCredentialsCopyWith<$Res> {
           AuthCredentials value, $Res Function(AuthCredentials) then) =
       _$AuthCredentialsCopyWithImpl<$Res, AuthCredentials>;
   @useResult
-  $Res call({String accessToken, String refreshToken});
+  $Res call({String accessToken, String refreshToken, DateTime expiresAt});
 }
 
 /// @nodoc
@@ -53,6 +54,7 @@ class _$AuthCredentialsCopyWithImpl<$Res, $Val extends AuthCredentials>
   $Res call({
     Object? accessToken = null,
     Object? refreshToken = null,
+    Object? expiresAt = null,
   }) {
     return _then(_value.copyWith(
       accessToken: null == accessToken
@@ -63,6 +65,10 @@ class _$AuthCredentialsCopyWithImpl<$Res, $Val extends AuthCredentials>
           ? _value.refreshToken
           : refreshToken // ignore: cast_nullable_to_non_nullable
               as String,
+      expiresAt: null == expiresAt
+          ? _value.expiresAt
+          : expiresAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
     ) as $Val);
   }
 }
@@ -75,7 +81,7 @@ abstract class _$$AuthCredentialsImplCopyWith<$Res>
       __$$AuthCredentialsImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String accessToken, String refreshToken});
+  $Res call({String accessToken, String refreshToken, DateTime expiresAt});
 }
 
 /// @nodoc
@@ -91,6 +97,7 @@ class __$$AuthCredentialsImplCopyWithImpl<$Res>
   $Res call({
     Object? accessToken = null,
     Object? refreshToken = null,
+    Object? expiresAt = null,
   }) {
     return _then(_$AuthCredentialsImpl(
       accessToken: null == accessToken
@@ -101,6 +108,10 @@ class __$$AuthCredentialsImplCopyWithImpl<$Res>
           ? _value.refreshToken
           : refreshToken // ignore: cast_nullable_to_non_nullable
               as String,
+      expiresAt: null == expiresAt
+          ? _value.expiresAt
+          : expiresAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
     ));
   }
 }
@@ -109,7 +120,9 @@ class __$$AuthCredentialsImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$AuthCredentialsImpl implements _AuthCredentials {
   const _$AuthCredentialsImpl(
-      {required this.accessToken, required this.refreshToken});
+      {required this.accessToken,
+      required this.refreshToken,
+      required this.expiresAt});
 
   factory _$AuthCredentialsImpl.fromJson(Map<String, dynamic> json) =>
       _$$AuthCredentialsImplFromJson(json);
@@ -118,10 +131,12 @@ class _$AuthCredentialsImpl implements _AuthCredentials {
   final String accessToken;
   @override
   final String refreshToken;
+  @override
+  final DateTime expiresAt;
 
   @override
   String toString() {
-    return 'AuthCredentials(accessToken: $accessToken, refreshToken: $refreshToken)';
+    return 'AuthCredentials(accessToken: $accessToken, refreshToken: $refreshToken, expiresAt: $expiresAt)';
   }
 
   @override
@@ -132,12 +147,15 @@ class _$AuthCredentialsImpl implements _AuthCredentials {
             (identical(other.accessToken, accessToken) ||
                 other.accessToken == accessToken) &&
             (identical(other.refreshToken, refreshToken) ||
-                other.refreshToken == refreshToken));
+                other.refreshToken == refreshToken) &&
+            (identical(other.expiresAt, expiresAt) ||
+                other.expiresAt == expiresAt));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, accessToken, refreshToken);
+  int get hashCode =>
+      Object.hash(runtimeType, accessToken, refreshToken, expiresAt);
 
   @JsonKey(ignore: true)
   @override
@@ -157,7 +175,8 @@ class _$AuthCredentialsImpl implements _AuthCredentials {
 abstract class _AuthCredentials implements AuthCredentials {
   const factory _AuthCredentials(
       {required final String accessToken,
-      required final String refreshToken}) = _$AuthCredentialsImpl;
+      required final String refreshToken,
+      required final DateTime expiresAt}) = _$AuthCredentialsImpl;
 
   factory _AuthCredentials.fromJson(Map<String, dynamic> json) =
       _$AuthCredentialsImpl.fromJson;
@@ -166,6 +185,8 @@ abstract class _AuthCredentials implements AuthCredentials {
   String get accessToken;
   @override
   String get refreshToken;
+  @override
+  DateTime get expiresAt;
   @override
   @JsonKey(ignore: true)
   _$$AuthCredentialsImplCopyWith<_$AuthCredentialsImpl> get copyWith =>

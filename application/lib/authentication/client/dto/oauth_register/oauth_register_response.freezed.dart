@@ -23,6 +23,7 @@ OAuthRegisterResponse _$OAuthRegisterResponseFromJson(
 mixin _$OAuthRegisterResponse {
   String get accessToken => throw _privateConstructorUsedError;
   String get refreshToken => throw _privateConstructorUsedError;
+  int get expiresIn => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -36,7 +37,7 @@ abstract class $OAuthRegisterResponseCopyWith<$Res> {
           $Res Function(OAuthRegisterResponse) then) =
       _$OAuthRegisterResponseCopyWithImpl<$Res, OAuthRegisterResponse>;
   @useResult
-  $Res call({String accessToken, String refreshToken});
+  $Res call({String accessToken, String refreshToken, int expiresIn});
 }
 
 /// @nodoc
@@ -55,6 +56,7 @@ class _$OAuthRegisterResponseCopyWithImpl<$Res,
   $Res call({
     Object? accessToken = null,
     Object? refreshToken = null,
+    Object? expiresIn = null,
   }) {
     return _then(_value.copyWith(
       accessToken: null == accessToken
@@ -65,6 +67,10 @@ class _$OAuthRegisterResponseCopyWithImpl<$Res,
           ? _value.refreshToken
           : refreshToken // ignore: cast_nullable_to_non_nullable
               as String,
+      expiresIn: null == expiresIn
+          ? _value.expiresIn
+          : expiresIn // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
   }
 }
@@ -78,7 +84,7 @@ abstract class _$$OAuthRegisterResponseImplCopyWith<$Res>
       __$$OAuthRegisterResponseImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String accessToken, String refreshToken});
+  $Res call({String accessToken, String refreshToken, int expiresIn});
 }
 
 /// @nodoc
@@ -95,6 +101,7 @@ class __$$OAuthRegisterResponseImplCopyWithImpl<$Res>
   $Res call({
     Object? accessToken = null,
     Object? refreshToken = null,
+    Object? expiresIn = null,
   }) {
     return _then(_$OAuthRegisterResponseImpl(
       accessToken: null == accessToken
@@ -105,6 +112,10 @@ class __$$OAuthRegisterResponseImplCopyWithImpl<$Res>
           ? _value.refreshToken
           : refreshToken // ignore: cast_nullable_to_non_nullable
               as String,
+      expiresIn: null == expiresIn
+          ? _value.expiresIn
+          : expiresIn // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -113,7 +124,9 @@ class __$$OAuthRegisterResponseImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$OAuthRegisterResponseImpl implements _OAuthRegisterResponse {
   const _$OAuthRegisterResponseImpl(
-      {required this.accessToken, required this.refreshToken});
+      {required this.accessToken,
+      required this.refreshToken,
+      required this.expiresIn});
 
   factory _$OAuthRegisterResponseImpl.fromJson(Map<String, dynamic> json) =>
       _$$OAuthRegisterResponseImplFromJson(json);
@@ -122,10 +135,12 @@ class _$OAuthRegisterResponseImpl implements _OAuthRegisterResponse {
   final String accessToken;
   @override
   final String refreshToken;
+  @override
+  final int expiresIn;
 
   @override
   String toString() {
-    return 'OAuthRegisterResponse(accessToken: $accessToken, refreshToken: $refreshToken)';
+    return 'OAuthRegisterResponse(accessToken: $accessToken, refreshToken: $refreshToken, expiresIn: $expiresIn)';
   }
 
   @override
@@ -136,12 +151,15 @@ class _$OAuthRegisterResponseImpl implements _OAuthRegisterResponse {
             (identical(other.accessToken, accessToken) ||
                 other.accessToken == accessToken) &&
             (identical(other.refreshToken, refreshToken) ||
-                other.refreshToken == refreshToken));
+                other.refreshToken == refreshToken) &&
+            (identical(other.expiresIn, expiresIn) ||
+                other.expiresIn == expiresIn));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, accessToken, refreshToken);
+  int get hashCode =>
+      Object.hash(runtimeType, accessToken, refreshToken, expiresIn);
 
   @JsonKey(ignore: true)
   @override
@@ -161,7 +179,8 @@ class _$OAuthRegisterResponseImpl implements _OAuthRegisterResponse {
 abstract class _OAuthRegisterResponse implements OAuthRegisterResponse {
   const factory _OAuthRegisterResponse(
       {required final String accessToken,
-      required final String refreshToken}) = _$OAuthRegisterResponseImpl;
+      required final String refreshToken,
+      required final int expiresIn}) = _$OAuthRegisterResponseImpl;
 
   factory _OAuthRegisterResponse.fromJson(Map<String, dynamic> json) =
       _$OAuthRegisterResponseImpl.fromJson;
@@ -170,6 +189,8 @@ abstract class _OAuthRegisterResponse implements OAuthRegisterResponse {
   String get accessToken;
   @override
   String get refreshToken;
+  @override
+  int get expiresIn;
   @override
   @JsonKey(ignore: true)
   _$$OAuthRegisterResponseImplCopyWith<_$OAuthRegisterResponseImpl>

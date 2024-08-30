@@ -12,9 +12,8 @@ part 'auth_service_provider.g.dart';
 AuthService authService(AuthServiceRef ref) {
 
   final repository = ref.watch(authCredentialsRepositoryProvider);
-  final client = ref.watch(tokenClientProvider);
   final oauthService = ref.watch(oauthServiceProvider);
 
-  return AuthService(repository: repository, client: client, oauthService: oauthService);
+  return AuthService(repository: repository, oauthService: oauthService);
 
 }

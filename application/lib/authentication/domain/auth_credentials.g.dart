@@ -11,6 +11,7 @@ _$AuthCredentialsImpl _$$AuthCredentialsImplFromJson(
     _$AuthCredentialsImpl(
       accessToken: json['accessToken'] as String,
       refreshToken: json['refreshToken'] as String,
+      expiresAt: DateTime.parse(json['expiresAt'] as String),
     );
 
 Map<String, dynamic> _$$AuthCredentialsImplToJson(
@@ -18,4 +19,5 @@ Map<String, dynamic> _$$AuthCredentialsImplToJson(
     <String, dynamic>{
       'accessToken': instance.accessToken,
       'refreshToken': instance.refreshToken,
+      'expiresAt': instance.expiresAt.toIso8601String(),
     };

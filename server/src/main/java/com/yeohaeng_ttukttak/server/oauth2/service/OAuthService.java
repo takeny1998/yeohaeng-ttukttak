@@ -6,6 +6,9 @@ import com.yeohaeng_ttukttak.server.oauth2.domain.OAuthProvider;
 import com.yeohaeng_ttukttak.server.oauth2.service.dto.OAuthRevokeCommand;
 import com.yeohaeng_ttukttak.server.oauth2.service.provider.dto.RevokeCommand;
 import com.yeohaeng_ttukttak.server.oauth2.service.provider.OAuthProvidable;
+import com.yeohaeng_ttukttak.server.token.service.JwtService;
+import com.yeohaeng_ttukttak.server.token.service.dto.issue_auth_token.IssueAuthTokensCommand;
+import com.yeohaeng_ttukttak.server.token.service.dto.issue_auth_token.IssueAuthTokensResult;
 import com.yeohaeng_ttukttak.server.user.domain.Gender;
 import com.yeohaeng_ttukttak.server.user.domain.User;
 import com.yeohaeng_ttukttak.server.oauth2.domain.OAuth;
@@ -13,7 +16,7 @@ import com.yeohaeng_ttukttak.server.user.repository.UserRepository;
 import com.yeohaeng_ttukttak.server.oauth2.service.dto.get_id.GetIdCommand;
 import com.yeohaeng_ttukttak.server.oauth2.service.dto.get_id.GetIdResult;
 import com.yeohaeng_ttukttak.server.oauth2.service.dto.get_profile.GetProfileResult;
-import com.yeohaeng_ttukttak.server.oauth2.service.dto.RegisterResult;
+import com.yeohaeng_ttukttak.server.oauth2.service.dto.OAuthRegisterResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,12 +31,13 @@ public class OAuthService {
 
     private final OAuthProvidable oauthProvider;
     private final UserRepository userRepository;
+    private final JwtService jwtService;
 
     @Transactional
-    public RegisterResult register(String code) {
+    public OAuthRegisterResult register(OAuthRegisterCommand command) {
 
         GetIdResult getIdResult = oauthProvider.getIdentification(
-                new GetIdCommand(code, "register"));
+                new GetIdCommand(command.code(), "register"));
 
         String openId = getIdResult.id();
         String email = getIdResult.email();
@@ -56,7 +60,11 @@ public class OAuthService {
         log.debug("user={}", user);
 
         String userId = user.getId().toString();
-        return new RegisterResult(userId);
+
+        IssueAuthTokensResult tokenResult = jwtService.issueAuthTokens(
+                new IssueAuthTokensCommand(userId, command.deviceId(), command.deviceName()));
+
+        return tokenResult.toRegisterResult();
     }
 
     @Transactional
