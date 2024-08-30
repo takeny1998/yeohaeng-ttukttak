@@ -28,7 +28,7 @@ public class OAuthController {
     private final JwtService jwtService;
 
 
-    @PostMapping("/apple/register")
+    @PostMapping("/apple")
     public OAuthRegisterResponse registerApple(
             @RequestHeader("Device-Id") String deviceId,
             @RequestHeader("Device-Name") String deviceName,
@@ -43,10 +43,12 @@ public class OAuthController {
 
     }
 
-    @PostMapping("/apple/revoke")
+    @DeleteMapping("/apple")
     public ResponseEntity<Void> revokeApple(
             @RequestBody OAuthRevokeRequest request,
             @Authorization String userId) {
+
+        log.debug("[OAuthController.revokeApple] request={}, userId={}", request, userId);
 
         OAuthRevokeCommand command = new OAuthRevokeCommand(request.authorizationCode(), userId);
         appleOAuthService.revoke(command);

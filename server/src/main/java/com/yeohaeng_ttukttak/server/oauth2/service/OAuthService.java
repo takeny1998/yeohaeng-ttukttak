@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.UUID;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -62,21 +63,21 @@ public class OAuthService {
     public void revoke(OAuthRevokeCommand command) {
 
         final String authorizationCode = command.authorizationCode();
-        final String userId = command.userId();
+        final UUID userId = UUID.fromString(command.userId());
 
-        GetIdResult getIdResult = oauthProvider.getIdentification(
+        final GetIdResult getIdResult = oauthProvider.getIdentification(
                 new GetIdCommand(authorizationCode, "revoke"));
 
-        final boolean isUserMatched = Objects.equals(userId, getIdResult.id());
+        oauthProvider.revoke(new RevokeCommand(getIdResult.token()));
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException(User.class));
+
+        final boolean isUserMatched = Objects.equals(userId, user.getId());
 
         if (!isUserMatched) {
             throw new AuthorizeFailedException();
         }
-
-        oauthProvider.revoke(new RevokeCommand(getIdResult.token()));
-
-        User user = userRepository.findByOpenId(userId)
-                .orElseThrow(() -> new EntityNotFoundException(User.class));
 
         // TODO: Soft Delete 를 구현해 회원 탈퇴/정지 기록을 보존한다.
         userRepository.delete(user);

@@ -48,6 +48,8 @@ public class AuthorizationAspect {
         final DecodeAuthTokenResult result =
                 jwtService.decodeAuthToken(new DecodeAuthTokenCommand(token));
 
+        log.debug("[AuthorizationAspect] decoded={}", result);
+
 
         final Object[] args = proceedingJoinPoint.getArgs();
         final Method method = ((MethodSignature) proceedingJoinPoint.getSignature()).getMethod();
