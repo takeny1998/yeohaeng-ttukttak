@@ -15,4 +15,6 @@ public interface JwtProvidable {
 
     Map<String, JwtClaim> verifyByHS256(String token);
 
+    Map<String, JwtClaim> verifyByRSA256(String token);
+    
 }

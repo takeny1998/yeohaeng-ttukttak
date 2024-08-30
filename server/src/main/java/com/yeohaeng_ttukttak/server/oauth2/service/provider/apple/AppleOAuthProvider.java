@@ -41,17 +41,12 @@ public class AppleOAuthProvider implements OAuthProvidable {
 
         log.debug("accessToken={}", response);
 
-        final Map<String, JwtClaim> claims = jwtProvidable.decode(response.idToken());
+        final Map<String, JwtClaim> claims = jwtProvidable.verifyByRSA256(response.idToken());
 
         log.debug("claims={}", claims);
 
-        final String openId = Optional.ofNullable(claims.get("sub"))
-                .map(JwtClaim::asString)
-                .orElseGet(() -> null);
-
-        final String email = Optional.ofNullable(claims.get("email"))
-                .map(JwtClaim::asString)
-                .orElseGet(() -> null);
+        final String openId = claims.containsKey("sub") ? claims.get("sub").asString() : null;
+        final String email = claims.containsKey("email") ? claims.get("email").asString() : null;
 
         final String accessToken = response.accessToken();
 
