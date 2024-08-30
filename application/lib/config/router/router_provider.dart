@@ -14,6 +14,7 @@ GoRouter goRouter(GoRouterRef ref) {
   return GoRouter(
       redirect: (context, state) {
         return authState.when(
+            skipLoadingOnReload: true,
             data: (data) {
               return data == null ? '/register' : null;
             },

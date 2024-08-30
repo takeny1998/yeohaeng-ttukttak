@@ -39,10 +39,10 @@ class AuthService {
 
   }
 
-  Future<AuthCredentials?> renew() async {
+  Future<void> renew() async {
 
     final savedCredentials = await _repository.find();
-    if (savedCredentials == null) return null;
+    if (savedCredentials == null) return;
 
     final AuthCredentials(refreshToken : refreshToken) = savedCredentials;
 
@@ -52,15 +52,9 @@ class AuthService {
           TokenRenewRequest(refreshToken: refreshToken));
       await _repository.save(renewedCredentials);
 
-      return renewedCredentials;
-
     } on DioException catch (e) {
-
-      if (e.response?.statusCode == 401) {
-        await _repository.delete();
-      }
-
-      rethrow;
+      print(e);
+      await _repository.delete();
     }
 
   }
