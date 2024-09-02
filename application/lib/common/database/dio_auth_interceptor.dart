@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:application/authentication/client/dto/token_renew/token_renew_request.dart';
-import 'package:application/authentication/domain/auth_credentials_state_provider.dart';
 import 'package:application/authentication/repository/auth_credentials_repository_provider.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
@@ -75,7 +74,7 @@ final class DioAuthInterceptor extends Interceptor {
         debugPrint('[DioAuthInterceptor.onError] Renewing token Failed.');
       });
 
-      _ref.invalidate(authCredentialsStateProvider);
+      // _ref.invalidate(authCredentialsStateProvider);
 
       if (retriedResponse != null) {
         return handler.resolve(retriedResponse!);

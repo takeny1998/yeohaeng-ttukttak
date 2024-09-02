@@ -19,7 +19,7 @@ class AppleOAuthService implements OAuthService {
   Future<AuthCredentials> register() async {
     final credential = await _authorize();
 
-    final response = await oauthClient.register(
+    final response = await oauthClient.registerApple(
         OAuthRegisterRequest(authorizationCode: credential.authorizationCode));
 
     return AuthCredentials.fromResponse(response);
@@ -29,7 +29,7 @@ class AppleOAuthService implements OAuthService {
   Future<void> revoke() async {
     final credential = await _authorize();
 
-    await oauthClient.revoke(
+    await oauthClient.revokeApple(
         OAuthRevokeRequest(authorizationCode: credential.authorizationCode));
   }
 }

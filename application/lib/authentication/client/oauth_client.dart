@@ -13,12 +13,17 @@ abstract class OAuthClient {
   factory OAuthClient(Dio dio, {String baseUrl}) = _OAuthClient;
 
   @POST("/api/v2/oauth2/apple")
-  @Headers({ "Content-Type": "application/json"})
-  Future<OAuthRegisterResponse> register(@Body() OAuthRegisterRequest request);
+  Future<OAuthRegisterResponse> registerApple(@Body() OAuthRegisterRequest request);
 
   @DELETE("/api/v2/oauth2/apple")
-  @Headers({ "Content-Type": "application/json"})
-  Future<void> revoke(
+  Future<void> revokeApple(
+      @Body() OAuthRevokeRequest request);
+
+  @POST("/api/v2/oauth2/google")
+  Future<OAuthRegisterResponse> registerGoogle(@Body() OAuthRegisterRequest request);
+
+  @DELETE("/api/v2/oauth2/google")
+  Future<void> revokeGoogle(
       @Body() OAuthRevokeRequest request);
 
 }

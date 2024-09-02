@@ -1,27 +1,27 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'auth_credentials_state_provider.dart';
+part of 'google_oauth_service_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$authCredentialsStateHash() =>
-    r'9c16088349fcceba58ad5348b3178c3c18771694';
+String _$googleOAuthServiceHash() =>
+    r'85c35c33815b6375b9d19765855b7c28aa33a249';
 
-/// See also [AuthCredentialsState].
-@ProviderFor(AuthCredentialsState)
-final authCredentialsStateProvider = AutoDisposeAsyncNotifierProvider<
-    AuthCredentialsState, AuthCredentials?>.internal(
-  AuthCredentialsState.new,
-  name: r'authCredentialsStateProvider',
+/// See also [googleOAuthService].
+@ProviderFor(googleOAuthService)
+final googleOAuthServiceProvider =
+    AutoDisposeProvider<GoogleOAuthService>.internal(
+  googleOAuthService,
+  name: r'googleOAuthServiceProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$authCredentialsStateHash,
+      : _$googleOAuthServiceHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$AuthCredentialsState = AutoDisposeAsyncNotifier<AuthCredentials?>;
+typedef GoogleOAuthServiceRef = AutoDisposeProviderRef<GoogleOAuthService>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

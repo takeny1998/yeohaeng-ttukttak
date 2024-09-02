@@ -20,7 +20,8 @@ Dio dio(DioRef ref) {
   return Dio(BaseOptions(headers: {
     'Device-Id': deviceId,
     'Device-Name': deviceName,
-    'Accept': 'application/json'
+    'Accept': 'application/json',
+    'Content-Type': 'application/json'
   }))
     ..interceptors.add(DioAuthInterceptor(ref: ref, dio: dio));
 }

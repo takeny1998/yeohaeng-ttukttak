@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'auth_service_provider.dart';
+part of 'google_auth_service_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
@@ -21,20 +21,5 @@ final googleAuthServiceProvider = AutoDisposeProvider<AuthService>.internal(
 );
 
 typedef GoogleAuthServiceRef = AutoDisposeProviderRef<AuthService>;
-String _$appleAuthServiceHash() => r'd99a179e13591a7dff71575d25efa4b7d28bed5e';
-
-/// See also [appleAuthService].
-@ProviderFor(appleAuthService)
-final appleAuthServiceProvider = AutoDisposeProvider<AuthService>.internal(
-  appleAuthService,
-  name: r'appleAuthServiceProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$appleAuthServiceHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef AppleAuthServiceRef = AutoDisposeProviderRef<AuthService>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

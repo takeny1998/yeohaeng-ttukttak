@@ -22,17 +22,16 @@ class _OAuthClient implements OAuthClient {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<OAuthRegisterResponse> register(OAuthRegisterRequest request) async {
+  Future<OAuthRegisterResponse> registerApple(
+      OAuthRegisterRequest request) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Content-Type': 'application/json'};
-    _headers.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
     final _data = request;
     final _options = _setStreamType<OAuthRegisterResponse>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
-      contentType: 'application/json',
     )
         .compose(
           _dio.options,
@@ -57,21 +56,78 @@ class _OAuthClient implements OAuthClient {
   }
 
   @override
-  Future<void> revoke(OAuthRevokeRequest request) async {
+  Future<void> revokeApple(OAuthRevokeRequest request) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Content-Type': 'application/json'};
-    _headers.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
     final _data = request;
     final _options = _setStreamType<void>(Options(
       method: 'DELETE',
       headers: _headers,
       extra: _extra,
-      contentType: 'application/json',
     )
         .compose(
           _dio.options,
           '/api/v2/oauth2/apple',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    await _dio.fetch<void>(_options);
+  }
+
+  @override
+  Future<OAuthRegisterResponse> registerGoogle(
+      OAuthRegisterRequest request) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = request;
+    final _options = _setStreamType<OAuthRegisterResponse>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/api/v2/oauth2/google',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late OAuthRegisterResponse _value;
+    try {
+      _value = OAuthRegisterResponse.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<void> revokeGoogle(OAuthRevokeRequest request) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = request;
+    final _options = _setStreamType<void>(Options(
+      method: 'DELETE',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/api/v2/oauth2/google',
           queryParameters: queryParameters,
           data: _data,
         )
