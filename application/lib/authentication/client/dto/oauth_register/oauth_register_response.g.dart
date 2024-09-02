@@ -11,6 +11,7 @@ _$OAuthRegisterResponseImpl _$$OAuthRegisterResponseImplFromJson(
     _$OAuthRegisterResponseImpl(
       accessToken: json['accessToken'] as String,
       refreshToken: json['refreshToken'] as String,
+      expiresIn: (json['expiresIn'] as num).toInt(),
     );
 
 Map<String, dynamic> _$$OAuthRegisterResponseImplToJson(
@@ -18,4 +19,5 @@ Map<String, dynamic> _$$OAuthRegisterResponseImplToJson(
     <String, dynamic>{
       'accessToken': instance.accessToken,
       'refreshToken': instance.refreshToken,
+      'expiresIn': instance.expiresIn,
     };

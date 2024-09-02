@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 @Component
@@ -40,12 +41,13 @@ public class AppleOAuthProvider implements OAuthProvidable {
 
         log.debug("accessToken={}", response);
 
-        final Map<String, JwtClaim> claims = jwtProvidable.decode(response.idToken());
+        final Map<String, JwtClaim> claims = jwtProvidable.verifyByRSA256(response.idToken());
 
         log.debug("claims={}", claims);
 
-        final String openId = claims.get("sub").asString();
-        final String email = claims.get("email").asString();
+        final String openId = claims.containsKey("sub") ? claims.get("sub").asString() : null;
+        final String email = claims.containsKey("email") ? claims.get("email").asString() : null;
+
         final String accessToken = response.accessToken();
 
         return new GetIdResult(openId, null, email, accessToken);

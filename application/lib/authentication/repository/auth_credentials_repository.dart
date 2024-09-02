@@ -7,6 +7,6 @@ abstract interface class AuthCredentialsRepository {
 
   Future<void> save(AuthCredentials authCredentials);
 
-  Future<void> delete(AuthCredentials authCredentials);
+  Future<void> delete();
 
 }

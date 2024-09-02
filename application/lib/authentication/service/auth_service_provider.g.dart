@@ -1,25 +1,24 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'register_provider.dart';
+part of 'auth_service_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$registerHash() => r'f33a10c89db92e722b55432ae16e7a9a4725d005';
+String _$authServiceHash() => r'ff4475eeaae5d2f2e58548e45572beab5d8cea5a';
 
-/// See also [Register].
-@ProviderFor(Register)
-final registerProvider =
-    AutoDisposeAsyncNotifierProvider<Register, AuthCredentials?>.internal(
-  Register.new,
-  name: r'registerProvider',
+/// See also [authService].
+@ProviderFor(authService)
+final authServiceProvider = AutoDisposeProvider<AuthService>.internal(
+  authService,
+  name: r'authServiceProvider',
   debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$registerHash,
+      const bool.fromEnvironment('dart.vm.product') ? null : _$authServiceHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$Register = AutoDisposeAsyncNotifier<AuthCredentials?>;
+typedef AuthServiceRef = AutoDisposeProviderRef<AuthService>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -4,11 +4,12 @@ import com.yeohaeng_ttukttak.server.token.controller.dto.RenewTokenResponse;
 
 public record RenewTokenResult(
         String accessToken,
-        String refreshToken
+        String refreshToken,
+        long expiresIn
 ) {
 
     public RenewTokenResponse toResponse() {
-        return new RenewTokenResponse(accessToken, refreshToken);
+        return new RenewTokenResponse(accessToken, refreshToken, expiresIn);
     }
 
 }

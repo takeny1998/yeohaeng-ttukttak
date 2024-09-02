@@ -42,7 +42,8 @@ public class JwtService {
                 command.userId(), command.deviceId(), command.deviceName())
                 .id().toString();
 
-        return new IssueAuthTokensResult(accessToken, refreshToken);
+        return new IssueAuthTokensResult(accessToken, refreshToken,
+                jwtProps.refreshToken().expiration().getSeconds());
 
     }
 
@@ -76,7 +77,8 @@ public class JwtService {
 
         return new RenewTokenResult(
                 issueAccessToken(userId),
-                issueRefreshToken(userId, deviceId, deviceName).id().toString()
+                issueRefreshToken(userId, deviceId, deviceName).id().toString(),
+                jwtProps.refreshToken().expiration().getSeconds()
         );
 
     }
