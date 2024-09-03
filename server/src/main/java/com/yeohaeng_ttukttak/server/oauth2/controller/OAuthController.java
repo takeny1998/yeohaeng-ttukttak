@@ -35,7 +35,7 @@ public class OAuthController {
     }
 
     @PostMapping({"/google", "/apple"})
-    public OAuthRegisterResponse register(
+    public Response<OAuthRegisterResponse> register(
             HttpServletRequest servletRequest,
             @RequestHeader("Device-Id") String deviceId,
             @RequestHeader("Device-Name") String deviceName,
@@ -47,7 +47,7 @@ public class OAuthController {
         String uri = servletRequest.getRequestURI();
         final OAuthService oauthService = getService(uri);
 
-        return oauthService.register(command).toResponse();
+        return new Response<>(oauthService.register(command).toResponse());
 
     }
 

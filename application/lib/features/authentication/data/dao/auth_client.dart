@@ -1,3 +1,4 @@
+import 'package:application/common/data/model/response.dart';
 import 'package:application/features/home/data/model/profile_model.dart';
 import 'package:dio/dio.dart' hide Headers;
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -13,23 +14,26 @@ abstract class AuthClient {
   factory AuthClient(Dio dio, {String baseUrl}) = _AuthClient;
 
   @POST("/api/v2/oauth2/apple")
-  Future<AuthModel> signInApple(@Body() AuthSignInRequest request);
+  Future<ServerSuccessResponse<AuthModel>> signInApple(@Body() AuthSignInRequest request);
 
   @DELETE("/api/v2/oauth2/apple")
   Future<void> deleteApple(@Body() AuthDeleteRequest request);
 
   @POST("/api/v2/oauth2/google")
-  Future<AuthModel> signInGoogle(@Body() AuthSignInRequest request);
+  Future<ServerSuccessResponse<AuthModel>> signInGoogle(@Body() AuthSignInRequest request);
 
   @DELETE("/api/v2/oauth2/google")
   Future<void> deleteGoogle(@Body() AuthDeleteRequest request);
 
   @POST("/api/v2/tokens/renew")
-  Future<AuthModel> renew(@Body() AuthRenewRequest request);
+  Future<ServerSuccessResponse<AuthModel>> renewToken(@Body() AuthRenewRequest request);
+
+  @DELETE("/api/v2/tokens")
+  Future<void> deleteToken();
 
   @GET("/api/v2/users/profile")
   @Headers({"Authentication": "required"})
-  Future<ProfileModel> getProfile();
+  Future<ServerSuccessResponse<ProfileModel>> getProfile();
 }
 
 

@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:application/common/data/model/response.dart';
 import 'package:application/features/authentication/domain/dao/auth_repository.dart';
 import 'package:application/features/authentication/domain/entity/auth_entity.dart';
+import 'package:dio/dio.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
@@ -37,7 +39,7 @@ final class GoogleOAuthUseCase implements OAuthUseCase {
     final model = await _client.signInGoogle(
         AuthSignInRequest(authorizationCode: credential!.serverAuthCode!));
 
-    final entity = AuthEntity.fromModel(model);
+    final entity = AuthEntity.fromModel(model.data);
     await _repository.save(entity);
 
     return entity;
@@ -61,13 +63,17 @@ final class AppleOAuthUseCase implements OAuthUseCase {
   Future<AuthEntity> signIn() async {
     final credential = await _authorize();
 
-    final model = await _client.signInApple(
-        AuthSignInRequest(authorizationCode: credential.authorizationCode));
+    final response = await _client
+        .signInApple(
+            AuthSignInRequest(authorizationCode: credential.authorizationCode))
+        .catchError((detail) {
 
-    final entity = AuthEntity.fromModel(model);
+      // TODO: 애플리케이션 실패 로직 작성
+    });
+
+    final entity = AuthEntity.fromModel(response.data);
     await _repository.save(entity);
 
     return entity;
   }
-
 }

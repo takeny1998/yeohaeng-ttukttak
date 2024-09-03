@@ -17,8 +17,8 @@ class AuthStateNotifier extends _$AuthStateNotifier {
 
   Future<void> signIn(OAuthProvider provider) async {
     state = const AsyncLoading();
-
     final useCase = _getProvider(provider);
+
     state = await AsyncValue.guard(useCase.signIn);
   }
 

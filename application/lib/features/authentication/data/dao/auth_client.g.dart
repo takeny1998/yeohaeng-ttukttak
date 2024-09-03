@@ -62,12 +62,13 @@ class _AuthClient implements AuthClient {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<AuthModel> signInApple(AuthSignInRequest request) async {
+  Future<ServerSuccessResponse<AuthModel>> signInApple(
+      AuthSignInRequest request) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = request;
-    final _options = _setStreamType<AuthModel>(Options(
+    final _options = _setStreamType<ServerSuccessResponse<AuthModel>>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
@@ -84,9 +85,12 @@ class _AuthClient implements AuthClient {
           baseUrl,
         )));
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late AuthModel _value;
+    late ServerSuccessResponse<AuthModel> _value;
     try {
-      _value = AuthModel.fromJson(_result.data!);
+      _value = ServerSuccessResponse<AuthModel>.fromJson(
+        _result.data!,
+        (json) => AuthModel.fromJson(json as Map<String, dynamic>),
+      );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -120,12 +124,13 @@ class _AuthClient implements AuthClient {
   }
 
   @override
-  Future<AuthModel> signInGoogle(AuthSignInRequest request) async {
+  Future<ServerSuccessResponse<AuthModel>> signInGoogle(
+      AuthSignInRequest request) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = request;
-    final _options = _setStreamType<AuthModel>(Options(
+    final _options = _setStreamType<ServerSuccessResponse<AuthModel>>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
@@ -142,9 +147,12 @@ class _AuthClient implements AuthClient {
           baseUrl,
         )));
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late AuthModel _value;
+    late ServerSuccessResponse<AuthModel> _value;
     try {
-      _value = AuthModel.fromJson(_result.data!);
+      _value = ServerSuccessResponse<AuthModel>.fromJson(
+        _result.data!,
+        (json) => AuthModel.fromJson(json as Map<String, dynamic>),
+      );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -178,12 +186,13 @@ class _AuthClient implements AuthClient {
   }
 
   @override
-  Future<AuthModel> renew(AuthRenewRequest request) async {
+  Future<ServerSuccessResponse<AuthModel>> renewToken(
+      AuthRenewRequest request) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = request;
-    final _options = _setStreamType<AuthModel>(Options(
+    final _options = _setStreamType<ServerSuccessResponse<AuthModel>>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
@@ -200,9 +209,12 @@ class _AuthClient implements AuthClient {
           baseUrl,
         )));
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late AuthModel _value;
+    late ServerSuccessResponse<AuthModel> _value;
     try {
-      _value = AuthModel.fromJson(_result.data!);
+      _value = ServerSuccessResponse<AuthModel>.fromJson(
+        _result.data!,
+        (json) => AuthModel.fromJson(json as Map<String, dynamic>),
+      );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -211,20 +223,19 @@ class _AuthClient implements AuthClient {
   }
 
   @override
-  Future<ProfileModel> getProfile() async {
+  Future<void> deleteToken() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authentication': 'required'};
-    _headers.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ProfileModel>(Options(
-      method: 'GET',
+    final _options = _setStreamType<void>(Options(
+      method: 'DELETE',
       headers: _headers,
       extra: _extra,
     )
         .compose(
           _dio.options,
-          '/api/v2/users/profile',
+          '/api/v2/tokens',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -233,10 +244,40 @@ class _AuthClient implements AuthClient {
           _dio.options.baseUrl,
           baseUrl,
         )));
+    await _dio.fetch<void>(_options);
+  }
+
+  @override
+  Future<ServerSuccessResponse<ProfileModel>> getProfile() async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'Authentication': 'required'};
+    _headers.removeWhere((k, v) => v == null);
+    const Map<String, dynamic>? _data = null;
+    final _options =
+        _setStreamType<ServerSuccessResponse<ProfileModel>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/api/v2/users/profile',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            )));
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ProfileModel _value;
+    late ServerSuccessResponse<ProfileModel> _value;
     try {
-      _value = ProfileModel.fromJson(_result.data!);
+      _value = ServerSuccessResponse<ProfileModel>.fromJson(
+        _result.data!,
+        (json) => ProfileModel.fromJson(json as Map<String, dynamic>),
+      );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;

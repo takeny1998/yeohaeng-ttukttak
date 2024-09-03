@@ -57,7 +57,7 @@ final class DioAuthInterceptor extends Interceptor {
     print('[DioAuthInterceptor.onError] Expired, try renewing token.');
     try {
       final authModel =
-          await _client.renew(AuthRenewRequest(refreshToken: refreshToken));
+          await _client.renewToken(AuthRenewRequest(refreshToken: refreshToken));
       final authEntity = AuthEntity.fromModel(authModel);
 
       await authRepository.save(authEntity);
