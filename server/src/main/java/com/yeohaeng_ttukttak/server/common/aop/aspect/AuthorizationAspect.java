@@ -37,6 +37,32 @@ public class AuthorizationAspect {
     @Around("controllerPointcut()")
     public Object doAuth(final ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
 
+        final Object[] args = proceedingJoinPoint.getArgs();
+        final Method method = ((MethodSignature) proceedingJoinPoint.getSignature()).getMethod();
+
+
+        final Class<?>[] parameterTypes = method.getParameterTypes();
+        final Annotation[][] parameterAnnotations = method.getParameterAnnotations();
+
+        boolean hasTargetParameter = false;
+        int targetParameterIndex = 0;
+
+        for (int i = 0; i < args.length; i ++) {
+
+            if (!parameterTypes[i].equals(String.class)) continue;
+
+            final boolean isTargetParameter = Arrays.stream(parameterAnnotations[i])
+                    .anyMatch((annotation -> annotation instanceof Authorization));
+
+            if (isTargetParameter) {
+                hasTargetParameter = true;
+                targetParameterIndex = i;
+                break;
+            }
+        }
+
+        if (!hasTargetParameter) return proceedingJoinPoint.proceed();
+
         final String header = httpServletRequest.getHeader("Authorization");
         if (Objects.isNull(header)) return proceedingJoinPoint.proceed();
 
@@ -50,27 +76,7 @@ public class AuthorizationAspect {
 
         log.debug("[AuthorizationAspect] decoded={}", result);
 
-
-        final Object[] args = proceedingJoinPoint.getArgs();
-        final Method method = ((MethodSignature) proceedingJoinPoint.getSignature()).getMethod();
-
-
-        Class<?>[] parameterTypes = method.getParameterTypes();
-        final Annotation[][] parameterAnnotations = method.getParameterAnnotations();
-
-        for (int i = 0; i < args.length; i ++) {
-
-            if (! parameterTypes[i].equals(String.class)) continue;
-
-            final boolean isTargetParameter = Arrays.stream(parameterAnnotations[i])
-                    .anyMatch((annotation -> annotation instanceof Authorization));
-
-            if (isTargetParameter) {
-                args[i] = result.userId();
-                break;
-            }
-
-        }
+        args[targetParameterIndex] = result.userId();
 
         return proceedingJoinPoint.proceed(args);
 
