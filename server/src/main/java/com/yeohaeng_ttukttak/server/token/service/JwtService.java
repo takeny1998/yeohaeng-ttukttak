@@ -1,5 +1,6 @@
 package com.yeohaeng_ttukttak.server.token.service;
 
+import com.yeohaeng_ttukttak.server.common.exception.exception.EntityNotFoundException;
 import com.yeohaeng_ttukttak.server.common.exception.exception.unauthorized.AuthorizationExpiredException;
 import com.yeohaeng_ttukttak.server.common.exception.exception.unauthorized.AuthorizeFailedException;
 import com.yeohaeng_ttukttak.server.token.domain.RefreshToken;
@@ -13,6 +14,7 @@ import com.yeohaeng_ttukttak.server.token.service.dto.decode_auth_token.DecodeAu
 import com.yeohaeng_ttukttak.server.token.service.dto.decode_auth_token.DecodeAuthTokenResult;
 import com.yeohaeng_ttukttak.server.token.service.dto.issue_auth_token.IssueAuthTokensCommand;
 import com.yeohaeng_ttukttak.server.token.service.dto.issue_auth_token.IssueAuthTokensResult;
+import com.yeohaeng_ttukttak.server.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -60,6 +62,30 @@ public class JwtService {
         log.debug("command={}", command);
         log.debug("existToken={}", refreshToken);
 
+        validate(refreshToken, deviceId);
+
+        final String userId = refreshToken.userId();
+
+        return new RenewTokenResult(
+                issueAccessToken(userId),
+                issueRefreshToken(userId, deviceId, deviceName).id().toString(),
+                jwtProps.accessToken().expiration().getSeconds()
+        );
+
+    }
+
+    @Transactional
+    public void deleteAuthToken(String userId, String deviceId) {
+
+        RefreshToken foundToken = refreshTokenRepository.findByUserId(userId)
+                .orElseThrow(() -> new EntityNotFoundException(User.class));
+
+        validate(foundToken, deviceId);
+
+        foundToken.expire();
+    }
+
+    private void validate(RefreshToken refreshToken, String deviceId) {
         final boolean isDeviceMatched = Objects.equals(refreshToken.deviceId(), deviceId);
 
         if (!isDeviceMatched) {
@@ -72,16 +98,8 @@ public class JwtService {
         if (isExpired) {
             throw new AuthorizationExpiredException();
         }
-
-        final String userId = refreshToken.userId();
-
-        return new RenewTokenResult(
-                issueAccessToken(userId),
-                issueRefreshToken(userId, deviceId, deviceName).id().toString(),
-                jwtProps.accessToken().expiration().getSeconds()
-        );
-
     }
+
     public DecodeAuthTokenResult decodeAuthToken(DecodeAuthTokenCommand command) {
 
         Map<String, JwtClaim> claims = jwtProvider.verifyByHS256(command.token());

@@ -1,6 +1,6 @@
 package com.yeohaeng_ttukttak.server.common.exception;
 
-import com.yeohaeng_ttukttak.server.common.exception.dto.ErrorResponse;
+import com.yeohaeng_ttukttak.server.common.dto.ErrorResponse;
 import com.yeohaeng_ttukttak.server.common.exception.exception.*;
 import com.yeohaeng_ttukttak.server.common.exception.exception.internal_server_error.InternalServerErrorException;
 import com.yeohaeng_ttukttak.server.common.exception.interfaces.TargetException;

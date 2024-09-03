@@ -90,6 +90,8 @@ public class OAuthService {
         // TODO: Soft Delete 를 구현해 회원 탈퇴/정지 기록을 보존한다.
         userRepository.delete(user);
 
+        jwtService.deleteAuthToken(userId.toString(), command.deviceId());
+
     }
 
 }
