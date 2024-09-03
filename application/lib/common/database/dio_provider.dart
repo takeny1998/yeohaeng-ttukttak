@@ -12,16 +12,14 @@ Dio dio(DioRef ref) {
   final {'identifierForVendor': deviceId, 'name': deviceName} =
       baseDeviceInfo.data;
 
-  final dio = Dio(
-      BaseOptions(
-          baseUrl: 'https://bug-steady-reliably.ngrok-free.app',
-          headers: {'Device-Id': deviceId, 'Device-Name': deviceName}));
+  final dio = Dio(BaseOptions(
+      baseUrl: 'https://bug-steady-reliably.ngrok-free.app',
+      headers: {
+        'Device-Id': deviceId,
+        'Device-Name': deviceName,
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }));
 
-  return Dio(BaseOptions(headers: {
-    'Device-Id': deviceId,
-    'Device-Name': deviceName,
-    'Accept': 'application/json',
-    'Content-Type': 'application/json'
-  }))
-    ..interceptors.add(DioAuthInterceptor(ref: ref, dio: dio));
+  return dio..interceptors.add(DioAuthInterceptor(ref: ref, dio: dio));
 }

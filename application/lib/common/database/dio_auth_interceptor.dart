@@ -1,34 +1,31 @@
-import 'dart:io';
-
-import 'package:application/authentication/client/dto/token_renew/token_renew_request.dart';
-import 'package:application/authentication/repository/auth_credentials_repository_provider.dart';
+import 'package:application/features/authentication/data/dao/auth_client.dart';
+import 'package:application/features/authentication/domain/provider/auth_provider.dart';
+import 'package:application/features/authentication/presentation/provider/auth_state_notifier.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../authentication/client/token_client.dart';
-import '../../authentication/domain/auth_credentials.dart';
+import '../../features/authentication/domain/entity/auth_entity.dart';
 
 final class DioAuthInterceptor extends Interceptor {
   final AutoDisposeRef _ref;
 
   final Dio _dio;
 
-  final TokenClient _tokenClient;
+  final AuthClient _client;
 
   DioAuthInterceptor({required AutoDisposeRef ref, required Dio dio})
       : _ref = ref,
         _dio = dio,
-        _tokenClient = TokenClient(dio);
+        _client = AuthClient(dio);
 
   @override
   void onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
-    final credentials =
-        await _ref.watch(authCredentialsRepositoryProvider).find();
+    final auth = await _ref.watch(authRepositoryProvider).find();
 
-    if (credentials != null) {
-      final AuthCredentials(accessToken: accessToken) = credentials;
+    if (auth != null) {
+      final AuthEntity(accessToken: accessToken) = auth;
       options.headers.addAll({'Authorization': 'Bearer $accessToken'});
     }
 
@@ -37,52 +34,53 @@ final class DioAuthInterceptor extends Interceptor {
     return handler.next(options);
   }
 
+  bool _check(Response response, int statusCode, String errorCode) {
+    return response.statusCode == statusCode &&
+        response.data['code'] == errorCode;
+  }
+
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) async {
     final response = err.response;
 
-    final credentialsRepository = _ref.watch(authCredentialsRepositoryProvider);
-    final credentials = await credentialsRepository.find();
+    final authRepository = _ref.watch(authRepositoryProvider);
+    final authEntity = await authRepository.find();
 
-    if (response == null || credentials == null) return handler.next(err);
-
-    final Response(statusCode: statusCode, data: {'code': errorCode}) =
-        response;
-
-    if (statusCode == HttpStatus.unauthorized &&
-        errorCode == "AUTHORIZATION_EXPIRED") {
-
-      debugPrint('[DioAuthInterceptor.onError] Expired, try renewing token.');
-      await credentialsRepository.delete();
-
-      Response? retriedResponse;
-
-      await _tokenClient.renew(
-          TokenRenewRequest(refreshToken: credentials.refreshToken))
-      .then((renewedCredentials) async {
-
-        final AuthCredentials(accessToken: accessToken) = renewedCredentials;
-        await credentialsRepository.save(renewedCredentials);
-
-        err.requestOptions.headers['Authorization'] = 'Bearer $accessToken';
-        debugPrint(
-            '[DioAuthInterceptor.onError] Renewing token Successfully, options=${err.requestOptions.headers}');
-
-        retriedResponse = await _dio.fetch(err.requestOptions);
-      })
-      .catchError((err) async {
-        debugPrint('[DioAuthInterceptor.onError] Renewing token Failed.');
-      });
-
-      // _ref.invalidate(authCredentialsStateProvider);
-
-      if (retriedResponse != null) {
-        return handler.resolve(retriedResponse!);
-      }
-
+    if (response == null ||
+        authEntity == null ||
+        !_check(response, 401, "AUTHORIZATION_EXPIRED")) {
+      return handler.next(err);
     }
 
-    return handler.next(err);
+    final AuthEntity(:refreshToken) = authEntity;
+
+    print('[DioAuthInterceptor.onError] Expired, try renewing token.');
+    try {
+      final authModel =
+          await _client.renew(AuthRenewRequest(refreshToken: refreshToken));
+      final authEntity = AuthEntity.fromModel(authModel);
+
+      await authRepository.save(authEntity);
+
+      final AuthEntity(accessToken: accessToken) = authEntity;
+
+      err.requestOptions.headers['Authorization'] = 'Bearer $accessToken';
+      print(
+          '[DioAuthInterceptor.onError()] Renewing token Successfully, options=${err.requestOptions.headers}');
+
+      return handler.resolve(await _dio.fetch(err.requestOptions));
+    } on DioException catch (e) {
+      print(
+          '[DioAuthInterceptor.onError()] Renewing auth failed: ${e.response}');
+
+      if (e.response == null || !_check(e.response!, 401, 'AUTHORIZE_FAILED')) {
+        rethrow;
+      }
+
+      await authRepository.delete();
+    } finally {
+      _ref.invalidate(authStateNotifierProvider);
+    }
   }
 
   @override

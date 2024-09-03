@@ -1,5 +1,3 @@
-import 'package:application/authentication/service/auth_service_provider.dart';
-import 'package:application/authentication/service/oauth/google_oauth_service_provider.dart';
 import 'package:application/features/authentication/presentation/provider/auth_state_notifier.dart';
 import 'package:application/features/authentication/presentation/provider/dto/oauth_provider.dart';
 import 'package:flutter/material.dart';
