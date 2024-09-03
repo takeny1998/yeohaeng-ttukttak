@@ -1,4 +1,4 @@
-import 'package:application/common/database/dio_auth_interceptor.dart';
+import 'package:application/common/domain/dio_auth_interceptor.dart';
 import 'package:application/main.dart';
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';

@@ -2,7 +2,7 @@ import 'package:application/features/authentication/domain/provider/auth_provide
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../features/authentication/presentation/provider/auth_state_notifier.dart';
+import '../../../authentication/presentation/provider/auth_state_notifier.dart';
 
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});

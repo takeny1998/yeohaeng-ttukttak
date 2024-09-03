@@ -1,5 +1,5 @@
-import 'package:application/common/database/dio_provider.dart';
-import 'package:application/common/database/secure_storage_provider.dart';
+import 'package:application/common/domain/provider/dio_provider.dart';
+import 'package:application/common/domain/provider/secure_storage_provider.dart';
 import 'package:application/features/authentication/data/dao/auth_client.dart';
 import 'package:application/features/authentication/data/dao/secure_storage_auth_repository.dart';
 import 'package:application/features/authentication/domain/dao/auth_repository.dart';

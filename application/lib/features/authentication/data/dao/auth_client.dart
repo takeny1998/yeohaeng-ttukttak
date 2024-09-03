@@ -1,4 +1,4 @@
-import 'package:application/home/profile_model.dart';
+import 'package:application/features/home/data/model/profile_model.dart';
 import 'package:dio/dio.dart' hide Headers;
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:retrofit/retrofit.dart';

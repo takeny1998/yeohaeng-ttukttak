@@ -1,7 +1,7 @@
 import 'package:application/features/authentication/presentation/provider/auth_state_notifier.dart';
 import 'package:application/features/authentication/presentation/screen/auth_screen.dart';
-import 'package:application/home/home_page.dart';
-import 'package:application/home/splash_page.dart';
+import 'package:application/features/home/presentation/screen/home_screen.dart';
+import 'package:application/features/splash/presentation/screen/splash_page.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
