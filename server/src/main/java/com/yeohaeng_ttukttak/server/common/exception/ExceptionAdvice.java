@@ -1,15 +1,15 @@
 package com.yeohaeng_ttukttak.server.common.exception;
 
-import com.yeohaeng_ttukttak.server.common.dto.ErrorResponse;
-import com.yeohaeng_ttukttak.server.common.exception.exception.*;
-import com.yeohaeng_ttukttak.server.common.exception.exception.internal_server_error.InternalServerErrorException;
-import com.yeohaeng_ttukttak.server.common.exception.interfaces.TargetException;
+import com.yeohaeng_ttukttak.server.common.dto.ServerErrorResponse;
+import com.yeohaeng_ttukttak.server.common.dto.ServerFailResponse;
+import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundException;
+import com.yeohaeng_ttukttak.server.common.exception.exception.fail.FailException;
 import com.yeohaeng_ttukttak.server.common.util.StringUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
-import org.springframework.http.ResponseEntity;
+import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -23,39 +23,30 @@ public class ExceptionAdvice {
 
     private final MessageSource messageSource;
 
-    @ExceptionHandler(ApiException.class)
-    public ResponseEntity<ErrorResponse> handleApiException(
-            ApiException ex, Locale locale, HttpServletRequest request) {
-
+    @ExceptionHandler(FailException.class)
+    public ServerFailResponse handleTargetNotFoundException(
+            FailException ex, Locale locale, HttpServletRequest request) {
         logError(ex, request);
 
-        final String code = ex.getCode();
-        final String message =
-                messageSource.getMessage(code, null, locale);
+        String code = ex.getCode();
+        final String message = messageSource.getMessage(code, null, locale);
 
-        String target = null;
-
-        if (ex instanceof TargetException) {
-            target = ((TargetException) ex).getTarget();
-        }
-
-        return ResponseEntity.status(ex.getStatus())
-                .body(new ErrorResponse(code, message, target));
-
+        return new ServerFailResponse(message);
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleException(
-            Exception ex, Locale locale, HttpServletRequest request) {
-
-        InternalServerErrorException exception = new InternalServerErrorException();
-
+    public ServerErrorResponse handleException(
+            Exception ex, HttpServletRequest request) {
         logError(ex, request);
-        final String message =
-                messageSource.getMessage(exception.getCode(), null, locale);
 
-        return ResponseEntity.status(exception.getStatus())
-                .body(new ErrorResponse(exception.getCode(), message));
+        Integer code = null;
+
+        if (ex instanceof ErrorResponse) {
+            code = ((ErrorResponse) ex).getStatusCode().value();
+        }
+
+        final String message = ex.getLocalizedMessage();
+        return new ServerErrorResponse(message, code);
     }
 
     private void logError(Exception ex, HttpServletRequest request) {

@@ -1,7 +1,8 @@
 package com.yeohaeng_ttukttak.server.user.controller;
 
 import com.yeohaeng_ttukttak.server.common.aop.annotation.Authorization;
-import com.yeohaeng_ttukttak.server.common.exception.exception.EntityNotFoundException;
+import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
+import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundException;
 import com.yeohaeng_ttukttak.server.user.controller.dto.GetProfileResponse;
 import com.yeohaeng_ttukttak.server.user.domain.User;
 import com.yeohaeng_ttukttak.server.user.repository.UserRepository;
@@ -24,13 +25,18 @@ public class UserController {
 
     @Transactional(readOnly = true)
     @GetMapping("/profile")
-    public GetProfileResponse getProfile(@Authorization String userId) {
+    public ServerResponse<GetProfileResponse> getProfile(@Authorization String userId) {
         log.debug("userId={}", userId);
 
         User user = userRepository.findById(UUID.fromString(userId))
-                .orElseThrow(() -> new EntityNotFoundException(User.class));
+                .orElseThrow(EntityNotFoundException::new);
 
-        return new GetProfileResponse(user);
+        return new ServerResponse<>(new GetProfileResponse(user));
     }
+
+//    @GetMapping("/profile")
+//    public ServerResponse<Void> test() {
+//        throw new EntityNotFoundException();
+//    }
 
 }

@@ -11,7 +11,7 @@ import java.time.LocalDate;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-class GoogleGetGetProfileResponseDeserializerTestResult {
+class GoogleGetGetProfileServerResponseDeserializerTestResult {
 
     @Test
     void deserialize_test() throws JsonProcessingException {

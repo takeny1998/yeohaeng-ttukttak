@@ -1,8 +1,7 @@
 package com.yeohaeng_ttukttak.server.token.service;
 
-import com.yeohaeng_ttukttak.server.common.exception.exception.EntityNotFoundException;
-import com.yeohaeng_ttukttak.server.common.exception.exception.unauthorized.AuthorizationExpiredException;
-import com.yeohaeng_ttukttak.server.common.exception.exception.unauthorized.AuthorizeFailedException;
+import com.yeohaeng_ttukttak.server.common.exception.exception.fail.AuthorizationExpiredException;
+import com.yeohaeng_ttukttak.server.common.exception.exception.fail.InvalidAuthorizationException;
 import com.yeohaeng_ttukttak.server.token.domain.RefreshToken;
 import com.yeohaeng_ttukttak.server.token.property.JwtProperties;
 import com.yeohaeng_ttukttak.server.token.provider.JwtClaim;
@@ -14,7 +13,6 @@ import com.yeohaeng_ttukttak.server.token.service.dto.decode_auth_token.DecodeAu
 import com.yeohaeng_ttukttak.server.token.service.dto.decode_auth_token.DecodeAuthTokenResult;
 import com.yeohaeng_ttukttak.server.token.service.dto.issue_auth_token.IssueAuthTokensCommand;
 import com.yeohaeng_ttukttak.server.token.service.dto.issue_auth_token.IssueAuthTokensResult;
-import com.yeohaeng_ttukttak.server.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -57,7 +55,7 @@ public class JwtService {
 
         final UUID tokenId = UUID.fromString(command.refreshToken());
         final RefreshToken refreshToken = refreshTokenRepository.findById(tokenId)
-                .orElseThrow(AuthorizeFailedException::new);
+                .orElseThrow(InvalidAuthorizationException::new);
 
         log.debug("command={}", command);
         log.debug("existToken={}", refreshToken);
@@ -78,7 +76,7 @@ public class JwtService {
     public void deleteAuthToken(String userId, String deviceId) {
 
         RefreshToken foundToken = refreshTokenRepository.findByUserId(userId)
-                .orElseThrow(() -> new EntityNotFoundException(User.class));
+                .orElseThrow(InvalidAuthorizationException::new);
 
         validate(foundToken, deviceId);
 
@@ -90,7 +88,7 @@ public class JwtService {
 
         if (!isDeviceMatched) {
             // TODO: 리프레시 토큰이 탈취된 것, 추가 동작을 수행한다.
-            throw new AuthorizeFailedException();
+            throw new InvalidAuthorizationException();
         }
 
         final boolean isExpired = refreshToken.expiresAt().isBefore(LocalDateTime.now());

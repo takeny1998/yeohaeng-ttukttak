@@ -1,5 +1,6 @@
 package com.yeohaeng_ttukttak.server.token.controller;
 
+import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
 import com.yeohaeng_ttukttak.server.token.controller.dto.RenewTokenRequest;
 import com.yeohaeng_ttukttak.server.token.controller.dto.RenewTokenResponse;
 import com.yeohaeng_ttukttak.server.common.aop.annotation.Authorization;
@@ -19,7 +20,7 @@ public class TokenController {
     private final JwtService jwtService;
 
     @PostMapping("/renew")
-    public RenewTokenResponse renew(
+    public ServerResponse<RenewTokenResponse> renew(
             @RequestHeader("Device-Id") String deviceId,
             @RequestHeader("Device-Name") String deviceName,
             @RequestBody RenewTokenRequest request) {
@@ -27,19 +28,19 @@ public class TokenController {
         RenewTokenCommand command =
                 new RenewTokenCommand(request.refreshToken(), deviceId, deviceName);
 
-        return jwtService.renew(command).toResponse();
+        return new ServerResponse<>(jwtService.renew(command).toResponse());
 
     }
 
     @DeleteMapping()
-    public ResponseEntity<Void> delete(
+    public ServerResponse<Void> delete(
             @RequestHeader("Device-Id") String deviceId,
             @RequestHeader("Device-Name") String deviceName,
             @Authorization String userId) {
 
         jwtService.deleteAuthToken(userId, deviceId);
 
-        return ResponseEntity.noContent().build();
+        return new ServerResponse<>(null);
     }
 
 

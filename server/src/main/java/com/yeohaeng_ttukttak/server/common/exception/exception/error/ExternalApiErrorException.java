@@ -1,6 +1,6 @@
-package com.yeohaeng_ttukttak.server.common.exception.exception.internal_server_error;
+package com.yeohaeng_ttukttak.server.common.exception.exception.error;
 
-public final class ExternalApiErrorException extends InternalServerErrorException {
+public final class ExternalApiErrorException extends ErrorException {
 
     private static final String CODE = "EXTERNAL_API_ERROR";
 

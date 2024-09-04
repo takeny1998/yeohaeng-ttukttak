@@ -1,7 +1,7 @@
 package com.yeohaeng_ttukttak.server.oauth2.service;
 
-import com.yeohaeng_ttukttak.server.common.exception.exception.EntityNotFoundException;
-import com.yeohaeng_ttukttak.server.common.exception.exception.unauthorized.AuthorizeFailedException;
+import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundException;
+import com.yeohaeng_ttukttak.server.common.exception.exception.fail.InvalidAuthorizationException;
 import com.yeohaeng_ttukttak.server.oauth2.domain.OAuthProvider;
 import com.yeohaeng_ttukttak.server.oauth2.service.dto.OAuthRevokeCommand;
 import com.yeohaeng_ttukttak.server.oauth2.service.provider.dto.RevokeCommand;
@@ -79,12 +79,12 @@ public class OAuthService {
         oauthProvider.revoke(new RevokeCommand(getIdResult.token()));
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException(User.class));
+                .orElseThrow(EntityNotFoundException::new);
 
         final boolean isUserMatched = Objects.equals(userId, user.getId());
 
         if (!isUserMatched) {
-            throw new AuthorizeFailedException();
+            throw new InvalidAuthorizationException();
         }
 
         // TODO: Soft Delete 를 구현해 회원 탈퇴/정지 기록을 보존한다.

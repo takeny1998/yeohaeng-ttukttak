@@ -1,16 +1,13 @@
 package com.yeohaeng_ttukttak.server.oauth2.controller;
 
 import com.yeohaeng_ttukttak.server.common.aop.annotation.Authorization;
-import com.yeohaeng_ttukttak.server.common.dto.Response;
-import com.yeohaeng_ttukttak.server.common.exception.exception.bad_request.BadRequestException;
+import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
 import com.yeohaeng_ttukttak.server.oauth2.controller.dto.OAuthRegisterRequest;
 import com.yeohaeng_ttukttak.server.oauth2.controller.dto.OAuthRegisterResponse;
 import com.yeohaeng_ttukttak.server.oauth2.controller.dto.OAuthRevokeRequest;
 import com.yeohaeng_ttukttak.server.oauth2.service.OAuthRegisterCommand;
 import com.yeohaeng_ttukttak.server.oauth2.service.OAuthService;
 import com.yeohaeng_ttukttak.server.oauth2.service.dto.OAuthRevokeCommand;
-import com.yeohaeng_ttukttak.server.oauth2.service.dto.OAuthRegisterResult;
-import com.yeohaeng_ttukttak.server.token.service.JwtService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,12 +27,12 @@ public class OAuthController {
         return switch (uri) {
             case "/api/v2/oauth2/google" -> googleOAuthService;
             case "/api/v2/oauth2/apple" -> appleOAuthService;
-            default -> throw new BadRequestException();
+            default -> throw new RuntimeException();
         };
     }
 
     @PostMapping({"/google", "/apple"})
-    public Response<OAuthRegisterResponse> register(
+    public ServerResponse<OAuthRegisterResponse> register(
             HttpServletRequest servletRequest,
             @RequestHeader("Device-Id") String deviceId,
             @RequestHeader("Device-Name") String deviceName,
@@ -47,7 +44,8 @@ public class OAuthController {
         String uri = servletRequest.getRequestURI();
         final OAuthService oauthService = getService(uri);
 
-        return new Response<>(oauthService.register(command).toResponse());
+
+        return new ServerResponse<>(oauthService.register(command).toResponse());
 
     }
 
