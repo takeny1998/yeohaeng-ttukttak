@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:application/common/data/model/response.dart';
+import 'package:application/features/authentication/data/model/auth_model.dart';
 import 'package:application/features/authentication/domain/dao/auth_repository.dart';
 import 'package:application/features/authentication/domain/entity/auth_entity.dart';
-import 'package:dio/dio.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
@@ -35,14 +35,21 @@ final class GoogleOAuthUseCase implements OAuthUseCase {
   @override
   Future<AuthEntity> signIn() async {
     final credential = await _authorize();
+    final authorizationCode = credential!.serverAuthCode!;
 
-    final model = await _client.signInGoogle(
-        AuthSignInRequest(authorizationCode: credential!.serverAuthCode!));
+    final response = await _client
+        .signInGoogle(AuthSignInRequest(authorizationCode: authorizationCode));
 
-    final entity = AuthEntity.fromModel(model.data);
-    await _repository.save(entity);
+    throw UnimplementedError();
 
-    return entity;
+    // switch (response) {
+    //   case ServerSuccessResponse<AuthModel>(:final data):
+    //     final entity = AuthEntity.fromModel(data!);
+    //     await _repository.save(entity);
+    //     return entity;
+    //   case ServerFailResponse<AuthModel>():
+    //     throw Error();
+    // }
   }
 }
 
@@ -62,18 +69,19 @@ final class AppleOAuthUseCase implements OAuthUseCase {
   @override
   Future<AuthEntity> signIn() async {
     final credential = await _authorize();
+    final authorizationCode = credential.authorizationCode;
 
     final response = await _client
-        .signInApple(
-            AuthSignInRequest(authorizationCode: credential.authorizationCode))
-        .catchError((detail) {
+        .signInApple(AuthSignInRequest(authorizationCode: authorizationCode));
 
-      // TODO: 애플리케이션 실패 로직 작성
-    });
-
-    final entity = AuthEntity.fromModel(response.data);
-    await _repository.save(entity);
-
-    return entity;
+    switch (response) {
+      case ServerSuccessResponse<AuthModel>(:final data):
+        final entity = AuthEntity.fromModel(data);
+        await _repository.save(entity);
+        return entity;
+      case ServerFailResponse<AuthModel>():
+      case ServerErrorResponse<AuthModel>():
+        throw Error();
+    }
   }
 }

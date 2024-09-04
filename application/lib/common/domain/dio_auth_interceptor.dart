@@ -1,4 +1,6 @@
+import 'package:application/common/data/model/response.dart';
 import 'package:application/features/authentication/data/dao/auth_client.dart';
+import 'package:application/features/authentication/data/model/auth_model.dart';
 import 'package:application/features/authentication/domain/provider/auth_provider.dart';
 import 'package:application/features/authentication/presentation/provider/auth_state_notifier.dart';
 import 'package:dio/dio.dart';
@@ -34,57 +36,49 @@ final class DioAuthInterceptor extends Interceptor {
     return handler.next(options);
   }
 
-  bool _check(Response response, int statusCode, String errorCode) {
-    return response.statusCode == statusCode &&
-        response.data['code'] == errorCode;
-  }
-
   @override
-  void onError(DioException err, ErrorInterceptorHandler handler) async {
-    final response = err.response;
-
+  void onResponse(Response response, ResponseInterceptorHandler handler) async {
     final authRepository = _ref.watch(authRepositoryProvider);
     final authEntity = await authRepository.find();
 
-    if (response == null ||
-        authEntity == null ||
-        !_check(response, 401, "AUTHORIZATION_EXPIRED")) {
-      return handler.next(err);
+    if (authEntity == null) {
+      return handler.next(response);
     }
 
-    final AuthEntity(:refreshToken) = authEntity;
+    print('[DioAuthInterceptor.onResponse()] Expired, try renewing token.');
 
-    print('[DioAuthInterceptor.onError] Expired, try renewing token.');
-    try {
-      final authModel =
-          await _client.renewToken(AuthRenewRequest(refreshToken: refreshToken));
-      final authEntity = AuthEntity.fromModel(authModel);
+    final renewResponse = await _client
+        .renewToken(AuthRenewRequest(refreshToken: authEntity.refreshToken));
 
-      await authRepository.save(authEntity);
+    print('[DioAuthInterceptor.onResponse()] renewed = $renewResponse');
 
-      final AuthEntity(accessToken: accessToken) = authEntity;
+    Response? retiredResponse = null;
 
-      err.requestOptions.headers['Authorization'] = 'Bearer $accessToken';
-      print(
-          '[DioAuthInterceptor.onError()] Renewing token Successfully, options=${err.requestOptions.headers}');
+    switch (renewResponse) {
+      case ServerSuccessResponse<AuthModel>(:final data):
+        final entity = AuthEntity.fromModel(data);
+        await authRepository.save(entity);
 
-      return handler.resolve(await _dio.fetch(err.requestOptions));
-    } on DioException catch (e) {
-      print(
-          '[DioAuthInterceptor.onError()] Renewing auth failed: ${e.response}');
+        final options = response.requestOptions;
+        options.headers['Authorization'] = 'Bearer ${entity.accessToken}';
 
-      if (e.response == null || !_check(e.response!, 401, 'AUTHORIZE_FAILED')) {
-        rethrow;
-      }
+        print(
+            '[DioAuthInterceptor.onResponse()] Renewing token Successfully, options=$options');
+        retiredResponse = await _dio.fetch(options);
 
-      await authRepository.delete();
-    } finally {
-      _ref.invalidate(authStateNotifierProvider);
+      case ServerFailResponse<AuthModel>():
+        print('[DioAuthInterceptor.onResponse()] Renewing auth failed');
+        await authRepository.delete();
+
+      case ServerErrorResponse<AuthModel>():
     }
-  }
 
-  @override
-  void onResponse(Response response, ResponseInterceptorHandler handler) async {
+    _ref.invalidate(authStateNotifierProvider);
+
+    if (retiredResponse != null) {
+      return handler.next(retiredResponse);
+    }
+
     return handler.next(response);
   }
 }

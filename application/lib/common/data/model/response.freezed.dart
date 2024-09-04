@@ -14,71 +14,103 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
-ServerSuccessResponse<T> _$ServerSuccessResponseFromJson<T>(
+ServerResponse<T> _$ServerResponseFromJson<T>(
     Map<String, dynamic> json, T Function(Object?) fromJsonT) {
-  return _ServerSuccessResponse<T>.fromJson(json, fromJsonT);
+  switch (json['status']) {
+    case 'success':
+      return ServerSuccessResponse<T>.fromJson(json, fromJsonT);
+    case 'fail':
+      return ServerFailResponse<T>.fromJson(json, fromJsonT);
+    case 'error':
+      return ServerErrorResponse<T>.fromJson(json, fromJsonT);
+
+    default:
+      throw CheckedFromJsonException(json, 'status', 'ServerResponse',
+          'Invalid union type "${json['status']}"!');
+  }
 }
 
 /// @nodoc
-mixin _$ServerSuccessResponse<T> {
-  T get data => throw _privateConstructorUsedError;
-
+mixin _$ServerResponse<T> {
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(T data) success,
+    required TResult Function(String? message, Map<String, String>? data) fail,
+    required TResult Function(String message, int? code) error,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(T data)? success,
+    TResult? Function(String? message, Map<String, String>? data)? fail,
+    TResult? Function(String message, int? code)? error,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(T data)? success,
+    TResult Function(String? message, Map<String, String>? data)? fail,
+    TResult Function(String message, int? code)? error,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(ServerSuccessResponse<T> value) success,
+    required TResult Function(ServerFailResponse<T> value) fail,
+    required TResult Function(ServerErrorResponse<T> value) error,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(ServerSuccessResponse<T> value)? success,
+    TResult? Function(ServerFailResponse<T> value)? fail,
+    TResult? Function(ServerErrorResponse<T> value)? error,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(ServerSuccessResponse<T> value)? success,
+    TResult Function(ServerFailResponse<T> value)? fail,
+    TResult Function(ServerErrorResponse<T> value)? error,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
   Map<String, dynamic> toJson(Object? Function(T) toJsonT) =>
       throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $ServerSuccessResponseCopyWith<T, ServerSuccessResponse<T>> get copyWith =>
-      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $ServerSuccessResponseCopyWith<T, $Res> {
-  factory $ServerSuccessResponseCopyWith(ServerSuccessResponse<T> value,
-          $Res Function(ServerSuccessResponse<T>) then) =
-      _$ServerSuccessResponseCopyWithImpl<T, $Res, ServerSuccessResponse<T>>;
-  @useResult
-  $Res call({T data});
+abstract class $ServerResponseCopyWith<T, $Res> {
+  factory $ServerResponseCopyWith(
+          ServerResponse<T> value, $Res Function(ServerResponse<T>) then) =
+      _$ServerResponseCopyWithImpl<T, $Res, ServerResponse<T>>;
 }
 
 /// @nodoc
-class _$ServerSuccessResponseCopyWithImpl<T, $Res,
-        $Val extends ServerSuccessResponse<T>>
-    implements $ServerSuccessResponseCopyWith<T, $Res> {
-  _$ServerSuccessResponseCopyWithImpl(this._value, this._then);
+class _$ServerResponseCopyWithImpl<T, $Res, $Val extends ServerResponse<T>>
+    implements $ServerResponseCopyWith<T, $Res> {
+  _$ServerResponseCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? data = freezed,
-  }) {
-    return _then(_value.copyWith(
-      data: freezed == data
-          ? _value.data
-          : data // ignore: cast_nullable_to_non_nullable
-              as T,
-    ) as $Val);
-  }
 }
 
 /// @nodoc
-abstract class _$$ServerSuccessResponseImplCopyWith<T, $Res>
-    implements $ServerSuccessResponseCopyWith<T, $Res> {
+abstract class _$$ServerSuccessResponseImplCopyWith<T, $Res> {
   factory _$$ServerSuccessResponseImplCopyWith(
           _$ServerSuccessResponseImpl<T> value,
           $Res Function(_$ServerSuccessResponseImpl<T>) then) =
       __$$ServerSuccessResponseImplCopyWithImpl<T, $Res>;
-  @override
   @useResult
   $Res call({T data});
 }
 
 /// @nodoc
 class __$$ServerSuccessResponseImplCopyWithImpl<T, $Res>
-    extends _$ServerSuccessResponseCopyWithImpl<T, $Res,
+    extends _$ServerResponseCopyWithImpl<T, $Res,
         _$ServerSuccessResponseImpl<T>>
     implements _$$ServerSuccessResponseImplCopyWith<T, $Res> {
   __$$ServerSuccessResponseImplCopyWithImpl(
@@ -102,8 +134,9 @@ class __$$ServerSuccessResponseImplCopyWithImpl<T, $Res>
 
 /// @nodoc
 @JsonSerializable(genericArgumentFactories: true)
-class _$ServerSuccessResponseImpl<T> implements _ServerSuccessResponse<T> {
-  const _$ServerSuccessResponseImpl({required this.data});
+class _$ServerSuccessResponseImpl<T> implements ServerSuccessResponse<T> {
+  const _$ServerSuccessResponseImpl({required this.data, final String? $type})
+      : $type = $type ?? 'success';
 
   factory _$ServerSuccessResponseImpl.fromJson(
           Map<String, dynamic> json, T Function(Object?) fromJsonT) =>
@@ -112,9 +145,12 @@ class _$ServerSuccessResponseImpl<T> implements _ServerSuccessResponse<T> {
   @override
   final T data;
 
+  @JsonKey(name: 'status')
+  final String $type;
+
   @override
   String toString() {
-    return 'ServerSuccessResponse<$T>(data: $data)';
+    return 'ServerResponse<$T>.success(data: $data)';
   }
 
   @override
@@ -138,196 +174,438 @@ class _$ServerSuccessResponseImpl<T> implements _ServerSuccessResponse<T> {
           _$ServerSuccessResponseImpl<T>>(this, _$identity);
 
   @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(T data) success,
+    required TResult Function(String? message, Map<String, String>? data) fail,
+    required TResult Function(String message, int? code) error,
+  }) {
+    return success(data);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(T data)? success,
+    TResult? Function(String? message, Map<String, String>? data)? fail,
+    TResult? Function(String message, int? code)? error,
+  }) {
+    return success?.call(data);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(T data)? success,
+    TResult Function(String? message, Map<String, String>? data)? fail,
+    TResult Function(String message, int? code)? error,
+    required TResult orElse(),
+  }) {
+    if (success != null) {
+      return success(data);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(ServerSuccessResponse<T> value) success,
+    required TResult Function(ServerFailResponse<T> value) fail,
+    required TResult Function(ServerErrorResponse<T> value) error,
+  }) {
+    return success(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(ServerSuccessResponse<T> value)? success,
+    TResult? Function(ServerFailResponse<T> value)? fail,
+    TResult? Function(ServerErrorResponse<T> value)? error,
+  }) {
+    return success?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(ServerSuccessResponse<T> value)? success,
+    TResult Function(ServerFailResponse<T> value)? fail,
+    TResult Function(ServerErrorResponse<T> value)? error,
+    required TResult orElse(),
+  }) {
+    if (success != null) {
+      return success(this);
+    }
+    return orElse();
+  }
+
+  @override
   Map<String, dynamic> toJson(Object? Function(T) toJsonT) {
     return _$$ServerSuccessResponseImplToJson<T>(this, toJsonT);
   }
 }
 
-abstract class _ServerSuccessResponse<T> implements ServerSuccessResponse<T> {
-  const factory _ServerSuccessResponse({required final T data}) =
+abstract class ServerSuccessResponse<T> implements ServerResponse<T> {
+  const factory ServerSuccessResponse({required final T data}) =
       _$ServerSuccessResponseImpl<T>;
 
-  factory _ServerSuccessResponse.fromJson(
+  factory ServerSuccessResponse.fromJson(
           Map<String, dynamic> json, T Function(Object?) fromJsonT) =
       _$ServerSuccessResponseImpl<T>.fromJson;
 
-  @override
   T get data;
-  @override
   @JsonKey(ignore: true)
   _$$ServerSuccessResponseImplCopyWith<T, _$ServerSuccessResponseImpl<T>>
       get copyWith => throw _privateConstructorUsedError;
 }
 
-ServerErrorResponse _$ServerErrorResponseFromJson(Map<String, dynamic> json) {
-  return _ServerErrorResponse.fromJson(json);
-}
-
 /// @nodoc
-mixin _$ServerErrorResponse {
-  String get code => throw _privateConstructorUsedError;
-  String get message => throw _privateConstructorUsedError;
-  String? get target => throw _privateConstructorUsedError;
-
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $ServerErrorResponseCopyWith<ServerErrorResponse> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $ServerErrorResponseCopyWith<$Res> {
-  factory $ServerErrorResponseCopyWith(
-          ServerErrorResponse value, $Res Function(ServerErrorResponse) then) =
-      _$ServerErrorResponseCopyWithImpl<$Res, ServerErrorResponse>;
+abstract class _$$ServerFailResponseImplCopyWith<T, $Res> {
+  factory _$$ServerFailResponseImplCopyWith(_$ServerFailResponseImpl<T> value,
+          $Res Function(_$ServerFailResponseImpl<T>) then) =
+      __$$ServerFailResponseImplCopyWithImpl<T, $Res>;
   @useResult
-  $Res call({String code, String message, String? target});
+  $Res call({String? message, Map<String, String>? data});
 }
 
 /// @nodoc
-class _$ServerErrorResponseCopyWithImpl<$Res, $Val extends ServerErrorResponse>
-    implements $ServerErrorResponseCopyWith<$Res> {
-  _$ServerErrorResponseCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? code = null,
-    Object? message = null,
-    Object? target = freezed,
-  }) {
-    return _then(_value.copyWith(
-      code: null == code
-          ? _value.code
-          : code // ignore: cast_nullable_to_non_nullable
-              as String,
-      message: null == message
-          ? _value.message
-          : message // ignore: cast_nullable_to_non_nullable
-              as String,
-      target: freezed == target
-          ? _value.target
-          : target // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ) as $Val);
-  }
-}
-
-/// @nodoc
-abstract class _$$ServerErrorResponseImplCopyWith<$Res>
-    implements $ServerErrorResponseCopyWith<$Res> {
-  factory _$$ServerErrorResponseImplCopyWith(_$ServerErrorResponseImpl value,
-          $Res Function(_$ServerErrorResponseImpl) then) =
-      __$$ServerErrorResponseImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({String code, String message, String? target});
-}
-
-/// @nodoc
-class __$$ServerErrorResponseImplCopyWithImpl<$Res>
-    extends _$ServerErrorResponseCopyWithImpl<$Res, _$ServerErrorResponseImpl>
-    implements _$$ServerErrorResponseImplCopyWith<$Res> {
-  __$$ServerErrorResponseImplCopyWithImpl(_$ServerErrorResponseImpl _value,
-      $Res Function(_$ServerErrorResponseImpl) _then)
+class __$$ServerFailResponseImplCopyWithImpl<T, $Res>
+    extends _$ServerResponseCopyWithImpl<T, $Res, _$ServerFailResponseImpl<T>>
+    implements _$$ServerFailResponseImplCopyWith<T, $Res> {
+  __$$ServerFailResponseImplCopyWithImpl(_$ServerFailResponseImpl<T> _value,
+      $Res Function(_$ServerFailResponseImpl<T>) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? code = null,
-    Object? message = null,
-    Object? target = freezed,
+    Object? message = freezed,
+    Object? data = freezed,
   }) {
-    return _then(_$ServerErrorResponseImpl(
-      code: null == code
-          ? _value.code
-          : code // ignore: cast_nullable_to_non_nullable
-              as String,
-      message: null == message
+    return _then(_$ServerFailResponseImpl<T>(
+      message: freezed == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
-              as String,
-      target: freezed == target
-          ? _value.target
-          : target // ignore: cast_nullable_to_non_nullable
               as String?,
+      data: freezed == data
+          ? _value._data
+          : data // ignore: cast_nullable_to_non_nullable
+              as Map<String, String>?,
     ));
   }
 }
 
 /// @nodoc
-@JsonSerializable()
-class _$ServerErrorResponseImpl implements _ServerErrorResponse {
-  const _$ServerErrorResponseImpl(
-      {required this.code, required this.message, this.target});
+@JsonSerializable(genericArgumentFactories: true)
+class _$ServerFailResponseImpl<T> implements ServerFailResponse<T> {
+  const _$ServerFailResponseImpl(
+      {this.message, final Map<String, String>? data, final String? $type})
+      : _data = data,
+        $type = $type ?? 'fail';
 
-  factory _$ServerErrorResponseImpl.fromJson(Map<String, dynamic> json) =>
-      _$$ServerErrorResponseImplFromJson(json);
+  factory _$ServerFailResponseImpl.fromJson(
+          Map<String, dynamic> json, T Function(Object?) fromJsonT) =>
+      _$$ServerFailResponseImplFromJson(json, fromJsonT);
 
   @override
-  final String code;
+  final String? message;
+  final Map<String, String>? _data;
   @override
-  final String message;
-  @override
-  final String? target;
+  Map<String, String>? get data {
+    final value = _data;
+    if (value == null) return null;
+    if (_data is EqualUnmodifiableMapView) return _data;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(value);
+  }
+
+  @JsonKey(name: 'status')
+  final String $type;
 
   @override
   String toString() {
-    return 'ServerErrorResponse(code: $code, message: $message, target: $target)';
+    return 'ServerResponse<$T>.fail(message: $message, data: $data)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ServerErrorResponseImpl &&
-            (identical(other.code, code) || other.code == code) &&
+            other is _$ServerFailResponseImpl<T> &&
             (identical(other.message, message) || other.message == message) &&
-            (identical(other.target, target) || other.target == target));
+            const DeepCollectionEquality().equals(other._data, _data));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, code, message, target);
+  int get hashCode => Object.hash(
+      runtimeType, message, const DeepCollectionEquality().hash(_data));
 
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$ServerErrorResponseImplCopyWith<_$ServerErrorResponseImpl> get copyWith =>
-      __$$ServerErrorResponseImplCopyWithImpl<_$ServerErrorResponseImpl>(
-          this, _$identity);
+  _$$ServerFailResponseImplCopyWith<T, _$ServerFailResponseImpl<T>>
+      get copyWith => __$$ServerFailResponseImplCopyWithImpl<T,
+          _$ServerFailResponseImpl<T>>(this, _$identity);
 
   @override
-  Map<String, dynamic> toJson() {
-    return _$$ServerErrorResponseImplToJson(
-      this,
-    );
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(T data) success,
+    required TResult Function(String? message, Map<String, String>? data) fail,
+    required TResult Function(String message, int? code) error,
+  }) {
+    return fail(message, data);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(T data)? success,
+    TResult? Function(String? message, Map<String, String>? data)? fail,
+    TResult? Function(String message, int? code)? error,
+  }) {
+    return fail?.call(message, data);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(T data)? success,
+    TResult Function(String? message, Map<String, String>? data)? fail,
+    TResult Function(String message, int? code)? error,
+    required TResult orElse(),
+  }) {
+    if (fail != null) {
+      return fail(message, data);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(ServerSuccessResponse<T> value) success,
+    required TResult Function(ServerFailResponse<T> value) fail,
+    required TResult Function(ServerErrorResponse<T> value) error,
+  }) {
+    return fail(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(ServerSuccessResponse<T> value)? success,
+    TResult? Function(ServerFailResponse<T> value)? fail,
+    TResult? Function(ServerErrorResponse<T> value)? error,
+  }) {
+    return fail?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(ServerSuccessResponse<T> value)? success,
+    TResult Function(ServerFailResponse<T> value)? fail,
+    TResult Function(ServerErrorResponse<T> value)? error,
+    required TResult orElse(),
+  }) {
+    if (fail != null) {
+      return fail(this);
+    }
+    return orElse();
+  }
+
+  @override
+  Map<String, dynamic> toJson(Object? Function(T) toJsonT) {
+    return _$$ServerFailResponseImplToJson<T>(this, toJsonT);
   }
 }
 
-abstract class _ServerErrorResponse implements ServerErrorResponse {
-  const factory _ServerErrorResponse(
-      {required final String code,
-      required final String message,
-      final String? target}) = _$ServerErrorResponseImpl;
+abstract class ServerFailResponse<T> implements ServerResponse<T> {
+  const factory ServerFailResponse(
+      {final String? message,
+      final Map<String, String>? data}) = _$ServerFailResponseImpl<T>;
 
-  factory _ServerErrorResponse.fromJson(Map<String, dynamic> json) =
-      _$ServerErrorResponseImpl.fromJson;
+  factory ServerFailResponse.fromJson(
+          Map<String, dynamic> json, T Function(Object?) fromJsonT) =
+      _$ServerFailResponseImpl<T>.fromJson;
 
-  @override
-  String get code;
-  @override
-  String get message;
-  @override
-  String? get target;
-  @override
+  String? get message;
+  Map<String, String>? get data;
   @JsonKey(ignore: true)
-  _$$ServerErrorResponseImplCopyWith<_$ServerErrorResponseImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$ServerFailResponseImplCopyWith<T, _$ServerFailResponseImpl<T>>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$ServerErrorResponseImplCopyWith<T, $Res> {
+  factory _$$ServerErrorResponseImplCopyWith(_$ServerErrorResponseImpl<T> value,
+          $Res Function(_$ServerErrorResponseImpl<T>) then) =
+      __$$ServerErrorResponseImplCopyWithImpl<T, $Res>;
+  @useResult
+  $Res call({String message, int? code});
+}
+
+/// @nodoc
+class __$$ServerErrorResponseImplCopyWithImpl<T, $Res>
+    extends _$ServerResponseCopyWithImpl<T, $Res, _$ServerErrorResponseImpl<T>>
+    implements _$$ServerErrorResponseImplCopyWith<T, $Res> {
+  __$$ServerErrorResponseImplCopyWithImpl(_$ServerErrorResponseImpl<T> _value,
+      $Res Function(_$ServerErrorResponseImpl<T>) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? message = null,
+    Object? code = freezed,
+  }) {
+    return _then(_$ServerErrorResponseImpl<T>(
+      message: null == message
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String,
+      code: freezed == code
+          ? _value.code
+          : code // ignore: cast_nullable_to_non_nullable
+              as int?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable(genericArgumentFactories: true)
+class _$ServerErrorResponseImpl<T> implements ServerErrorResponse<T> {
+  const _$ServerErrorResponseImpl(
+      {required this.message, this.code, final String? $type})
+      : $type = $type ?? 'error';
+
+  factory _$ServerErrorResponseImpl.fromJson(
+          Map<String, dynamic> json, T Function(Object?) fromJsonT) =>
+      _$$ServerErrorResponseImplFromJson(json, fromJsonT);
+
+  @override
+  final String message;
+  @override
+  final int? code;
+
+  @JsonKey(name: 'status')
+  final String $type;
+
+  @override
+  String toString() {
+    return 'ServerResponse<$T>.error(message: $message, code: $code)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ServerErrorResponseImpl<T> &&
+            (identical(other.message, message) || other.message == message) &&
+            (identical(other.code, code) || other.code == code));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, message, code);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ServerErrorResponseImplCopyWith<T, _$ServerErrorResponseImpl<T>>
+      get copyWith => __$$ServerErrorResponseImplCopyWithImpl<T,
+          _$ServerErrorResponseImpl<T>>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(T data) success,
+    required TResult Function(String? message, Map<String, String>? data) fail,
+    required TResult Function(String message, int? code) error,
+  }) {
+    return error(message, code);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(T data)? success,
+    TResult? Function(String? message, Map<String, String>? data)? fail,
+    TResult? Function(String message, int? code)? error,
+  }) {
+    return error?.call(message, code);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(T data)? success,
+    TResult Function(String? message, Map<String, String>? data)? fail,
+    TResult Function(String message, int? code)? error,
+    required TResult orElse(),
+  }) {
+    if (error != null) {
+      return error(message, code);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(ServerSuccessResponse<T> value) success,
+    required TResult Function(ServerFailResponse<T> value) fail,
+    required TResult Function(ServerErrorResponse<T> value) error,
+  }) {
+    return error(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(ServerSuccessResponse<T> value)? success,
+    TResult? Function(ServerFailResponse<T> value)? fail,
+    TResult? Function(ServerErrorResponse<T> value)? error,
+  }) {
+    return error?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(ServerSuccessResponse<T> value)? success,
+    TResult Function(ServerFailResponse<T> value)? fail,
+    TResult Function(ServerErrorResponse<T> value)? error,
+    required TResult orElse(),
+  }) {
+    if (error != null) {
+      return error(this);
+    }
+    return orElse();
+  }
+
+  @override
+  Map<String, dynamic> toJson(Object? Function(T) toJsonT) {
+    return _$$ServerErrorResponseImplToJson<T>(this, toJsonT);
+  }
+}
+
+abstract class ServerErrorResponse<T> implements ServerResponse<T> {
+  const factory ServerErrorResponse(
+      {required final String message,
+      final int? code}) = _$ServerErrorResponseImpl<T>;
+
+  factory ServerErrorResponse.fromJson(
+          Map<String, dynamic> json, T Function(Object?) fromJsonT) =
+      _$ServerErrorResponseImpl<T>.fromJson;
+
+  String get message;
+  int? get code;
+  @JsonKey(ignore: true)
+  _$$ServerErrorResponseImplCopyWith<T, _$ServerErrorResponseImpl<T>>
+      get copyWith => throw _privateConstructorUsedError;
 }

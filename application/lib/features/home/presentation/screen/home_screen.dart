@@ -23,8 +23,8 @@ class HomePage extends ConsumerWidget {
                 child: const Text('로그아웃')),
             TextButton(
                 onPressed: () async {
-                  // final profile = await ref.read(authClientProvider).getProfile();
-                  // print('[HomePage.build()] profile = ${profile.toString()}');
+                  final profile = await ref.read(authClientProvider).getProfile();
+                  print('[HomePage.build()] profile = ${profile.toString()}');
                 },
                 child: const Text('프로필 정보 조회')),
           ],

@@ -1,3 +1,4 @@
+import 'package:application/common/data/model/response.dart';
 import 'package:application/features/authentication/data/dao/auth_client.dart';
 import 'package:application/features/authentication/domain/dao/auth_repository.dart';
 import 'package:application/features/authentication/domain/entity/auth_entity.dart';
@@ -18,8 +19,10 @@ final class AuthUseCase {
   }
 
   Future<void> signOut() async {
-    await _repository.delete();
-    // await _client.deleteToken();
+
+    final response = await _client.deleteToken();
+
+    print(response);
   }
 
 }

@@ -12,6 +12,7 @@ _$ServerSuccessResponseImpl<T> _$$ServerSuccessResponseImplFromJson<T>(
 ) =>
     _$ServerSuccessResponseImpl<T>(
       data: fromJsonT(json['data']),
+      $type: json['status'] as String?,
     );
 
 Map<String, dynamic> _$$ServerSuccessResponseImplToJson<T>(
@@ -20,20 +21,47 @@ Map<String, dynamic> _$$ServerSuccessResponseImplToJson<T>(
 ) =>
     <String, dynamic>{
       'data': toJsonT(instance.data),
+      'status': instance.$type,
     };
 
-_$ServerErrorResponseImpl _$$ServerErrorResponseImplFromJson(
-        Map<String, dynamic> json) =>
-    _$ServerErrorResponseImpl(
-      code: json['code'] as String,
-      message: json['message'] as String,
-      target: json['target'] as String?,
+_$ServerFailResponseImpl<T> _$$ServerFailResponseImplFromJson<T>(
+  Map<String, dynamic> json,
+  T Function(Object? json) fromJsonT,
+) =>
+    _$ServerFailResponseImpl<T>(
+      message: json['message'] as String?,
+      data: (json['data'] as Map<String, dynamic>?)?.map(
+        (k, e) => MapEntry(k, e as String),
+      ),
+      $type: json['status'] as String?,
     );
 
-Map<String, dynamic> _$$ServerErrorResponseImplToJson(
-        _$ServerErrorResponseImpl instance) =>
+Map<String, dynamic> _$$ServerFailResponseImplToJson<T>(
+  _$ServerFailResponseImpl<T> instance,
+  Object? Function(T value) toJsonT,
+) =>
     <String, dynamic>{
-      'code': instance.code,
       'message': instance.message,
-      'target': instance.target,
+      'data': instance.data,
+      'status': instance.$type,
+    };
+
+_$ServerErrorResponseImpl<T> _$$ServerErrorResponseImplFromJson<T>(
+  Map<String, dynamic> json,
+  T Function(Object? json) fromJsonT,
+) =>
+    _$ServerErrorResponseImpl<T>(
+      message: json['message'] as String,
+      code: (json['code'] as num?)?.toInt(),
+      $type: json['status'] as String?,
+    );
+
+Map<String, dynamic> _$$ServerErrorResponseImplToJson<T>(
+  _$ServerErrorResponseImpl<T> instance,
+  Object? Function(T value) toJsonT,
+) =>
+    <String, dynamic>{
+      'message': instance.message,
+      'code': instance.code,
+      'status': instance.$type,
     };

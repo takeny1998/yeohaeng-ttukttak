@@ -14,26 +14,26 @@ abstract class AuthClient {
   factory AuthClient(Dio dio, {String baseUrl}) = _AuthClient;
 
   @POST("/api/v2/oauth2/apple")
-  Future<ServerSuccessResponse<AuthModel>> signInApple(@Body() AuthSignInRequest request);
+  Future<ServerResponse<AuthModel>> signInApple(@Body() AuthSignInRequest request);
 
   @DELETE("/api/v2/oauth2/apple")
   Future<void> deleteApple(@Body() AuthDeleteRequest request);
 
   @POST("/api/v2/oauth2/google")
-  Future<ServerSuccessResponse<AuthModel>> signInGoogle(@Body() AuthSignInRequest request);
+  Future<ServerResponse<AuthModel>> signInGoogle(@Body() AuthSignInRequest request);
 
   @DELETE("/api/v2/oauth2/google")
   Future<void> deleteGoogle(@Body() AuthDeleteRequest request);
 
   @POST("/api/v2/tokens/renew")
-  Future<ServerSuccessResponse<AuthModel>> renewToken(@Body() AuthRenewRequest request);
+  Future<ServerResponse<AuthModel>> renewToken(@Body() AuthRenewRequest request);
 
   @DELETE("/api/v2/tokens")
-  Future<void> deleteToken();
+  Future<ServerResponse> deleteToken();
 
   @GET("/api/v2/users/profile")
   @Headers({"Authentication": "required"})
-  Future<ServerSuccessResponse<ProfileModel>> getProfile();
+  Future<ServerResponse<ProfileModel>> getProfile();
 }
 
 

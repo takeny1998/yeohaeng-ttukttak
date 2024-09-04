@@ -62,13 +62,13 @@ class _AuthClient implements AuthClient {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<ServerSuccessResponse<AuthModel>> signInApple(
+  Future<ServerResponse<AuthModel>> signInApple(
       AuthSignInRequest request) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = request;
-    final _options = _setStreamType<ServerSuccessResponse<AuthModel>>(Options(
+    final _options = _setStreamType<ServerResponse<AuthModel>>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
@@ -85,9 +85,9 @@ class _AuthClient implements AuthClient {
           baseUrl,
         )));
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ServerSuccessResponse<AuthModel> _value;
+    late ServerResponse<AuthModel> _value;
     try {
-      _value = ServerSuccessResponse<AuthModel>.fromJson(
+      _value = ServerResponse<AuthModel>.fromJson(
         _result.data!,
         (json) => AuthModel.fromJson(json as Map<String, dynamic>),
       );
@@ -124,13 +124,13 @@ class _AuthClient implements AuthClient {
   }
 
   @override
-  Future<ServerSuccessResponse<AuthModel>> signInGoogle(
+  Future<ServerResponse<AuthModel>> signInGoogle(
       AuthSignInRequest request) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = request;
-    final _options = _setStreamType<ServerSuccessResponse<AuthModel>>(Options(
+    final _options = _setStreamType<ServerResponse<AuthModel>>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
@@ -147,9 +147,9 @@ class _AuthClient implements AuthClient {
           baseUrl,
         )));
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ServerSuccessResponse<AuthModel> _value;
+    late ServerResponse<AuthModel> _value;
     try {
-      _value = ServerSuccessResponse<AuthModel>.fromJson(
+      _value = ServerResponse<AuthModel>.fromJson(
         _result.data!,
         (json) => AuthModel.fromJson(json as Map<String, dynamic>),
       );
@@ -186,13 +186,12 @@ class _AuthClient implements AuthClient {
   }
 
   @override
-  Future<ServerSuccessResponse<AuthModel>> renewToken(
-      AuthRenewRequest request) async {
+  Future<ServerResponse<AuthModel>> renewToken(AuthRenewRequest request) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = request;
-    final _options = _setStreamType<ServerSuccessResponse<AuthModel>>(Options(
+    final _options = _setStreamType<ServerResponse<AuthModel>>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
@@ -209,9 +208,9 @@ class _AuthClient implements AuthClient {
           baseUrl,
         )));
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ServerSuccessResponse<AuthModel> _value;
+    late ServerResponse<AuthModel> _value;
     try {
-      _value = ServerSuccessResponse<AuthModel>.fromJson(
+      _value = ServerResponse<AuthModel>.fromJson(
         _result.data!,
         (json) => AuthModel.fromJson(json as Map<String, dynamic>),
       );
@@ -223,12 +222,12 @@ class _AuthClient implements AuthClient {
   }
 
   @override
-  Future<void> deleteToken() async {
+  Future<ServerResponse<dynamic>> deleteToken() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<void>(Options(
+    final _options = _setStreamType<ServerResponse<dynamic>>(Options(
       method: 'DELETE',
       headers: _headers,
       extra: _extra,
@@ -244,37 +243,47 @@ class _AuthClient implements AuthClient {
           _dio.options.baseUrl,
           baseUrl,
         )));
-    await _dio.fetch<void>(_options);
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late ServerResponse<dynamic> _value;
+    try {
+      _value = ServerResponse<dynamic>.fromJson(
+        _result.data!,
+        (json) => json as dynamic,
+      );
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
   }
 
   @override
-  Future<ServerSuccessResponse<ProfileModel>> getProfile() async {
+  Future<ServerResponse<ProfileModel>> getProfile() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'Authentication': 'required'};
     _headers.removeWhere((k, v) => v == null);
     const Map<String, dynamic>? _data = null;
-    final _options =
-        _setStreamType<ServerSuccessResponse<ProfileModel>>(Options(
+    final _options = _setStreamType<ServerResponse<ProfileModel>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
-            .compose(
-              _dio.options,
-              '/api/v2/users/profile',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            )));
+        .compose(
+          _dio.options,
+          '/api/v2/users/profile',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ServerSuccessResponse<ProfileModel> _value;
+    late ServerResponse<ProfileModel> _value;
     try {
-      _value = ServerSuccessResponse<ProfileModel>.fromJson(
+      _value = ServerResponse<ProfileModel>.fromJson(
         _result.data!,
         (json) => ProfileModel.fromJson(json as Map<String, dynamic>),
       );
