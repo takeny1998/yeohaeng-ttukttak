@@ -1,6 +1,7 @@
 package com.yeohaeng_ttukttak.server.token.controller;
 
 import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
+import com.yeohaeng_ttukttak.server.token.controller.dto.DeleteTokenRequest;
 import com.yeohaeng_ttukttak.server.token.controller.dto.RenewTokenRequest;
 import com.yeohaeng_ttukttak.server.token.controller.dto.RenewTokenResponse;
 import com.yeohaeng_ttukttak.server.common.aop.annotation.Authorization;
@@ -32,13 +33,14 @@ public class TokenController {
 
     }
 
-    @DeleteMapping()
+    @DeleteMapping
     public ServerResponse<Void> delete(
             @RequestHeader("Device-Id") String deviceId,
             @RequestHeader("Device-Name") String deviceName,
+            @RequestBody DeleteTokenRequest request,
             @Authorization String userId) {
 
-        jwtService.deleteAuthToken(userId, deviceId);
+        jwtService.deleteAuthToken(request.refreshToken(), deviceId);
 
         return new ServerResponse<>(null);
     }

@@ -15,8 +15,8 @@ import java.util.UUID;
 import static lombok.AccessLevel.PROTECTED;
 
 @Entity
+@ToString
 @NoArgsConstructor(access = PROTECTED)
-@ToString(of = {"id", "deviceId", "deviceName", "expiresAt", "userId"})
 public class RefreshToken extends TimeAuditableEntity {
 
     @Id @GeneratedValue
@@ -26,17 +26,20 @@ public class RefreshToken extends TimeAuditableEntity {
 
     private String deviceName;
 
+    private String notificationToken;
+
     private LocalDateTime expiresAt;
 
     private LocalDateTime expiredAt;
 
     private String userId;
 
-    public RefreshToken(LocalDateTime expiresAt, String userId, String deviceId, String deviceName) {
+    public RefreshToken(String userId, String deviceId, String deviceName, String notificationToken, LocalDateTime expiresAt) {
+        this.userId = userId;
         this.deviceId = deviceId;
         this.deviceName = deviceName;
+        this.notificationToken = notificationToken;
         this.expiresAt = expiresAt;
-        this.userId = userId;
     }
 
     public void expire() {
@@ -65,5 +68,13 @@ public class RefreshToken extends TimeAuditableEntity {
 
     public String userId() {
         return userId;
+    }
+
+    public String notificationToken() {
+        return notificationToken;
+    }
+
+    public boolean isExpired() {
+        return Objects.nonNull(expiredAt);
     }
 }

@@ -39,7 +39,7 @@ public class OAuthController {
             @RequestBody OAuthRegisterRequest request) {
 
         OAuthRegisterCommand command = new OAuthRegisterCommand(
-                        request.authorizationCode(), deviceId, deviceName);
+                        request.authorizationCode(), deviceId, deviceName, request.notificationToken());
 
         String uri = servletRequest.getRequestURI();
         final OAuthService oauthService = getService(uri);
