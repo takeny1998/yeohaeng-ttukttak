@@ -47,5 +47,18 @@
 	</array>
 	<key>FlutterDeepLinkingEnabled</key>
 	<true/>
+	<key>GIDClientID</key>
+    <string>951324022006-dqhtrletm8otr9d6itlssth4iuq3il28.apps.googleusercontent.com</string>
+    <key>GIDServerClientID</key>
+    <string>951324022006-eigc5h6tj71rm2v31eqr5u0v07cbmpn1.apps.googleusercontent.com</string>
+    <key>CFBundleURLTypes</key>
+    <array>
+      <dict>
+        <key>CFBundleURLSchemes</key>
+        <array>
+          <string>com.googleusercontent.apps.951324022006-dqhtrletm8otr9d6itlssth4iuq3il28</string>
+        </array>
+      </dict>
+    </array>
 </dict>
 </plist>

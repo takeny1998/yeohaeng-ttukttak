@@ -1,7 +1,7 @@
 package com.yeohaeng_ttukttak.server.token.domain;
 
 import com.yeohaeng_ttukttak.server.common.entity.TimeAuditableEntity;
-import com.yeohaeng_ttukttak.server.token.exception.JwtAlreadyExpiredException;
+import com.yeohaeng_ttukttak.server.common.exception.exception.fail.InvalidAuthorizationException;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -41,7 +41,7 @@ public class RefreshToken extends TimeAuditableEntity {
 
     public void expire() {
         if (Objects.nonNull(expiredAt)) {
-            throw new JwtAlreadyExpiredException();
+            throw new InvalidAuthorizationException();
         }
 
         this.expiredAt = LocalDateTime.now();

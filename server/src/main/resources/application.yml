@@ -48,7 +48,7 @@ jwt:
   issuer: yeohaeng-ttukttak.com
   secret: ${jwt.secret}
   access-token:
-    expiration: 30m
+    expiration: 30s
   refresh-token:
     expiration: 14d
 

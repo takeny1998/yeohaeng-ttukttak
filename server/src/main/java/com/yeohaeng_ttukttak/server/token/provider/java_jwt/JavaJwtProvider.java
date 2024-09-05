@@ -1,7 +1,5 @@
 package com.yeohaeng_ttukttak.server.token.provider.java_jwt;
 
-import com.auth0.jwk.Jwk;
-import com.auth0.jwk.JwkException;
 import com.auth0.jwk.JwkProvider;
 import com.auth0.jwk.JwkProviderBuilder;
 import com.auth0.jwt.JWT;
@@ -11,31 +9,25 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.auth0.jwt.interfaces.RSAKeyProvider;
-import com.yeohaeng_ttukttak.server.common.exception.exception.unauthorized.AuthorizationExpiredException;
-import com.yeohaeng_ttukttak.server.common.exception.exception.unauthorized.AuthorizeFailedException;
+import com.yeohaeng_ttukttak.server.common.exception.exception.fail.AuthorizationExpiredException;
+import com.yeohaeng_ttukttak.server.common.exception.exception.fail.InvalidAuthorizationException;
 import com.yeohaeng_ttukttak.server.token.exception.JwtSignatureFailedException;
 import com.yeohaeng_ttukttak.server.token.property.JwtProperties;
 import com.yeohaeng_ttukttak.server.token.provider.JwtClaim;
 import com.yeohaeng_ttukttak.server.token.provider.JwtProvidable;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.client.HttpServerErrorException;
 
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.ECPrivateKey;
-import java.security.interfaces.RSAPrivateKey;
-import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Base64;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toMap;
 
@@ -143,7 +135,7 @@ public class JavaJwtProvider implements JwtProvidable {
         } catch (TokenExpiredException ex) {
             throw new AuthorizationExpiredException(ex);
         } catch (JWTVerificationException ex) {
-            throw new AuthorizeFailedException(ex);
+            throw new InvalidAuthorizationException(ex);
         }
 
         return claims.entrySet().stream()

@@ -1,7 +1,7 @@
 package com.yeohaeng_ttukttak.server.token.service;
 
-import com.yeohaeng_ttukttak.server.common.exception.exception.unauthorized.AuthorizationExpiredException;
-import com.yeohaeng_ttukttak.server.common.exception.exception.unauthorized.AuthorizeFailedException;
+import com.yeohaeng_ttukttak.server.common.exception.exception.fail.AuthorizationExpiredException;
+import com.yeohaeng_ttukttak.server.common.exception.exception.fail.InvalidAuthorizationException;
 import com.yeohaeng_ttukttak.server.token.domain.RefreshToken;
 import com.yeohaeng_ttukttak.server.token.property.JwtProperties;
 import com.yeohaeng_ttukttak.server.token.provider.JwtClaim;
@@ -43,7 +43,7 @@ public class JwtService {
                 .id().toString();
 
         return new IssueAuthTokensResult(accessToken, refreshToken,
-                jwtProps.refreshToken().expiration().getSeconds());
+                jwtProps.accessToken().expiration().getSeconds());
 
     }
 
@@ -55,16 +55,40 @@ public class JwtService {
 
         final UUID tokenId = UUID.fromString(command.refreshToken());
         final RefreshToken refreshToken = refreshTokenRepository.findById(tokenId)
-                .orElseThrow(AuthorizeFailedException::new);
+                .orElseThrow(InvalidAuthorizationException::new);
 
         log.debug("command={}", command);
         log.debug("existToken={}", refreshToken);
 
+        validate(refreshToken, deviceId);
+
+        final String userId = refreshToken.userId();
+
+        return new RenewTokenResult(
+                issueAccessToken(userId),
+                issueRefreshToken(userId, deviceId, deviceName).id().toString(),
+                jwtProps.accessToken().expiration().getSeconds()
+        );
+
+    }
+
+    @Transactional
+    public void deleteAuthToken(String userId, String deviceId) {
+
+        RefreshToken foundToken = refreshTokenRepository.findByUserId(userId)
+                .orElseThrow(InvalidAuthorizationException::new);
+
+        validate(foundToken, deviceId);
+
+        foundToken.expire();
+    }
+
+    private void validate(RefreshToken refreshToken, String deviceId) {
         final boolean isDeviceMatched = Objects.equals(refreshToken.deviceId(), deviceId);
 
         if (!isDeviceMatched) {
             // TODO: 리프레시 토큰이 탈취된 것, 추가 동작을 수행한다.
-            throw new AuthorizeFailedException();
+            throw new InvalidAuthorizationException();
         }
 
         final boolean isExpired = refreshToken.expiresAt().isBefore(LocalDateTime.now());
@@ -72,16 +96,8 @@ public class JwtService {
         if (isExpired) {
             throw new AuthorizationExpiredException();
         }
-
-        final String userId = refreshToken.userId();
-
-        return new RenewTokenResult(
-                issueAccessToken(userId),
-                issueRefreshToken(userId, deviceId, deviceName).id().toString(),
-                jwtProps.refreshToken().expiration().getSeconds()
-        );
-
     }
+
     public DecodeAuthTokenResult decodeAuthToken(DecodeAuthTokenCommand command) {
 
         Map<String, JwtClaim> claims = jwtProvider.verifyByHS256(command.token());

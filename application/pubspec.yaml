@@ -44,6 +44,7 @@ dependencies:
   flutter_secure_storage: ^4.2.1
   device_info_plus: ^10.1.2
   sign_in_with_apple: ^6.1.2
+  google_sign_in: ^6.2.1
 
 dev_dependencies:
   flutter_test:
