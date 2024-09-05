@@ -35,7 +35,7 @@ final authClientProvider = AutoDisposeProvider<AuthClient>.internal(
 );
 
 typedef AuthClientRef = AutoDisposeProviderRef<AuthClient>;
-String _$appleOAuthUseCaseHash() => r'992b4f009c1fe57ad91aee34eeb38f5947e841e1';
+String _$appleOAuthUseCaseHash() => r'8cd1ba9bade4541146d63e75135a1f789cd96a00';
 
 /// See also [appleOAuthUseCase].
 @ProviderFor(appleOAuthUseCase)
@@ -51,7 +51,7 @@ final appleOAuthUseCaseProvider = AutoDisposeProvider<OAuthUseCase>.internal(
 
 typedef AppleOAuthUseCaseRef = AutoDisposeProviderRef<OAuthUseCase>;
 String _$googleOAuthUseCaseHash() =>
-    r'f23b6f5ae4820a8cf27a80c79842fb6536ba3199';
+    r'8b8057697d6cc60da96b57cb5e47b979a9b071ee';
 
 /// See also [googleOAuthUseCase].
 @ProviderFor(googleOAuthUseCase)

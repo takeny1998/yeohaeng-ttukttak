@@ -19,10 +19,8 @@ final class AuthUseCase {
   }
 
   Future<void> signOut() async {
-
     final response = await _client.deleteToken();
-
-    print(response);
+    await _repository.delete();
   }
 
 }

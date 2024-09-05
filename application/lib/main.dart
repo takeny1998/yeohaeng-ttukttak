@@ -16,28 +16,38 @@ part 'main.g.dart';
 BaseDeviceInfo baseDeviceInfo(BaseDeviceInfoRef ref) {
   throw UnimplementedError();
 }
-//function to init notification
-Future<void> initNotifications() async {
+
+@riverpod
+String notificationToken(NotificationTokenRef ref) {
+  throw UnimplementedError();
+}
+
+Future<String> initNotifications() async {
   //request permission from user (will prompt user)
   await FirebaseMessaging.instance.requestPermission(
-    alert: true,
-    badge: true,
-    provisional: false,
-    sound: true,
-  );
+      alert: true, badge: true, provisional: false, sound: true);
+
   // iOS foreground notification 권한
   await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
-    alert: true,
-    badge: true,
-    sound: true,
-  );
+      alert: true, badge: true, sound: true);
+
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    print('[FirebaseMessaging.onMessage.listen] data = ${message.data}, notification = ${message.notification}');
+  });
+
+  FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+    print('[FirebaseMessaging.onMessageOpenedApp.listen] data = ${message.data}, notification = ${message.notification}');
+  });
+
+  PlatformDispatcher.instance.onError = (error, stack) {
+    print('[PlatformDispatcher.instance.onError] $error');
+    return true;
+  };
+
   //fetch the FCM token for this device
   final fcmToken = await FirebaseMessaging.instance.getToken();
-  final apnsToken = await FirebaseMessaging.instance.getAPNSToken();
 
-  //print the token (normally you would send this to your server)
-  print('[main()] fcmToken: $fcmToken');
-  print('[main()] apnsToken: $apnsToken');
+  return fcmToken.toString();
 }
 
 // backgroundHandler must be a top-level function
@@ -52,40 +62,20 @@ Future<void> backgroundHandler(RemoteMessage message) async {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  final firebaseApp = await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  final firebaseApp = await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform);
 
   print('[main()] firebaseApp: options = ${firebaseApp.options}');
 
-  await initNotifications();
+  final fcmToken = await initNotifications();
+  print('[main()] fcmToken: $fcmToken');
 
-  final deviceInfoPlugin = DeviceInfoPlugin();
-  final deviceInfo = await deviceInfoPlugin.deviceInfo;
+  final deviceInfo = await DeviceInfoPlugin().deviceInfo;
 
-  FirebaseMessaging.onBackgroundMessage(backgroundHandler);
-
-  FlutterError.onError = (details) {
-    FlutterError.presentError(details);
-    print('[main()] $details');
-  };
-
-  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-    //Parse the message received
-    //For displaying the notification as an overlay
-    print('[FirebaseMessaging.onMessage.listen] message = $message');
-  });
-
-  FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-    print('[FirebaseMessaging.onMessageOpenedApp.listen] message = $message');
-  });
-
-  PlatformDispatcher.instance.onError = (error, stack) {
-    print('[PlatformDispatcher.instance.onError] $error');
-    return true;
-  };
-
-  runApp(ProviderScope(
-      overrides: [baseDeviceInfoProvider.overrideWithValue(deviceInfo)],
-      child: const MyApp()));
+  runApp(ProviderScope(overrides: [
+    baseDeviceInfoProvider.overrideWithValue(deviceInfo),
+    notificationTokenProvider.overrideWithValue(fcmToken),
+  ], child: const MyApp()));
 }
 
 class MyApp extends ConsumerWidget {
