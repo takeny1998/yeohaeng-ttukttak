@@ -1,11 +1,13 @@
-import 'dart:ui';
-
+import 'package:application/features/notification/data/model/notification_model.dart';
+import 'package:application/features/notification/domain/dao/notification_repository_provider.dart';
+import 'package:application/features/notification/presentation/provider/notification_state_provider.dart';
 import 'package:application/firebase_options.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'config/router/router_provider.dart';
@@ -31,18 +33,13 @@ Future<String> initNotifications() async {
   await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
       alert: true, badge: true, sound: true);
 
-  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-    print('[FirebaseMessaging.onMessage.listen] data = ${message.data}, notification = ${message.notification}');
-  });
+  // 푸시 알림이 그냥 도착했을 때 동작한다.
+  FirebaseMessaging.onMessage.listen(notificationRegisterHandler);
 
-  FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-    print('[FirebaseMessaging.onMessageOpenedApp.listen] data = ${message.data}, notification = ${message.notification}');
-  });
+  // 푸시 알림을 받고, 사용자가 직접 클릭했을 때 동작한다.
+  FirebaseMessaging.onMessageOpenedApp.listen(notificationConsumeHandler);
 
-  PlatformDispatcher.instance.onError = (error, stack) {
-    print('[PlatformDispatcher.instance.onError] $error');
-    return true;
-  };
+  FirebaseMessaging.onBackgroundMessage(backgroundHandler);
 
   //fetch the FCM token for this device
   final fcmToken = await FirebaseMessaging.instance.getToken();
@@ -53,10 +50,28 @@ Future<String> initNotifications() async {
 // backgroundHandler must be a top-level function
 // (e.g. not a class method which requires initialization).
 Future<void> backgroundHandler(RemoteMessage message) async {
-  debugPrint('fcm backgroundHandler, message');
+  // TODO: 백그라운드 메세지를 저장하도록 구현한다.
 
-  debugPrint(message.notification?.title ?? '');
-  debugPrint(message.notification?.body ?? '');
+  print('[backgroundHandler()] id = ${message.messageId} data = ${message.data}, body = ${message.notification?.body}');
+}
+
+Future<void> notificationConsumeHandler(RemoteMessage message) async {
+  print('[notificationConsumeHandler] id = ${message.messageId} data = ${message.data}, body = ${message.notification?.body}');
+
+  final model = NotificationModel.fromRemoteMessage(message);
+  ProviderContainer().read(notificationStateProvider.notifier).handle(model);
+}
+
+Future<void> notificationRegisterHandler(RemoteMessage message) async {
+  print('[notificationSaveHandler] id = ${message.messageId} data = ${message.data}, body = ${message.notification?.body}');
+
+  final model = NotificationModel.fromRemoteMessage(message);
+  ProviderContainer().read(notificationStateProvider.notifier).register(model);
+}
+
+Future<void> initHive() async {
+  await Hive.initFlutter();
+  await Hive.openBox("notifications");
 }
 
 void main() async {
@@ -71,7 +86,7 @@ void main() async {
   print('[main()] fcmToken: $fcmToken');
 
   final deviceInfo = await DeviceInfoPlugin().deviceInfo;
-
+  await initHive();
   runApp(ProviderScope(overrides: [
     baseDeviceInfoProvider.overrideWithValue(deviceInfo),
     notificationTokenProvider.overrideWithValue(fcmToken),
