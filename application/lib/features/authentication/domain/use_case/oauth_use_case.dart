@@ -16,11 +16,15 @@ abstract interface class OAuthUseCase {
 final class GoogleOAuthUseCase implements OAuthUseCase {
   final AuthRepository _repository;
   final AuthClient _client;
+  final String _notificationToken;
 
   GoogleOAuthUseCase(
-      {required AuthRepository repository, required AuthClient client})
+      {required AuthRepository repository,
+      required AuthClient client,
+      required String notificationToken})
       : _repository = repository,
-        _client = client;
+        _client = client,
+        _notificationToken = notificationToken;
 
   Future<GoogleSignInAccount?> _authorize() => GoogleSignIn(
         serverClientId:
@@ -37,8 +41,9 @@ final class GoogleOAuthUseCase implements OAuthUseCase {
     final credential = await _authorize();
     final authorizationCode = credential!.serverAuthCode!;
 
-    final response = await _client
-        .signInGoogle(AuthSignInRequest(authorizationCode: authorizationCode));
+    final response = await _client.signInGoogle(AuthSignInRequest(
+        authorizationCode: authorizationCode,
+        notificationToken: _notificationToken));
 
     throw UnimplementedError();
 
@@ -56,11 +61,15 @@ final class GoogleOAuthUseCase implements OAuthUseCase {
 final class AppleOAuthUseCase implements OAuthUseCase {
   final AuthRepository _repository;
   final AuthClient _client;
+  final String _notificationToken;
 
   AppleOAuthUseCase(
-      {required AuthRepository repository, required AuthClient client})
+      {required AuthRepository repository,
+      required AuthClient client,
+      required String notificationToken})
       : _repository = repository,
-        _client = client;
+        _client = client,
+        _notificationToken = notificationToken;
 
   Future<AuthorizationCredentialAppleID> _authorize() =>
       SignInWithApple.getAppleIDCredential(
@@ -71,8 +80,9 @@ final class AppleOAuthUseCase implements OAuthUseCase {
     final credential = await _authorize();
     final authorizationCode = credential.authorizationCode;
 
-    final response = await _client
-        .signInApple(AuthSignInRequest(authorizationCode: authorizationCode));
+    final response = await _client.signInApple(AuthSignInRequest(
+        authorizationCode: authorizationCode,
+        notificationToken: _notificationToken));
 
     switch (response) {
       case ServerSuccessResponse<AuthModel>(:final data):

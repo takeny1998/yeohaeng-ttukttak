@@ -21,5 +21,20 @@ final baseDeviceInfoProvider = AutoDisposeProvider<BaseDeviceInfo>.internal(
 );
 
 typedef BaseDeviceInfoRef = AutoDisposeProviderRef<BaseDeviceInfo>;
+String _$notificationTokenHash() => r'9e560bf65545fc36d550e8910c26a3ea409d25aa';
+
+/// See also [notificationToken].
+@ProviderFor(notificationToken)
+final notificationTokenProvider = AutoDisposeProvider<String>.internal(
+  notificationToken,
+  name: r'notificationTokenProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$notificationTokenHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef NotificationTokenRef = AutoDisposeProviderRef<String>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

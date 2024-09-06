@@ -41,7 +41,8 @@ abstract class AuthClient {
 class AuthSignInRequest with _$AuthSignInRequest {
 
   const factory AuthSignInRequest({
-    required String authorizationCode
+    required String authorizationCode,
+    required String notificationToken
   }) = _AuthSignInRequest;
 
   factory AuthSignInRequest.fromJson(Map<String, dynamic> json) =>

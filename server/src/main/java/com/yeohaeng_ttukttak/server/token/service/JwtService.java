@@ -2,6 +2,8 @@ package com.yeohaeng_ttukttak.server.token.service;
 
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.AuthorizationExpiredException;
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.InvalidAuthorizationException;
+import com.yeohaeng_ttukttak.server.notification.dto.SendAllCommand;
+import com.yeohaeng_ttukttak.server.notification.service.NotificationService;
 import com.yeohaeng_ttukttak.server.token.domain.RefreshToken;
 import com.yeohaeng_ttukttak.server.token.property.JwtProperties;
 import com.yeohaeng_ttukttak.server.token.provider.JwtClaim;
@@ -20,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
@@ -34,15 +37,22 @@ public class JwtService {
 
     private final RefreshTokenRepository refreshTokenRepository;
 
+    private final NotificationService notificationService;
+
     public IssueAuthTokensResult issueAuthTokens(IssueAuthTokensCommand command) {
 
-        String accessToken = issueAccessToken(command.userId());
+        final String userId = command.userId();
+        final String deviceId = command.deviceId();
+        final String deviceName = command.deviceName();
 
-        String refreshToken = issueRefreshToken(
-                command.userId(), command.deviceId(), command.deviceName())
-                .id().toString();
+        final String accessToken = issueAccessToken(userId);
 
-        return new IssueAuthTokensResult(accessToken, refreshToken,
+        notifySignIn(userId, deviceName);
+
+        RefreshToken refreshToken = issueRefreshToken(
+                userId, deviceId, deviceName, command.notificationToken());
+
+        return new IssueAuthTokensResult(accessToken, refreshToken.id().toString(),
                 jwtProps.accessToken().expiration().getSeconds());
 
     }
@@ -54,44 +64,57 @@ public class JwtService {
         final String deviceId = command.deviceId();
 
         final UUID tokenId = UUID.fromString(command.refreshToken());
-        final RefreshToken refreshToken = refreshTokenRepository.findById(tokenId)
+
+
+        final RefreshToken existToken = refreshTokenRepository.findById(tokenId)
                 .orElseThrow(InvalidAuthorizationException::new);
 
         log.debug("command={}", command);
-        log.debug("existToken={}", refreshToken);
+        log.debug("existToken={}", existToken);
 
-        validate(refreshToken, deviceId);
+        final String notificationToken = existToken.notificationToken();
+        final String userId = existToken.userId();
 
-        final String userId = refreshToken.userId();
+        validateDeviceMatched(deviceId, existToken);
+
+        validate(existToken);
 
         return new RenewTokenResult(
                 issueAccessToken(userId),
-                issueRefreshToken(userId, deviceId, deviceName).id().toString(),
+                issueRefreshToken(userId, deviceId, deviceName, notificationToken).id().toString(),
                 jwtProps.accessToken().expiration().getSeconds()
         );
 
     }
 
     @Transactional
-    public void deleteAuthToken(String userId, String deviceId) {
+    public void deleteAuthToken(String refreshToken, String deviceId) {
 
-        RefreshToken foundToken = refreshTokenRepository.findByUserId(userId)
+        UUID id = UUID.fromString(refreshToken);
+
+        RefreshToken existToken = refreshTokenRepository.findById(id)
                 .orElseThrow(InvalidAuthorizationException::new);
 
-        validate(foundToken, deviceId);
+        validateDeviceMatched(deviceId, existToken);
 
-        foundToken.expire();
+        if (existToken.isExpired()) return;
+        existToken.expire();
+
     }
 
-    private void validate(RefreshToken refreshToken, String deviceId) {
-        final boolean isDeviceMatched = Objects.equals(refreshToken.deviceId(), deviceId);
+    private void validateDeviceMatched(String deviceId, RefreshToken existToken) {
+        final boolean isDeviceMatched = Objects.equals(existToken.deviceId(), deviceId);
 
         if (!isDeviceMatched) {
             // TODO: 리프레시 토큰이 탈취된 것, 추가 동작을 수행한다.
             throw new InvalidAuthorizationException();
         }
+    }
 
-        final boolean isExpired = refreshToken.expiresAt().isBefore(LocalDateTime.now());
+    private void validate(RefreshToken refreshToken) {
+
+        final boolean isExpired = refreshToken.expiresAt()
+                .isBefore(LocalDateTime.now());
 
         if (isExpired) {
             throw new AuthorizationExpiredException();
@@ -107,6 +130,25 @@ public class JwtService {
 
     }
 
+    private void notifySignIn(String userId, String deviceName) {
+
+        final List<RefreshToken> existTokens = refreshTokenRepository.findAllByUserId(userId);
+
+        final List<String> targets = existTokens.stream()
+                .filter(refreshToken -> !refreshToken.isExpired())
+                .map(RefreshToken::notificationToken)
+                .toList();
+
+        if (targets.isEmpty()) return;
+
+        Map<String, String> data = Map.of(
+                "code", "ALERT_SIGN_IN",
+                "device_name", deviceName,
+                "signed_in_at", LocalDateTime.now().toString());
+
+        notificationService.sendAll(new SendAllCommand(targets, "새로운 로그인", "다른 기기에서 로그인을 시도했습니다.", data));
+
+    }
 
     private String issueAccessToken(String userId) {
 
@@ -118,14 +160,13 @@ public class JwtService {
 
     }
 
-    private RefreshToken issueRefreshToken(String userId, String deviceId, String deviceName) {
+    private RefreshToken issueRefreshToken(String userId, String deviceId, String deviceName, String notificationToken) {
 
         Duration expiration = jwtProps.refreshToken().expiration();
         LocalDateTime expiresAt = LocalDateTime.now()
                 .plusSeconds(expiration.toSeconds());
 
-        RefreshToken refreshToken =
-                new RefreshToken(expiresAt, userId, deviceId, deviceName);
+        RefreshToken refreshToken = new RefreshToken(userId, deviceId, deviceName, notificationToken, expiresAt);
 
         refreshTokenRepository.save(refreshToken);
 

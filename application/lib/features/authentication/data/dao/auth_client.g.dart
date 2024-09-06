@@ -10,12 +10,14 @@ _$AuthSignInRequestImpl _$$AuthSignInRequestImplFromJson(
         Map<String, dynamic> json) =>
     _$AuthSignInRequestImpl(
       authorizationCode: json['authorizationCode'] as String,
+      notificationToken: json['notificationToken'] as String,
     );
 
 Map<String, dynamic> _$$AuthSignInRequestImplToJson(
         _$AuthSignInRequestImpl instance) =>
     <String, dynamic>{
       'authorizationCode': instance.authorizationCode,
+      'notificationToken': instance.notificationToken,
     };
 
 _$AuthDeleteRequestImpl _$$AuthDeleteRequestImplFromJson(

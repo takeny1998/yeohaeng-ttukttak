@@ -1,6 +1,9 @@
 import 'dart:ui';
 
+import 'package:application/firebase_options.dart';
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -14,25 +17,65 @@ BaseDeviceInfo baseDeviceInfo(BaseDeviceInfoRef ref) {
   throw UnimplementedError();
 }
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+@riverpod
+String notificationToken(NotificationTokenRef ref) {
+  throw UnimplementedError();
+}
 
-  final deviceInfoPlugin = DeviceInfoPlugin();
-  final deviceInfo = await deviceInfoPlugin.deviceInfo;
+Future<String> initNotifications() async {
+  //request permission from user (will prompt user)
+  await FirebaseMessaging.instance.requestPermission(
+      alert: true, badge: true, provisional: false, sound: true);
 
-  FlutterError.onError = (details) {
-    FlutterError.presentError(details);
-    print('[main()] $details');
-  };
+  // iOS foreground notification 권한
+  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+      alert: true, badge: true, sound: true);
+
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    print('[FirebaseMessaging.onMessage.listen] data = ${message.data}, notification = ${message.notification}');
+  });
+
+  FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+    print('[FirebaseMessaging.onMessageOpenedApp.listen] data = ${message.data}, notification = ${message.notification}');
+  });
 
   PlatformDispatcher.instance.onError = (error, stack) {
     print('[PlatformDispatcher.instance.onError] $error');
     return true;
   };
 
-  runApp(ProviderScope(
-      overrides: [baseDeviceInfoProvider.overrideWithValue(deviceInfo)],
-      child: const MyApp()));
+  //fetch the FCM token for this device
+  final fcmToken = await FirebaseMessaging.instance.getToken();
+
+  return fcmToken.toString();
+}
+
+// backgroundHandler must be a top-level function
+// (e.g. not a class method which requires initialization).
+Future<void> backgroundHandler(RemoteMessage message) async {
+  debugPrint('fcm backgroundHandler, message');
+
+  debugPrint(message.notification?.title ?? '');
+  debugPrint(message.notification?.body ?? '');
+}
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final firebaseApp = await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform);
+
+  print('[main()] firebaseApp: options = ${firebaseApp.options}');
+
+  final fcmToken = await initNotifications();
+  print('[main()] fcmToken: $fcmToken');
+
+  final deviceInfo = await DeviceInfoPlugin().deviceInfo;
+
+  runApp(ProviderScope(overrides: [
+    baseDeviceInfoProvider.overrideWithValue(deviceInfo),
+    notificationTokenProvider.overrideWithValue(fcmToken),
+  ], child: const MyApp()));
 }
 
 class MyApp extends ConsumerWidget {

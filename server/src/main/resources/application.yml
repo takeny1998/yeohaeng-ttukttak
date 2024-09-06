@@ -20,13 +20,13 @@ spring:
 
   datasource:
     driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:testdb;MODE=MYSQL;
+    url: jdbc:h2:tcp://localhost/~/yeohaeng-ttukttak
     username: sa
     password:
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     show-sql: true
 
 oauth:
@@ -48,10 +48,9 @@ jwt:
   issuer: yeohaeng-ttukttak.com
   secret: ${jwt.secret}
   access-token:
-    expiration: 30s
+    expiration: 30m
   refresh-token:
     expiration: 14d
-
 
 logging.level:
     org.hibernate.sql: debug

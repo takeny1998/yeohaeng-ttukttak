@@ -21,6 +21,7 @@ AuthSignInRequest _$AuthSignInRequestFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$AuthSignInRequest {
   String get authorizationCode => throw _privateConstructorUsedError;
+  String get notificationToken => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -34,7 +35,7 @@ abstract class $AuthSignInRequestCopyWith<$Res> {
           AuthSignInRequest value, $Res Function(AuthSignInRequest) then) =
       _$AuthSignInRequestCopyWithImpl<$Res, AuthSignInRequest>;
   @useResult
-  $Res call({String authorizationCode});
+  $Res call({String authorizationCode, String notificationToken});
 }
 
 /// @nodoc
@@ -51,11 +52,16 @@ class _$AuthSignInRequestCopyWithImpl<$Res, $Val extends AuthSignInRequest>
   @override
   $Res call({
     Object? authorizationCode = null,
+    Object? notificationToken = null,
   }) {
     return _then(_value.copyWith(
       authorizationCode: null == authorizationCode
           ? _value.authorizationCode
           : authorizationCode // ignore: cast_nullable_to_non_nullable
+              as String,
+      notificationToken: null == notificationToken
+          ? _value.notificationToken
+          : notificationToken // ignore: cast_nullable_to_non_nullable
               as String,
     ) as $Val);
   }
@@ -69,7 +75,7 @@ abstract class _$$AuthSignInRequestImplCopyWith<$Res>
       __$$AuthSignInRequestImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String authorizationCode});
+  $Res call({String authorizationCode, String notificationToken});
 }
 
 /// @nodoc
@@ -84,11 +90,16 @@ class __$$AuthSignInRequestImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? authorizationCode = null,
+    Object? notificationToken = null,
   }) {
     return _then(_$AuthSignInRequestImpl(
       authorizationCode: null == authorizationCode
           ? _value.authorizationCode
           : authorizationCode // ignore: cast_nullable_to_non_nullable
+              as String,
+      notificationToken: null == notificationToken
+          ? _value.notificationToken
+          : notificationToken // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
@@ -97,17 +108,20 @@ class __$$AuthSignInRequestImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$AuthSignInRequestImpl implements _AuthSignInRequest {
-  const _$AuthSignInRequestImpl({required this.authorizationCode});
+  const _$AuthSignInRequestImpl(
+      {required this.authorizationCode, required this.notificationToken});
 
   factory _$AuthSignInRequestImpl.fromJson(Map<String, dynamic> json) =>
       _$$AuthSignInRequestImplFromJson(json);
 
   @override
   final String authorizationCode;
+  @override
+  final String notificationToken;
 
   @override
   String toString() {
-    return 'AuthSignInRequest(authorizationCode: $authorizationCode)';
+    return 'AuthSignInRequest(authorizationCode: $authorizationCode, notificationToken: $notificationToken)';
   }
 
   @override
@@ -116,12 +130,15 @@ class _$AuthSignInRequestImpl implements _AuthSignInRequest {
         (other.runtimeType == runtimeType &&
             other is _$AuthSignInRequestImpl &&
             (identical(other.authorizationCode, authorizationCode) ||
-                other.authorizationCode == authorizationCode));
+                other.authorizationCode == authorizationCode) &&
+            (identical(other.notificationToken, notificationToken) ||
+                other.notificationToken == notificationToken));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, authorizationCode);
+  int get hashCode =>
+      Object.hash(runtimeType, authorizationCode, notificationToken);
 
   @JsonKey(ignore: true)
   @override
@@ -139,14 +156,17 @@ class _$AuthSignInRequestImpl implements _AuthSignInRequest {
 }
 
 abstract class _AuthSignInRequest implements AuthSignInRequest {
-  const factory _AuthSignInRequest({required final String authorizationCode}) =
-      _$AuthSignInRequestImpl;
+  const factory _AuthSignInRequest(
+      {required final String authorizationCode,
+      required final String notificationToken}) = _$AuthSignInRequestImpl;
 
   factory _AuthSignInRequest.fromJson(Map<String, dynamic> json) =
       _$AuthSignInRequestImpl.fromJson;
 
   @override
   String get authorizationCode;
+  @override
+  String get notificationToken;
   @override
   @JsonKey(ignore: true)
   _$$AuthSignInRequestImplCopyWith<_$AuthSignInRequestImpl> get copyWith =>
