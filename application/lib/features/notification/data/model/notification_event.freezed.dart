@@ -57,8 +57,13 @@ mixin _$NotificationEvent {
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
+
+  /// Serializes this NotificationEvent to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of NotificationEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $NotificationEventCopyWith<NotificationEvent> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -82,6 +87,8 @@ class _$NotificationEventCopyWithImpl<$Res, $Val extends NotificationEvent>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of NotificationEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -116,6 +123,8 @@ class __$$NewLoginDetectedEventImplCopyWithImpl<$Res>
       $Res Function(_$NewLoginDetectedEventImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of NotificationEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -157,11 +166,13 @@ class _$NewLoginDetectedEventImpl implements NewLoginDetectedEvent {
                 other.deviceName == deviceName));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, deviceName);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of NotificationEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$NewLoginDetectedEventImplCopyWith<_$NewLoginDetectedEventImpl>
@@ -246,8 +257,11 @@ abstract class NewLoginDetectedEvent implements NotificationEvent {
   @override
   @JsonKey(name: 'device_name')
   String get deviceName;
+
+  /// Create a copy of NotificationEvent
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$NewLoginDetectedEventImplCopyWith<_$NewLoginDetectedEventImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

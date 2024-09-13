@@ -8,23 +8,21 @@ import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'notification_state_provider.g.dart';
+part 'notification_state_notifier.g.dart';
 
-@riverpod
-class NotificationState extends _$NotificationState {
+@Riverpod(keepAlive: true)
+class NotificationStateNotifier extends _$NotificationStateNotifier {
   @override
   FutureOr<List<NotificationModel>> build() async {
     return ref.read(notificationRepositoryProvider).findAll();
   }
 
   Future<void> register(NotificationModel notification) async {
-
     state = await AsyncValue.guard(() async {
       final repository = ref.read(notificationRepositoryProvider);
       await repository.save(notification);
       return repository.findAll();
     });
-    print(state);
   }
 
   Future<void> handle(NotificationModel notification) async {

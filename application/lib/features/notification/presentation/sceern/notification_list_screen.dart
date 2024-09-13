@@ -1,5 +1,5 @@
 import 'package:application/features/notification/data/model/notification_model.dart';
-import 'package:application/features/notification/presentation/provider/notification_state_provider.dart';
+import 'package:application/features/notification/presentation/provider/notification_state_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -8,7 +8,7 @@ class NotificationListScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final notifications = ref.watch(notificationStateProvider);
+    final notifications = ref.watch(notificationStateNotifierProvider);
 
     return Scaffold(
         appBar: AppBar(
@@ -22,7 +22,7 @@ class NotificationListScreen extends ConsumerWidget {
                   title: Text(notification.title),
                   subtitle: Text(notification.body),
                   onTap: () => ref
-                      .read(notificationStateProvider.notifier)
+                      .read(notificationStateNotifierProvider.notifier)
                       .handle(notification),
                 )
             ],

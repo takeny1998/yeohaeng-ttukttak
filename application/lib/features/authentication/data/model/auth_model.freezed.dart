@@ -24,8 +24,12 @@ mixin _$AuthModel {
   String get refreshToken => throw _privateConstructorUsedError;
   int get expiresIn => throw _privateConstructorUsedError;
 
+  /// Serializes this AuthModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of AuthModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $AuthModelCopyWith<AuthModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -48,6 +52,8 @@ class _$AuthModelCopyWithImpl<$Res, $Val extends AuthModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of AuthModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -91,6 +97,8 @@ class __$$AuthModelImplCopyWithImpl<$Res>
       _$AuthModelImpl _value, $Res Function(_$AuthModelImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of AuthModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -151,12 +159,14 @@ class _$AuthModelImpl implements _AuthModel {
                 other.expiresIn == expiresIn));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, accessToken, refreshToken, expiresIn);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of AuthModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$AuthModelImplCopyWith<_$AuthModelImpl> get copyWith =>
@@ -185,8 +195,11 @@ abstract class _AuthModel implements AuthModel {
   String get refreshToken;
   @override
   int get expiresIn;
+
+  /// Create a copy of AuthModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AuthModelImplCopyWith<_$AuthModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

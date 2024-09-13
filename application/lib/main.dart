@@ -1,6 +1,7 @@
+import 'dart:async';
+
 import 'package:application/features/notification/data/model/notification_model.dart';
-import 'package:application/features/notification/domain/dao/notification_repository_provider.dart';
-import 'package:application/features/notification/presentation/provider/notification_state_provider.dart';
+import 'package:application/features/notification/presentation/provider/notification_state_notifier.dart';
 import 'package:application/firebase_options.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -33,40 +34,10 @@ Future<String> initNotifications() async {
   await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
       alert: true, badge: true, sound: true);
 
-  // 푸시 알림이 그냥 도착했을 때 동작한다.
-  FirebaseMessaging.onMessage.listen(notificationRegisterHandler);
-
-  // 푸시 알림을 받고, 사용자가 직접 클릭했을 때 동작한다.
-  FirebaseMessaging.onMessageOpenedApp.listen(notificationConsumeHandler);
-
-  FirebaseMessaging.onBackgroundMessage(backgroundHandler);
-
   //fetch the FCM token for this device
   final fcmToken = await FirebaseMessaging.instance.getToken();
 
   return fcmToken.toString();
-}
-
-// backgroundHandler must be a top-level function
-// (e.g. not a class method which requires initialization).
-Future<void> backgroundHandler(RemoteMessage message) async {
-  // TODO: 백그라운드 메세지를 저장하도록 구현한다.
-
-  print('[backgroundHandler()] id = ${message.messageId} data = ${message.data}, body = ${message.notification?.body}');
-}
-
-Future<void> notificationConsumeHandler(RemoteMessage message) async {
-  print('[notificationConsumeHandler] id = ${message.messageId} data = ${message.data}, body = ${message.notification?.body}');
-
-  final model = NotificationModel.fromRemoteMessage(message);
-  ProviderContainer().read(notificationStateProvider.notifier).handle(model);
-}
-
-Future<void> notificationRegisterHandler(RemoteMessage message) async {
-  print('[notificationSaveHandler] id = ${message.messageId} data = ${message.data}, body = ${message.notification?.body}');
-
-  final model = NotificationModel.fromRemoteMessage(message);
-  ProviderContainer().read(notificationStateProvider.notifier).register(model);
 }
 
 Future<void> initHive() async {
@@ -87,18 +58,26 @@ void main() async {
 
   final deviceInfo = await DeviceInfoPlugin().deviceInfo;
   await initHive();
+
   runApp(ProviderScope(overrides: [
     baseDeviceInfoProvider.overrideWithValue(deviceInfo),
     notificationTokenProvider.overrideWithValue(fcmToken),
   ], child: const MyApp()));
 }
 
-class MyApp extends ConsumerWidget {
+class MyApp extends ConsumerStatefulWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState createState() => _MyAppState();
+}
+
+class _MyAppState extends ConsumerState<MyApp> {
+
+  StreamSubscription<RemoteMessage>? onMessage, onMessageOpenedApp;
+
+  @override
+  Widget build(BuildContext context) {
     final router = ref.watch(goRouterProvider);
 
     return MaterialApp.router(
@@ -109,4 +88,45 @@ class MyApp extends ConsumerWidget {
         ),
         routerConfig: router);
   }
+
+  @override
+  void initState() {
+    super.initState();
+    // 푸시 알림이 그냥 도착했을 때 동작한다.
+    onMessage = FirebaseMessaging.onMessage
+        .listen((message) => notificationRegisterHandler(message, ref));
+
+    // 푸시 알림을 받고, 사용자가 직접 클릭했을 때 동작한다.
+    onMessageOpenedApp = FirebaseMessaging.onMessageOpenedApp
+        .listen((message) => notificationConsumeHandler(message, ref));
+
+    FirebaseMessaging.onBackgroundMessage(
+        (message) => notificationRegisterHandler(message, ref));
+  }
+
+  @override
+  void dispose() {
+    onMessage?.cancel();
+    onMessageOpenedApp?.cancel();
+
+    super.dispose();
+  }
+}
+
+Future<void> notificationConsumeHandler(
+    RemoteMessage message, WidgetRef ref) async {
+  print(
+      '[notificationConsumeHandler] id = ${message.messageId} data = ${message.data}, body = ${message.notification?.body}');
+
+  final model = NotificationModel.fromRemoteMessage(message);
+  ref.read(notificationStateNotifierProvider.notifier).handle(model);
+}
+
+Future<void> notificationRegisterHandler(
+    RemoteMessage message, WidgetRef ref) async {
+  print(
+      '[notificationRegisterHandler] id = ${message.messageId} data = ${message.data}, body = ${message.notification?.body}');
+
+  final model = NotificationModel.fromRemoteMessage(message);
+  ref.read(notificationStateNotifierProvider.notifier).register(model);
 }

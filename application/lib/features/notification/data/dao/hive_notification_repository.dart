@@ -13,6 +13,7 @@ final class HiveNotificationRepository implements NotificationRepository {
   @override
   FutureOr<void> save(NotificationModel model) async {
     await box.put(model.id, jsonEncode(model.toJson()));
+    print('[HiveNotificationRepository.save] saved = $model');
   }
 
   @override
@@ -30,6 +31,7 @@ final class HiveNotificationRepository implements NotificationRepository {
 
   @override
   FutureOr<List<NotificationModel>> findAll() async {
+    print('[HiveNotificationRepository.findAll] box.values = ${box.values}');
     return List.from(box.values
         .map((encoded) => NotificationModel.fromJson(jsonDecode(encoded))));
   }
