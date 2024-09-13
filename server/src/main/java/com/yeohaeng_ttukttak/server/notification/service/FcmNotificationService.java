@@ -25,8 +25,9 @@ public class FcmNotificationService implements NotificationService {
                 .setContentAvailable(true)
                 .build();
 
-       final ApnsConfig apnsConfig = ApnsConfig.builder()
-                .setAps(aps).build();
+        final ApnsConfig apnsConfig = ApnsConfig.builder()
+                .setAps(aps)
+                .putHeader("apns-priority", "5").build();
 
         final MulticastMessage message = MulticastMessage.builder()
                 .setNotification(notification)
@@ -41,6 +42,12 @@ public class FcmNotificationService implements NotificationService {
 
             log.debug("[FcmNotificationService.sendAll] Notification has been sent. Total: {}, Success: {}, Fail: {}",
                     response.getResponses().size(), response.getSuccessCount(), response.getFailureCount());
+
+            if (response.getFailureCount() > 0) {
+                for (SendResponse res : response.getResponses()) {
+                    log.debug("  - ex : {}", res.getException().toString());
+                }
+            }
 
         } catch (FirebaseMessagingException e) {
 

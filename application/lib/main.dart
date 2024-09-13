@@ -56,12 +56,15 @@ String notificationToken(NotificationTokenRef ref) {
 Future<String> initNotifications() async {
   //request permission from user (will prompt user)
   await FirebaseMessaging.instance.requestPermission(
-      alert: true, badge: true, criticalAlert: true, provisional: false, sound: true);
+      alert: true,
+      badge: true,
+      criticalAlert: true,
+      provisional: false,
+      sound: true);
 
   // iOS foreground notification 권한
   await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
       alert: true, badge: true, sound: true);
-
 
   //fetch the FCM token for this device
   final fcmToken = await FirebaseMessaging.instance.getToken();
@@ -87,12 +90,6 @@ void main() async {
 
   final deviceInfo = await DeviceInfoPlugin().deviceInfo;
   await initHive();
-
-  // 앱이 종료(terminated)된 상태에서,
-  // 사용자가 Push Notification을 클릭해 들어올 때 발생한다,
-  // final initialMessages = await FirebaseMessaging.instance.getInitialMessage();
-  //
-  // print('[main()] initialMessages = $initialMessages');
 
   final container = ProviderContainer(overrides: [
     baseDeviceInfoProvider.overrideWithValue(deviceInfo),
@@ -139,6 +136,20 @@ class _MyAppState extends ConsumerState<MyApp> {
     onMessageOpenedApp = FirebaseMessaging.onMessageOpenedApp
         .listen((message) => notificationConsumeHandler(message, ref));
 
+    // 앱이 종료(terminated)된 상태에서,
+    // 사용자가 Push Notification을 클릭해 들어올 때 발생한다,
+    FirebaseMessaging.instance.getInitialMessage().then((initialMessage) async {
+
+      print('[main] initialMessage = ${initialMessage?.messageId} ${initialMessage?.data} ');
+      if (initialMessage == null) return;
+
+      final notification = NotificationModel.fromRemoteMessage(initialMessage);
+      print('[if initialMessage not null] notification = $notification');
+
+      await ref
+          .read(notificationStateNotifierProvider.notifier)
+          .register(notification);
+    });
   }
 
   @override
