@@ -10,6 +10,8 @@ class NotificationButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final notifications = ref.watch(notificationStateNotifierProvider);
 
+    print('[NotificationButton] $notifications');
+
     return IconButton(
         onPressed: notifications.whenOrNull(
             data: (_) => () => context.pushNamed('notifications')),

@@ -22,21 +22,26 @@ NotificationEvent _$NotificationEventFromJson(Map<String, dynamic> json) {
 mixin _$NotificationEvent {
   @JsonKey(name: 'device_name')
   String get deviceName => throw _privateConstructorUsedError;
+  @JsonKey(name: 'logged_in_at')
+  DateTime get loggedInAt => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(@JsonKey(name: 'device_name') String deviceName)
+    required TResult Function(@JsonKey(name: 'device_name') String deviceName,
+            @JsonKey(name: 'logged_in_at') DateTime loggedInAt)
         newLoginDetected,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(@JsonKey(name: 'device_name') String deviceName)?
+    TResult? Function(@JsonKey(name: 'device_name') String deviceName,
+            @JsonKey(name: 'logged_in_at') DateTime loggedInAt)?
         newLoginDetected,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(@JsonKey(name: 'device_name') String deviceName)?
+    TResult Function(@JsonKey(name: 'device_name') String deviceName,
+            @JsonKey(name: 'logged_in_at') DateTime loggedInAt)?
         newLoginDetected,
     required TResult orElse(),
   }) =>
@@ -74,7 +79,9 @@ abstract class $NotificationEventCopyWith<$Res> {
           NotificationEvent value, $Res Function(NotificationEvent) then) =
       _$NotificationEventCopyWithImpl<$Res, NotificationEvent>;
   @useResult
-  $Res call({@JsonKey(name: 'device_name') String deviceName});
+  $Res call(
+      {@JsonKey(name: 'device_name') String deviceName,
+      @JsonKey(name: 'logged_in_at') DateTime loggedInAt});
 }
 
 /// @nodoc
@@ -93,12 +100,17 @@ class _$NotificationEventCopyWithImpl<$Res, $Val extends NotificationEvent>
   @override
   $Res call({
     Object? deviceName = null,
+    Object? loggedInAt = null,
   }) {
     return _then(_value.copyWith(
       deviceName: null == deviceName
           ? _value.deviceName
           : deviceName // ignore: cast_nullable_to_non_nullable
               as String,
+      loggedInAt: null == loggedInAt
+          ? _value.loggedInAt
+          : loggedInAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
     ) as $Val);
   }
 }
@@ -112,7 +124,9 @@ abstract class _$$NewLoginDetectedEventImplCopyWith<$Res>
       __$$NewLoginDetectedEventImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({@JsonKey(name: 'device_name') String deviceName});
+  $Res call(
+      {@JsonKey(name: 'device_name') String deviceName,
+      @JsonKey(name: 'logged_in_at') DateTime loggedInAt});
 }
 
 /// @nodoc
@@ -129,12 +143,17 @@ class __$$NewLoginDetectedEventImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? deviceName = null,
+    Object? loggedInAt = null,
   }) {
     return _then(_$NewLoginDetectedEventImpl(
       deviceName: null == deviceName
           ? _value.deviceName
           : deviceName // ignore: cast_nullable_to_non_nullable
               as String,
+      loggedInAt: null == loggedInAt
+          ? _value.loggedInAt
+          : loggedInAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
     ));
   }
 }
@@ -143,7 +162,8 @@ class __$$NewLoginDetectedEventImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$NewLoginDetectedEventImpl implements NewLoginDetectedEvent {
   const _$NewLoginDetectedEventImpl(
-      {@JsonKey(name: 'device_name') required this.deviceName});
+      {@JsonKey(name: 'device_name') required this.deviceName,
+      @JsonKey(name: 'logged_in_at') required this.loggedInAt});
 
   factory _$NewLoginDetectedEventImpl.fromJson(Map<String, dynamic> json) =>
       _$$NewLoginDetectedEventImplFromJson(json);
@@ -151,10 +171,13 @@ class _$NewLoginDetectedEventImpl implements NewLoginDetectedEvent {
   @override
   @JsonKey(name: 'device_name')
   final String deviceName;
+  @override
+  @JsonKey(name: 'logged_in_at')
+  final DateTime loggedInAt;
 
   @override
   String toString() {
-    return 'NotificationEvent.newLoginDetected(deviceName: $deviceName)';
+    return 'NotificationEvent.newLoginDetected(deviceName: $deviceName, loggedInAt: $loggedInAt)';
   }
 
   @override
@@ -163,12 +186,14 @@ class _$NewLoginDetectedEventImpl implements NewLoginDetectedEvent {
         (other.runtimeType == runtimeType &&
             other is _$NewLoginDetectedEventImpl &&
             (identical(other.deviceName, deviceName) ||
-                other.deviceName == deviceName));
+                other.deviceName == deviceName) &&
+            (identical(other.loggedInAt, loggedInAt) ||
+                other.loggedInAt == loggedInAt));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, deviceName);
+  int get hashCode => Object.hash(runtimeType, deviceName, loggedInAt);
 
   /// Create a copy of NotificationEvent
   /// with the given fields replaced by the non-null parameter values.
@@ -182,30 +207,33 @@ class _$NewLoginDetectedEventImpl implements NewLoginDetectedEvent {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(@JsonKey(name: 'device_name') String deviceName)
+    required TResult Function(@JsonKey(name: 'device_name') String deviceName,
+            @JsonKey(name: 'logged_in_at') DateTime loggedInAt)
         newLoginDetected,
   }) {
-    return newLoginDetected(deviceName);
+    return newLoginDetected(deviceName, loggedInAt);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(@JsonKey(name: 'device_name') String deviceName)?
+    TResult? Function(@JsonKey(name: 'device_name') String deviceName,
+            @JsonKey(name: 'logged_in_at') DateTime loggedInAt)?
         newLoginDetected,
   }) {
-    return newLoginDetected?.call(deviceName);
+    return newLoginDetected?.call(deviceName, loggedInAt);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(@JsonKey(name: 'device_name') String deviceName)?
+    TResult Function(@JsonKey(name: 'device_name') String deviceName,
+            @JsonKey(name: 'logged_in_at') DateTime loggedInAt)?
         newLoginDetected,
     required TResult orElse(),
   }) {
     if (newLoginDetected != null) {
-      return newLoginDetected(deviceName);
+      return newLoginDetected(deviceName, loggedInAt);
     }
     return orElse();
   }
@@ -248,7 +276,8 @@ class _$NewLoginDetectedEventImpl implements NewLoginDetectedEvent {
 
 abstract class NewLoginDetectedEvent implements NotificationEvent {
   const factory NewLoginDetectedEvent(
-          {@JsonKey(name: 'device_name') required final String deviceName}) =
+          {@JsonKey(name: 'device_name') required final String deviceName,
+          @JsonKey(name: 'logged_in_at') required final DateTime loggedInAt}) =
       _$NewLoginDetectedEventImpl;
 
   factory NewLoginDetectedEvent.fromJson(Map<String, dynamic> json) =
@@ -257,6 +286,9 @@ abstract class NewLoginDetectedEvent implements NotificationEvent {
   @override
   @JsonKey(name: 'device_name')
   String get deviceName;
+  @override
+  @JsonKey(name: 'logged_in_at')
+  DateTime get loggedInAt;
 
   /// Create a copy of NotificationEvent
   /// with the given fields replaced by the non-null parameter values.

@@ -17,7 +17,6 @@ final GlobalKey<NavigatorState> rootNavKey = GlobalKey<NavigatorState>();
 GoRouter goRouter(GoRouterRef ref) {
   final authState = ref.watch(authStateNotifierProvider);
 
-
   return GoRouter(
       navigatorKey: rootNavKey,
       redirect: (context, state) {
@@ -50,8 +49,12 @@ GoRouter goRouter(GoRouterRef ref) {
             GoRoute(
               path: 'new-login-detected',
               name: 'new-login-detected',
-              builder: (context, state) => NewLoginDetectedScreen(
-                  deviceName: state.uri.queryParameters['deviceName']!),
+              builder: (context, state) {
+                final event = (state.extra!) as NewLoginDetectedEvent;
+
+                return NewLoginDetectedScreen(
+                    deviceName: event.deviceName, loggedInAt: event.loggedInAt);
+              },
             ),
           ],
         ),

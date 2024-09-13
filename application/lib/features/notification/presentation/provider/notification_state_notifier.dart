@@ -32,12 +32,11 @@ class NotificationStateNotifier extends _$NotificationStateNotifier {
       // TODO: 이미 앱 내부에서 처리된 알림을 다시 처리할 때?
 
       final Result result = await notification.event.when(
-        newLoginDetected: (deviceName) async {
+        newLoginDetected: (deviceName, loggedInAt) async {
           final BuildContext? context = rootNavKey.currentContext;
           if (context == null) return Fail();
 
-          context.pushNamed('new-login-detected',
-              queryParameters: {'deviceName': notification.event.deviceName});
+          context.pushNamed('new-login-detected', extra: notification.event);
           return Success(data: null);
         },
       );
