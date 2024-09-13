@@ -33,7 +33,7 @@ class NotificationStateNotifier extends _$NotificationStateNotifier {
 
       final Result result = await notification.event.when(
         newLoginDetected: (deviceName, loggedInAt) async {
-          final BuildContext? context = rootNavKey.currentContext;
+          final context = rootNavKey.currentContext;
           if (context == null) return Fail();
 
           context.pushNamed('new-login-detected', extra: notification.event);

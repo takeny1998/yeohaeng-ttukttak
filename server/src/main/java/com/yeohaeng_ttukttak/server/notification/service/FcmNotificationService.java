@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -27,7 +29,10 @@ public class FcmNotificationService implements NotificationService {
 
         final ApnsConfig apnsConfig = ApnsConfig.builder()
                 .setAps(aps)
-                .putHeader("apns-priority", "5").build();
+                .putHeader("apns-push-type", "alert")
+                .putHeader("apns-priority", "5")
+                .putHeader("apns-topic", "com.yeohaeng-ttukttak.application")
+                .build();
 
         final MulticastMessage message = MulticastMessage.builder()
                 .setNotification(notification)

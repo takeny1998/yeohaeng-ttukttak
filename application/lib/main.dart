@@ -83,6 +83,7 @@ void main() async {
   final firebaseApp = await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform);
 
+
   print('[main()] firebaseApp: options = ${firebaseApp.options}');
 
   final fcmToken = await initNotifications();
@@ -136,19 +137,18 @@ class _MyAppState extends ConsumerState<MyApp> {
     onMessageOpenedApp = FirebaseMessaging.onMessageOpenedApp
         .listen((message) => notificationConsumeHandler(message, ref));
 
-    // 앱이 종료(terminated)된 상태에서,
-    // 사용자가 Push Notification을 클릭해 들어올 때 발생한다,
-    FirebaseMessaging.instance.getInitialMessage().then((initialMessage) async {
-
-      print('[main] initialMessage = ${initialMessage?.messageId} ${initialMessage?.data} ');
+    Future.delayed(const Duration(seconds: 3), () async {
+      // 앱이 종료(terminated)된 상태에서,
+      // 사용자가 Push Notification을 클릭해 들어올 때 발생한다,
+      final initialMessage = await FirebaseMessaging.instance.getInitialMessage();
       if (initialMessage == null) return;
 
       final notification = NotificationModel.fromRemoteMessage(initialMessage);
-      print('[if initialMessage not null] notification = $notification');
+      print('[_MyAppState.initState] initialMessage = $notification ');
 
       await ref
           .read(notificationStateNotifierProvider.notifier)
-          .register(notification);
+          .handle(notification);
     });
   }
 
