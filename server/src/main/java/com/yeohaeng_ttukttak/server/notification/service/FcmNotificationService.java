@@ -21,8 +21,16 @@ public class FcmNotificationService implements NotificationService {
                 .setBody(command.body())
                 .build();
 
+        final Aps aps = Aps.builder()
+                .setContentAvailable(true)
+                .build();
+
+       final ApnsConfig apnsConfig = ApnsConfig.builder()
+                .setAps(aps).build();
+
         final MulticastMessage message = MulticastMessage.builder()
                 .setNotification(notification)
+                .setApnsConfig(apnsConfig)
                 .addAllTokens(command.tokens())
                 .putAllData(command.data())
                 .build();

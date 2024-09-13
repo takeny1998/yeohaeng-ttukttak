@@ -15,6 +15,34 @@ import 'config/router/router_provider.dart';
 
 part 'main.g.dart';
 
+Future<void> notificationConsumeHandler(
+    RemoteMessage message, WidgetRef ref) async {
+  print(
+      '[notificationConsumeHandler] id = ${message.messageId} data = ${message.data}, body = ${message.notification?.body}');
+
+  final model = NotificationModel.fromRemoteMessage(message);
+  ref.read(notificationStateNotifierProvider.notifier).handle(model);
+}
+
+Future<void> notificationRegisterHandler(
+    RemoteMessage message, WidgetRef ref) async {
+  print(
+      '[notificationRegisterHandler] id = ${message.messageId} data = ${message.data}, body = ${message.notification?.body}');
+
+  final model = NotificationModel.fromRemoteMessage(message);
+  ref.read(notificationStateNotifierProvider.notifier).register(model);
+}
+
+@pragma('vm:entry-point')
+Future<void> notificationBackgroundHandler(
+    RemoteMessage message, ProviderContainer container) async {
+  print(
+      '[notificationBackgroundHandler] id = ${message.messageId} data = ${message.data}, body = ${message.notification?.body}');
+
+  final model = NotificationModel.fromRemoteMessage(message);
+  container.read(notificationStateNotifierProvider.notifier).register(model);
+}
+
 @riverpod
 BaseDeviceInfo baseDeviceInfo(BaseDeviceInfoRef ref) {
   throw UnimplementedError();
@@ -59,10 +87,15 @@ void main() async {
   final deviceInfo = await DeviceInfoPlugin().deviceInfo;
   await initHive();
 
-  runApp(ProviderScope(overrides: [
+  final container = ProviderContainer(overrides: [
     baseDeviceInfoProvider.overrideWithValue(deviceInfo),
     notificationTokenProvider.overrideWithValue(fcmToken),
-  ], child: const MyApp()));
+  ]);
+
+  FirebaseMessaging.onBackgroundMessage(
+      (message) => notificationBackgroundHandler(message, container));
+
+  runApp(ProviderScope(parent: container, child: const MyApp()));
 }
 
 class MyApp extends ConsumerStatefulWidget {
@@ -73,7 +106,6 @@ class MyApp extends ConsumerStatefulWidget {
 }
 
 class _MyAppState extends ConsumerState<MyApp> {
-
   StreamSubscription<RemoteMessage>? onMessage, onMessageOpenedApp;
 
   @override
@@ -100,8 +132,6 @@ class _MyAppState extends ConsumerState<MyApp> {
     onMessageOpenedApp = FirebaseMessaging.onMessageOpenedApp
         .listen((message) => notificationConsumeHandler(message, ref));
 
-    FirebaseMessaging.onBackgroundMessage(
-        (message) => notificationRegisterHandler(message, ref));
   }
 
   @override
@@ -111,22 +141,4 @@ class _MyAppState extends ConsumerState<MyApp> {
 
     super.dispose();
   }
-}
-
-Future<void> notificationConsumeHandler(
-    RemoteMessage message, WidgetRef ref) async {
-  print(
-      '[notificationConsumeHandler] id = ${message.messageId} data = ${message.data}, body = ${message.notification?.body}');
-
-  final model = NotificationModel.fromRemoteMessage(message);
-  ref.read(notificationStateNotifierProvider.notifier).handle(model);
-}
-
-Future<void> notificationRegisterHandler(
-    RemoteMessage message, WidgetRef ref) async {
-  print(
-      '[notificationRegisterHandler] id = ${message.messageId} data = ${message.data}, body = ${message.notification?.body}');
-
-  final model = NotificationModel.fromRemoteMessage(message);
-  ref.read(notificationStateNotifierProvider.notifier).register(model);
 }
