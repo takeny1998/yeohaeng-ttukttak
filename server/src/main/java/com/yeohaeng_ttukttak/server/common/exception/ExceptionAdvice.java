@@ -2,9 +2,7 @@ package com.yeohaeng_ttukttak.server.common.exception;
 
 import com.yeohaeng_ttukttak.server.common.dto.ServerErrorResponse;
 import com.yeohaeng_ttukttak.server.common.dto.ServerFailResponse;
-import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundException;
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.FailException;
-import com.yeohaeng_ttukttak.server.common.util.StringUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +13,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.Locale;
 import java.util.Objects;
+import java.util.UUID;
 
 @Slf4j
 @RestControllerAdvice
@@ -51,7 +50,7 @@ public class ExceptionAdvice {
 
     private void logError(Exception ex, HttpServletRequest request) {
 
-        String uuid = StringUtil.generateShortUUID();
+        final String uuid = UUID.randomUUID().toString();
 
         log.error("[{}] >> {} {}",
                 uuid, request.getMethod(), request.getRequestURI());

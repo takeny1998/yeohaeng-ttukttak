@@ -1,6 +1,5 @@
 package com.yeohaeng_ttukttak.server.common.exception.exception.fail;
 
-import com.yeohaeng_ttukttak.server.common.exception.exception.fail.FailException;
 import lombok.Getter;
 
 @Getter

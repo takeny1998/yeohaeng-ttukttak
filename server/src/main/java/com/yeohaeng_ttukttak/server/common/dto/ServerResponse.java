@@ -16,4 +16,7 @@ public final class ServerResponse<T> {
         this.data = data;
     }
 
+    public ServerResponse() {
+        this(null);
+    }
 }
