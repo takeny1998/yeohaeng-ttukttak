@@ -76,6 +76,8 @@ mixin _$ServerResponse<T> {
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
+
+  /// Serializes this ServerResponse to a JSON map.
   Map<String, dynamic> toJson(Object? Function(T) toJsonT) =>
       throw _privateConstructorUsedError;
 }
@@ -96,6 +98,9 @@ class _$ServerResponseCopyWithImpl<T, $Res, $Val extends ServerResponse<T>>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of ServerResponse
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -118,6 +123,8 @@ class __$$ServerSuccessResponseImplCopyWithImpl<T, $Res>
       $Res Function(_$ServerSuccessResponseImpl<T>) _then)
       : super(_value, _then);
 
+  /// Create a copy of ServerResponse
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -161,12 +168,14 @@ class _$ServerSuccessResponseImpl<T> implements ServerSuccessResponse<T> {
             const DeepCollectionEquality().equals(other.data, data));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(data));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ServerResponse
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ServerSuccessResponseImplCopyWith<T, _$ServerSuccessResponseImpl<T>>
@@ -256,7 +265,10 @@ abstract class ServerSuccessResponse<T> implements ServerResponse<T> {
       _$ServerSuccessResponseImpl<T>.fromJson;
 
   T get data;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ServerResponse
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ServerSuccessResponseImplCopyWith<T, _$ServerSuccessResponseImpl<T>>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -278,6 +290,8 @@ class __$$ServerFailResponseImplCopyWithImpl<T, $Res>
       $Res Function(_$ServerFailResponseImpl<T>) _then)
       : super(_value, _then);
 
+  /// Create a copy of ServerResponse
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -338,12 +352,14 @@ class _$ServerFailResponseImpl<T> implements ServerFailResponse<T> {
             const DeepCollectionEquality().equals(other._data, _data));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType, message, const DeepCollectionEquality().hash(_data));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ServerResponse
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ServerFailResponseImplCopyWith<T, _$ServerFailResponseImpl<T>>
@@ -435,7 +451,10 @@ abstract class ServerFailResponse<T> implements ServerResponse<T> {
 
   String? get message;
   Map<String, String>? get data;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ServerResponse
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ServerFailResponseImplCopyWith<T, _$ServerFailResponseImpl<T>>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -457,6 +476,8 @@ class __$$ServerErrorResponseImplCopyWithImpl<T, $Res>
       $Res Function(_$ServerErrorResponseImpl<T>) _then)
       : super(_value, _then);
 
+  /// Create a copy of ServerResponse
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -509,11 +530,13 @@ class _$ServerErrorResponseImpl<T> implements ServerErrorResponse<T> {
             (identical(other.code, code) || other.code == code));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, message, code);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ServerResponse
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ServerErrorResponseImplCopyWith<T, _$ServerErrorResponseImpl<T>>
@@ -605,7 +628,10 @@ abstract class ServerErrorResponse<T> implements ServerResponse<T> {
 
   String get message;
   int? get code;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ServerResponse
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ServerErrorResponseImplCopyWith<T, _$ServerErrorResponseImpl<T>>
       get copyWith => throw _privateConstructorUsedError;
 }

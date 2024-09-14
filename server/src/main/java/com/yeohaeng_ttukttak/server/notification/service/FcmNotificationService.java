@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -21,8 +23,20 @@ public class FcmNotificationService implements NotificationService {
                 .setBody(command.body())
                 .build();
 
+        final Aps aps = Aps.builder()
+                .setContentAvailable(true)
+                .build();
+
+        final ApnsConfig apnsConfig = ApnsConfig.builder()
+                .setAps(aps)
+                .putHeader("apns-push-type", "alert")
+                .putHeader("apns-priority", "5")
+                .putHeader("apns-topic", "com.yeohaeng-ttukttak.application")
+                .build();
+
         final MulticastMessage message = MulticastMessage.builder()
                 .setNotification(notification)
+                .setApnsConfig(apnsConfig)
                 .addAllTokens(command.tokens())
                 .putAllData(command.data())
                 .build();
@@ -33,6 +47,12 @@ public class FcmNotificationService implements NotificationService {
 
             log.debug("[FcmNotificationService.sendAll] Notification has been sent. Total: {}, Success: {}, Fail: {}",
                     response.getResponses().size(), response.getSuccessCount(), response.getFailureCount());
+
+            if (response.getFailureCount() > 0) {
+                for (SendResponse res : response.getResponses()) {
+                    log.debug("  - ex : {}", res.getException().toString());
+                }
+            }
 
         } catch (FirebaseMessagingException e) {
 

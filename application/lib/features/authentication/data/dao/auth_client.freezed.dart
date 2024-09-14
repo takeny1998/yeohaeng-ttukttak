@@ -23,8 +23,12 @@ mixin _$AuthSignInRequest {
   String get authorizationCode => throw _privateConstructorUsedError;
   String get notificationToken => throw _privateConstructorUsedError;
 
+  /// Serializes this AuthSignInRequest to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of AuthSignInRequest
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $AuthSignInRequestCopyWith<AuthSignInRequest> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -48,6 +52,8 @@ class _$AuthSignInRequestCopyWithImpl<$Res, $Val extends AuthSignInRequest>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of AuthSignInRequest
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -86,6 +92,8 @@ class __$$AuthSignInRequestImplCopyWithImpl<$Res>
       $Res Function(_$AuthSignInRequestImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of AuthSignInRequest
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -135,12 +143,14 @@ class _$AuthSignInRequestImpl implements _AuthSignInRequest {
                 other.notificationToken == notificationToken));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, authorizationCode, notificationToken);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of AuthSignInRequest
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$AuthSignInRequestImplCopyWith<_$AuthSignInRequestImpl> get copyWith =>
@@ -167,8 +177,11 @@ abstract class _AuthSignInRequest implements AuthSignInRequest {
   String get authorizationCode;
   @override
   String get notificationToken;
+
+  /// Create a copy of AuthSignInRequest
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AuthSignInRequestImplCopyWith<_$AuthSignInRequestImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -181,8 +194,12 @@ AuthDeleteRequest _$AuthDeleteRequestFromJson(Map<String, dynamic> json) {
 mixin _$AuthDeleteRequest {
   String get authorizationCode => throw _privateConstructorUsedError;
 
+  /// Serializes this AuthDeleteRequest to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of AuthDeleteRequest
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $AuthDeleteRequestCopyWith<AuthDeleteRequest> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -206,6 +223,8 @@ class _$AuthDeleteRequestCopyWithImpl<$Res, $Val extends AuthDeleteRequest>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of AuthDeleteRequest
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -239,6 +258,8 @@ class __$$AuthDeleteRequestImplCopyWithImpl<$Res>
       $Res Function(_$AuthDeleteRequestImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of AuthDeleteRequest
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -278,11 +299,13 @@ class _$AuthDeleteRequestImpl implements _AuthDeleteRequest {
                 other.authorizationCode == authorizationCode));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, authorizationCode);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of AuthDeleteRequest
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$AuthDeleteRequestImplCopyWith<_$AuthDeleteRequestImpl> get copyWith =>
@@ -306,8 +329,11 @@ abstract class _AuthDeleteRequest implements AuthDeleteRequest {
 
   @override
   String get authorizationCode;
+
+  /// Create a copy of AuthDeleteRequest
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AuthDeleteRequestImplCopyWith<_$AuthDeleteRequestImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -320,8 +346,12 @@ AuthRenewRequest _$AuthRenewRequestFromJson(Map<String, dynamic> json) {
 mixin _$AuthRenewRequest {
   String get refreshToken => throw _privateConstructorUsedError;
 
+  /// Serializes this AuthRenewRequest to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of AuthRenewRequest
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $AuthRenewRequestCopyWith<AuthRenewRequest> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -345,6 +375,8 @@ class _$AuthRenewRequestCopyWithImpl<$Res, $Val extends AuthRenewRequest>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of AuthRenewRequest
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -378,6 +410,8 @@ class __$$AuthRenewRequestImplCopyWithImpl<$Res>
       $Res Function(_$AuthRenewRequestImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of AuthRenewRequest
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -417,11 +451,13 @@ class _$AuthRenewRequestImpl implements _AuthRenewRequest {
                 other.refreshToken == refreshToken));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, refreshToken);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of AuthRenewRequest
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$AuthRenewRequestImplCopyWith<_$AuthRenewRequestImpl> get copyWith =>
@@ -445,8 +481,11 @@ abstract class _AuthRenewRequest implements AuthRenewRequest {
 
   @override
   String get refreshToken;
+
+  /// Create a copy of AuthRenewRequest
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AuthRenewRequestImplCopyWith<_$AuthRenewRequestImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
