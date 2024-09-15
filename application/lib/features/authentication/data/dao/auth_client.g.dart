@@ -36,12 +36,14 @@ _$AuthRenewRequestImpl _$$AuthRenewRequestImplFromJson(
         Map<String, dynamic> json) =>
     _$AuthRenewRequestImpl(
       refreshToken: json['refreshToken'] as String,
+      notificationToken: json['notificationToken'] as String,
     );
 
 Map<String, dynamic> _$$AuthRenewRequestImplToJson(
         _$AuthRenewRequestImpl instance) =>
     <String, dynamic>{
       'refreshToken': instance.refreshToken,
+      'notificationToken': instance.notificationToken,
     };
 
 // **************************************************************************

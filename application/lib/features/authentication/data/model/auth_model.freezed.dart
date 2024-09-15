@@ -22,7 +22,6 @@ AuthModel _$AuthModelFromJson(Map<String, dynamic> json) {
 mixin _$AuthModel {
   String get accessToken => throw _privateConstructorUsedError;
   String get refreshToken => throw _privateConstructorUsedError;
-  int get expiresIn => throw _privateConstructorUsedError;
 
   /// Serializes this AuthModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -39,7 +38,7 @@ abstract class $AuthModelCopyWith<$Res> {
   factory $AuthModelCopyWith(AuthModel value, $Res Function(AuthModel) then) =
       _$AuthModelCopyWithImpl<$Res, AuthModel>;
   @useResult
-  $Res call({String accessToken, String refreshToken, int expiresIn});
+  $Res call({String accessToken, String refreshToken});
 }
 
 /// @nodoc
@@ -59,7 +58,6 @@ class _$AuthModelCopyWithImpl<$Res, $Val extends AuthModel>
   $Res call({
     Object? accessToken = null,
     Object? refreshToken = null,
-    Object? expiresIn = null,
   }) {
     return _then(_value.copyWith(
       accessToken: null == accessToken
@@ -70,10 +68,6 @@ class _$AuthModelCopyWithImpl<$Res, $Val extends AuthModel>
           ? _value.refreshToken
           : refreshToken // ignore: cast_nullable_to_non_nullable
               as String,
-      expiresIn: null == expiresIn
-          ? _value.expiresIn
-          : expiresIn // ignore: cast_nullable_to_non_nullable
-              as int,
     ) as $Val);
   }
 }
@@ -86,7 +80,7 @@ abstract class _$$AuthModelImplCopyWith<$Res>
       __$$AuthModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String accessToken, String refreshToken, int expiresIn});
+  $Res call({String accessToken, String refreshToken});
 }
 
 /// @nodoc
@@ -104,7 +98,6 @@ class __$$AuthModelImplCopyWithImpl<$Res>
   $Res call({
     Object? accessToken = null,
     Object? refreshToken = null,
-    Object? expiresIn = null,
   }) {
     return _then(_$AuthModelImpl(
       accessToken: null == accessToken
@@ -115,10 +108,6 @@ class __$$AuthModelImplCopyWithImpl<$Res>
           ? _value.refreshToken
           : refreshToken // ignore: cast_nullable_to_non_nullable
               as String,
-      expiresIn: null == expiresIn
-          ? _value.expiresIn
-          : expiresIn // ignore: cast_nullable_to_non_nullable
-              as int,
     ));
   }
 }
@@ -127,9 +116,7 @@ class __$$AuthModelImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$AuthModelImpl implements _AuthModel {
   const _$AuthModelImpl(
-      {required this.accessToken,
-      required this.refreshToken,
-      required this.expiresIn});
+      {required this.accessToken, required this.refreshToken});
 
   factory _$AuthModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$AuthModelImplFromJson(json);
@@ -138,12 +125,10 @@ class _$AuthModelImpl implements _AuthModel {
   final String accessToken;
   @override
   final String refreshToken;
-  @override
-  final int expiresIn;
 
   @override
   String toString() {
-    return 'AuthModel(accessToken: $accessToken, refreshToken: $refreshToken, expiresIn: $expiresIn)';
+    return 'AuthModel(accessToken: $accessToken, refreshToken: $refreshToken)';
   }
 
   @override
@@ -154,15 +139,12 @@ class _$AuthModelImpl implements _AuthModel {
             (identical(other.accessToken, accessToken) ||
                 other.accessToken == accessToken) &&
             (identical(other.refreshToken, refreshToken) ||
-                other.refreshToken == refreshToken) &&
-            (identical(other.expiresIn, expiresIn) ||
-                other.expiresIn == expiresIn));
+                other.refreshToken == refreshToken));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, accessToken, refreshToken, expiresIn);
+  int get hashCode => Object.hash(runtimeType, accessToken, refreshToken);
 
   /// Create a copy of AuthModel
   /// with the given fields replaced by the non-null parameter values.
@@ -183,8 +165,7 @@ class _$AuthModelImpl implements _AuthModel {
 abstract class _AuthModel implements AuthModel {
   const factory _AuthModel(
       {required final String accessToken,
-      required final String refreshToken,
-      required final int expiresIn}) = _$AuthModelImpl;
+      required final String refreshToken}) = _$AuthModelImpl;
 
   factory _AuthModel.fromJson(Map<String, dynamic> json) =
       _$AuthModelImpl.fromJson;
@@ -193,8 +174,6 @@ abstract class _AuthModel implements AuthModel {
   String get accessToken;
   @override
   String get refreshToken;
-  @override
-  int get expiresIn;
 
   /// Create a copy of AuthModel
   /// with the given fields replaced by the non-null parameter values.

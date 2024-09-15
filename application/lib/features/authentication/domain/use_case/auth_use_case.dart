@@ -1,8 +1,6 @@
-import 'package:application/common/data/model/response.dart';
 import 'package:application/features/authentication/data/dao/auth_client.dart';
+import 'package:application/features/authentication/data/model/auth_model.dart';
 import 'package:application/features/authentication/domain/dao/auth_repository.dart';
-import 'package:application/features/authentication/domain/entity/auth_entity.dart';
-import 'package:dio/dio.dart';
 
 final class AuthUseCase {
   final AuthRepository _repository;
@@ -12,7 +10,7 @@ final class AuthUseCase {
       : _repository = repository,
         _client = client;
 
-  Future<AuthEntity?> find() async {
+  Future<AuthModel?> find() async {
     final entity = await _repository.find();
     if (entity == null) return entity;
     return entity;

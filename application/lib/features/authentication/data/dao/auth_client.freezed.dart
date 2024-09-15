@@ -345,6 +345,7 @@ AuthRenewRequest _$AuthRenewRequestFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$AuthRenewRequest {
   String get refreshToken => throw _privateConstructorUsedError;
+  String get notificationToken => throw _privateConstructorUsedError;
 
   /// Serializes this AuthRenewRequest to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -362,7 +363,7 @@ abstract class $AuthRenewRequestCopyWith<$Res> {
           AuthRenewRequest value, $Res Function(AuthRenewRequest) then) =
       _$AuthRenewRequestCopyWithImpl<$Res, AuthRenewRequest>;
   @useResult
-  $Res call({String refreshToken});
+  $Res call({String refreshToken, String notificationToken});
 }
 
 /// @nodoc
@@ -381,11 +382,16 @@ class _$AuthRenewRequestCopyWithImpl<$Res, $Val extends AuthRenewRequest>
   @override
   $Res call({
     Object? refreshToken = null,
+    Object? notificationToken = null,
   }) {
     return _then(_value.copyWith(
       refreshToken: null == refreshToken
           ? _value.refreshToken
           : refreshToken // ignore: cast_nullable_to_non_nullable
+              as String,
+      notificationToken: null == notificationToken
+          ? _value.notificationToken
+          : notificationToken // ignore: cast_nullable_to_non_nullable
               as String,
     ) as $Val);
   }
@@ -399,7 +405,7 @@ abstract class _$$AuthRenewRequestImplCopyWith<$Res>
       __$$AuthRenewRequestImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String refreshToken});
+  $Res call({String refreshToken, String notificationToken});
 }
 
 /// @nodoc
@@ -416,11 +422,16 @@ class __$$AuthRenewRequestImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? refreshToken = null,
+    Object? notificationToken = null,
   }) {
     return _then(_$AuthRenewRequestImpl(
       refreshToken: null == refreshToken
           ? _value.refreshToken
           : refreshToken // ignore: cast_nullable_to_non_nullable
+              as String,
+      notificationToken: null == notificationToken
+          ? _value.notificationToken
+          : notificationToken // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
@@ -429,17 +440,20 @@ class __$$AuthRenewRequestImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$AuthRenewRequestImpl implements _AuthRenewRequest {
-  const _$AuthRenewRequestImpl({required this.refreshToken});
+  const _$AuthRenewRequestImpl(
+      {required this.refreshToken, required this.notificationToken});
 
   factory _$AuthRenewRequestImpl.fromJson(Map<String, dynamic> json) =>
       _$$AuthRenewRequestImplFromJson(json);
 
   @override
   final String refreshToken;
+  @override
+  final String notificationToken;
 
   @override
   String toString() {
-    return 'AuthRenewRequest(refreshToken: $refreshToken)';
+    return 'AuthRenewRequest(refreshToken: $refreshToken, notificationToken: $notificationToken)';
   }
 
   @override
@@ -448,12 +462,14 @@ class _$AuthRenewRequestImpl implements _AuthRenewRequest {
         (other.runtimeType == runtimeType &&
             other is _$AuthRenewRequestImpl &&
             (identical(other.refreshToken, refreshToken) ||
-                other.refreshToken == refreshToken));
+                other.refreshToken == refreshToken) &&
+            (identical(other.notificationToken, notificationToken) ||
+                other.notificationToken == notificationToken));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, refreshToken);
+  int get hashCode => Object.hash(runtimeType, refreshToken, notificationToken);
 
   /// Create a copy of AuthRenewRequest
   /// with the given fields replaced by the non-null parameter values.
@@ -473,14 +489,17 @@ class _$AuthRenewRequestImpl implements _AuthRenewRequest {
 }
 
 abstract class _AuthRenewRequest implements AuthRenewRequest {
-  const factory _AuthRenewRequest({required final String refreshToken}) =
-      _$AuthRenewRequestImpl;
+  const factory _AuthRenewRequest(
+      {required final String refreshToken,
+      required final String notificationToken}) = _$AuthRenewRequestImpl;
 
   factory _AuthRenewRequest.fromJson(Map<String, dynamic> json) =
       _$AuthRenewRequestImpl.fromJson;
 
   @override
   String get refreshToken;
+  @override
+  String get notificationToken;
 
   /// Create a copy of AuthRenewRequest
   /// with the given fields replaced by the non-null parameter values.

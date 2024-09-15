@@ -63,7 +63,8 @@ class AuthDeleteRequest with _$AuthDeleteRequest {
 @freezed
 class AuthRenewRequest with _$AuthRenewRequest {
   const factory AuthRenewRequest({
-    required String refreshToken
+    required String refreshToken,
+    required String notificationToken
   }) = _AuthRenewRequest;
 
   factory AuthRenewRequest.fromJson(Map<String, dynamic> json) =>
