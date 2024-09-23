@@ -19,6 +19,10 @@ public class Member {
     @Id @GeneratedValue
     private UUID id;
 
+    @Enumerated(EnumType.STRING)
+    private AgeGroup ageGroup;
+
+    @Enumerated(EnumType.STRING)
     private Gender gender;
 
     private LocalDate birthDate;
@@ -37,4 +41,9 @@ public class Member {
     public String id() {
         return id.toString();
     }
+
+    public AgeGroup ageGroup() {
+        return ageGroup;
+    }
+
 }
