@@ -1,21 +1,7 @@
 spring:
   cloud.aws.region.static: ap-northeast-2
-  application.name: server
 
-management:
-  server.port: 8081
-
-  endpoints:
-    enabled-by-default: false
-    web.exposure.include: health
-
-  endpoint:
-    health.enabled: true
-
----
-spring:
   config:
-    activate.on-profile: local
     import: aws-parameterstore:/yeohaeng-ttukttak/server_dev/
 
   datasource:
@@ -27,31 +13,26 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        use_sql_comments: true
+
+logging:
+  level:
+    org.hibernate.type.descriptor.sql: trace
+    com.yeohaeng_ttukttak.server: debug
 
 oauth:
-  google:
-    client-id: 951324022006-eigc5h6tj71rm2v31eqr5u0v07cbmpn1.apps.googleusercontent.com
-    client-secret: ${oauth.google.client-secret}
-    scope: https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/user.gender.read https://www.googleapis.com/auth/user.birthday.read
-    redirect-uri: https://bug-steady-reliably.ngrok-free.app/api/v2/oauth2/google
-    grant-type: authorization_code
-
   apple:
     client-id: com.yeohaeng-ttukttak.application
-    key-id: BZTAVU6WPU
-    team-id: V962884Y3R
-    redirect-uri: https://bug-steady-reliably.ngrok-free.app/api/v2/oauth2/apple
-    private-key: ${oauth.apple.private-key}
+  google:
+    client-id: 951324022006-eigc5h6tj71rm2v31eqr5u0v07cbmpn1.apps.googleusercontent.com
 
-jwt:
-  issuer: yeohaeng-ttukttak.com
-  secret: ${jwt.secret}
+auth:
   access-token:
+    issuer: yeohaeng-ttukttak.com
     expiration: 30m
   refresh-token:
     expiration: 14d
-
-logging.level:
-    org.hibernate.sql: debug
-    com.yeohaeng_ttukttak.server: debug

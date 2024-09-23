@@ -3,14 +3,13 @@ import 'dart:async';
 import 'package:application/common/data/model/response.dart';
 import 'package:application/features/authentication/data/model/auth_model.dart';
 import 'package:application/features/authentication/domain/dao/auth_repository.dart';
-import 'package:application/features/authentication/domain/entity/auth_entity.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import '../../data/dao/auth_client.dart';
 
 abstract interface class OAuthUseCase {
-  Future<AuthEntity> signIn();
+  Future<AuthModel> signIn();
 }
 
 final class GoogleOAuthUseCase implements OAuthUseCase {
@@ -37,7 +36,7 @@ final class GoogleOAuthUseCase implements OAuthUseCase {
       ).signIn();
 
   @override
-  Future<AuthEntity> signIn() async {
+  Future<AuthModel> signIn() async {
     final credential = await _authorize();
     final authorizationCode = credential!.serverAuthCode!;
 
@@ -76,7 +75,7 @@ final class AppleOAuthUseCase implements OAuthUseCase {
           scopes: [AppleIDAuthorizationScopes.email]);
 
   @override
-  Future<AuthEntity> signIn() async {
+  Future<AuthModel> signIn() async {
     final credential = await _authorize();
     final authorizationCode = credential.authorizationCode;
 
@@ -86,9 +85,8 @@ final class AppleOAuthUseCase implements OAuthUseCase {
 
     switch (response) {
       case ServerSuccessResponse<AuthModel>(:final data):
-        final entity = AuthEntity.fromModel(data);
-        await _repository.save(entity);
-        return entity;
+        await _repository.save(data);
+        return data;
       case ServerFailResponse<AuthModel>():
       case ServerErrorResponse<AuthModel>():
         throw Error();

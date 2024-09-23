@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:application/features/authentication/domain/dao/auth_repository.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-import '../../domain/entity/auth_entity.dart';
+import '../model/auth_model.dart';
 
 final class SecureStorageAuthRepository implements AuthRepository {
   final FlutterSecureStorage _storage;
@@ -15,15 +15,15 @@ final class SecureStorageAuthRepository implements AuthRepository {
       : _storage = storage;
 
   @override
-  FutureOr<void> save(AuthEntity entity) async {
-    final encoded = jsonEncode(entity.toJson());
+  FutureOr<void> save(AuthModel model) async {
+    final encoded = jsonEncode(model.toJson());
     await _storage.write(key: key, value: encoded);
   }
 
   @override
-  FutureOr<AuthEntity?> find() async {
+  FutureOr<AuthModel?> find() async {
     String? encoded = await _storage.read(key: key);
-    return encoded != null ? AuthEntity.fromJson(jsonDecode(encoded)) : null;
+    return encoded != null ? AuthModel.fromJson(jsonDecode(encoded)) : null;
   }
 
   @override

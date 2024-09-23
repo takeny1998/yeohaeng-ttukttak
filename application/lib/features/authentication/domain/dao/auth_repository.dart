@@ -1,13 +1,13 @@
 
 import 'dart:async';
 
-import 'package:application/features/authentication/domain/entity/auth_entity.dart';
+import '../../data/model/auth_model.dart';
 
 abstract interface class AuthRepository {
 
-  FutureOr<AuthEntity?> find();
+  FutureOr<AuthModel?> find();
 
-  FutureOr<void> save(AuthEntity model);
+  FutureOr<void> save(AuthModel model);
 
   FutureOr<void> delete();
 

@@ -3,11 +3,11 @@ import 'package:application/features/authentication/data/dao/auth_client.dart';
 import 'package:application/features/authentication/data/model/auth_model.dart';
 import 'package:application/features/authentication/domain/provider/auth_provider.dart';
 import 'package:application/features/authentication/presentation/provider/auth_state_notifier.dart';
+import 'package:application/main.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../features/authentication/domain/entity/auth_entity.dart';
 
 final class DioAuthInterceptor extends Interceptor {
   final AutoDisposeRef _ref;
@@ -27,7 +27,7 @@ final class DioAuthInterceptor extends Interceptor {
     final auth = await _ref.watch(authRepositoryProvider).find();
 
     if (auth != null) {
-      final AuthEntity(accessToken: accessToken) = auth;
+      final AuthModel(accessToken: accessToken) = auth;
       options.headers.addAll({'Authorization': 'Bearer $accessToken'});
     }
 
@@ -39,6 +39,8 @@ final class DioAuthInterceptor extends Interceptor {
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) async {
     final authRepository = _ref.watch(authRepositoryProvider);
+    final notificationToken = _ref.watch(notificationTokenProvider);
+
     final authEntity = await authRepository.find();
 
     if (authEntity == null) {
@@ -47,8 +49,9 @@ final class DioAuthInterceptor extends Interceptor {
 
     print('[DioAuthInterceptor.onResponse()] Expired, try renewing token.');
 
-    final renewResponse = await _client
-        .renewToken(AuthRenewRequest(refreshToken: authEntity.refreshToken));
+    final renewResponse = await _client.renewToken(AuthRenewRequest(
+        refreshToken: authEntity.refreshToken,
+        notificationToken: notificationToken));
 
     print('[DioAuthInterceptor.onResponse()] renewed = $renewResponse');
 
@@ -56,11 +59,10 @@ final class DioAuthInterceptor extends Interceptor {
 
     switch (renewResponse) {
       case ServerSuccessResponse<AuthModel>(:final data):
-        final entity = AuthEntity.fromModel(data);
-        await authRepository.save(entity);
+        await authRepository.save(data);
 
         final options = response.requestOptions;
-        options.headers['Authorization'] = 'Bearer ${entity.accessToken}';
+        options.headers['Authorization'] = 'Bearer $data.accessToken}';
 
         print(
             '[DioAuthInterceptor.onResponse()] Renewing token Successfully, options=$options');
