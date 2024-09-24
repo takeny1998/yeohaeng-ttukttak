@@ -1,7 +1,6 @@
 package com.yeohaeng_ttukttak.server.domain.travel.repository;
 
 import com.yeohaeng_ttukttak.server.domain.place.entity.City;
-import com.yeohaeng_ttukttak.server.domain.place.entity.Place;
 import com.yeohaeng_ttukttak.server.domain.place.entity.Region;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
