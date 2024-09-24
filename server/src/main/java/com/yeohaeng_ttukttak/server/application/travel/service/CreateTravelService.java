@@ -4,10 +4,7 @@ import com.yeohaeng_ttukttak.server.application.travel.service.dto.CreateTravelC
 import com.yeohaeng_ttukttak.server.common.dto.EntityReference;
 import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
 import com.yeohaeng_ttukttak.server.domain.member.service.MemberService;
-import com.yeohaeng_ttukttak.server.domain.place.entity.City;
-import com.yeohaeng_ttukttak.server.domain.travel.dto.TravelDto;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.InputTravel;
-import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelCity;
 import com.yeohaeng_ttukttak.server.domain.travel.repository.RegionRepository;
 import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,11 +22,9 @@ public class CreateTravelService {
     private final RegionRepository regionRepository;
 
     @Transactional
-    public TravelDto call(CreateTravelCommand comm) {
+    public void call(CreateTravelCommand comm) {
 
-        List<Long> ids = comm.cities().stream()
-                .map(EntityReference::id)
-                .toList();
+        List<Long> ids = EntityReference.extractId(comm.cities());
 
         final Member member = memberService.find(comm.memberId());
 
@@ -45,7 +40,6 @@ public class CreateTravelService {
 
         travelRepository.save(travel);
 
-        return new TravelDto(travel);
     }
 
 }
