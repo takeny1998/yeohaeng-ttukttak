@@ -2,12 +2,15 @@ package com.yeohaeng_ttukttak.server.domain.travel.entity;
 
 import com.yeohaeng_ttukttak.server.domain.member.entity.AgeGroup;
 import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
+import com.yeohaeng_ttukttak.server.domain.place.entity.City;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @ToString
@@ -20,6 +23,9 @@ public final class InputTravel extends Travel {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    @OneToMany(mappedBy = "travel", cascade = CascadeType.PERSIST)
+    public List<TravelCity> travelCities = new ArrayList<>();
 
     public InputTravel(Member member, String name, LocalDate startedOn, LocalDate endedOn, CompanionType companionType) {
         super(startedOn, endedOn, companionType);
@@ -34,6 +40,14 @@ public final class InputTravel extends Travel {
     @Override
     AgeGroup ageGroup() {
         return member.ageGroup();
+    }
+
+    public void addCity(City city) {
+        final boolean containsCity = travelCities.stream()
+                .anyMatch(tc -> tc.city().equals(city));
+
+        if (containsCity) return;
+        travelCities.add(new TravelCity(this, city));
     }
 
 }

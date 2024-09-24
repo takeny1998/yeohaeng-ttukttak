@@ -2,6 +2,7 @@ package com.yeohaeng_ttukttak.server.domain.jwt.service;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.yeohaeng_ttukttak.server.domain.jwt.dto.JavaJwtClaim;
 import com.yeohaeng_ttukttak.server.domain.jwt.dto.JwtClaim;
 import org.springframework.stereotype.Service;
@@ -46,9 +47,21 @@ public class JavaJwtService implements JwtService {
     }
 
     @Override
-    public Map<String, JwtClaim> verifyByHS256(String jwtToken) {
-        return null;
+    public Map<String, JwtClaim> verifyByHS256(String encodedToken, String secret, String issuer) {
+
+        final Algorithm HS256 = Algorithm.HMAC256(secret);
+
+        DecodedJWT decodedJWT = JWT.require(HS256)
+                .withIssuer(issuer)
+                .build()
+                .verify(encodedToken);
+
+        return decodedJWT.getClaims()
+                .entrySet().stream()
+                .collect(toMap(Map.Entry::getKey,
+                        e -> new JavaJwtClaim(e.getValue())));
     }
+
 
     @Override
     public Map<String, JwtClaim> verifyByRSA256(String jwtToken) {
