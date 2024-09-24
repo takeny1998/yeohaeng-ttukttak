@@ -11,7 +11,7 @@ import lombok.ToString;
 @ToString
 public class TravelCity {
 
-    @Id
+    @Id @GeneratedValue
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -22,10 +22,12 @@ public class TravelCity {
     @JoinColumn(name = "city_id")
     private City city;
 
-    public TravelCity(Travel travel, City city) {
+    public TravelCity(InputTravel travel, City city) {
         this.travel = travel;
         this.city = city;
-        travel.cities().add(this);
     }
 
+    public City city() {
+        return city;
+    }
 }

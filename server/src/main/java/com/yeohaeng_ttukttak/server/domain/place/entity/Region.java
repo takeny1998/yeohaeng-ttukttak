@@ -11,7 +11,6 @@ import java.util.List;
 import static jakarta.persistence.InheritanceType.SINGLE_TABLE;
 import static lombok.AccessLevel.PROTECTED;
 
-@ToString
 @Entity
 @NoArgsConstructor(access = PROTECTED)
 @DiscriminatorColumn
@@ -21,7 +20,7 @@ public abstract class Region {
     @Id
     private Long id;
 
-    @NotNull
+    @NotNull @Column(unique = true)
     private int code;
 
     @NotNull

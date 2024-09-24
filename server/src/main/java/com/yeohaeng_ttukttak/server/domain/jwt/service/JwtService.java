@@ -15,7 +15,7 @@ public interface JwtService {
 
     Map<String, JwtClaim> decode(String jwtToken);
 
-    Map<String, JwtClaim> verifyByHS256(String jwtToken);
+    Map<String, JwtClaim> verifyByHS256(String encodedToken, String secret, String issuer);
 
     Map<String, JwtClaim> verifyByRSA256(String jwtToken);
 

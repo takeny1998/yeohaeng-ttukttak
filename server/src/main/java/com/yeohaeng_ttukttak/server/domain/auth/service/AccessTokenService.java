@@ -31,7 +31,9 @@ public class AccessTokenService {
 
     public AccessTokenDto decode(String encodedToken) {
 
-        final Map<String, JwtClaim> claims = jwtService.verifyByHS256(encodedToken);
+        final Map<String, JwtClaim> claims = jwtService.verifyByHS256(
+                encodedToken, properties.secret(), properties.issuer());
+
         final String sub = claims.get("sub").asString();
 
         return new AccessTokenDto(sub);
