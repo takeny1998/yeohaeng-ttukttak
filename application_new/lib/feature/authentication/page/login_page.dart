@@ -8,9 +8,6 @@ class LoginPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final loginState = ref.watch(loginProvider);
-
-    print(loginState);
 
     return Scaffold(
       appBar: AppBar(
@@ -22,19 +19,16 @@ class LoginPage extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             TextButton(
-                onPressed: loginState.whenOrNull(
-                  data: (_) => () => ref
-                      .read(loginProvider.notifier)
-                      .login(provider: AppleProvider()),
-                ),
+                onPressed: () => ref
+                    .read(loginProvider.notifier)
+                    .login(provider: AppleProvider()),
                 child: const Text('Apple 로그인')),
             TextButton(
-                onPressed: loginState.whenOrNull(
-                  data: (_) => () => ref
-                      .read(loginProvider.notifier)
-                      .login(provider: GoogleProvider()),
-                ),
-                child: const Text('Google 로그인')),          ],
+                onPressed: () => ref
+                    .read(loginProvider.notifier)
+                    .login(provider: GoogleProvider()),
+                child: const Text('Google 로그인')),
+          ],
         ),
       ),
     );
