@@ -1,5 +1,5 @@
-name: application
-description: "여행뚝딱 애플리케이션"
+name: application_new
+description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -18,11 +18,8 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # of the product and file versions while build-number is used as the build suffix.
 version: 1.0.0+1
 
-isar_version: &isar_version ^4.0.0-dev.14 # define the version to be used
-riverpod_version: &riverpod_version 3.0.0-dev.3
-
 environment:
-  sdk: '>=3.4.3 <4.0.0'
+  sdk: ^3.5.3
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -34,24 +31,24 @@ dependencies:
   flutter:
     sdk: flutter
 
+
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.6
+  cupertino_icons: ^1.0.8
+
+  flutter_riverpod: ^2.5.1
   riverpod_annotation: ^2.3.5
+
   json_annotation: ^4.9.0
   freezed_annotation: ^2.4.4
-  go_router: ^14.2.7
-  flutter_riverpod: ^2.5.1
-  retrofit: ^4.2.0
   dio: ^5.7.0
-  flutter_secure_storage: ^4.2.1
-  device_info_plus: ^10.1.2
+  logger: ^2.4.0
+  go_router: ^14.2.7
+
   sign_in_with_apple: ^6.1.2
+  flutter_secure_storage: ^4.2.1
   google_sign_in: ^6.2.1
-  firebase_core: ^2.24.2
-  firebase_messaging: ^14.7.10
-  hive: ^2.2.3
-  hive_flutter: ^1.1.0
+
 
 dev_dependencies:
   flutter_test:
@@ -63,13 +60,14 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^4.0.0
-  riverpod_generator: ^2.4.0
-  build_runner: ^2.4.11
   custom_lint: ^0.6.4
-  riverpod_lint: ^2.3.10
-  retrofit_generator: ^8.2.0
+
+  build_runner: ^2.4.11
   json_serializable: ^6.8.0
   freezed: ^2.5.2
+
+  riverpod_lint: ^2.3.10
+  riverpod_generator: ^2.4.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -88,10 +86,10 @@ flutter:
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
-  # https://flutter.dev/assets-and-images/#resolution-aware
+  # https://flutter.dev/to/resolution-aware-images
 
   # For details regarding adding assets from package dependencies, see
-  # https://flutter.dev/assets-and-images/#from-packages
+  # https://flutter.dev/to/asset-from-package
 
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
@@ -111,4 +109,4 @@ flutter:
   #         weight: 700
   #
   # For details regarding fonts from package dependencies,
-  # see https://flutter.dev/custom-fonts/#from-packages
+  # see https://flutter.dev/to/font-from-package

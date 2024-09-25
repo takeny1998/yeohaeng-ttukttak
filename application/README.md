@@ -1,6 +1,6 @@
-# application
+# application_new
 
-여행뚝딱 애플리케이션
+A new Flutter project.
 
 ## Getting Started
 
