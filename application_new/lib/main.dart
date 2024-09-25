@@ -1,5 +1,8 @@
+import 'dart:async';
 import 'dart:ui';
 
+import 'package:application_new/common/loading/async_loading_provider.dart';
+import 'package:application_new/common/log/logger.dart';
 import 'package:application_new/common/session/session_provider.dart';
 import 'package:application_new/feature/authentication/service/auth_service_provider.dart';
 import 'package:flutter/material.dart';
@@ -54,19 +57,22 @@ class MyApp extends ConsumerStatefulWidget {
 class _MyAppState extends ConsumerState<MyApp> {
   @override
   void initState() {
-    Future.microtask(() async {
-      final authService = ref.read(authServiceProvider);
-      final sessionNotifier = ref.read(sessionProvider.notifier);
-
-      await authService.find();
-      sessionNotifier.update(isAuthenticated: true);
-    });
+    Future.microtask(autoLogin);
     super.initState();
+  }
+
+  FutureOr<void> autoLogin() async {
+    final authService = ref.read(authServiceProvider);
+    final sessionNotifier = ref.read(sessionProvider.notifier);
+
+    await authService.find();
+    sessionNotifier.update(isAuthenticated: true);
   }
 
   @override
   Widget build(BuildContext context) {
     final router = ref.watch(routerProvider);
+    final isLoading = ref.watch(asyncLoadingProvider).count > 0;
 
     return MaterialApp.router(
       title: 'Flutter Demo',
@@ -76,6 +82,21 @@ class _MyAppState extends ConsumerState<MyApp> {
       ),
       routerConfig: router,
       scaffoldMessengerKey: messengerKey,
+      builder: (context, widget) {
+        logger.d(isLoading);
+
+        return Stack(
+          children: [
+            widget!,
+            if (isLoading)
+              Positioned.fill(
+                  child: Container(
+                color: Colors.white.withOpacity(0.5),
+                child: const Center(child: CircularProgressIndicator()),
+              ))
+          ],
+        );
+      },
     );
   }
 }
