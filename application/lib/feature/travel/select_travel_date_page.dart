@@ -1,11 +1,17 @@
+import 'package:application_new/common/router/router_provider.dart';
+import 'package:application_new/common/util/translation.dart';
+import 'package:application_new/feature/travel/component/bottom_action_button.dart';
 import 'package:application_new/feature/travel/create_travel_provider.dart';
+import 'package:application_new/feature/travel/select_travel_detail_page.dart';
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
-class CreateTravelPage extends ConsumerWidget {
-  const CreateTravelPage({super.key});
+class SelectTravelDatePage extends ConsumerWidget {
+  const SelectTravelDatePage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -21,24 +27,29 @@ class CreateTravelPage extends ConsumerWidget {
     final textTheme = Theme.of(context).textTheme;
     final rangeFormat = DateFormat('yy.M.d');
 
-    final days = areSelected
+    final nights = areSelected
         ? DateTimeRange(start: startedOn, end: endedOn).duration.inDays
         : 0;
+
+    final trKey = baseKey('travel.select_date');
+
+    final buttonTextStyle = textTheme.titleMedium?.copyWith(
+      fontWeight: FontWeight.w600,
+      color: Colors.white,
+    );
 
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
-        scrolledUnderElevation: 0,
-        shape: Border(
-            bottom: BorderSide(color: Theme.of(context).colorScheme.secondary)),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(44),
           child: Container(
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.fromLTRB(24, 0, 24, 16),
-            child: Text('언제 여행을 떠나시나요?',
-                style: textTheme.titleLarge
-                    ?.copyWith(fontWeight: FontWeight.w600)),
+            child: Text(trKey('ask_date'),
+                    style: textTheme.titleLarge
+                        ?.copyWith(fontWeight: FontWeight.w600))
+                .tr(),
           ),
         ),
       ),
@@ -56,29 +67,27 @@ class CreateTravelPage extends ConsumerWidget {
             if (dates.length < 2) return;
             ref
                 .read(createTravelProvider.notifier)
-                .inputDate(dates[0], dates[1]);
+                .selectDate(dates[0], dates[1]);
           },
         ),
       ),
-      bottomNavigationBar: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-          child: FilledButton(
-            style: FilledButton.styleFrom(
-                shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(6)))),
-            onPressed: areSelected ? () {} : null,
-            child: Text(
-                areSelected
-                    ? '${rangeFormat.format(startedOn)} - ${rangeFormat.format(endedOn)} ($days박 ${days + 1}일)'
-                    : '날자를 선택하세요',
-                style: textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white,
-                )),
-          ),
-        ),
-      ),
+      bottomNavigationBar: BottomActionButton(
+          onPressed:
+              areSelected ? () => context.push('/travels/create/detail') : null,
+          child: areSelected
+              ? Text(
+                  trKey('display_select_date'),
+                  style: buttonTextStyle,
+                ).tr(namedArgs: {
+                  'start': rangeFormat.format(startedOn),
+                  'end': rangeFormat.format(endedOn),
+                  'nights': '$nights',
+                  'days': '${nights + 1}',
+                })
+              : Text(
+                  trKey('require_date'),
+                  style: buttonTextStyle,
+                ).tr()),
     );
   }
 }

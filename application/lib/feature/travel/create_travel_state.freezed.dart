@@ -18,6 +18,8 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$CreateTravelState {
   DateTime? get startedOn => throw _privateConstructorUsedError;
   DateTime? get endedOn => throw _privateConstructorUsedError;
+  TravelCompanion? get companion => throw _privateConstructorUsedError;
+  List<TravelMotivation> get motivations => throw _privateConstructorUsedError;
 
   /// Create a copy of CreateTravelState
   /// with the given fields replaced by the non-null parameter values.
@@ -32,7 +34,11 @@ abstract class $CreateTravelStateCopyWith<$Res> {
           CreateTravelState value, $Res Function(CreateTravelState) then) =
       _$CreateTravelStateCopyWithImpl<$Res, CreateTravelState>;
   @useResult
-  $Res call({DateTime? startedOn, DateTime? endedOn});
+  $Res call(
+      {DateTime? startedOn,
+      DateTime? endedOn,
+      TravelCompanion? companion,
+      List<TravelMotivation> motivations});
 }
 
 /// @nodoc
@@ -52,6 +58,8 @@ class _$CreateTravelStateCopyWithImpl<$Res, $Val extends CreateTravelState>
   $Res call({
     Object? startedOn = freezed,
     Object? endedOn = freezed,
+    Object? companion = freezed,
+    Object? motivations = null,
   }) {
     return _then(_value.copyWith(
       startedOn: freezed == startedOn
@@ -62,6 +70,14 @@ class _$CreateTravelStateCopyWithImpl<$Res, $Val extends CreateTravelState>
           ? _value.endedOn
           : endedOn // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      companion: freezed == companion
+          ? _value.companion
+          : companion // ignore: cast_nullable_to_non_nullable
+              as TravelCompanion?,
+      motivations: null == motivations
+          ? _value.motivations
+          : motivations // ignore: cast_nullable_to_non_nullable
+              as List<TravelMotivation>,
     ) as $Val);
   }
 }
@@ -74,7 +90,11 @@ abstract class _$$CreateTravelStateImplCopyWith<$Res>
       __$$CreateTravelStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({DateTime? startedOn, DateTime? endedOn});
+  $Res call(
+      {DateTime? startedOn,
+      DateTime? endedOn,
+      TravelCompanion? companion,
+      List<TravelMotivation> motivations});
 }
 
 /// @nodoc
@@ -92,6 +112,8 @@ class __$$CreateTravelStateImplCopyWithImpl<$Res>
   $Res call({
     Object? startedOn = freezed,
     Object? endedOn = freezed,
+    Object? companion = freezed,
+    Object? motivations = null,
   }) {
     return _then(_$CreateTravelStateImpl(
       startedOn: freezed == startedOn
@@ -102,6 +124,14 @@ class __$$CreateTravelStateImplCopyWithImpl<$Res>
           ? _value.endedOn
           : endedOn // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      companion: freezed == companion
+          ? _value.companion
+          : companion // ignore: cast_nullable_to_non_nullable
+              as TravelCompanion?,
+      motivations: null == motivations
+          ? _value._motivations
+          : motivations // ignore: cast_nullable_to_non_nullable
+              as List<TravelMotivation>,
     ));
   }
 }
@@ -109,16 +139,31 @@ class __$$CreateTravelStateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$CreateTravelStateImpl implements _CreateTravelState {
-  const _$CreateTravelStateImpl({this.startedOn, this.endedOn});
+  const _$CreateTravelStateImpl(
+      {this.startedOn,
+      this.endedOn,
+      this.companion,
+      final List<TravelMotivation> motivations = const []})
+      : _motivations = motivations;
 
   @override
   final DateTime? startedOn;
   @override
   final DateTime? endedOn;
+  @override
+  final TravelCompanion? companion;
+  final List<TravelMotivation> _motivations;
+  @override
+  @JsonKey()
+  List<TravelMotivation> get motivations {
+    if (_motivations is EqualUnmodifiableListView) return _motivations;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_motivations);
+  }
 
   @override
   String toString() {
-    return 'CreateTravelState(startedOn: $startedOn, endedOn: $endedOn)';
+    return 'CreateTravelState(startedOn: $startedOn, endedOn: $endedOn, companion: $companion, motivations: $motivations)';
   }
 
   @override
@@ -128,11 +173,16 @@ class _$CreateTravelStateImpl implements _CreateTravelState {
             other is _$CreateTravelStateImpl &&
             (identical(other.startedOn, startedOn) ||
                 other.startedOn == startedOn) &&
-            (identical(other.endedOn, endedOn) || other.endedOn == endedOn));
+            (identical(other.endedOn, endedOn) || other.endedOn == endedOn) &&
+            (identical(other.companion, companion) ||
+                other.companion == companion) &&
+            const DeepCollectionEquality()
+                .equals(other._motivations, _motivations));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, startedOn, endedOn);
+  int get hashCode => Object.hash(runtimeType, startedOn, endedOn, companion,
+      const DeepCollectionEquality().hash(_motivations));
 
   /// Create a copy of CreateTravelState
   /// with the given fields replaced by the non-null parameter values.
@@ -147,12 +197,18 @@ class _$CreateTravelStateImpl implements _CreateTravelState {
 abstract class _CreateTravelState implements CreateTravelState {
   const factory _CreateTravelState(
       {final DateTime? startedOn,
-      final DateTime? endedOn}) = _$CreateTravelStateImpl;
+      final DateTime? endedOn,
+      final TravelCompanion? companion,
+      final List<TravelMotivation> motivations}) = _$CreateTravelStateImpl;
 
   @override
   DateTime? get startedOn;
   @override
   DateTime? get endedOn;
+  @override
+  TravelCompanion? get companion;
+  @override
+  List<TravelMotivation> get motivations;
 
   /// Create a copy of CreateTravelState
   /// with the given fields replaced by the non-null parameter values.

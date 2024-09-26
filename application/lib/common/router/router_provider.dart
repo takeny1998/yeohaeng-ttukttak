@@ -1,7 +1,8 @@
 import 'package:application_new/common/session/session_provider.dart';
 import 'package:application_new/feature/authentication/page/login_page.dart';
 import 'package:application_new/feature/home/home_page.dart';
-import 'package:application_new/feature/travel/create_travel_page.dart';
+import 'package:application_new/feature/travel/select_travel_detail_page.dart';
+import 'package:application_new/feature/travel/select_travel_date_page.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -29,8 +30,12 @@ GoRouter router(RouterRef ref) {
         builder: (context, state) => const LoginPage(),
       ),
       GoRoute(
-        path: '/travel/create',
-        builder: (context, state) => const CreateTravelPage(),
+        path: '/travels/create/date',
+        builder: (context, state) => const SelectTravelDatePage(),
+      ),
+      GoRoute(
+        path: '/travels/create/detail',
+        builder: (context, state) => const SelectTravelDetailPage(),
       ),
     ],
   );
