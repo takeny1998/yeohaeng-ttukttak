@@ -20,6 +20,8 @@ mixin _$CreateTravelState {
   DateTime? get endedOn => throw _privateConstructorUsedError;
   TravelCompanion? get companion => throw _privateConstructorUsedError;
   List<TravelMotivation> get motivations => throw _privateConstructorUsedError;
+  List<RegionModel> get regions => throw _privateConstructorUsedError;
+  List<RegionModel> get cities => throw _privateConstructorUsedError;
 
   /// Create a copy of CreateTravelState
   /// with the given fields replaced by the non-null parameter values.
@@ -38,7 +40,9 @@ abstract class $CreateTravelStateCopyWith<$Res> {
       {DateTime? startedOn,
       DateTime? endedOn,
       TravelCompanion? companion,
-      List<TravelMotivation> motivations});
+      List<TravelMotivation> motivations,
+      List<RegionModel> regions,
+      List<RegionModel> cities});
 }
 
 /// @nodoc
@@ -60,6 +64,8 @@ class _$CreateTravelStateCopyWithImpl<$Res, $Val extends CreateTravelState>
     Object? endedOn = freezed,
     Object? companion = freezed,
     Object? motivations = null,
+    Object? regions = null,
+    Object? cities = null,
   }) {
     return _then(_value.copyWith(
       startedOn: freezed == startedOn
@@ -78,6 +84,14 @@ class _$CreateTravelStateCopyWithImpl<$Res, $Val extends CreateTravelState>
           ? _value.motivations
           : motivations // ignore: cast_nullable_to_non_nullable
               as List<TravelMotivation>,
+      regions: null == regions
+          ? _value.regions
+          : regions // ignore: cast_nullable_to_non_nullable
+              as List<RegionModel>,
+      cities: null == cities
+          ? _value.cities
+          : cities // ignore: cast_nullable_to_non_nullable
+              as List<RegionModel>,
     ) as $Val);
   }
 }
@@ -94,7 +108,9 @@ abstract class _$$CreateTravelStateImplCopyWith<$Res>
       {DateTime? startedOn,
       DateTime? endedOn,
       TravelCompanion? companion,
-      List<TravelMotivation> motivations});
+      List<TravelMotivation> motivations,
+      List<RegionModel> regions,
+      List<RegionModel> cities});
 }
 
 /// @nodoc
@@ -114,6 +130,8 @@ class __$$CreateTravelStateImplCopyWithImpl<$Res>
     Object? endedOn = freezed,
     Object? companion = freezed,
     Object? motivations = null,
+    Object? regions = null,
+    Object? cities = null,
   }) {
     return _then(_$CreateTravelStateImpl(
       startedOn: freezed == startedOn
@@ -132,6 +150,14 @@ class __$$CreateTravelStateImplCopyWithImpl<$Res>
           ? _value._motivations
           : motivations // ignore: cast_nullable_to_non_nullable
               as List<TravelMotivation>,
+      regions: null == regions
+          ? _value._regions
+          : regions // ignore: cast_nullable_to_non_nullable
+              as List<RegionModel>,
+      cities: null == cities
+          ? _value._cities
+          : cities // ignore: cast_nullable_to_non_nullable
+              as List<RegionModel>,
     ));
   }
 }
@@ -143,8 +169,12 @@ class _$CreateTravelStateImpl implements _CreateTravelState {
       {this.startedOn,
       this.endedOn,
       this.companion,
-      final List<TravelMotivation> motivations = const []})
-      : _motivations = motivations;
+      final List<TravelMotivation> motivations = const [],
+      final List<RegionModel> regions = const [],
+      final List<RegionModel> cities = const []})
+      : _motivations = motivations,
+        _regions = regions,
+        _cities = cities;
 
   @override
   final DateTime? startedOn;
@@ -161,9 +191,27 @@ class _$CreateTravelStateImpl implements _CreateTravelState {
     return EqualUnmodifiableListView(_motivations);
   }
 
+  final List<RegionModel> _regions;
+  @override
+  @JsonKey()
+  List<RegionModel> get regions {
+    if (_regions is EqualUnmodifiableListView) return _regions;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_regions);
+  }
+
+  final List<RegionModel> _cities;
+  @override
+  @JsonKey()
+  List<RegionModel> get cities {
+    if (_cities is EqualUnmodifiableListView) return _cities;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_cities);
+  }
+
   @override
   String toString() {
-    return 'CreateTravelState(startedOn: $startedOn, endedOn: $endedOn, companion: $companion, motivations: $motivations)';
+    return 'CreateTravelState(startedOn: $startedOn, endedOn: $endedOn, companion: $companion, motivations: $motivations, regions: $regions, cities: $cities)';
   }
 
   @override
@@ -177,12 +225,20 @@ class _$CreateTravelStateImpl implements _CreateTravelState {
             (identical(other.companion, companion) ||
                 other.companion == companion) &&
             const DeepCollectionEquality()
-                .equals(other._motivations, _motivations));
+                .equals(other._motivations, _motivations) &&
+            const DeepCollectionEquality().equals(other._regions, _regions) &&
+            const DeepCollectionEquality().equals(other._cities, _cities));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, startedOn, endedOn, companion,
-      const DeepCollectionEquality().hash(_motivations));
+  int get hashCode => Object.hash(
+      runtimeType,
+      startedOn,
+      endedOn,
+      companion,
+      const DeepCollectionEquality().hash(_motivations),
+      const DeepCollectionEquality().hash(_regions),
+      const DeepCollectionEquality().hash(_cities));
 
   /// Create a copy of CreateTravelState
   /// with the given fields replaced by the non-null parameter values.
@@ -199,7 +255,9 @@ abstract class _CreateTravelState implements CreateTravelState {
       {final DateTime? startedOn,
       final DateTime? endedOn,
       final TravelCompanion? companion,
-      final List<TravelMotivation> motivations}) = _$CreateTravelStateImpl;
+      final List<TravelMotivation> motivations,
+      final List<RegionModel> regions,
+      final List<RegionModel> cities}) = _$CreateTravelStateImpl;
 
   @override
   DateTime? get startedOn;
@@ -209,6 +267,10 @@ abstract class _CreateTravelState implements CreateTravelState {
   TravelCompanion? get companion;
   @override
   List<TravelMotivation> get motivations;
+  @override
+  List<RegionModel> get regions;
+  @override
+  List<RegionModel> get cities;
 
   /// Create a copy of CreateTravelState
   /// with the given fields replaced by the non-null parameter values.

@@ -11,7 +11,13 @@ travel:
     hint_motivation: (최소 1개, 최대 3개 선택 가능)
     require_detail: 여행 상세 정보를 모두 선택해 주세요.
 
+  select_city:
+    ask_city: 어느 도시로 여행할 예정인가요?
+    require_select: 최소 1개의 도시를 선택해 주세요
+    display_select: "도시 {}개 선택됨"
+
 next: 다음으로
+korea: 대한민국
 
 enum:
   TravelCompanion:

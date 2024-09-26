@@ -5,6 +5,7 @@ import 'dart:ui';
 import 'package:application_new/common/loading/async_loading_provider.dart';
 import 'package:application_new/common/session/session_provider.dart';
 import 'package:application_new/feature/authentication/service/auth_service_provider.dart';
+import 'package:application_new/feature/region/provider/region_provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization_loader/easy_localization_loader.dart';
 import 'package:flutter/material.dart';
@@ -25,13 +26,10 @@ void main() async {
   final logger = Logger();
   final providerContainer = ProviderContainer();
 
-  FlutterError.onError = (error) {
-    logger.e('[HttpException] exception = $error');
-  };
-
   PlatformDispatcher.instance.onError = (error, stack) {
+    logger.e('[PlatformDispatcher.instance.onError] exception = $error');
+
     if (error is BusinessException) {
-      logger.e('[HttpException] exception = $error');
       switch (error) {
         case ServerException(:final message):
           messengerKey.currentState
@@ -73,9 +71,13 @@ class MyApp extends ConsumerStatefulWidget {
 class _MyAppState extends ConsumerState<MyApp> {
   @override
   void initState() {
-    Future.microtask(autoLogin);
+    Future.microtask(() {
+      ref.read(regionProvider);
+      autoLogin();
+    });
     super.initState();
   }
+
 
   FutureOr<void> autoLogin() async {
     final authService = ref.read(authServiceProvider);
@@ -89,7 +91,6 @@ class _MyAppState extends ConsumerState<MyApp> {
   Widget build(BuildContext context) {
     final router = ref.watch(routerProvider);
     final isLoading = ref.watch(asyncLoadingProvider).count > 0;
-
 
     return MaterialApp.router(
       title: 'Flutter Demo',
