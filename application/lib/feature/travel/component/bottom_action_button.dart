@@ -17,11 +17,16 @@ class BottomActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final buttonTextStyle = Theme.of(context).textTheme.titleMedium?.copyWith(
+      fontWeight: FontWeight.w600,
+      color: Colors.white,
+    );
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
         child: FilledButton(
           style: FilledButton.styleFrom(
+              textStyle: buttonTextStyle,
               shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(6)))),
           onPressed: _onPressed,

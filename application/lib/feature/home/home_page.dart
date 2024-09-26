@@ -36,6 +36,9 @@ class HomePage extends ConsumerWidget {
                 onPressed: () => context.push('/travels/create/date'),
                 child: const Text('여행 생성')),
             TextButton(
+                onPressed: () => context.push('/travels/create/city'),
+                child: const Text('도시 선택')),
+            TextButton(
                 onPressed: () {
                   context.setLocale(const Locale('ko', 'KR'));
                   logger.d('locale = ${context.locale}');

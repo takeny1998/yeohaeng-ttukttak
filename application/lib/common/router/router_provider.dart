@@ -1,6 +1,7 @@
 import 'package:application_new/common/session/session_provider.dart';
 import 'package:application_new/feature/authentication/page/login_page.dart';
 import 'package:application_new/feature/home/home_page.dart';
+import 'package:application_new/feature/travel/select_travel_city_page.dart';
 import 'package:application_new/feature/travel/select_travel_detail_page.dart';
 import 'package:application_new/feature/travel/select_travel_date_page.dart';
 import 'package:go_router/go_router.dart';
@@ -32,6 +33,10 @@ GoRouter router(RouterRef ref) {
       GoRoute(
         path: '/travels/create/date',
         builder: (context, state) => const SelectTravelDatePage(),
+      ),
+      GoRoute(
+        path: '/travels/create/city',
+        builder: (context, state) => const SelectTravelCityPage(),
       ),
       GoRoute(
         path: '/travels/create/detail',

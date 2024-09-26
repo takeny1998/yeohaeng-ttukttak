@@ -11,8 +11,13 @@ travel:
     hint_motivation: (Select at least one, up to three)
     require_detail: Please select all of your trip details.
 
-next: 다음으로
+  select_city:
+    ask_city: Which cities are you traveling to?
+    require_select: Please select at least one city
+    display_select: "{} cities selected"
 
+next: Next
+korea: Republic of Korea
 
 enum:
   TravelCompanion:

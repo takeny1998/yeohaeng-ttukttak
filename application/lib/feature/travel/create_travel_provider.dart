@@ -1,3 +1,4 @@
+import 'package:application_new/feature/region/model/region_model.dart';
 import 'package:application_new/feature/travel/create_travel_state.dart';
 import 'package:application_new/feature/travel/model/travel_comanion.dart';
 import 'package:application_new/feature/travel/model/travel_motivation.dart';
@@ -42,5 +43,35 @@ class CreateTravel extends _$CreateTravel {
       if (curtMotivations.length >= 3) return;
       state = state.copyWith(motivations: [...curtMotivations, motivation]);
     }
+  }
+
+  void selectCity(RegionModel city) {
+    final cities = state.cities;
+    final isExist = cities.contains(city);
+
+    if (isExist) {
+      state = state.copyWith(cities: [
+        for (final e in cities)
+          if (e != city) e
+      ]);
+    } else {
+      state = state.copyWith(cities: [...cities, city]);
+    }
+
+  }
+
+  void selectRegion(RegionModel region) {
+    final regions = state.regions;
+    final isExist = regions.contains(region);
+
+    if (isExist) {
+      state = state.copyWith(regions: [
+        for (final e in regions)
+          if (e != region) e
+      ]);
+    } else {
+      state = state.copyWith(regions: [...regions, region]);
+    }
+
   }
 }
