@@ -4,8 +4,8 @@ import com.yeohaeng_ttukttak.server.application.travel.service.dto.CreateTravelC
 import com.yeohaeng_ttukttak.server.common.dto.EntityReference;
 import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
 import com.yeohaeng_ttukttak.server.domain.member.service.MemberService;
+import com.yeohaeng_ttukttak.server.domain.region.repository.RegionRepository;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.InputTravel;
-import com.yeohaeng_ttukttak.server.domain.travel.repository.RegionRepository;
 import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
