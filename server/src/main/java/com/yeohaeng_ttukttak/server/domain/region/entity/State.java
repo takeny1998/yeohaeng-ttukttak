@@ -1,4 +1,4 @@
-package com.yeohaeng_ttukttak.server.domain.place.entity;
+package com.yeohaeng_ttukttak.server.domain.region.entity;
 
 import jakarta.persistence.Entity;
 

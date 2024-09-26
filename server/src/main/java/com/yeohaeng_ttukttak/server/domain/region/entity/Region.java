@@ -1,9 +1,8 @@
-package com.yeohaeng_ttukttak.server.domain.place.entity;
+package com.yeohaeng_ttukttak.server.domain.region.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,5 +32,16 @@ public abstract class Region {
     @OneToMany(mappedBy = "parent")
     private List<Region> children = new ArrayList<>();
 
+    public Long id() {
+        return id;
+    }
+
+    public String name() {
+        return name;
+    }
+
+    public List<Region> children() {
+        return children;
+    }
 }
 

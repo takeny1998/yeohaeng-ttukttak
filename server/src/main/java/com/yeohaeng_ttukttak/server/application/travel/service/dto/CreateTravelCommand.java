@@ -1,7 +1,6 @@
 package com.yeohaeng_ttukttak.server.application.travel.service.dto;
 
 import com.yeohaeng_ttukttak.server.common.dto.EntityReference;
-import com.yeohaeng_ttukttak.server.domain.place.entity.City;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.CompanionType;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.MotivationType;
 
