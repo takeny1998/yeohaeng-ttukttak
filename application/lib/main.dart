@@ -74,17 +74,29 @@ class _MyAppState extends ConsumerState<MyApp> {
     final router = ref.watch(routerProvider);
     final isLoading = ref.watch(asyncLoadingProvider).count > 0;
 
+
     return MaterialApp.router(
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: const ColorScheme(
+          brightness: Brightness.light,
+          primary: Colors.black,
+          onPrimary: Colors.white,
+          secondary: Colors.grey,
+          onSecondary: Colors.black,
+          error: Colors.red,
+          onError: Colors.white,
+          surface: Colors.white,
+          onSurface: Colors.black,
+        ),
+        textTheme: Theme.of(context).textTheme.apply(
+          fontFamily: 'Noto Sans'
+        ),
         useMaterial3: true,
       ),
       routerConfig: router,
       scaffoldMessengerKey: messengerKey,
       builder: (context, widget) {
-        logger.d(isLoading);
-
         return Stack(
           children: [
             widget!,
