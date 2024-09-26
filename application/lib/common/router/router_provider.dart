@@ -1,7 +1,7 @@
-
 import 'package:application_new/common/session/session_provider.dart';
 import 'package:application_new/feature/authentication/page/login_page.dart';
 import 'package:application_new/feature/home/home_page.dart';
+import 'package:application_new/feature/travel/create_travel_page.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -10,7 +10,6 @@ part 'router_provider.g.dart';
 
 @riverpod
 GoRouter router(RouterRef ref) {
-
   final session = ref.watch(sessionProvider);
 
   return GoRouter(
@@ -23,13 +22,15 @@ GoRouter router(RouterRef ref) {
     routes: [
       GoRoute(
         path: '/',
-        builder: (context, state) =>
-        const HomePage(),
+        builder: (context, state) => const HomePage(),
       ),
       GoRoute(
         path: '/login',
-        builder: (context, state) =>
-        const LoginPage(),
+        builder: (context, state) => const LoginPage(),
+      ),
+      GoRoute(
+        path: '/travel/create',
+        builder: (context, state) => const CreateTravelPage(),
       ),
     ],
   );

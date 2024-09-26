@@ -1,8 +1,9 @@
-import 'package:application_new/common/exception/exception.dart';
 import 'package:application_new/common/loading/async_loading_provider.dart';
+import 'package:application_new/common/router/router_provider.dart';
 import 'package:application_new/feature/authentication/page/login_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
@@ -27,7 +28,10 @@ class HomePage extends ConsumerWidget {
                     ref.read(asyncLoadingProvider.notifier).guard(() async {
                       await Future.delayed(const Duration(seconds: 3));
                     }),
-                child: const Text('로딩'))
+                child: const Text('로딩')),
+            TextButton(
+                onPressed: () => context.push('/travel/create'),
+                child: const Text('여행 생성')),
           ],
         ),
       ),
