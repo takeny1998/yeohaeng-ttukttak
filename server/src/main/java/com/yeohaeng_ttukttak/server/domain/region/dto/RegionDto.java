@@ -2,6 +2,8 @@ package com.yeohaeng_ttukttak.server.domain.region.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.yeohaeng_ttukttak.server.domain.region.entity.Region;
+import jakarta.annotation.PostConstruct;
+import org.springframework.context.MessageSource;
 
 import java.util.List;
 
@@ -10,15 +12,4 @@ public record RegionDto(
         Long id,
         String name,
         List<RegionDto> children
-) {
-
-    public static RegionDto of(Region region) {
-        return new RegionDto(
-                region.id(),
-                region.name(),
-                region.children().stream()
-                        .map(RegionDto::of).toList()
-        );
-    }
-
-}
+) { }

@@ -12,18 +12,15 @@ import static lombok.AccessLevel.PROTECTED;
 
 @Entity
 @NoArgsConstructor(access = PROTECTED)
-@DiscriminatorColumn
+@DiscriminatorColumn(name = "level", discriminatorType = DiscriminatorType.INTEGER)
 @Inheritance(strategy = SINGLE_TABLE)
 public abstract class Region {
 
     @Id
     private Long id;
 
-    @NotNull @Column(unique = true)
-    private int code;
-
-    @NotNull
-    private String name;
+    @Column(insertable=false, updatable=false)
+    private int level;
 
     @ManyToOne
     @JoinColumn(name = "parent_id")
@@ -36,8 +33,8 @@ public abstract class Region {
         return id;
     }
 
-    public String name() {
-        return name;
+    public int level() {
+        return level;
     }
 
     public List<Region> children() {
