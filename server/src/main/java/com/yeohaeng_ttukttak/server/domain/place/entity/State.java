@@ -1,6 +1,0 @@
-package com.yeohaeng_ttukttak.server.domain.place.entity;
-
-import jakarta.persistence.Entity;
-
-@Entity
-public final class State extends Region { }
