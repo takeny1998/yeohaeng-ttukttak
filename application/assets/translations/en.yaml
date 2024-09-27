@@ -16,6 +16,8 @@ travel:
     require_select: Please select at least one city
     display_select: "{} cities selected"
 
+  created: The travel has been created successfully.
+
 next: Next
 korea: Republic of Korea
 

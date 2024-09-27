@@ -16,6 +16,8 @@ travel:
     require_select: 최소 1개의 도시를 선택해 주세요
     display_select: "도시 {}개 선택됨"
 
+  created: 여행이 성공적으로 생성되었습니다.
+
 next: 다음으로
 korea: 대한민국
 

@@ -1,8 +1,10 @@
-import 'package:application_new/common/log/logger.dart';
+import 'package:application_new/common/event/event.dart';
 import 'package:application_new/feature/travel/provider/create_travel_provider.dart';
 import 'package:application_new/feature/travel/page/select_travel_city_form.dart';
 import 'package:application_new/feature/travel/page/select_travel_date_form.dart';
 import 'package:application_new/feature/travel/page/select_travel_detail_form.dart';
+import 'package:application_new/main.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -34,8 +36,7 @@ class _CreateTravelPageState extends ConsumerState<CreateTravelPage> {
   Widget build(BuildContext context) {
     ref.listen(createTravelProvider, (prev, next) {
       if (next.isSubmitted) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('여행이 생성되었습니다.')));
+        eventController.add(MessageEvent('travel.created'.tr()));
         context.pop();
       }
 

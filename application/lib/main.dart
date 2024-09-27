@@ -1,9 +1,8 @@
 import 'dart:async';
-import 'dart:io';
 import 'dart:ui';
 
+import 'package:application_new/common/event/event.dart';
 import 'package:application_new/common/loading/async_loading_provider.dart';
-import 'package:application_new/common/log/logger.dart';
 import 'package:application_new/common/session/session_provider.dart';
 import 'package:application_new/feature/authentication/service/auth_service_provider.dart';
 import 'package:application_new/feature/locale/locale_provider.dart';
@@ -33,8 +32,7 @@ void main() async {
     if (error is BusinessException) {
       switch (error) {
         case ServerException(:final message):
-          messengerKey.currentState
-              ?.showSnackBar(SnackBar(content: Text(message)));
+          eventController.add(MessageEvent(message));
         case NetworkException(:final code, :final message):
           logger.e('[HttpException] code = $code, message = $message');
         case AuthenticatedException():
@@ -78,6 +76,15 @@ class _MyAppState extends ConsumerState<MyApp> {
       ref.read(regionProvider);
       autoLogin();
     });
+
+    eventController.stream.listen((event) {
+      switch (event) {
+        case MessageEvent(:final message):
+          messengerKey.currentState
+              ?.showSnackBar(SnackBar(content: Text(message)));
+      }
+    });
+
     super.initState();
   }
 
