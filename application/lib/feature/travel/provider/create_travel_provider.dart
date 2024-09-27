@@ -2,7 +2,7 @@ import 'package:application_new/common/http/http_service_provider.dart';
 import 'package:application_new/common/loading/async_loading_provider.dart';
 import 'package:application_new/feature/authentication/service/auth_service_provider.dart';
 import 'package:application_new/feature/region/model/region_model.dart';
-import 'package:application_new/feature/travel/create_travel_state.dart';
+import 'package:application_new/feature/travel/model/create_travel_state.dart';
 import 'package:application_new/feature/travel/model/travel_comanion.dart';
 import 'package:application_new/feature/travel/model/travel_motivation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';

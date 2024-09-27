@@ -1,6 +1,6 @@
 import 'package:application_new/common/util/translation.dart';
 import 'package:application_new/feature/travel/component/bottom_action_button.dart';
-import 'package:application_new/feature/travel/create_travel_provider.dart';
+import 'package:application_new/feature/travel/provider/create_travel_provider.dart';
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';

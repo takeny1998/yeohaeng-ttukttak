@@ -1,6 +1,6 @@
 import 'package:application_new/common/util/translation.dart';
 import 'package:application_new/feature/travel/component/bottom_action_button.dart';
-import 'package:application_new/feature/travel/create_travel_provider.dart';
+import 'package:application_new/feature/travel/provider/create_travel_provider.dart';
 import 'package:application_new/feature/travel/model/travel_comanion.dart';
 import 'package:application_new/feature/travel/model/travel_motivation.dart';
 import 'package:easy_localization/easy_localization.dart';
