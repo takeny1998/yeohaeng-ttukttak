@@ -26,15 +26,15 @@ public abstract class Travel {
     private LocalDate endedOn;
 
     @Enumerated(EnumType.STRING)
-    private CompanionType companionType;
+    private Companion companion;
 
     @OneToMany(mappedBy = "travel", cascade = CascadeType.PERSIST)
     public List<TravelMotivation> motivations = new ArrayList<>();
 
-    public Travel(LocalDate startedOn, LocalDate endedOn, CompanionType companionType) {
+    public Travel(LocalDate startedOn, LocalDate endedOn, Companion companion) {
         this.startedOn = startedOn;
         this.endedOn = endedOn;
-        this.companionType = companionType;
+        this.companion = companion;
     }
 
     abstract AgeGroup ageGroup();

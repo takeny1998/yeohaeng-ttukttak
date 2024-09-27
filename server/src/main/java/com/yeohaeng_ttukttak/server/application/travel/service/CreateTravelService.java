@@ -30,10 +30,9 @@ public class CreateTravelService {
 
         final InputTravel travel = new InputTravel(
                 member,
-                comm.name(),
                 comm.startedOn(),
                 comm.endedOn(),
-                comm.companionType());
+                comm.companion());
 
         regionRepository.findAllCityByIds(ids)
                 .forEach(travel::addCity);

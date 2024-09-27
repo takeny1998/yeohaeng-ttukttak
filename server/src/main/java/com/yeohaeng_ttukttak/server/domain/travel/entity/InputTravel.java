@@ -18,7 +18,6 @@ import java.util.List;
 @DiscriminatorValue("Input")
 public final class InputTravel extends Travel {
 
-    private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
@@ -27,14 +26,9 @@ public final class InputTravel extends Travel {
     @OneToMany(mappedBy = "travel", cascade = CascadeType.PERSIST)
     public List<TravelCity> travelCities = new ArrayList<>();
 
-    public InputTravel(Member member, String name, LocalDate startedOn, LocalDate endedOn, CompanionType companionType) {
-        super(startedOn, endedOn, companionType);
+    public InputTravel(Member member, LocalDate startedOn, LocalDate endedOn, Companion companion) {
+        super(startedOn, endedOn, companion);
         this.member = member;
-        this.name = name;
-    }
-
-    public String name() {
-        return name;
     }
 
     @Override

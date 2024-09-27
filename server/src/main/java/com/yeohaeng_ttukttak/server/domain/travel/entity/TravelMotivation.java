@@ -18,11 +18,11 @@ public class TravelMotivation {
     private Travel travel;
 
     @Enumerated(EnumType.STRING)
-    private MotivationType motivationType;
+    private Motivation motivation;
 
-    public TravelMotivation(Travel travel, MotivationType motivationType) {
+    public TravelMotivation(Travel travel, Motivation motivation) {
         this.travel = travel;
-        this.motivationType = motivationType;
+        this.motivation = motivation;
 
         travel.motivations.add(this);
     }
