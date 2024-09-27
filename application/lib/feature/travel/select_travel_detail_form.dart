@@ -6,10 +6,9 @@ import 'package:application_new/feature/travel/model/travel_motivation.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
-class SelectTravelDetailPage extends ConsumerWidget {
-  const SelectTravelDetailPage({super.key});
+class SelectTravelDetailForm extends ConsumerWidget {
+  const SelectTravelDetailForm({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -88,7 +87,7 @@ class SelectTravelDetailPage extends ConsumerWidget {
       ),
       bottomNavigationBar: BottomActionButton(
         onPressed:
-            areSelected ? () => context.push('/travels/create/detail') : null,
+            areSelected ? () => ref.read(createTravelProvider.notifier).nextPage() : null,
         child: Text(
           areSelected ? 'next' : trKey('require_detail'),
           style: buttonTextStyle,

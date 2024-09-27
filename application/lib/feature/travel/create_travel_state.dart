@@ -8,11 +8,13 @@ part 'create_travel_state.freezed.dart';
 @freezed
 class CreateTravelState with _$CreateTravelState {
   const factory CreateTravelState({
+    @Default(0) int pageNumber,
     DateTime? startedOn,
     DateTime? endedOn,
     TravelCompanion? companion,
     @Default([]) List<TravelMotivation> motivations,
     @Default([]) List<RegionModel> regions,
     @Default([]) List<RegionModel> cities,
+    @Default(false) bool isSubmitted,
   }) = _CreateTravelState;
 }

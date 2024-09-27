@@ -6,7 +6,7 @@ part 'server_response.g.dart';
 @Freezed(unionKey: 'status')
 sealed class ServerResponse with _$ServerResponse {
   const factory ServerResponse.success({
-    required Map<String, dynamic> data,
+    @Default({}) Map<String, dynamic> data,
   }) = ServerSuccessResponse;
 
   const factory ServerResponse.fail({

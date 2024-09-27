@@ -1,4 +1,3 @@
-import 'package:application_new/common/log/logger.dart';
 import 'package:application_new/common/util/translation.dart';
 import 'package:application_new/feature/region/model/region_model.dart';
 import 'package:application_new/feature/region/provider/region_provider.dart';
@@ -7,10 +6,9 @@ import 'package:application_new/feature/travel/create_travel_provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
-class SelectTravelCityPage extends ConsumerWidget {
-  const SelectTravelCityPage({super.key});
+class SelectTravelCityForm extends ConsumerWidget {
+  const SelectTravelCityForm({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -20,17 +18,17 @@ class SelectTravelCityPage extends ConsumerWidget {
     final regions = ref.watch(regionProvider);
     final selectedRegions = state.regions.isEmpty ? regions : state.regions;
 
-    final textTheme =  Theme.of(context).textTheme;
+    final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
 
-    final titleStyle = textTheme.titleLarge
-        ?.copyWith(fontWeight: FontWeight.w600);
+    final titleStyle =
+        textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w600);
 
-    final cityStyle = textTheme.titleMedium
-        ?.copyWith(fontWeight: FontWeight.w600);
+    final cityStyle =
+        textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600);
 
-    final citySubStyle = textTheme.bodyMedium
-        ?.copyWith(color:colorScheme.secondary);
+    final citySubStyle =
+        textTheme.bodyMedium?.copyWith(color: colorScheme.secondary);
 
     final trKey = baseKey('travel.select_city');
 
@@ -86,7 +84,8 @@ class SelectTravelCityPage extends ConsumerWidget {
               CheckboxListTile(
                 contentPadding: const EdgeInsets.symmetric(horizontal: 24),
                 title: Text(city.name, style: cityStyle),
-                subtitle: Text('${region.name} · ${'korea'.tr()}', style: citySubStyle),
+                subtitle: Text('${region.name} · ${'korea'.tr()}',
+                    style: citySubStyle),
                 value: state.cities.contains(city),
                 onChanged: (_) =>
                     ref.read(createTravelProvider.notifier).selectCity(city),
@@ -94,8 +93,9 @@ class SelectTravelCityPage extends ConsumerWidget {
         ],
       )),
       bottomNavigationBar: BottomActionButton(
-          onPressed:
-              isSelected ? () => context.push('/travels/create/detail') : null,
+          onPressed: isSelected
+              ? () => ref.read(createTravelProvider.notifier).submit()
+              : null,
           child: isSelected
               ? Text(trKey('display_select'))
                   .tr(args: ['${state.cities.length}'])

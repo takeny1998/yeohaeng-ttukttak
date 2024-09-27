@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:application_new/common/exception/exception.dart';
 import 'package:application_new/common/http/dto/server_response.dart';
@@ -7,10 +8,13 @@ import 'package:dio/dio.dart';
 
 final class HttpService {
   final Dio _dio;
+  final Locale _locale;
   final String? _baseUrl;
 
-  HttpService({required Dio dio, String? baseUrl})
+  HttpService(
+      {required Dio dio, required Locale locale, String? baseUrl})
       : _dio = dio,
+        _locale = locale,
         _baseUrl = baseUrl;
 
   Future<Map<String, dynamic>> request(
@@ -22,6 +26,7 @@ final class HttpService {
     final header = {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
+      'Accept-Language': _locale.languageCode
     };
 
     if (authorization != null) {

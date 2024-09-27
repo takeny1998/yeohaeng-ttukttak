@@ -3,8 +3,10 @@ import 'dart:io';
 import 'dart:ui';
 
 import 'package:application_new/common/loading/async_loading_provider.dart';
+import 'package:application_new/common/log/logger.dart';
 import 'package:application_new/common/session/session_provider.dart';
 import 'package:application_new/feature/authentication/service/auth_service_provider.dart';
+import 'package:application_new/feature/locale/locale_provider.dart';
 import 'package:application_new/feature/region/provider/region_provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization_loader/easy_localization_loader.dart';
@@ -21,13 +23,12 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
 
-  Intl.defaultLocale = 'en';
-
   final logger = Logger();
   final providerContainer = ProviderContainer();
 
   PlatformDispatcher.instance.onError = (error, stack) {
     logger.e('[PlatformDispatcher.instance.onError] exception = $error');
+    logger.e('[PlatformDispatcher.instance.onError] $stack');
 
     if (error is BusinessException) {
       switch (error) {
@@ -46,14 +47,16 @@ void main() async {
     return true;
   };
 
+  const korean = Locale.fromSubtags(languageCode: 'ko');
+  const english = Locale.fromSubtags(languageCode: 'en');
+
   runApp(EasyLocalization(
     path: 'assets/translations',
-    supportedLocales: const [
-      Locale('ko', 'KR'),
-      Locale('en', 'US'),
-    ],
-    fallbackLocale: const Locale('en', 'US'),
+    supportedLocales: const [korean, english],
+    fallbackLocale: english,
     assetLoader: const YamlAssetLoader(),
+    useOnlyLangCode: true,
+    saveLocale: false,
     child: ProviderScope(
       parent: providerContainer,
       child: const MyApp(),
@@ -78,7 +81,6 @@ class _MyAppState extends ConsumerState<MyApp> {
     super.initState();
   }
 
-
   FutureOr<void> autoLogin() async {
     final authService = ref.read(authServiceProvider);
     final sessionNotifier = ref.read(sessionProvider.notifier);
@@ -91,6 +93,7 @@ class _MyAppState extends ConsumerState<MyApp> {
   Widget build(BuildContext context) {
     final router = ref.watch(routerProvider);
     final isLoading = ref.watch(asyncLoadingProvider).count > 0;
+    final locale = ref.watch(localeStateProvider);
 
     return MaterialApp.router(
       title: 'Flutter Demo',
@@ -103,7 +106,7 @@ class _MyAppState extends ConsumerState<MyApp> {
       scaffoldMessengerKey: messengerKey,
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
-      locale: context.locale,
+      locale: locale,
       builder: (context, widget) {
         return Stack(
           children: [

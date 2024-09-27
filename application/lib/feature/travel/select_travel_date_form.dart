@@ -1,17 +1,13 @@
-import 'package:application_new/common/router/router_provider.dart';
 import 'package:application_new/common/util/translation.dart';
 import 'package:application_new/feature/travel/component/bottom_action_button.dart';
 import 'package:application_new/feature/travel/create_travel_provider.dart';
-import 'package:application_new/feature/travel/select_travel_detail_page.dart';
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 
-class SelectTravelDatePage extends ConsumerWidget {
-  const SelectTravelDatePage({super.key});
+class SelectTravelDateForm extends ConsumerWidget {
+  const SelectTravelDateForm({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -73,7 +69,7 @@ class SelectTravelDatePage extends ConsumerWidget {
       ),
       bottomNavigationBar: BottomActionButton(
           onPressed:
-              areSelected ? () => context.push('/travels/create/detail') : null,
+              areSelected ? () => ref.read(createTravelProvider.notifier).nextPage(): null,
           child: areSelected
               ? Text(
                   trKey('display_select_date'),
