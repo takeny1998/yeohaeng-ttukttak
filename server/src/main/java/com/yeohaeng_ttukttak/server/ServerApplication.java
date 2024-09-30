@@ -19,12 +19,4 @@ public class ServerApplication {
 		SpringApplication.run(ServerApplication.class, args);
 	}
 
-	@Bean
-	public MessageSource regionSource() {
-		final ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
-		messageSource.setBasenames("regions");
-		messageSource.setDefaultEncoding("utf-8");
-		return messageSource;
-	}
-
 }

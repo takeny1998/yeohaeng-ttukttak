@@ -1,44 +1,21 @@
 package com.yeohaeng_ttukttak.server.domain.region.entity;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import lombok.NoArgsConstructor;
+import com.yeohaeng_ttukttak.server.common.util.LocaleUtil;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static jakarta.persistence.InheritanceType.SINGLE_TABLE;
-import static lombok.AccessLevel.PROTECTED;
+import java.util.Locale;
 
 @Entity
-@NoArgsConstructor(access = PROTECTED)
-@DiscriminatorColumn(name = "level", discriminatorType = DiscriminatorType.INTEGER)
-@Inheritance(strategy = SINGLE_TABLE)
-public abstract class Region {
+@DiscriminatorValue("0")
+public final class Region extends Geography {
 
-    @Id
-    private Long id;
+    private String shortName;
 
-    @Column(insertable=false, updatable=false)
-    private int level;
+    private String shortNameEng;
 
-    @ManyToOne
-    @JoinColumn(name = "parent_id")
-    private Region parent;
-
-    @OneToMany(mappedBy = "parent")
-    private List<Region> children = new ArrayList<>();
-
-    public Long id() {
-        return id;
+    public String shortName(Locale locale) {
+        return LocaleUtil.find(locale, shortName, shortNameEng, shortName);
     }
 
-    public int level() {
-        return level;
-    }
-
-    public List<Region> children() {
-        return children;
-    }
 }
-
