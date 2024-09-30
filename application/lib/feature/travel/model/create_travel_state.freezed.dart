@@ -20,9 +20,10 @@ mixin _$CreateTravelState {
   DateTime? get startedOn => throw _privateConstructorUsedError;
   DateTime? get endedOn => throw _privateConstructorUsedError;
   TravelCompanion? get companion => throw _privateConstructorUsedError;
+  String? get citySearchText => throw _privateConstructorUsedError;
   List<TravelMotivation> get motivations => throw _privateConstructorUsedError;
   List<RegionModel> get regions => throw _privateConstructorUsedError;
-  List<RegionModel> get cities => throw _privateConstructorUsedError;
+  List<CityModel> get cities => throw _privateConstructorUsedError;
   bool get isSubmitted => throw _privateConstructorUsedError;
 
   /// Create a copy of CreateTravelState
@@ -43,9 +44,10 @@ abstract class $CreateTravelStateCopyWith<$Res> {
       DateTime? startedOn,
       DateTime? endedOn,
       TravelCompanion? companion,
+      String? citySearchText,
       List<TravelMotivation> motivations,
       List<RegionModel> regions,
-      List<RegionModel> cities,
+      List<CityModel> cities,
       bool isSubmitted});
 }
 
@@ -68,6 +70,7 @@ class _$CreateTravelStateCopyWithImpl<$Res, $Val extends CreateTravelState>
     Object? startedOn = freezed,
     Object? endedOn = freezed,
     Object? companion = freezed,
+    Object? citySearchText = freezed,
     Object? motivations = null,
     Object? regions = null,
     Object? cities = null,
@@ -90,6 +93,10 @@ class _$CreateTravelStateCopyWithImpl<$Res, $Val extends CreateTravelState>
           ? _value.companion
           : companion // ignore: cast_nullable_to_non_nullable
               as TravelCompanion?,
+      citySearchText: freezed == citySearchText
+          ? _value.citySearchText
+          : citySearchText // ignore: cast_nullable_to_non_nullable
+              as String?,
       motivations: null == motivations
           ? _value.motivations
           : motivations // ignore: cast_nullable_to_non_nullable
@@ -101,7 +108,7 @@ class _$CreateTravelStateCopyWithImpl<$Res, $Val extends CreateTravelState>
       cities: null == cities
           ? _value.cities
           : cities // ignore: cast_nullable_to_non_nullable
-              as List<RegionModel>,
+              as List<CityModel>,
       isSubmitted: null == isSubmitted
           ? _value.isSubmitted
           : isSubmitted // ignore: cast_nullable_to_non_nullable
@@ -123,9 +130,10 @@ abstract class _$$CreateTravelStateImplCopyWith<$Res>
       DateTime? startedOn,
       DateTime? endedOn,
       TravelCompanion? companion,
+      String? citySearchText,
       List<TravelMotivation> motivations,
       List<RegionModel> regions,
-      List<RegionModel> cities,
+      List<CityModel> cities,
       bool isSubmitted});
 }
 
@@ -146,6 +154,7 @@ class __$$CreateTravelStateImplCopyWithImpl<$Res>
     Object? startedOn = freezed,
     Object? endedOn = freezed,
     Object? companion = freezed,
+    Object? citySearchText = freezed,
     Object? motivations = null,
     Object? regions = null,
     Object? cities = null,
@@ -168,6 +177,10 @@ class __$$CreateTravelStateImplCopyWithImpl<$Res>
           ? _value.companion
           : companion // ignore: cast_nullable_to_non_nullable
               as TravelCompanion?,
+      citySearchText: freezed == citySearchText
+          ? _value.citySearchText
+          : citySearchText // ignore: cast_nullable_to_non_nullable
+              as String?,
       motivations: null == motivations
           ? _value._motivations
           : motivations // ignore: cast_nullable_to_non_nullable
@@ -179,7 +192,7 @@ class __$$CreateTravelStateImplCopyWithImpl<$Res>
       cities: null == cities
           ? _value._cities
           : cities // ignore: cast_nullable_to_non_nullable
-              as List<RegionModel>,
+              as List<CityModel>,
       isSubmitted: null == isSubmitted
           ? _value.isSubmitted
           : isSubmitted // ignore: cast_nullable_to_non_nullable
@@ -196,9 +209,10 @@ class _$CreateTravelStateImpl implements _CreateTravelState {
       this.startedOn,
       this.endedOn,
       this.companion,
+      this.citySearchText,
       final List<TravelMotivation> motivations = const [],
       final List<RegionModel> regions = const [],
-      final List<RegionModel> cities = const [],
+      final List<CityModel> cities = const [],
       this.isSubmitted = false})
       : _motivations = motivations,
         _regions = regions,
@@ -213,6 +227,8 @@ class _$CreateTravelStateImpl implements _CreateTravelState {
   final DateTime? endedOn;
   @override
   final TravelCompanion? companion;
+  @override
+  final String? citySearchText;
   final List<TravelMotivation> _motivations;
   @override
   @JsonKey()
@@ -231,10 +247,10 @@ class _$CreateTravelStateImpl implements _CreateTravelState {
     return EqualUnmodifiableListView(_regions);
   }
 
-  final List<RegionModel> _cities;
+  final List<CityModel> _cities;
   @override
   @JsonKey()
-  List<RegionModel> get cities {
+  List<CityModel> get cities {
     if (_cities is EqualUnmodifiableListView) return _cities;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_cities);
@@ -246,7 +262,7 @@ class _$CreateTravelStateImpl implements _CreateTravelState {
 
   @override
   String toString() {
-    return 'CreateTravelState(pageNumber: $pageNumber, startedOn: $startedOn, endedOn: $endedOn, companion: $companion, motivations: $motivations, regions: $regions, cities: $cities, isSubmitted: $isSubmitted)';
+    return 'CreateTravelState(pageNumber: $pageNumber, startedOn: $startedOn, endedOn: $endedOn, companion: $companion, citySearchText: $citySearchText, motivations: $motivations, regions: $regions, cities: $cities, isSubmitted: $isSubmitted)';
   }
 
   @override
@@ -261,6 +277,8 @@ class _$CreateTravelStateImpl implements _CreateTravelState {
             (identical(other.endedOn, endedOn) || other.endedOn == endedOn) &&
             (identical(other.companion, companion) ||
                 other.companion == companion) &&
+            (identical(other.citySearchText, citySearchText) ||
+                other.citySearchText == citySearchText) &&
             const DeepCollectionEquality()
                 .equals(other._motivations, _motivations) &&
             const DeepCollectionEquality().equals(other._regions, _regions) &&
@@ -276,6 +294,7 @@ class _$CreateTravelStateImpl implements _CreateTravelState {
       startedOn,
       endedOn,
       companion,
+      citySearchText,
       const DeepCollectionEquality().hash(_motivations),
       const DeepCollectionEquality().hash(_regions),
       const DeepCollectionEquality().hash(_cities),
@@ -297,9 +316,10 @@ abstract class _CreateTravelState implements CreateTravelState {
       final DateTime? startedOn,
       final DateTime? endedOn,
       final TravelCompanion? companion,
+      final String? citySearchText,
       final List<TravelMotivation> motivations,
       final List<RegionModel> regions,
-      final List<RegionModel> cities,
+      final List<CityModel> cities,
       final bool isSubmitted}) = _$CreateTravelStateImpl;
 
   @override
@@ -311,11 +331,13 @@ abstract class _CreateTravelState implements CreateTravelState {
   @override
   TravelCompanion? get companion;
   @override
+  String? get citySearchText;
+  @override
   List<TravelMotivation> get motivations;
   @override
   List<RegionModel> get regions;
   @override
-  List<RegionModel> get cities;
+  List<CityModel> get cities;
   @override
   bool get isSubmitted;
 

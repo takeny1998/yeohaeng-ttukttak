@@ -3,7 +3,6 @@ import 'package:application_new/feature/travel/provider/create_travel_provider.d
 import 'package:application_new/feature/travel/page/select_travel_city_form.dart';
 import 'package:application_new/feature/travel/page/select_travel_date_form.dart';
 import 'package:application_new/feature/travel/page/select_travel_detail_form.dart';
-import 'package:application_new/main.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

@@ -1,5 +1,6 @@
 import 'package:application_new/common/http/http_service_provider.dart';
-import 'package:application_new/common/log/logger.dart';
+import 'package:application_new/feature/region/model/city_model.dart';
+import 'package:application_new/feature/region/model/geography_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../model/region_model.dart';
@@ -9,9 +10,9 @@ part 'region_provider.g.dart';
 @Riverpod(keepAlive: true)
 class Region extends _$Region {
   @override
-  List<RegionModel> build() {
+  GeographyState build() {
     _init();
-    return [];
+    return const GeographyState();
   }
 
   Future<void> _init() async {
@@ -19,9 +20,17 @@ class Region extends _$Region {
 
     final response = await httpService.request('GET', '/api/v2/regions');
 
-    state = List.from(response['regions'])
+    final regions = List.from(response['regions'])
         .map((e) => RegionModel.fromJson(e))
         .toList();
 
+    final cities = List.from(response['cities'])
+        .map((e) => CityModel.fromJson(e))
+        .toList();
+
+    state = state.copyWith(
+      regions: regions,
+      cities: cities,
+    );
   }
 }

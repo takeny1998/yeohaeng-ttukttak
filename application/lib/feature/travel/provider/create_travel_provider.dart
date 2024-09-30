@@ -1,6 +1,7 @@
 import 'package:application_new/common/http/http_service_provider.dart';
 import 'package:application_new/common/loading/async_loading_provider.dart';
 import 'package:application_new/feature/authentication/service/auth_service_provider.dart';
+import 'package:application_new/feature/region/model/city_model.dart';
 import 'package:application_new/feature/region/model/region_model.dart';
 import 'package:application_new/feature/travel/model/create_travel_state.dart';
 import 'package:application_new/feature/travel/model/travel_comanion.dart';
@@ -11,6 +12,9 @@ part 'create_travel_provider.g.dart';
 
 @riverpod
 class CreateTravel extends _$CreateTravel {
+
+  final RegExp _koreanExp = RegExp(r'[\uac00-\ud7af]', unicode: true);
+
   @override
   CreateTravelState build() {
     return const CreateTravelState();
@@ -47,7 +51,7 @@ class CreateTravel extends _$CreateTravel {
     }
   }
 
-  void selectCity(RegionModel city) {
+  void selectCity(CityModel city) {
     final cities = state.cities;
     final isExist = cities.contains(city);
 
@@ -73,6 +77,15 @@ class CreateTravel extends _$CreateTravel {
     } else {
       state = state.copyWith(regions: [...regions, region]);
     }
+  }
+
+  void searchCity(String searchText) {
+
+    if(_koreanExp.allMatches(searchText).length != searchText.length) {
+      return;
+    }
+
+    state = state.copyWith(citySearchText: searchText);
   }
 
   void prevPage() {
