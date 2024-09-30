@@ -61,15 +61,17 @@ class SelectTravelDateForm extends ConsumerWidget {
           value: [startedOn, endedOn],
           onValueChanged: (dates) {
             if (dates.length < 2) return;
+            final [startedOn, endedOn] = dates;
             ref
                 .read(createTravelProvider.notifier)
-                .selectDate(dates[0], dates[1]);
+                .selectDate(startedOn, endedOn);
           },
         ),
       ),
       bottomNavigationBar: BottomActionButton(
-          onPressed:
-              areSelected ? () => ref.read(createTravelProvider.notifier).nextPage(): null,
+          onPressed: areSelected
+              ? () => ref.read(createTravelProvider.notifier).nextPage()
+              : null,
           child: areSelected
               ? Text(
                   trKey('display_select_date'),

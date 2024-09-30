@@ -18,7 +18,7 @@ class Geography extends _$Geography {
   Future<void> _init() async {
     final httpService = ref.read(httpServiceProvider);
 
-    final response = await httpService.request('GET', '/api/v2/regions');
+    final response = await httpService.request('GET', '/api/v2/geographies');
 
     final regions = List.from(response['regions'])
         .map((e) => RegionModel.fromJson(e))
