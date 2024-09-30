@@ -9,7 +9,7 @@ part of 'server_response.dart';
 _$ServerSuccessResponseImpl _$$ServerSuccessResponseImplFromJson(
         Map<String, dynamic> json) =>
     _$ServerSuccessResponseImpl(
-      data: json['data'] as Map<String, dynamic>,
+      data: json['data'] as Map<String, dynamic>? ?? const {},
       $type: json['status'] as String?,
     );
 

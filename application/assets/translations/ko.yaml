@@ -1,0 +1,40 @@
+travel:
+  select_date:
+    ask_date: 언제 여행을 떠나시나요?
+    require_date: 여행 기간을 선택해 주세요.
+    display_select_date: '{start} - {end} ({nights}박 {days}일)'
+
+  select_detail:
+    ask_companion: 누구와 함께 여행할 예정인가요?
+    hint_companion: (중복 선택 불가능)
+    ask_motivation: 여행 목적은 무엇인가요?
+    hint_motivation: (최소 1개, 최대 3개 선택 가능)
+    require_detail: 여행 상세 정보를 모두 선택해 주세요.
+
+  select_city:
+    ask_city: 어느 도시로 여행할 예정인가요?
+    require_select: 최소 1개의 도시를 선택해 주세요
+    display_select: "도시 {}개 선택됨"
+
+  created: 여행이 성공적으로 생성되었습니다.
+
+next: 다음으로
+korea: 대한민국
+
+enum:
+  TravelCompanion:
+    alone: 혼자서
+    parent: 부모님과
+    children: 자녀와
+    cousin: 친척과
+    friend: 친구와
+
+  TravelMotivation:
+    adventure: 일상에서 탈피
+    rest: 휴식
+    friendship: 친목 쌓기
+    selfReflection: 자아 성찰
+    socialNetwork: SNS 등록
+    fitness: 건강 증진
+    newExperiences: 새로운 경험 추구
+    education: 교육 목적

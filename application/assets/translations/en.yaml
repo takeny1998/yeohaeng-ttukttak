@@ -1,0 +1,40 @@
+travel:
+  select_date:
+    ask_date: When are you going to travel?
+    require_date: Please select a travel period
+    display_select_date: '{start} - {end} ({days} days)'
+
+  select_detail:
+    ask_companion: Who will you travel with?
+    hint_companion: (No duplicate selections)
+    ask_motivation: What's the purpose of your trip?
+    hint_motivation: (Select at least one, up to three)
+    require_detail: Please select all of your trip details.
+
+  select_city:
+    ask_city: Which cities are you traveling to?
+    require_select: Please select at least one city
+    display_select: "{} cities selected"
+
+  created: The travel has been created successfully.
+
+next: Next
+korea: Republic of Korea
+
+enum:
+  TravelCompanion:
+    alone: alone
+    parent: parent
+    children: children
+    cousin: cousin
+    friend: friend
+
+  TravelMotivation:
+    adventure: Break out of routine
+    rest: Rest
+    friendship: Friendship
+    selfReflection: Self-reflection
+    socialNetwork: Social network
+    fitness: Fitness
+    newExperiences: Seek new experiences
+    education: Education

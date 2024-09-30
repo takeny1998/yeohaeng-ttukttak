@@ -4,6 +4,7 @@ import com.yeohaeng_ttukttak.server.application.travel.controller.dto.CreateTrav
 import com.yeohaeng_ttukttak.server.application.travel.service.CreateTravelService;
 import com.yeohaeng_ttukttak.server.application.travel.service.dto.CreateTravelCommand;
 import com.yeohaeng_ttukttak.server.common.aop.annotation.Authorization;
+import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
 import com.yeohaeng_ttukttak.server.domain.auth.dto.AccessTokenDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,9 +23,9 @@ public class TravelController {
 
     private final CreateTravelService createTravelService;
 
-    @PostMapping("/")
+    @PostMapping
     @Authorization
-    public void create(
+    public ServerResponse<Void> create(
             @RequestBody @Valid CreateTravelRequest request,
             AccessTokenDto accessToken
     ) {
@@ -33,6 +34,7 @@ public class TravelController {
 
         createTravelService.call(request.toCommand(accessToken.memberId()));
 
+        return new ServerResponse<>();
     }
 
 }

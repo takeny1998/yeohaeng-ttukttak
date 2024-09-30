@@ -139,7 +139,7 @@ class __$$ServerSuccessResponseImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$ServerSuccessResponseImpl implements ServerSuccessResponse {
   const _$ServerSuccessResponseImpl(
-      {required final Map<String, dynamic> data, final String? $type})
+      {final Map<String, dynamic> data = const {}, final String? $type})
       : _data = data,
         $type = $type ?? 'success';
 
@@ -148,6 +148,7 @@ class _$ServerSuccessResponseImpl implements ServerSuccessResponse {
 
   final Map<String, dynamic> _data;
   @override
+  @JsonKey()
   Map<String, dynamic> get data {
     if (_data is EqualUnmodifiableMapView) return _data;
     // ignore: implicit_dynamic_type
@@ -261,8 +262,8 @@ class _$ServerSuccessResponseImpl implements ServerSuccessResponse {
 }
 
 abstract class ServerSuccessResponse implements ServerResponse {
-  const factory ServerSuccessResponse(
-      {required final Map<String, dynamic> data}) = _$ServerSuccessResponseImpl;
+  const factory ServerSuccessResponse({final Map<String, dynamic> data}) =
+      _$ServerSuccessResponseImpl;
 
   factory ServerSuccessResponse.fromJson(Map<String, dynamic> json) =
       _$ServerSuccessResponseImpl.fromJson;
