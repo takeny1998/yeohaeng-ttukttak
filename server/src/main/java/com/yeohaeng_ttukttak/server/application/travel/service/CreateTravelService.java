@@ -4,7 +4,7 @@ import com.yeohaeng_ttukttak.server.application.travel.service.dto.CreateTravelC
 import com.yeohaeng_ttukttak.server.common.dto.EntityReference;
 import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
 import com.yeohaeng_ttukttak.server.domain.member.service.MemberService;
-import com.yeohaeng_ttukttak.server.domain.region.repository.RegionRepository;
+import com.yeohaeng_ttukttak.server.domain.geography.repository.GeographyRepository;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.InputTravel;
 import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ public class CreateTravelService {
 
     private final MemberService memberService;
     private final TravelRepository travelRepository;
-    private final RegionRepository regionRepository;
+    private final GeographyRepository geographyRepository;
 
     @Transactional
     public void call(CreateTravelCommand comm) {
@@ -34,7 +34,7 @@ public class CreateTravelService {
                 comm.endedOn(),
                 comm.companion());
 
-        regionRepository.findAllCityByIds(ids)
+        geographyRepository.findAllCityByIds(ids)
                 .forEach(travel::addCity);
 
         travelRepository.save(travel);

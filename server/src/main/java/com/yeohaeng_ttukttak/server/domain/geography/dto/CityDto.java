@@ -1,6 +1,6 @@
-package com.yeohaeng_ttukttak.server.domain.region.dto;
+package com.yeohaeng_ttukttak.server.domain.geography.dto;
 
-import com.yeohaeng_ttukttak.server.domain.region.entity.City;
+import com.yeohaeng_ttukttak.server.domain.geography.entity.City;
 
 import java.util.Locale;
 

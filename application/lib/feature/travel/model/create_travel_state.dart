@@ -1,5 +1,5 @@
-import 'package:application_new/feature/region/model/city_model.dart';
-import 'package:application_new/feature/region/model/region_model.dart';
+import 'package:application_new/feature/geography/model/city_model.dart';
+import 'package:application_new/feature/geography/model/region_model.dart';
 import 'package:application_new/feature/travel/model/travel_comanion.dart';
 import 'package:application_new/feature/travel/model/travel_motivation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';

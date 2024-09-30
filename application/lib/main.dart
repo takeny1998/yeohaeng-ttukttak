@@ -6,7 +6,6 @@ import 'package:application_new/common/loading/async_loading_provider.dart';
 import 'package:application_new/common/session/session_provider.dart';
 import 'package:application_new/feature/authentication/service/auth_service_provider.dart';
 import 'package:application_new/feature/locale/locale_provider.dart';
-import 'package:application_new/feature/region/provider/region_provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization_loader/easy_localization_loader.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +14,7 @@ import 'package:logger/logger.dart';
 
 import 'common/exception/exception.dart';
 import 'common/router/router_provider.dart';
+import 'feature/geography/provider/geography_provider.dart';
 
 final messengerKey = GlobalKey<ScaffoldMessengerState>();
 
@@ -73,7 +73,7 @@ class _MyAppState extends ConsumerState<MyApp> {
   @override
   void initState() {
     Future.microtask(() {
-      ref.read(regionProvider);
+      ref.read(geographyProvider);
       autoLogin();
     });
 

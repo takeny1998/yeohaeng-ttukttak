@@ -1,7 +1,7 @@
-package com.yeohaeng_ttukttak.server.domain.region.dto;
+package com.yeohaeng_ttukttak.server.domain.geography.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.yeohaeng_ttukttak.server.domain.region.entity.Region;
+import com.yeohaeng_ttukttak.server.domain.geography.entity.Region;
 
 import java.util.Locale;
 

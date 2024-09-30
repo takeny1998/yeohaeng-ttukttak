@@ -2,7 +2,7 @@ package com.yeohaeng_ttukttak.server.domain.travel.entity;
 
 import com.yeohaeng_ttukttak.server.domain.member.entity.AgeGroup;
 import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
-import com.yeohaeng_ttukttak.server.domain.region.entity.City;
+import com.yeohaeng_ttukttak.server.domain.geography.entity.City;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

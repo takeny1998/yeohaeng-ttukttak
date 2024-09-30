@@ -1,14 +1,14 @@
-package com.yeohaeng_ttukttak.server.domain.region.repository;
+package com.yeohaeng_ttukttak.server.domain.geography.repository;
 
-import com.yeohaeng_ttukttak.server.domain.region.entity.City;
-import com.yeohaeng_ttukttak.server.domain.region.entity.Geography;
-import com.yeohaeng_ttukttak.server.domain.region.entity.Region;
+import com.yeohaeng_ttukttak.server.domain.geography.entity.City;
+import com.yeohaeng_ttukttak.server.domain.geography.entity.Geography;
+import com.yeohaeng_ttukttak.server.domain.geography.entity.Region;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface RegionRepository extends JpaRepository<Geography, Long> {
+public interface GeographyRepository extends JpaRepository<Geography, Long> {
 
     @Query("SELECT r FROM Region r")
     List<Region> findAllRegion();

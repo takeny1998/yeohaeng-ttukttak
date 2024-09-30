@@ -1,6 +1,6 @@
 import 'package:application_new/common/util/translation.dart';
-import 'package:application_new/feature/region/model/city_model.dart';
-import 'package:application_new/feature/region/provider/region_provider.dart';
+import 'package:application_new/feature/geography/model/city_model.dart';
+import 'package:application_new/feature/geography/provider/geography_provider.dart';
 import 'package:application_new/feature/travel/component/bottom_action_button.dart';
 import 'package:application_new/feature/travel/component/city_list_item.dart';
 import 'package:application_new/feature/travel/provider/create_travel_provider.dart';
@@ -43,7 +43,7 @@ class _SelectTravelCityFormState extends ConsumerState<SelectTravelCityForm> {
     final selectedCities = ref.watch(createTravelProvider).cities;
     final selectedRegions = ref.watch(createTravelProvider).regions;
 
-    final geographyState = ref.watch(regionProvider);
+    final geographyState = ref.watch(geographyProvider);
 
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;

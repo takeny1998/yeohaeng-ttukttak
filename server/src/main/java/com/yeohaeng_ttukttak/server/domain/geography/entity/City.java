@@ -1,4 +1,4 @@
-package com.yeohaeng_ttukttak.server.domain.region.entity;
+package com.yeohaeng_ttukttak.server.domain.geography.entity;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;

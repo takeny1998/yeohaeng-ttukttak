@@ -1,4 +1,4 @@
-package com.yeohaeng_ttukttak.server.domain.region.entity;
+package com.yeohaeng_ttukttak.server.domain.geography.entity;
 
 import com.yeohaeng_ttukttak.server.common.util.LocaleUtil;
 import jakarta.persistence.*;

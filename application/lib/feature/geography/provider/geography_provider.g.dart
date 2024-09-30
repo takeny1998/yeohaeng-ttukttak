@@ -1,24 +1,25 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'region_provider.dart';
+part of 'geography_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$regionHash() => r'2b2ec9423018ff6378e43aa3067fbc316e046221';
+String _$geographyHash() => r'cbe735c9b27016f4da1dab583dfe77e6aef5c9b0';
 
-/// See also [Region].
-@ProviderFor(Region)
-final regionProvider = NotifierProvider<Region, GeographyState>.internal(
-  Region.new,
-  name: r'regionProvider',
+/// See also [Geography].
+@ProviderFor(Geography)
+final geographyProvider =
+    AutoDisposeNotifierProvider<Geography, GeographyState>.internal(
+  Geography.new,
+  name: r'geographyProvider',
   debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$regionHash,
+      const bool.fromEnvironment('dart.vm.product') ? null : _$geographyHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$Region = Notifier<GeographyState>;
+typedef _$Geography = AutoDisposeNotifier<GeographyState>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
