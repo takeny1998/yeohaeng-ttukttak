@@ -1,7 +1,9 @@
 package com.yeohaeng_ttukttak.server.domain.place.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotNull;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
@@ -15,6 +17,10 @@ public final class Place {
     @Id
     private Long id;
 
+    @NotNull
+    @Column(unique = true, insertable = false, updatable = false)
+    private String poiId;
+
     private String name;
 
     private Integer regionCode;
@@ -26,7 +32,5 @@ public final class Place {
     private Double longitude;
 
     private Double latitude;
-
-
 
 }

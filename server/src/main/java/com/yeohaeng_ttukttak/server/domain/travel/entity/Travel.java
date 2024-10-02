@@ -11,11 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static jakarta.persistence.InheritanceType.SINGLE_TABLE;
+import static jakarta.persistence.InheritanceType.TABLE_PER_CLASS;
 
 @Entity
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Inheritance(strategy = SINGLE_TABLE)
+@Inheritance(strategy = TABLE_PER_CLASS)
 public abstract class Travel {
 
     @Id @GeneratedValue
@@ -25,16 +26,12 @@ public abstract class Travel {
 
     private LocalDate endedOn;
 
-    @Enumerated(EnumType.STRING)
-    private Companion companion;
-
     @OneToMany(mappedBy = "travel", cascade = CascadeType.PERSIST)
     public List<TravelMotivation> motivations = new ArrayList<>();
 
-    public Travel(LocalDate startedOn, LocalDate endedOn, Companion companion) {
+    public Travel(LocalDate startedOn, LocalDate endedOn) {
         this.startedOn = startedOn;
         this.endedOn = endedOn;
-        this.companion = companion;
     }
 
     abstract AgeGroup ageGroup();

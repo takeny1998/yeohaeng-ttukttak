@@ -2,6 +2,7 @@ package com.yeohaeng_ttukttak.server.domain.travel.entity;
 
 import com.yeohaeng_ttukttak.server.domain.place.entity.Place;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.ToString;
 
 @Entity
@@ -19,6 +20,7 @@ public class TravelVisit {
     @JoinColumn(name = "travel_id")
     private Travel travel;
 
+    @NotNull
     private int order;
 
 }

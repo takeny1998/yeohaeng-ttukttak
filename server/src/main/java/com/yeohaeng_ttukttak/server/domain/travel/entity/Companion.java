@@ -1,9 +1,15 @@
 package com.yeohaeng_ttukttak.server.domain.travel.entity;
 
 public enum Companion {
-    alone,
-    parent,
+    spouse,
     children,
-    cousin,
-    friend,
+    parents,
+    grandparents,
+    siblings,
+    relatives,
+    friends,
+    lover,
+    colleagues,
+    members,
+    others
 }

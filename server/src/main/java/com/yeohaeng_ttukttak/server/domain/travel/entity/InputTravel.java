@@ -15,7 +15,6 @@ import java.util.List;
 @Entity
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@DiscriminatorValue("Input")
 public final class InputTravel extends Travel {
 
 
@@ -23,12 +22,16 @@ public final class InputTravel extends Travel {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @Enumerated(EnumType.STRING)
+    private Companion companion;
+
     @OneToMany(mappedBy = "travel", cascade = CascadeType.PERSIST)
     public List<TravelCity> travelCities = new ArrayList<>();
 
     public InputTravel(Member member, LocalDate startedOn, LocalDate endedOn, Companion companion) {
-        super(startedOn, endedOn, companion);
+        super(startedOn, endedOn);
         this.member = member;
+        this.companion = companion;
     }
 
     @Override
@@ -44,4 +47,7 @@ public final class InputTravel extends Travel {
         travelCities.add(new TravelCity(this, city));
     }
 
+    public Companion companion() {
+        return companion;
+    }
 }
