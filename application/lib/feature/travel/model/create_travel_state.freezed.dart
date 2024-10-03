@@ -19,7 +19,7 @@ mixin _$CreateTravelState {
   int get pageNumber => throw _privateConstructorUsedError;
   DateTime? get startedOn => throw _privateConstructorUsedError;
   DateTime? get endedOn => throw _privateConstructorUsedError;
-  TravelCompanion? get companion => throw _privateConstructorUsedError;
+  TravelCompanionType? get companion => throw _privateConstructorUsedError;
   String? get citySearchText => throw _privateConstructorUsedError;
   List<TravelMotivation> get motivations => throw _privateConstructorUsedError;
   List<RegionModel> get regions => throw _privateConstructorUsedError;
@@ -43,7 +43,7 @@ abstract class $CreateTravelStateCopyWith<$Res> {
       {int pageNumber,
       DateTime? startedOn,
       DateTime? endedOn,
-      TravelCompanion? companion,
+      TravelCompanionType? companion,
       String? citySearchText,
       List<TravelMotivation> motivations,
       List<RegionModel> regions,
@@ -92,7 +92,7 @@ class _$CreateTravelStateCopyWithImpl<$Res, $Val extends CreateTravelState>
       companion: freezed == companion
           ? _value.companion
           : companion // ignore: cast_nullable_to_non_nullable
-              as TravelCompanion?,
+              as TravelCompanionType?,
       citySearchText: freezed == citySearchText
           ? _value.citySearchText
           : citySearchText // ignore: cast_nullable_to_non_nullable
@@ -129,7 +129,7 @@ abstract class _$$CreateTravelStateImplCopyWith<$Res>
       {int pageNumber,
       DateTime? startedOn,
       DateTime? endedOn,
-      TravelCompanion? companion,
+      TravelCompanionType? companion,
       String? citySearchText,
       List<TravelMotivation> motivations,
       List<RegionModel> regions,
@@ -176,7 +176,7 @@ class __$$CreateTravelStateImplCopyWithImpl<$Res>
       companion: freezed == companion
           ? _value.companion
           : companion // ignore: cast_nullable_to_non_nullable
-              as TravelCompanion?,
+              as TravelCompanionType?,
       citySearchText: freezed == citySearchText
           ? _value.citySearchText
           : citySearchText // ignore: cast_nullable_to_non_nullable
@@ -226,7 +226,7 @@ class _$CreateTravelStateImpl implements _CreateTravelState {
   @override
   final DateTime? endedOn;
   @override
-  final TravelCompanion? companion;
+  final TravelCompanionType? companion;
   @override
   final String? citySearchText;
   final List<TravelMotivation> _motivations;
@@ -315,7 +315,7 @@ abstract class _CreateTravelState implements CreateTravelState {
       {final int pageNumber,
       final DateTime? startedOn,
       final DateTime? endedOn,
-      final TravelCompanion? companion,
+      final TravelCompanionType? companion,
       final String? citySearchText,
       final List<TravelMotivation> motivations,
       final List<RegionModel> regions,
@@ -329,7 +329,7 @@ abstract class _CreateTravelState implements CreateTravelState {
   @override
   DateTime? get endedOn;
   @override
-  TravelCompanion? get companion;
+  TravelCompanionType? get companion;
   @override
   String? get citySearchText;
   @override

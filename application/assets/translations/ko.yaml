@@ -22,12 +22,18 @@ next: 다음으로
 korea: 대한민국
 
 enum:
-  TravelCompanion:
-    alone: 혼자서
-    parent: 부모님과
-    children: 자녀와
-    cousin: 친척과
-    friend: 친구와
+  TravelCompanionType:
+    spouse: 배우자
+    children: 자녀
+    parents: 부모님
+    grandparents: 조부모님
+    siblings: 형제
+    relatives: 친척
+    friends: 친구
+    lover: 연인
+    colleagues: 동료
+    members: 회원
+    others: 기타
 
   TravelMotivation:
     adventure: 일상에서 탈피
@@ -38,3 +44,17 @@ enum:
     fitness: 건강 증진
     newExperiences: 새로운 경험 추구
     education: 교육 목적
+
+  AgeGroup:
+    underNine: 9세 이하
+    teens: 10대
+    twenties: 20대
+    thirties: 30대
+    forties: 40대
+    fifties: 50대
+    sixties: 60대
+    seventiesPlus: 70세 이상
+
+  Gender:
+    male: Male
+    female: Female

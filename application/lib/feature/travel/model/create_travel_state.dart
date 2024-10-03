@@ -1,7 +1,7 @@
 import 'package:application_new/feature/geography/model/city_model.dart';
 import 'package:application_new/feature/geography/model/region_model.dart';
-import 'package:application_new/feature/travel/model/travel_comanion.dart';
-import 'package:application_new/feature/travel/model/travel_motivation.dart';
+import 'package:application_new/shared/travel/model/travel_companion_type.dart';
+import 'package:application_new/shared/travel/model/travel_motivation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'create_travel_state.freezed.dart';
@@ -12,7 +12,7 @@ class CreateTravelState with _$CreateTravelState {
     @Default(0) int pageNumber,
     DateTime? startedOn,
     DateTime? endedOn,
-    TravelCompanion? companion,
+    TravelCompanionType? companion,
     String? citySearchText,
     @Default([]) List<TravelMotivation> motivations,
     @Default([]) List<RegionModel> regions,

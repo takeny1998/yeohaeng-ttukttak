@@ -1,8 +1,8 @@
 import 'package:application_new/common/util/translation.dart';
 import 'package:application_new/feature/travel/component/bottom_action_button.dart';
 import 'package:application_new/feature/travel/provider/create_travel_provider.dart';
-import 'package:application_new/feature/travel/model/travel_comanion.dart';
-import 'package:application_new/feature/travel/model/travel_motivation.dart';
+import 'package:application_new/shared/travel/model/travel_companion_type.dart';
+import 'package:application_new/shared/travel/model/travel_motivation.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -52,7 +52,7 @@ class SelectTravelDetailForm extends ConsumerWidget {
             Wrap(
               spacing: 6,
               children: [
-                for (TravelCompanion companion in TravelCompanion.values)
+                for (TravelCompanionType companion in TravelCompanionType.values)
                   ChoiceChip(
                     label: Text(enumKey(companion)).tr(),
                     onSelected: (isSelected) {

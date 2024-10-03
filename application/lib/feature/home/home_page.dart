@@ -19,7 +19,8 @@ class HomePage extends ConsumerWidget {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         actions: const [],
       ),
-      body: Center(
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 36.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -38,6 +39,13 @@ class HomePage extends ConsumerWidget {
             TextButton(
                 onPressed: () => context.push('/travels/create'),
                 child: const Text('여행 생성')),
+            TextField(
+              onSubmitted: (text) {
+                final id = int.tryParse(text);
+                if (id == null) return;
+                context.push('/travels/$id/detail');
+              },
+            )
           ],
         ),
       ),
