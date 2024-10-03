@@ -10,7 +10,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static jakarta.persistence.InheritanceType.SINGLE_TABLE;
 import static jakarta.persistence.InheritanceType.TABLE_PER_CLASS;
 
 @Entity
@@ -27,6 +26,12 @@ public abstract class Travel {
     private LocalDate endedOn;
 
     @OneToMany(mappedBy = "travel", cascade = CascadeType.PERSIST)
+    private List<TravelCity> cities = new ArrayList<>();
+
+    @OneToMany(mappedBy = "travel", cascade = CascadeType.PERSIST)
+    private List<TravelCompanion> companions = new ArrayList<>();
+
+    @OneToMany(mappedBy = "travel", cascade = CascadeType.PERSIST)
     public List<TravelMotivation> motivations = new ArrayList<>();
 
     public Travel(LocalDate startedOn, LocalDate endedOn) {
@@ -34,6 +39,29 @@ public abstract class Travel {
         this.endedOn = endedOn;
     }
 
-    abstract AgeGroup ageGroup();
+    abstract public AgeGroup ageGroup();
 
+    public Long id() {
+        return id;
+    }
+
+    public LocalDate startedOn() {
+        return startedOn;
+    }
+
+    public LocalDate endedOn() {
+        return endedOn;
+    }
+
+    public List<TravelCompanion> companions() {
+        return companions;
+    }
+
+    public List<TravelMotivation> motivations() {
+        return motivations;
+    }
+
+    public List<TravelCity> cities() {
+        return cities;
+    }
 }

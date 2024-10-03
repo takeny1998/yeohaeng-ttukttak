@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -22,32 +21,37 @@ public final class InputTravel extends Travel {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @Enumerated(EnumType.STRING)
-    private Companion companion;
-
-    @OneToMany(mappedBy = "travel", cascade = CascadeType.PERSIST)
-    public List<TravelCity> travelCities = new ArrayList<>();
-
-    public InputTravel(Member member, LocalDate startedOn, LocalDate endedOn, Companion companion) {
+    public InputTravel(Member member, LocalDate startedOn, LocalDate endedOn) {
         super(startedOn, endedOn);
         this.member = member;
-        this.companion = companion;
     }
 
     @Override
-    AgeGroup ageGroup() {
+    public AgeGroup ageGroup() {
         return member.ageGroup();
     }
 
     public void addCity(City city) {
-        final boolean containsCity = travelCities.stream()
+        final boolean containsCity = cities().stream()
                 .anyMatch(tc -> tc.city().equals(city));
 
-        if (containsCity) return;
-        travelCities.add(new TravelCity(this, city));
+        if (containsCity) {
+            return;
+        }
+        cities().add(new TravelCity(this, city));
     }
 
-    public Companion companion() {
-        return companion;
+    public void addCompanion(Companion companion) {
+        final boolean containsCompanion = companions().stream()
+                .anyMatch(tc -> tc.companion().equals(companion));
+
+        if (containsCompanion) {
+            return;
+        }
+
+        companions().add(new TravelCompanion(this, companion));
     }
+
+
+
 }

@@ -26,4 +26,8 @@ public class TravelMotivation {
 
         travel.motivations.add(this);
     }
+
+    public Motivation motivation() {
+        return motivation;
+    }
 }

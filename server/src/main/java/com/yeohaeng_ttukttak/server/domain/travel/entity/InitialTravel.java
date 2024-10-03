@@ -4,6 +4,10 @@ import com.yeohaeng_ttukttak.server.domain.member.entity.AgeGroup;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.OneToMany;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
