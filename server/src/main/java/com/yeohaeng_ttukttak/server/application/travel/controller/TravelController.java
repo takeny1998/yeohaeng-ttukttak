@@ -3,16 +3,15 @@ package com.yeohaeng_ttukttak.server.application.travel.controller;
 import com.yeohaeng_ttukttak.server.application.travel.controller.dto.CreateTravelRequest;
 import com.yeohaeng_ttukttak.server.application.travel.controller.dto.FindTravelDetailResponse;
 import com.yeohaeng_ttukttak.server.application.travel.service.CreateTravelService;
-import com.yeohaeng_ttukttak.server.application.travel.service.FindAllTravelByCityService;
+import com.yeohaeng_ttukttak.server.application.travel.service.FindTravelsByCityService;
 import com.yeohaeng_ttukttak.server.application.travel.service.FindTravelDetailService;
-import com.yeohaeng_ttukttak.server.application.travel.service.dto.CreateTravelCommand;
+import com.yeohaeng_ttukttak.server.application.travel.service.dto.FindTravelsByCityResponse;
 import com.yeohaeng_ttukttak.server.common.aop.annotation.Authorization;
 import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
 import com.yeohaeng_ttukttak.server.domain.auth.dto.AccessTokenDto;
 import com.yeohaeng_ttukttak.server.domain.travel.dto.TravelDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +24,7 @@ import java.util.List;
 public class TravelController {
 
     private final CreateTravelService createTravelService;
-    private final FindAllTravelByCityService findAllTravelByCityService;
+    private final FindTravelsByCityService findTravelsByCityService;
     private final FindTravelDetailService findTravelDetailService;
 
     @PostMapping
@@ -43,14 +42,16 @@ public class TravelController {
     }
 
     @GetMapping
-    public ServerResponse<List<TravelDto>> findAllByCity(@RequestParam("cityId") Long cityId) {
+    public ServerResponse<FindTravelsByCityResponse> findAllByCity(@RequestParam("cityId") Long cityId) {
+        List<TravelDto> dtos = findTravelsByCityService.call(cityId);
+
         return new ServerResponse<>(
-                findAllTravelByCityService.call(cityId));
+                new FindTravelsByCityResponse(dtos));
     }
 
     @GetMapping("/{id}/detail")
     public ServerResponse<FindTravelDetailResponse> findDetail(
-            @PathVariable("id") Long id) {
+            @PathVariable Long id) {
         return new ServerResponse<>(
                 findTravelDetailService.call(id).toResponse());
     }

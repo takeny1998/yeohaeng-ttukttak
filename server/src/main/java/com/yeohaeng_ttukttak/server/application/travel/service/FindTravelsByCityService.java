@@ -12,7 +12,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class FindAllTravelByCityService {
+public class FindTravelsByCityService {
 
     private final TravelRepository travelRepository;
 

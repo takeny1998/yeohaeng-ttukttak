@@ -1,6 +1,7 @@
 package com.yeohaeng_ttukttak.server.domain.travel.entity;
 
 import com.yeohaeng_ttukttak.server.domain.member.entity.AgeGroup;
+import com.yeohaeng_ttukttak.server.domain.member.entity.Gender;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,6 @@ import java.util.List;
 import static jakarta.persistence.InheritanceType.TABLE_PER_CLASS;
 
 @Entity
-@ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Inheritance(strategy = TABLE_PER_CLASS)
 public abstract class Travel {
@@ -43,6 +43,8 @@ public abstract class Travel {
     }
 
     abstract public AgeGroup ageGroup();
+
+    abstract public Gender gender();
 
     public Long id() {
         return id;

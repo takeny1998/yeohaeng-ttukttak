@@ -31,9 +31,8 @@ public class CreateTravelService {
         final InputTravel travel = new InputTravel(
                 member,
                 comm.startedOn(),
-                comm.endedOn());
-
-        travel.addCompanion(comm.companion());
+                comm.endedOn(),
+                comm.companionType());
 
         geographyRepository.findAllCityByIds(ids)
                 .forEach(travel::addCity);

@@ -1,6 +1,7 @@
 package com.yeohaeng_ttukttak.server.domain.travel.entity;
 
 import com.yeohaeng_ttukttak.server.domain.member.entity.AgeGroup;
+import com.yeohaeng_ttukttak.server.domain.member.entity.Gender;
 import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.City;
 import jakarta.persistence.*;
@@ -9,7 +10,6 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Entity
 @ToString
@@ -21,14 +21,23 @@ public final class InputTravel extends Travel {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    public InputTravel(Member member, LocalDate startedOn, LocalDate endedOn) {
+    @Enumerated(EnumType.STRING)
+    private CompanionType companionType;
+
+    public InputTravel(Member member, LocalDate startedOn, LocalDate endedOn, CompanionType companionType) {
         super(startedOn, endedOn);
         this.member = member;
+        this.companionType = companionType;
     }
 
     @Override
     public AgeGroup ageGroup() {
         return member.ageGroup();
+    }
+
+    @Override
+    public Gender gender() {
+        return member.gender();
     }
 
     public void addCity(City city) {
@@ -39,17 +48,6 @@ public final class InputTravel extends Travel {
             return;
         }
         cities().add(new TravelCity(this, city));
-    }
-
-    public void addCompanion(Companion companion) {
-        final boolean containsCompanion = companions().stream()
-                .anyMatch(tc -> tc.companion().equals(companion));
-
-        if (containsCompanion) {
-            return;
-        }
-
-        companions().add(new TravelCompanion(this, companion));
     }
 
 

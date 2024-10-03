@@ -1,6 +1,7 @@
 package com.yeohaeng_ttukttak.server.domain.travel.dto;
 
 import com.yeohaeng_ttukttak.server.domain.member.entity.AgeGroup;
+import com.yeohaeng_ttukttak.server.domain.member.entity.Gender;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.*;
 
 import java.time.LocalDate;
@@ -11,22 +12,22 @@ public record TravelDto(
         LocalDate startedOn,
         LocalDate endedOn,
         AgeGroup ageGroup,
-        List<Companion> companions,
+        Gender gender,
+        List<TravelCompanionDto> companions,
         List<Motivation> motivations
 ) {
 
-    public static TravelDto of (Travel travel) {
+    public static TravelDto of(Travel travel) {
         return new TravelDto(
                 travel.id(),
                 travel.startedOn(),
                 travel.endedOn(),
                 travel.ageGroup(),
-                travel.companions()
-                        .stream()
-                        .map(TravelCompanion::companion)
+                travel.gender(),
+                travel.companions().stream()
+                        .map(TravelCompanionDto::of)
                         .toList(),
-                travel.motivations()
-                        .stream()
+                travel.motivations().stream()
                         .map(TravelMotivation::motivation)
                         .toList()
         );

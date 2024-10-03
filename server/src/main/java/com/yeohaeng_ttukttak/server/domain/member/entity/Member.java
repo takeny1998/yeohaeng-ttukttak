@@ -46,4 +46,7 @@ public class Member {
         return ageGroup;
     }
 
+    public Gender gender() {
+        return gender;
+    }
 }

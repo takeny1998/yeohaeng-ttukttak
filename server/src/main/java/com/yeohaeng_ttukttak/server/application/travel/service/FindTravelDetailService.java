@@ -2,8 +2,11 @@ package com.yeohaeng_ttukttak.server.application.travel.service;
 
 import com.yeohaeng_ttukttak.server.application.travel.service.dto.FindTravelDetailResult;
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundException;
+import com.yeohaeng_ttukttak.server.domain.geography.entity.City;
 import com.yeohaeng_ttukttak.server.domain.place.entity.Place;
+import com.yeohaeng_ttukttak.server.domain.travel.dto.TravelDto;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
+import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelCity;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelVisit;
 import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelRepository;
 import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelVisitRepository;
@@ -33,7 +36,13 @@ public class FindTravelDetailService {
                 .distinct()
                 .toList();
 
-        return FindTravelDetailResult.of(visits, places);
+        final List<City> cities = travel.cities().stream()
+                .map(TravelCity::city)
+                .distinct()
+                .toList();
+
+        return FindTravelDetailResult.of(
+                TravelDto.of(travel), visits, places, cities);
     }
 
 }

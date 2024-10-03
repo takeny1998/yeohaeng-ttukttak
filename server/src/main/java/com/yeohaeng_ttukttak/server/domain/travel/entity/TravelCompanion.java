@@ -1,5 +1,7 @@
 package com.yeohaeng_ttukttak.server.domain.travel.entity;
 
+import com.yeohaeng_ttukttak.server.domain.member.entity.AgeGroup;
+import com.yeohaeng_ttukttak.server.domain.member.entity.Gender;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -18,15 +20,27 @@ public class TravelCompanion {
     private Travel travel;
 
     @Enumerated(EnumType.STRING)
-    private Companion companion;
+    private CompanionType type;
 
-    public TravelCompanion(Travel travel, Companion companion) {
-        this.travel = travel;
-        this.companion = companion;
+    @Enumerated(EnumType.STRING)
+    private AgeGroup ageGroup;
+
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
+
+    public Long id() {
+        return id;
     }
 
-    public Companion companion() {
-        return companion;
+    public CompanionType type() {
+        return type;
     }
 
+    public AgeGroup ageGroup() {
+        return ageGroup;
+    }
+
+    public Gender gender() {
+        return gender;
+    }
 }
