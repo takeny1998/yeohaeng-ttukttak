@@ -32,7 +32,10 @@ public abstract class Travel {
     private List<TravelCompanion> companions = new ArrayList<>();
 
     @OneToMany(mappedBy = "travel", cascade = CascadeType.PERSIST)
-    public List<TravelMotivation> motivations = new ArrayList<>();
+    private List<TravelMotivation> motivations = new ArrayList<>();
+
+    @OneToMany(mappedBy = "travel", cascade = CascadeType.PERSIST)
+    private List<TravelVisit> visits = new ArrayList<>();
 
     public Travel(LocalDate startedOn, LocalDate endedOn) {
         this.startedOn = startedOn;
@@ -63,5 +66,9 @@ public abstract class Travel {
 
     public List<TravelCity> cities() {
         return cities;
+    }
+
+    public List<TravelVisit> visits() {
+        return visits;
     }
 }

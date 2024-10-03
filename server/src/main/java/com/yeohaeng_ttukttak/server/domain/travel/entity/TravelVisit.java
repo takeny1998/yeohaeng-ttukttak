@@ -38,4 +38,39 @@ public class TravelVisit {
 
     private Integer recommend;
 
+    public Long id() {
+        return id;
+    }
+
+    public LocalDate visitedOn() {
+        return visitedOn;
+    }
+
+    public Integer seq() {
+        return seq;
+    }
+
+    public Place place() {
+        return place;
+    }
+
+    public Travel travel() {
+        return travel;
+    }
+
+    public VisitReason reason() {
+        return reason;
+    }
+
+    public Integer satisfaction() {
+        return satisfaction;
+    }
+
+    public Integer revisit() {
+        return revisit;
+    }
+
+    public Integer recommend() {
+        return recommend;
+    }
 }

@@ -33,4 +33,35 @@ public final class Place {
 
     private Double latitude;
 
+    public Long id() {
+        return id;
+    }
+
+    public String poiId() {
+        return poiId;
+    }
+
+    public String name() {
+        return name;
+    }
+
+    public Integer regionCode() {
+        return regionCode;
+    }
+
+    public String lotNumberAddress() {
+        return lotNumberAddress;
+    }
+
+    public String roadAddress() {
+        return roadAddress;
+    }
+
+    public Double longitude() {
+        return longitude;
+    }
+
+    public Double latitude() {
+        return latitude;
+    }
 }
