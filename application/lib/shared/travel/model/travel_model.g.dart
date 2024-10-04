@@ -43,11 +43,13 @@ const _$AgeGroupEnumMap = {
   AgeGroup.fifties: 'fifties',
   AgeGroup.sixties: 'sixties',
   AgeGroup.seventiesPlus: 'seventiesPlus',
+  AgeGroup.none: 'none',
 };
 
 const _$GenderEnumMap = {
   Gender.male: 'male',
   Gender.female: 'female',
+  Gender.none: 'none',
 };
 
 const _$TravelMotivationEnumMap = {

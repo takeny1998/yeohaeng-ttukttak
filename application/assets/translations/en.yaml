@@ -20,6 +20,11 @@ travel:
 
 next: Next
 korea: Republic of Korea
+me: Me
+
+word:
+  travel: Travel
+
 
 enum:
   TravelCompanionType:

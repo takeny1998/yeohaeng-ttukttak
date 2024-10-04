@@ -6,7 +6,7 @@ part of 'travel_detail_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$travelDetailHash() => r'37e7c1b91bb17bc21de3c7fd37819a97bd7093f9';
+String _$travelDetailHash() => r'cef96d04b932d6d7657e28fa996095406bdf1ba0';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -30,10 +30,10 @@ class _SystemHash {
 }
 
 abstract class _$TravelDetail
-    extends BuildlessAutoDisposeNotifier<TravelDetailModel> {
+    extends BuildlessAutoDisposeNotifier<TravelDetailState> {
   late final int travelId;
 
-  TravelDetailModel build(
+  TravelDetailState build(
     int travelId,
   );
 }
@@ -43,7 +43,7 @@ abstract class _$TravelDetail
 const travelDetailProvider = TravelDetailFamily();
 
 /// See also [TravelDetail].
-class TravelDetailFamily extends Family<TravelDetailModel> {
+class TravelDetailFamily extends Family<TravelDetailState> {
   /// See also [TravelDetail].
   const TravelDetailFamily();
 
@@ -82,7 +82,7 @@ class TravelDetailFamily extends Family<TravelDetailModel> {
 
 /// See also [TravelDetail].
 class TravelDetailProvider
-    extends AutoDisposeNotifierProviderImpl<TravelDetail, TravelDetailModel> {
+    extends AutoDisposeNotifierProviderImpl<TravelDetail, TravelDetailState> {
   /// See also [TravelDetail].
   TravelDetailProvider(
     int travelId,
@@ -113,7 +113,7 @@ class TravelDetailProvider
   final int travelId;
 
   @override
-  TravelDetailModel runNotifierBuild(
+  TravelDetailState runNotifierBuild(
     covariant TravelDetail notifier,
   ) {
     return notifier.build(
@@ -138,7 +138,7 @@ class TravelDetailProvider
   }
 
   @override
-  AutoDisposeNotifierProviderElement<TravelDetail, TravelDetailModel>
+  AutoDisposeNotifierProviderElement<TravelDetail, TravelDetailState>
       createElement() {
     return _TravelDetailProviderElement(this);
   }
@@ -157,13 +157,13 @@ class TravelDetailProvider
   }
 }
 
-mixin TravelDetailRef on AutoDisposeNotifierProviderRef<TravelDetailModel> {
+mixin TravelDetailRef on AutoDisposeNotifierProviderRef<TravelDetailState> {
   /// The parameter `travelId` of this provider.
   int get travelId;
 }
 
 class _TravelDetailProviderElement
-    extends AutoDisposeNotifierProviderElement<TravelDetail, TravelDetailModel>
+    extends AutoDisposeNotifierProviderElement<TravelDetail, TravelDetailState>
     with TravelDetailRef {
   _TravelDetailProviderElement(super.provider);
 

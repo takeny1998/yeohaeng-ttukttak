@@ -7,5 +7,6 @@ enum AgeGroup {
   forties,
   fifties,
   sixties,
-  seventiesPlus
+  seventiesPlus,
+  none
 }

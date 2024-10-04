@@ -1,3 +1,3 @@
 enum Gender {
-  male, female
+  male, female, none
 }

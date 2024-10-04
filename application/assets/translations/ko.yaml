@@ -20,6 +20,10 @@ travel:
 
 next: 다음으로
 korea: 대한민국
+me: 본인
+
+word:
+  travel: 여행
 
 enum:
   TravelCompanionType:
@@ -46,14 +50,14 @@ enum:
     education: 교육 목적
 
   AgeGroup:
-    underNine: 9세 이하
+    underNine: 9세이하
     teens: 10대
     twenties: 20대
     thirties: 30대
     forties: 40대
     fifties: 50대
     sixties: 60대
-    seventiesPlus: 70세 이상
+    seventiesPlus: 70세이상
 
   Gender:
     male: Male

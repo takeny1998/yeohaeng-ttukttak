@@ -20,9 +20,10 @@ TravelDetailModel _$TravelDetailModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$TravelDetailModel {
-  TravelModel? get travel => throw _privateConstructorUsedError;
+  TravelModel get travel => throw _privateConstructorUsedError;
   List<TravelVisitModel> get visits => throw _privateConstructorUsedError;
   List<PlaceModel> get places => throw _privateConstructorUsedError;
+  List<CityModel> get cities => throw _privateConstructorUsedError;
 
   /// Serializes this TravelDetailModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -41,11 +42,12 @@ abstract class $TravelDetailModelCopyWith<$Res> {
       _$TravelDetailModelCopyWithImpl<$Res, TravelDetailModel>;
   @useResult
   $Res call(
-      {TravelModel? travel,
+      {TravelModel travel,
       List<TravelVisitModel> visits,
-      List<PlaceModel> places});
+      List<PlaceModel> places,
+      List<CityModel> cities});
 
-  $TravelModelCopyWith<$Res>? get travel;
+  $TravelModelCopyWith<$Res> get travel;
 }
 
 /// @nodoc
@@ -63,15 +65,16 @@ class _$TravelDetailModelCopyWithImpl<$Res, $Val extends TravelDetailModel>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? travel = freezed,
+    Object? travel = null,
     Object? visits = null,
     Object? places = null,
+    Object? cities = null,
   }) {
     return _then(_value.copyWith(
-      travel: freezed == travel
+      travel: null == travel
           ? _value.travel
           : travel // ignore: cast_nullable_to_non_nullable
-              as TravelModel?,
+              as TravelModel,
       visits: null == visits
           ? _value.visits
           : visits // ignore: cast_nullable_to_non_nullable
@@ -80,6 +83,10 @@ class _$TravelDetailModelCopyWithImpl<$Res, $Val extends TravelDetailModel>
           ? _value.places
           : places // ignore: cast_nullable_to_non_nullable
               as List<PlaceModel>,
+      cities: null == cities
+          ? _value.cities
+          : cities // ignore: cast_nullable_to_non_nullable
+              as List<CityModel>,
     ) as $Val);
   }
 
@@ -87,12 +94,8 @@ class _$TravelDetailModelCopyWithImpl<$Res, $Val extends TravelDetailModel>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $TravelModelCopyWith<$Res>? get travel {
-    if (_value.travel == null) {
-      return null;
-    }
-
-    return $TravelModelCopyWith<$Res>(_value.travel!, (value) {
+  $TravelModelCopyWith<$Res> get travel {
+    return $TravelModelCopyWith<$Res>(_value.travel, (value) {
       return _then(_value.copyWith(travel: value) as $Val);
     });
   }
@@ -107,12 +110,13 @@ abstract class _$$TravelDetailModelImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {TravelModel? travel,
+      {TravelModel travel,
       List<TravelVisitModel> visits,
-      List<PlaceModel> places});
+      List<PlaceModel> places,
+      List<CityModel> cities});
 
   @override
-  $TravelModelCopyWith<$Res>? get travel;
+  $TravelModelCopyWith<$Res> get travel;
 }
 
 /// @nodoc
@@ -128,15 +132,16 @@ class __$$TravelDetailModelImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? travel = freezed,
+    Object? travel = null,
     Object? visits = null,
     Object? places = null,
+    Object? cities = null,
   }) {
     return _then(_$TravelDetailModelImpl(
-      travel: freezed == travel
+      travel: null == travel
           ? _value.travel
           : travel // ignore: cast_nullable_to_non_nullable
-              as TravelModel?,
+              as TravelModel,
       visits: null == visits
           ? _value._visits
           : visits // ignore: cast_nullable_to_non_nullable
@@ -145,6 +150,10 @@ class __$$TravelDetailModelImplCopyWithImpl<$Res>
           ? _value._places
           : places // ignore: cast_nullable_to_non_nullable
               as List<PlaceModel>,
+      cities: null == cities
+          ? _value._cities
+          : cities // ignore: cast_nullable_to_non_nullable
+              as List<CityModel>,
     ));
   }
 }
@@ -153,17 +162,19 @@ class __$$TravelDetailModelImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$TravelDetailModelImpl implements _TravelDetailModel {
   const _$TravelDetailModelImpl(
-      {this.travel,
+      {required this.travel,
       final List<TravelVisitModel> visits = const [],
-      final List<PlaceModel> places = const []})
+      final List<PlaceModel> places = const [],
+      final List<CityModel> cities = const []})
       : _visits = visits,
-        _places = places;
+        _places = places,
+        _cities = cities;
 
   factory _$TravelDetailModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$TravelDetailModelImplFromJson(json);
 
   @override
-  final TravelModel? travel;
+  final TravelModel travel;
   final List<TravelVisitModel> _visits;
   @override
   @JsonKey()
@@ -182,9 +193,18 @@ class _$TravelDetailModelImpl implements _TravelDetailModel {
     return EqualUnmodifiableListView(_places);
   }
 
+  final List<CityModel> _cities;
+  @override
+  @JsonKey()
+  List<CityModel> get cities {
+    if (_cities is EqualUnmodifiableListView) return _cities;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_cities);
+  }
+
   @override
   String toString() {
-    return 'TravelDetailModel(travel: $travel, visits: $visits, places: $places)';
+    return 'TravelDetailModel(travel: $travel, visits: $visits, places: $places, cities: $cities)';
   }
 
   @override
@@ -194,7 +214,8 @@ class _$TravelDetailModelImpl implements _TravelDetailModel {
             other is _$TravelDetailModelImpl &&
             (identical(other.travel, travel) || other.travel == travel) &&
             const DeepCollectionEquality().equals(other._visits, _visits) &&
-            const DeepCollectionEquality().equals(other._places, _places));
+            const DeepCollectionEquality().equals(other._places, _places) &&
+            const DeepCollectionEquality().equals(other._cities, _cities));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -203,7 +224,8 @@ class _$TravelDetailModelImpl implements _TravelDetailModel {
       runtimeType,
       travel,
       const DeepCollectionEquality().hash(_visits),
-      const DeepCollectionEquality().hash(_places));
+      const DeepCollectionEquality().hash(_places),
+      const DeepCollectionEquality().hash(_cities));
 
   /// Create a copy of TravelDetailModel
   /// with the given fields replaced by the non-null parameter values.
@@ -224,19 +246,22 @@ class _$TravelDetailModelImpl implements _TravelDetailModel {
 
 abstract class _TravelDetailModel implements TravelDetailModel {
   const factory _TravelDetailModel(
-      {final TravelModel? travel,
+      {required final TravelModel travel,
       final List<TravelVisitModel> visits,
-      final List<PlaceModel> places}) = _$TravelDetailModelImpl;
+      final List<PlaceModel> places,
+      final List<CityModel> cities}) = _$TravelDetailModelImpl;
 
   factory _TravelDetailModel.fromJson(Map<String, dynamic> json) =
       _$TravelDetailModelImpl.fromJson;
 
   @override
-  TravelModel? get travel;
+  TravelModel get travel;
   @override
   List<TravelVisitModel> get visits;
   @override
   List<PlaceModel> get places;
+  @override
+  List<CityModel> get cities;
 
   /// Create a copy of TravelDetailModel
   /// with the given fields replaced by the non-null parameter values.
