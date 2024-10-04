@@ -83,6 +83,8 @@ class TravelDetailPage extends ConsumerWidget {
 
     final selectedDay = travel.startedOn.add(Duration(days: state.selectedDay));
 
+    final trKey = baseKey('travel.travel_detail');
+
     return Scaffold(
       body: SafeArea(
         child: CustomScrollView(
@@ -216,14 +218,38 @@ class TravelDetailPage extends ConsumerWidget {
                   Padding(
                       padding: const EdgeInsets.fromLTRB(24.0, 0.0, 24.0, 0.0),
                       child: Container(
-                        color: colorScheme.primaryContainer,
                         padding: const EdgeInsets.all(16.0),
+                        decoration: BoxDecoration(
+                          color: colorScheme.primaryContainer,
+                          borderRadius: BorderRadius.circular(4.0)
+                        ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('방문 이유가 무엇인가요?',
+                            Text(trKey('ask_reason').tr(),
                                 style: textTheme.bodyMedium?.copyWith()),
-                            Text('온라인 평가가 좋아서 방문했어요.',
+                            Text(enumKey(visits[i].reason).tr(),
+                                style: textTheme.bodyLarge
+                                    ?.copyWith(
+                                    fontWeight: FontWeight.w600)),
+                            const SizedBox(height: 24.0),
+                            Text(trKey('ask_satisfaction').tr(),
+                                style: textTheme.bodyMedium?.copyWith()),
+                            Text('rating.satisfaction.${visits[i].rating.satisfaction}'.tr(),
+                                style: textTheme.bodyLarge
+                                    ?.copyWith(
+                                    fontWeight: FontWeight.w600)),
+                            const SizedBox(height: 24.0),
+                            Text(trKey('ask_revisit').tr(),
+                                style: textTheme.bodyMedium?.copyWith()),
+                            Text('rating.revisit.${visits[i].rating.revisit}'.tr(),
+                                style: textTheme.bodyLarge
+                                    ?.copyWith(
+                                    fontWeight: FontWeight.w600)),
+                            const SizedBox(height: 24.0),
+                            Text(trKey('ask_recommend').tr(),
+                                style: textTheme.bodyMedium?.copyWith()),
+                            Text('rating.recommend.${visits[i].rating.recommend}'.tr(),
                                 style: textTheme.bodyLarge
                                     ?.copyWith(
                                     fontWeight: FontWeight.w600)),

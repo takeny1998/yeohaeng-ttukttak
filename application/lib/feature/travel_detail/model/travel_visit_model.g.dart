@@ -13,6 +13,8 @@ _$TravelVisitModelImpl _$$TravelVisitModelImplFromJson(
       seq: (json['seq'] as num).toInt(),
       placeId: (json['placeId'] as num).toInt(),
       visitedOn: DateTime.parse(json['visitedOn'] as String),
+      rating: TravelVisitRatingModel.fromJson(
+          json['rating'] as Map<String, dynamic>),
       reason: $enumDecode(_$TravelVisitReasonEnumMap, json['reason']),
     );
 
@@ -23,6 +25,7 @@ Map<String, dynamic> _$$TravelVisitModelImplToJson(
       'seq': instance.seq,
       'placeId': instance.placeId,
       'visitedOn': instance.visitedOn.toIso8601String(),
+      'rating': instance.rating,
       'reason': _$TravelVisitReasonEnumMap[instance.reason]!,
     };
 

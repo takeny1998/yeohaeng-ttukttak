@@ -18,6 +18,13 @@ travel:
 
   created: The travel has been created successfully.
 
+  travel_detail:
+    ask_reason: Why did you visit this place?
+    ask_satisfaction: Were you satisfied with this visit?
+    ask_revisit: Want to revisit this place?
+    ask_recommend: Want to recommend others to visit?
+
+
 next: Next
 korea: Republic of Korea
 me: Me
@@ -25,6 +32,27 @@ me: Me
 word:
   travel: Travel
 
+rating:
+  satisfaction:
+    1: It was an experience that fell far short of my expectations.
+    2: Overall, it was not satisfying.
+    3: It was an average experience that was neither bad nor good.
+    4: Overall, it was a good experience and I’m satisfied.
+    5: It was an excellent experience that exceeded my expectations!
+
+  revisit:
+    1: I have no intention of revisiting at all.
+    2: I’ll look for other places.
+    3: I need to think about it.
+    4: I’d like to come back.
+    5: I definitely want to revisit!
+
+  recommend:
+    1: I definitely wouldn't recommend it.
+    2: I would suggest other places.
+    3: If you have time, it's worth a visit.
+    4: I would recommend it.
+    5: I definitely want to recommend it!
 
 enum:
   TravelCompanionType:
@@ -63,3 +91,16 @@ enum:
   Gender:
     male: Male
     female: Female
+
+  TravelVisitReason:
+    landmark: Because it's a local landmark.
+    goodReviews: Because the online reviews were great.
+    media: Because the media had positive reviews.
+    goodExperience: Because I had a great experience in the past.
+    recommendation: Because my friend recommended to visit.
+    easyAccess: Because it’s convenient to get to.
+    goodAmenities: Because I liked its amenities or services.
+    goodValue: Because it was a good value
+    unexpectedFind: I visited by chance while passing by.
+    education: Because it was educational.
+    other: Other reason

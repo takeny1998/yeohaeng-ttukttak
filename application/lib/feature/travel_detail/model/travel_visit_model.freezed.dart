@@ -24,6 +24,7 @@ mixin _$TravelVisitModel {
   int get seq => throw _privateConstructorUsedError;
   int get placeId => throw _privateConstructorUsedError;
   DateTime get visitedOn => throw _privateConstructorUsedError;
+  TravelVisitRatingModel get rating => throw _privateConstructorUsedError;
   TravelVisitReason get reason => throw _privateConstructorUsedError;
 
   /// Serializes this TravelVisitModel to a JSON map.
@@ -47,7 +48,10 @@ abstract class $TravelVisitModelCopyWith<$Res> {
       int seq,
       int placeId,
       DateTime visitedOn,
+      TravelVisitRatingModel rating,
       TravelVisitReason reason});
+
+  $TravelVisitRatingModelCopyWith<$Res> get rating;
 }
 
 /// @nodoc
@@ -69,6 +73,7 @@ class _$TravelVisitModelCopyWithImpl<$Res, $Val extends TravelVisitModel>
     Object? seq = null,
     Object? placeId = null,
     Object? visitedOn = null,
+    Object? rating = null,
     Object? reason = null,
   }) {
     return _then(_value.copyWith(
@@ -88,11 +93,25 @@ class _$TravelVisitModelCopyWithImpl<$Res, $Val extends TravelVisitModel>
           ? _value.visitedOn
           : visitedOn // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      rating: null == rating
+          ? _value.rating
+          : rating // ignore: cast_nullable_to_non_nullable
+              as TravelVisitRatingModel,
       reason: null == reason
           ? _value.reason
           : reason // ignore: cast_nullable_to_non_nullable
               as TravelVisitReason,
     ) as $Val);
+  }
+
+  /// Create a copy of TravelVisitModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $TravelVisitRatingModelCopyWith<$Res> get rating {
+    return $TravelVisitRatingModelCopyWith<$Res>(_value.rating, (value) {
+      return _then(_value.copyWith(rating: value) as $Val);
+    });
   }
 }
 
@@ -109,7 +128,11 @@ abstract class _$$TravelVisitModelImplCopyWith<$Res>
       int seq,
       int placeId,
       DateTime visitedOn,
+      TravelVisitRatingModel rating,
       TravelVisitReason reason});
+
+  @override
+  $TravelVisitRatingModelCopyWith<$Res> get rating;
 }
 
 /// @nodoc
@@ -129,6 +152,7 @@ class __$$TravelVisitModelImplCopyWithImpl<$Res>
     Object? seq = null,
     Object? placeId = null,
     Object? visitedOn = null,
+    Object? rating = null,
     Object? reason = null,
   }) {
     return _then(_$TravelVisitModelImpl(
@@ -148,6 +172,10 @@ class __$$TravelVisitModelImplCopyWithImpl<$Res>
           ? _value.visitedOn
           : visitedOn // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      rating: null == rating
+          ? _value.rating
+          : rating // ignore: cast_nullable_to_non_nullable
+              as TravelVisitRatingModel,
       reason: null == reason
           ? _value.reason
           : reason // ignore: cast_nullable_to_non_nullable
@@ -164,6 +192,7 @@ class _$TravelVisitModelImpl implements _TravelVisitModel {
       required this.seq,
       required this.placeId,
       required this.visitedOn,
+      required this.rating,
       required this.reason});
 
   factory _$TravelVisitModelImpl.fromJson(Map<String, dynamic> json) =>
@@ -178,11 +207,13 @@ class _$TravelVisitModelImpl implements _TravelVisitModel {
   @override
   final DateTime visitedOn;
   @override
+  final TravelVisitRatingModel rating;
+  @override
   final TravelVisitReason reason;
 
   @override
   String toString() {
-    return 'TravelVisitModel(id: $id, seq: $seq, placeId: $placeId, visitedOn: $visitedOn, reason: $reason)';
+    return 'TravelVisitModel(id: $id, seq: $seq, placeId: $placeId, visitedOn: $visitedOn, rating: $rating, reason: $reason)';
   }
 
   @override
@@ -195,13 +226,14 @@ class _$TravelVisitModelImpl implements _TravelVisitModel {
             (identical(other.placeId, placeId) || other.placeId == placeId) &&
             (identical(other.visitedOn, visitedOn) ||
                 other.visitedOn == visitedOn) &&
+            (identical(other.rating, rating) || other.rating == rating) &&
             (identical(other.reason, reason) || other.reason == reason));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, id, seq, placeId, visitedOn, reason);
+      Object.hash(runtimeType, id, seq, placeId, visitedOn, rating, reason);
 
   /// Create a copy of TravelVisitModel
   /// with the given fields replaced by the non-null parameter values.
@@ -226,6 +258,7 @@ abstract class _TravelVisitModel implements TravelVisitModel {
       required final int seq,
       required final int placeId,
       required final DateTime visitedOn,
+      required final TravelVisitRatingModel rating,
       required final TravelVisitReason reason}) = _$TravelVisitModelImpl;
 
   factory _TravelVisitModel.fromJson(Map<String, dynamic> json) =
@@ -239,6 +272,8 @@ abstract class _TravelVisitModel implements TravelVisitModel {
   int get placeId;
   @override
   DateTime get visitedOn;
+  @override
+  TravelVisitRatingModel get rating;
   @override
   TravelVisitReason get reason;
 
