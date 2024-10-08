@@ -32,8 +32,6 @@ class CustomSliverAppBar extends StatelessWidget {
             curve: const Cubic(0.2, 0.0, 0.0, 1.0),
             child: title,
           ),
-          centerTitle: true,
-          titleSpacing: 8,
           flexibleSpace: FlexibleSpaceBar(
             title: AnimatedOpacity(
                 opacity: isScrolledUnder ? 0 : 1,
@@ -41,7 +39,8 @@ class CustomSliverAppBar extends StatelessWidget {
                 curve: const Cubic(0.2, 0.0, 0.0, 1.0),
                 child: title),
             centerTitle: false,
-            titlePadding: const EdgeInsets.symmetric(horizontal: 24.0),
+            titlePadding: const EdgeInsets.symmetric(
+                horizontal: 24.0),
             expandedTitleScale: 1.0,
           ),
           expandedHeight: expandedHeight,

@@ -4,6 +4,7 @@ import 'package:application_new/common/component/filled_chip.dart';
 import 'package:application_new/common/component/filled_choice_chip.dart';
 import 'package:application_new/common/util/translation.dart';
 import 'package:application_new/feature/travel_detail/components/companion_item.dart';
+import 'package:application_new/feature/travel_detail/components/visit_item.dart';
 import 'package:application_new/feature/travel_detail/model/travel_detail_model.dart';
 import 'package:application_new/feature/travel_detail/provider/travel_detail_provider.dart';
 import 'package:application_new/shared/travel/model/travel_model.dart';
@@ -11,29 +12,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-const ColorFilter greyscale = ColorFilter.matrix(<double>[
-  0.2126,
-  0.7152,
-  0.0722,
-  0,
-  0,
-  0.2126,
-  0.7152,
-  0.0722,
-  0,
-  0,
-  0.2126,
-  0.7152,
-  0.0722,
-  0,
-  0,
-  0,
-  0,
-  0,
-  1,
-  0,
-]);
 
 class TravelDetailPage extends ConsumerWidget {
   final int _travelId;
@@ -44,6 +22,7 @@ class TravelDetailPage extends ConsumerWidget {
 
   String _formatTravelDate(TravelModel? travel) {
     if (travel == null) return '';
+
 
     final startedOn = travel.startedOn;
     final endedOn = travel.endedOn;
@@ -83,12 +62,9 @@ class TravelDetailPage extends ConsumerWidget {
 
     final selectedDay = travel.startedOn.add(Duration(days: state.selectedDay));
 
-    final trKey = baseKey('travel.travel_detail');
-
     return Scaffold(
       body: SafeArea(
         child: CustomScrollView(
-          // physics: const ClampingScrollPhysics(),
           slivers: [
             CustomSliverAppBar(
                 title: Text(travelName, style: titleStyle), headerHeight: 80),
@@ -131,24 +107,19 @@ class TravelDetailPage extends ConsumerWidget {
                   child: Column(
                     children: [
                       Expanded(
-                        child: ColorFiltered(
-                          colorFilter: greyscale,
-                          child: FlutterMap(
-                              mapController: _mapController,
-                              children: [
-                                TileLayer(
-                                    urlTemplate:
-                                        "https://tile.openstreetmap.org/{z}/{x}/{y}.png"),
-                              ]),
-                        ),
+                        child:
+                            FlutterMap(mapController: _mapController, children: [
+                          TileLayer(
+                              urlTemplate:
+                                  "https://tile.openstreetmap.org/{z}/{x}/{y}.png"),
+                        ]),
                       ),
                       const SizedBox(height: 24.0),
                       SizedBox(
                           height: 40,
                           child: SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 24.0),
+                            padding: const EdgeInsets.symmetric(horizontal: 24.0),
                             child: Row(
                               children: [
                                 for (var day = 0; day < travelDays; day++) ...[
@@ -158,9 +129,9 @@ class TravelDetailPage extends ConsumerWidget {
                                           .read(travelDetailProvider(_travelId)
                                               .notifier)
                                           .selectDay(day),
-                                      labelText: DateFormat.yMMMEd().format(
-                                          travel.startedOn
-                                              .add(Duration(days: day)))),
+                                      labelText: DateFormat.yMMMEd().format(travel
+                                          .startedOn
+                                          .add(Duration(days: day)))),
                                   const SizedBox(width: 12.0)
                                 ]
                               ],
@@ -176,88 +147,8 @@ class TravelDetailPage extends ConsumerWidget {
                 delegate: SliverChildListDelegate([
               const SizedBox(height: 24.0),
               for (int i = 0; i < visits.length; i++)
-                if (visits[i].visitedOn == selectedDay) ...[
-                  SingleChildScrollView(
-                      padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                      scrollDirection: Axis.horizontal,
-                      child: Row(children: [
-                        for (int i = 0; i < 5; i++) ...[
-                          ClipRRect(
-                              borderRadius: BorderRadius.circular(4.0),
-                              child: Container(
-                                width: 144,
-                                height: 116,
-                                color: colorScheme.secondaryContainer,
-                              )),
-                          const SizedBox(width: 8.0)
-                        ]
-                      ])),
-                  const SizedBox(height: 8.0),
-                  Builder(builder: (context) {
-                    final place = places
-                        .firstWhere((place) => place.id == visits[i].placeId);
-
-                    return ListTile(
-                      contentPadding:
-                          const EdgeInsets.symmetric(horizontal: 24.0),
-                      leading: CircleAvatar(
-                          radius: 16.0,
-                          child: Text(
-                            '${i + 1}',
-                            style: textTheme.bodyLarge
-                                ?.copyWith(fontWeight: FontWeight.w700),
-                          )),
-                      titleTextStyle: textTheme.titleMedium
-                          ?.copyWith(fontWeight: FontWeight.w600),
-                      subtitleTextStyle: textTheme.labelMedium
-                          ?.copyWith(color: colorScheme.tertiary),
-                      title: Text(place.name),
-                      subtitle: const Text('증평군, 충청북도 · 자연관광지'),
-                    );
-                  }),
-                  Padding(
-                      padding: const EdgeInsets.fromLTRB(24.0, 0.0, 24.0, 0.0),
-                      child: Container(
-                        padding: const EdgeInsets.all(16.0),
-                        decoration: BoxDecoration(
-                          color: colorScheme.primaryContainer,
-                          borderRadius: BorderRadius.circular(4.0)
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(trKey('ask_reason').tr(),
-                                style: textTheme.bodyMedium?.copyWith()),
-                            Text(enumKey(visits[i].reason).tr(),
-                                style: textTheme.bodyLarge
-                                    ?.copyWith(
-                                    fontWeight: FontWeight.w600)),
-                            const SizedBox(height: 24.0),
-                            Text(trKey('ask_satisfaction').tr(),
-                                style: textTheme.bodyMedium?.copyWith()),
-                            Text('rating.satisfaction.${visits[i].rating.satisfaction}'.tr(),
-                                style: textTheme.bodyLarge
-                                    ?.copyWith(
-                                    fontWeight: FontWeight.w600)),
-                            const SizedBox(height: 24.0),
-                            Text(trKey('ask_revisit').tr(),
-                                style: textTheme.bodyMedium?.copyWith()),
-                            Text('rating.revisit.${visits[i].rating.revisit}'.tr(),
-                                style: textTheme.bodyLarge
-                                    ?.copyWith(
-                                    fontWeight: FontWeight.w600)),
-                            const SizedBox(height: 24.0),
-                            Text(trKey('ask_recommend').tr(),
-                                style: textTheme.bodyMedium?.copyWith()),
-                            Text('rating.recommend.${visits[i].rating.recommend}'.tr(),
-                                style: textTheme.bodyLarge
-                                    ?.copyWith(
-                                    fontWeight: FontWeight.w600)),
-                          ],
-                        ),
-                      )),
-                  const SizedBox(height: 48.0),
-                ],
+                if (visits[i].visitedOn == selectedDay)
+                  VisitItem(index: i, travelId: _travelId),
               const SizedBox(height: 48.0),
             ]))
           ],
