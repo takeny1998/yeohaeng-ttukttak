@@ -1,7 +1,8 @@
 import 'package:application_new/common/util/translation.dart';
 import 'package:application_new/feature/travel_detail/components/visit_order_item.dart';
 import 'package:application_new/feature/travel_detail/model/travel_detail_model.dart';
-import 'package:application_new/feature/travel_detail/provider/travel_detail_provider.dart';
+import 'package:application_new/feature/travel_detail/model/travel_visit_model.dart';
+import 'package:application_new/shared/place/model/place_model.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,23 +10,20 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'visit_rating_item.dart';
 
 class VisitItem extends ConsumerWidget {
-  final int travelId;
-  final int index;
 
-  const VisitItem({super.key, required this.index, required this.travelId});
+  final List<PlaceModel> places;
+  final TravelVisitModel visit;
+
+  const VisitItem({super.key, required this.places, required this.visit});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(travelDetailProvider(travelId));
-    final TravelDetailModel(:visits, :places) = state.data;
 
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
 
     final trKey = baseKey('travel.travel_detail');
-
-    final visit = visits[index];
-    final place = places.firstWhere((place) => place.id == visit.placeId);
+    final place = places.firstWhere((e) => e.id == visit.placeId);
 
     return Column(
       children: [
@@ -55,7 +53,7 @@ class VisitItem extends ConsumerWidget {
                     child: Column(
                   mainAxisSize: MainAxisSize.max,
                   children: [
-                    VisitOrderItem(order: index + 1),
+                    VisitOrderItem(order: visit.seq),
                     Expanded(
                         child: Container(
                             width: 2.0, color: colorScheme.secondaryContainer))
@@ -81,7 +79,7 @@ class VisitItem extends ConsumerWidget {
                         margin: const EdgeInsets.symmetric(vertical: 16.0),
                         padding: const EdgeInsets.all(16.0),
                         decoration: BoxDecoration(
-                            color: colorScheme.surfaceContainer,
+                            color: colorScheme.secondaryContainer,
                             borderRadius: BorderRadius.circular(4.0)),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -109,7 +107,7 @@ class VisitItem extends ConsumerWidget {
                       Row(
                         children: [
                           Expanded(
-                            flex: 1,
+                            flex: 2,
                             child: OutlinedButton.icon(
                               onPressed: () => {},
                               style: OutlinedButton.styleFrom(
@@ -125,7 +123,7 @@ class VisitItem extends ConsumerWidget {
                           ),
                           const SizedBox(width: 16.0),
                           Expanded(
-                            flex: 2,
+                            flex: 3,
                             child: OutlinedButton(
                               onPressed: () => {},
                               style: OutlinedButton.styleFrom(
