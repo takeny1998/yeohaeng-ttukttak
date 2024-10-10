@@ -112,9 +112,9 @@ class VisitItem extends ConsumerWidget {
                               onPressed: () => {},
                               style: OutlinedButton.styleFrom(
                                   shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(4.0)),
+                                      borderRadius: BorderRadius.circular(6.0)),
                                   side: BorderSide(
-                                      color: colorScheme.secondaryContainer),
+                                      color: colorScheme.secondaryFixedDim),
                                   textStyle: textTheme.labelLarge
                                       ?.copyWith(fontWeight: FontWeight.w600)),
                               icon: const Icon(Icons.bookmark_outline),
@@ -130,7 +130,7 @@ class VisitItem extends ConsumerWidget {
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(8.0)),
                                   side: BorderSide(
-                                      color: colorScheme.secondaryContainer),
+                                      color: colorScheme.secondaryFixedDim),
                                   textStyle: textTheme.labelLarge
                                       ?.copyWith(fontWeight: FontWeight.w600)),
                               child: const Text('일정에 추가하기'),
@@ -138,7 +138,7 @@ class VisitItem extends ConsumerWidget {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 16.0),
+                      const SizedBox(height: 24.0),
                     ],
                   )),
               const SizedBox(width: 24.0),

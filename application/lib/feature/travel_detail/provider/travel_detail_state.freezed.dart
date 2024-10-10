@@ -17,6 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$TravelDetailState {
   int get selectedDay => throw _privateConstructorUsedError;
+  int get selectedPlaceId => throw _privateConstructorUsedError;
   TravelDetailModel get data => throw _privateConstructorUsedError;
 
   /// Create a copy of TravelDetailState
@@ -32,7 +33,7 @@ abstract class $TravelDetailStateCopyWith<$Res> {
           TravelDetailState value, $Res Function(TravelDetailState) then) =
       _$TravelDetailStateCopyWithImpl<$Res, TravelDetailState>;
   @useResult
-  $Res call({int selectedDay, TravelDetailModel data});
+  $Res call({int selectedDay, int selectedPlaceId, TravelDetailModel data});
 
   $TravelDetailModelCopyWith<$Res> get data;
 }
@@ -53,12 +54,17 @@ class _$TravelDetailStateCopyWithImpl<$Res, $Val extends TravelDetailState>
   @override
   $Res call({
     Object? selectedDay = null,
+    Object? selectedPlaceId = null,
     Object? data = null,
   }) {
     return _then(_value.copyWith(
       selectedDay: null == selectedDay
           ? _value.selectedDay
           : selectedDay // ignore: cast_nullable_to_non_nullable
+              as int,
+      selectedPlaceId: null == selectedPlaceId
+          ? _value.selectedPlaceId
+          : selectedPlaceId // ignore: cast_nullable_to_non_nullable
               as int,
       data: null == data
           ? _value.data
@@ -86,7 +92,7 @@ abstract class _$$TravelDetailStateImplCopyWith<$Res>
       __$$TravelDetailStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int selectedDay, TravelDetailModel data});
+  $Res call({int selectedDay, int selectedPlaceId, TravelDetailModel data});
 
   @override
   $TravelDetailModelCopyWith<$Res> get data;
@@ -106,12 +112,17 @@ class __$$TravelDetailStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? selectedDay = null,
+    Object? selectedPlaceId = null,
     Object? data = null,
   }) {
     return _then(_$TravelDetailStateImpl(
       selectedDay: null == selectedDay
           ? _value.selectedDay
           : selectedDay // ignore: cast_nullable_to_non_nullable
+              as int,
+      selectedPlaceId: null == selectedPlaceId
+          ? _value.selectedPlaceId
+          : selectedPlaceId // ignore: cast_nullable_to_non_nullable
               as int,
       data: null == data
           ? _value.data
@@ -124,17 +135,22 @@ class __$$TravelDetailStateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$TravelDetailStateImpl extends _TravelDetailState {
-  const _$TravelDetailStateImpl({required this.selectedDay, required this.data})
+  const _$TravelDetailStateImpl(
+      {required this.selectedDay,
+      required this.selectedPlaceId,
+      required this.data})
       : super._();
 
   @override
   final int selectedDay;
   @override
+  final int selectedPlaceId;
+  @override
   final TravelDetailModel data;
 
   @override
   String toString() {
-    return 'TravelDetailState(selectedDay: $selectedDay, data: $data)';
+    return 'TravelDetailState(selectedDay: $selectedDay, selectedPlaceId: $selectedPlaceId, data: $data)';
   }
 
   @override
@@ -144,11 +160,14 @@ class _$TravelDetailStateImpl extends _TravelDetailState {
             other is _$TravelDetailStateImpl &&
             (identical(other.selectedDay, selectedDay) ||
                 other.selectedDay == selectedDay) &&
+            (identical(other.selectedPlaceId, selectedPlaceId) ||
+                other.selectedPlaceId == selectedPlaceId) &&
             (identical(other.data, data) || other.data == data));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, selectedDay, data);
+  int get hashCode =>
+      Object.hash(runtimeType, selectedDay, selectedPlaceId, data);
 
   /// Create a copy of TravelDetailState
   /// with the given fields replaced by the non-null parameter values.
@@ -163,11 +182,14 @@ class _$TravelDetailStateImpl extends _TravelDetailState {
 abstract class _TravelDetailState extends TravelDetailState {
   const factory _TravelDetailState(
       {required final int selectedDay,
+      required final int selectedPlaceId,
       required final TravelDetailModel data}) = _$TravelDetailStateImpl;
   const _TravelDetailState._() : super._();
 
   @override
   int get selectedDay;
+  @override
+  int get selectedPlaceId;
   @override
   TravelDetailModel get data;
 

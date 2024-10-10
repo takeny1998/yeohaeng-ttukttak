@@ -1,3 +1,4 @@
+import 'package:application_new/feature/travel_detail/components/place_marker_item.dart';
 import 'package:application_new/feature/travel_detail/components/visit_order_item.dart';
 import 'package:application_new/feature/travel_detail/model/travel_visit_model.dart';
 import 'package:application_new/shared/place/model/place_model.dart';
@@ -9,13 +10,13 @@ import 'package:latlong2/latlong.dart';
 class VisitsMapItem extends ConsumerStatefulWidget {
   final List<PlaceModel> places;
   final List<TravelVisitModel> visits;
-  final int travelId;
+  final int selectedPlaceId;
 
   const VisitsMapItem(
       {super.key,
       required this.places,
       required this.visits,
-      required this.travelId});
+      required this.selectedPlaceId});
 
   @override
   ConsumerState createState() => _VisitsMapItemState();
@@ -23,6 +24,8 @@ class VisitsMapItem extends ConsumerStatefulWidget {
 
 class _VisitsMapItemState extends ConsumerState<VisitsMapItem> {
   final MapController mapController = MapController();
+
+  double zoom = 15.0;
 
   @override
   void dispose() {
@@ -32,35 +35,88 @@ class _VisitsMapItemState extends ConsumerState<VisitsMapItem> {
 
   @override
   Widget build(BuildContext context) {
-    final List<LatLng> coordinates = [];
+    final colorScheme = Theme.of(context).colorScheme;
+
+    final List<LatLng> points = [];
     final List<Marker> markers = [];
 
     for (int i = 0; i < widget.visits.length; i++) {
       final visit = widget.visits[i];
       final place = widget.places.firstWhere((e) => e.id == visit.placeId);
 
-      final point =
-          LatLng(place.coordinates.latitude, place.coordinates.longitude);
+      final PlaceCoordinates(:longitude, :latitude) = place.coordinates;
 
-      coordinates.add(point);
-      markers
-          .add(Marker(point: point, child: VisitOrderItem(order: visit.seq)));
+      final isSelected = visit.placeId == widget.selectedPlaceId;
+      final point = LatLng(latitude, longitude);
+
+      points.add(point);
+
+      final key = GlobalKey();
+
+      final markerItem =
+          PlaceMarkerItem(key: key, place: place, isSelected: isSelected);
+
+      final marker =
+          Marker(width: 32.0, height: 32.0, point: point, child: markerItem);
+
+      if (isSelected) {
+        markers.insert(0, marker);
+      } else {
+        markers.add(marker);
+      }
     }
 
-    if (coordinates.isNotEmpty) {
-      try {
-        mapController.fitCamera(CameraFit.coordinates(
-            coordinates: coordinates, padding: const EdgeInsets.fromLTRB(24.0, 32.0, 24.0, 120.0)));
-      } catch (e) {}
+    final place = widget.selectedPlaceId > 0
+        ? widget.places.firstWhere((e) => e.id == widget.selectedPlaceId)
+        : widget.places.firstOrNull;
+
+    if (place != null) {
+      final PlaceModel(:coordinates) = place;
+
+      mapController.move(
+        LatLng(coordinates.latitude, coordinates.longitude),
+        zoom,
+        offset: const Offset(0.0, -20.0),
+      );
     }
 
-    return FlutterMap(
-      mapController: mapController,
-      children: [
-        TileLayer(
-            urlTemplate: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",),
-        MarkerLayer(markers: markers)
-      ],
+    return Scaffold(
+      body: FlutterMap(
+        mapController: mapController,
+        children: [
+          TileLayer(
+            urlTemplate: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+          ),
+          PolylineLayer(polylines: [
+            Polyline(
+                points: points,
+                color: colorScheme.secondary,
+                strokeWidth: 3.0,
+                pattern: const StrokePattern.dotted())
+          ]),
+          MarkerLayer(markers: markers.reversed.toList()),
+        ],
+      ),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 48.0),
+        child: Wrap(
+          direction: Axis.vertical,
+          children: [
+            IconButton.filled(
+                onPressed: () {
+                  final MapCamera(:center) = mapController.camera;
+                  mapController.move(center, ++ zoom);
+                },
+                icon: const Icon(Icons.add)),
+            IconButton.filled(
+                onPressed: () {
+                  final MapCamera(:center) = mapController.camera;
+                  mapController.move(center, -- zoom);
+                },
+                icon: const Icon(Icons.remove)),
+          ],
+        ),
+      ),
     );
   }
 }

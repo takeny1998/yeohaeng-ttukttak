@@ -1,11 +1,12 @@
-
 import 'package:flutter/material.dart';
 
 class VisitOrderItem extends StatelessWidget {
-
+  final bool _isSelected;
   final int _order;
 
-  const VisitOrderItem({super.key, required int order}) : _order = order;
+  const VisitOrderItem({super.key, required int order, bool isSelected = true})
+      : _order = order,
+        _isSelected = isSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -14,12 +15,14 @@ class VisitOrderItem extends StatelessWidget {
 
     return CircleAvatar(
         radius: 18.0,
-        backgroundColor: colorScheme.primary,
+        backgroundColor:
+            _isSelected ? colorScheme.primary : colorScheme.secondary,
         child: Text(
           '$_order',
           style: textTheme.bodyLarge?.copyWith(
             fontWeight: FontWeight.w700,
-            color: colorScheme.onPrimary,
+            color:
+                _isSelected ? colorScheme.onPrimary : colorScheme.onSecondary,
           ),
         ));
   }

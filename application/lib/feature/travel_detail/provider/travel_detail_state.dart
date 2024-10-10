@@ -10,10 +10,12 @@ class TravelDetailState with _$TravelDetailState {
 
   const factory TravelDetailState({
     required int selectedDay,
+    required int selectedPlaceId,
     required TravelDetailModel data,
   }) = _TravelDetailState;
 
   factory TravelDetailState.empty() => TravelDetailState(
       selectedDay: 0,
+      selectedPlaceId: 0,
       data: TravelDetailModel(travel: TravelModel.empty()));
 }

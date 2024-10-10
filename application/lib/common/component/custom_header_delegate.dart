@@ -5,7 +5,7 @@ class CustomHeaderDelegate extends SliverPersistentHeaderDelegate {
   CustomHeaderDelegate({required this.widget, required this.extent});
 
   final Widget widget;
-  final int extent;
+  final double extent;
 
   @override
   Widget build(
@@ -14,10 +14,10 @@ class CustomHeaderDelegate extends SliverPersistentHeaderDelegate {
   }
 
   @override
-  double get maxExtent => 300;
+  double get maxExtent => extent;
 
   @override
-  double get minExtent => 300;
+  double get minExtent => extent;
 
   @override
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {

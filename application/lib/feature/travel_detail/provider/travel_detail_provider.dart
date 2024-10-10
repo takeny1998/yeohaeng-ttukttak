@@ -26,11 +26,9 @@ class TravelDetail extends _$TravelDetail {
     state = state.copyWith(selectedDay: day);
   }
 
-  Iterable<TravelVisitModel> filterVisits() {
-    final selectedDay =
-        state.data.travel.startedOn.add(Duration(days: state.selectedDay));
-
-    return state.data.visits
-        .where((visit) => visit.visitedOn == selectedDay);
+  void selectPlace(int id) {
+    if (state.selectedPlaceId == id) return;
+    state = state.copyWith(selectedPlaceId: id);
   }
+
 }
