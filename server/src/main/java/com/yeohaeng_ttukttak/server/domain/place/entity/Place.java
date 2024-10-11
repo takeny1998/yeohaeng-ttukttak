@@ -3,9 +3,13 @@ package com.yeohaeng_ttukttak.server.domain.place.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotNull;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static lombok.AccessLevel.PROTECTED;
 
@@ -32,6 +36,9 @@ public final class Place {
     private Double longitude;
 
     private Double latitude;
+
+    @OneToMany(mappedBy = "place")
+    private List<PlaceCategoryMapping> categories = new ArrayList<>();
 
     public Long id() {
         return id;
@@ -64,4 +71,9 @@ public final class Place {
     public Double latitude() {
         return latitude;
     }
+
+    public List<PlaceCategoryMapping> categories() {
+        return categories;
+    }
+
 }
