@@ -158,6 +158,7 @@ class _TravelDetailPageState extends ConsumerState<TravelDetailPage> {
                           selectedPlaceId: state.selectedPlaceId),
                     ),
                     Container(
+                      width: double.maxFinite,
                       decoration: BoxDecoration(
                           color: colorScheme.surface,
                           border: Border(

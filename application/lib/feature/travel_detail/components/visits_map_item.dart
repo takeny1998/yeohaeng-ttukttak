@@ -36,6 +36,7 @@ class _VisitsMapItemState extends ConsumerState<VisitsMapItem> {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    const markerRadius = 26.0;
 
     final List<LatLng> points = [];
     final List<Marker> markers = [];
@@ -52,8 +53,8 @@ class _VisitsMapItemState extends ConsumerState<VisitsMapItem> {
       points.add(point);
 
       final marker = Marker(
-          width: 26.0,
-          height: 26.0,
+          width: markerRadius,
+          height: markerRadius,
           point: point,
           child: PlaceMarkerItem(place: place, isSelected: isSelected));
 
@@ -72,9 +73,8 @@ class _VisitsMapItemState extends ConsumerState<VisitsMapItem> {
       final PlaceModel(:coordinates) = place;
 
       mapController.move(
-        LatLng(coordinates.latitude, coordinates.longitude),
-        zoom,
-      );
+          LatLng(coordinates.latitude, coordinates.longitude), zoom,
+          offset: const Offset(0, markerRadius / 2));
     }
 
     return Stack(

@@ -1,3 +1,4 @@
+import 'package:application_new/shared/model/image_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'place_model.freezed.dart';
@@ -48,7 +49,7 @@ class PlaceAddress with _$PlaceAddress {
 
 enum PlaceCategory {
   nature,
-  heritage,
+  landmark,
   culture,
   commerce,
   recreation,

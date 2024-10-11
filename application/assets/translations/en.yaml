@@ -107,7 +107,7 @@ enum:
 
   PlaceCategory:
     nature: Natural
-    heritage: Landmark
+    landmark: Landmark
     culture: Cultural
     commerce: Commercial
     recreation: Leisure/sports

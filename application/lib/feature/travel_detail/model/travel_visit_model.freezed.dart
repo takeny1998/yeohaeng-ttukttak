@@ -26,6 +26,7 @@ mixin _$TravelVisitModel {
   DateTime get visitedOn => throw _privateConstructorUsedError;
   TravelVisitRatingModel get rating => throw _privateConstructorUsedError;
   TravelVisitReason get reason => throw _privateConstructorUsedError;
+  List<ImageModel> get images => throw _privateConstructorUsedError;
 
   /// Serializes this TravelVisitModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -49,7 +50,8 @@ abstract class $TravelVisitModelCopyWith<$Res> {
       int placeId,
       DateTime visitedOn,
       TravelVisitRatingModel rating,
-      TravelVisitReason reason});
+      TravelVisitReason reason,
+      List<ImageModel> images});
 
   $TravelVisitRatingModelCopyWith<$Res> get rating;
 }
@@ -75,6 +77,7 @@ class _$TravelVisitModelCopyWithImpl<$Res, $Val extends TravelVisitModel>
     Object? visitedOn = null,
     Object? rating = null,
     Object? reason = null,
+    Object? images = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -101,6 +104,10 @@ class _$TravelVisitModelCopyWithImpl<$Res, $Val extends TravelVisitModel>
           ? _value.reason
           : reason // ignore: cast_nullable_to_non_nullable
               as TravelVisitReason,
+      images: null == images
+          ? _value.images
+          : images // ignore: cast_nullable_to_non_nullable
+              as List<ImageModel>,
     ) as $Val);
   }
 
@@ -129,7 +136,8 @@ abstract class _$$TravelVisitModelImplCopyWith<$Res>
       int placeId,
       DateTime visitedOn,
       TravelVisitRatingModel rating,
-      TravelVisitReason reason});
+      TravelVisitReason reason,
+      List<ImageModel> images});
 
   @override
   $TravelVisitRatingModelCopyWith<$Res> get rating;
@@ -154,6 +162,7 @@ class __$$TravelVisitModelImplCopyWithImpl<$Res>
     Object? visitedOn = null,
     Object? rating = null,
     Object? reason = null,
+    Object? images = null,
   }) {
     return _then(_$TravelVisitModelImpl(
       id: null == id
@@ -180,6 +189,10 @@ class __$$TravelVisitModelImplCopyWithImpl<$Res>
           ? _value.reason
           : reason // ignore: cast_nullable_to_non_nullable
               as TravelVisitReason,
+      images: null == images
+          ? _value._images
+          : images // ignore: cast_nullable_to_non_nullable
+              as List<ImageModel>,
     ));
   }
 }
@@ -193,7 +206,9 @@ class _$TravelVisitModelImpl implements _TravelVisitModel {
       required this.placeId,
       required this.visitedOn,
       required this.rating,
-      required this.reason});
+      required this.reason,
+      required final List<ImageModel> images})
+      : _images = images;
 
   factory _$TravelVisitModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$TravelVisitModelImplFromJson(json);
@@ -210,10 +225,17 @@ class _$TravelVisitModelImpl implements _TravelVisitModel {
   final TravelVisitRatingModel rating;
   @override
   final TravelVisitReason reason;
+  final List<ImageModel> _images;
+  @override
+  List<ImageModel> get images {
+    if (_images is EqualUnmodifiableListView) return _images;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_images);
+  }
 
   @override
   String toString() {
-    return 'TravelVisitModel(id: $id, seq: $seq, placeId: $placeId, visitedOn: $visitedOn, rating: $rating, reason: $reason)';
+    return 'TravelVisitModel(id: $id, seq: $seq, placeId: $placeId, visitedOn: $visitedOn, rating: $rating, reason: $reason, images: $images)';
   }
 
   @override
@@ -227,13 +249,14 @@ class _$TravelVisitModelImpl implements _TravelVisitModel {
             (identical(other.visitedOn, visitedOn) ||
                 other.visitedOn == visitedOn) &&
             (identical(other.rating, rating) || other.rating == rating) &&
-            (identical(other.reason, reason) || other.reason == reason));
+            (identical(other.reason, reason) || other.reason == reason) &&
+            const DeepCollectionEquality().equals(other._images, _images));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, seq, placeId, visitedOn, rating, reason);
+  int get hashCode => Object.hash(runtimeType, id, seq, placeId, visitedOn,
+      rating, reason, const DeepCollectionEquality().hash(_images));
 
   /// Create a copy of TravelVisitModel
   /// with the given fields replaced by the non-null parameter values.
@@ -259,7 +282,8 @@ abstract class _TravelVisitModel implements TravelVisitModel {
       required final int placeId,
       required final DateTime visitedOn,
       required final TravelVisitRatingModel rating,
-      required final TravelVisitReason reason}) = _$TravelVisitModelImpl;
+      required final TravelVisitReason reason,
+      required final List<ImageModel> images}) = _$TravelVisitModelImpl;
 
   factory _TravelVisitModel.fromJson(Map<String, dynamic> json) =
       _$TravelVisitModelImpl.fromJson;
@@ -276,6 +300,8 @@ abstract class _TravelVisitModel implements TravelVisitModel {
   TravelVisitRatingModel get rating;
   @override
   TravelVisitReason get reason;
+  @override
+  List<ImageModel> get images;
 
   /// Create a copy of TravelVisitModel
   /// with the given fields replaced by the non-null parameter values.

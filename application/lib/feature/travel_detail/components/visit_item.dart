@@ -28,22 +28,24 @@ class VisitItem extends ConsumerWidget {
     final address = road.isNotEmpty ? road : lotNumber;
 
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0),
-            scrollDirection: Axis.horizontal,
-            child: Row(children: [
-              for (int i = 0; i < 5; i++) ...[
-                ClipRRect(
-                    borderRadius: BorderRadius.circular(4.0),
-                    child: Container(
-                      width: 176,
-                      height: 140,
-                      color: colorScheme.primaryContainer,
-                    )),
-                const SizedBox(width: 8.0)
-              ]
-            ])),
+        if (visit.images.isNotEmpty)
+          SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              scrollDirection: Axis.horizontal,
+              child: Row(children: [
+                for (final image in visit.images) ...[
+                  ClipRRect(
+                      borderRadius: BorderRadius.circular(4.0),
+                      child: Container(
+                        width: 176,
+                        height: 140,
+                        color: colorScheme.primaryContainer,
+                      )),
+                  const SizedBox(width: 8.0)
+                ]
+              ])),
         const SizedBox(height: 24.0),
         IntrinsicHeight(
           child: Row(

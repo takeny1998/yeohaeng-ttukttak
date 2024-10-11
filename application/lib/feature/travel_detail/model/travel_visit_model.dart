@@ -1,5 +1,6 @@
 import 'package:application_new/feature/travel_detail/model/travel_visit_rating_model.dart';
 import 'package:application_new/feature/travel_detail/model/travel_visit_reason.dart';
+import 'package:application_new/shared/model/image_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'travel_visit_model.freezed.dart';
@@ -15,6 +16,7 @@ class TravelVisitModel with _$TravelVisitModel {
     required DateTime visitedOn,
     required TravelVisitRatingModel rating,
     required TravelVisitReason reason,
+    required List<ImageModel> images,
   }) = _TravelVisitModel;
 
   factory TravelVisitModel.fromJson(Map<String, dynamic> json) =>

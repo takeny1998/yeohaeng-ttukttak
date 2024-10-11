@@ -16,6 +16,9 @@ _$TravelVisitModelImpl _$$TravelVisitModelImplFromJson(
       rating: TravelVisitRatingModel.fromJson(
           json['rating'] as Map<String, dynamic>),
       reason: $enumDecode(_$TravelVisitReasonEnumMap, json['reason']),
+      images: (json['images'] as List<dynamic>)
+          .map((e) => ImageModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$$TravelVisitModelImplToJson(
@@ -27,6 +30,7 @@ Map<String, dynamic> _$$TravelVisitModelImplToJson(
       'visitedOn': instance.visitedOn.toIso8601String(),
       'rating': instance.rating,
       'reason': _$TravelVisitReasonEnumMap[instance.reason]!,
+      'images': instance.images,
     };
 
 const _$TravelVisitReasonEnumMap = {

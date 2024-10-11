@@ -30,7 +30,7 @@ Map<String, dynamic> _$$PlaceModelImplToJson(_$PlaceModelImpl instance) =>
 
 const _$PlaceCategoryEnumMap = {
   PlaceCategory.nature: 'nature',
-  PlaceCategory.heritage: 'heritage',
+  PlaceCategory.landmark: 'landmark',
   PlaceCategory.culture: 'culture',
   PlaceCategory.commerce: 'commerce',
   PlaceCategory.recreation: 'recreation',
