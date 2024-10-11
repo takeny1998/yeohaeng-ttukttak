@@ -106,3 +106,19 @@ enum:
     unexpectedFind: 지나가다 우연히 방문했어요.
     education: 교육적인 장소라 방문헀어요.
     other: 기타
+
+  PlaceCategory:
+    nature: 자연관광지
+    heritage: 역사/유적/종교 시설
+    culture: 문화 시설
+    commerce: 상업지구
+    recreation: 레저/스포츠
+    themePark: 테마파크
+    trail: 산책로, 둘레길
+    festival: 축제/행사
+    transport: 교통 시설
+    shop: 상점
+    dining: 식당/카페
+    attraction: 체험 활동 관광지
+    lodging: 숙소
+    other: 기타

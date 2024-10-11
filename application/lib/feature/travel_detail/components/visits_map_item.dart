@@ -51,13 +51,11 @@ class _VisitsMapItemState extends ConsumerState<VisitsMapItem> {
 
       points.add(point);
 
-      final key = GlobalKey();
-
-      final markerItem =
-          PlaceMarkerItem(key: key, place: place, isSelected: isSelected);
-
-      final marker =
-          Marker(width: 32.0, height: 32.0, point: point, child: markerItem);
+      final marker = Marker(
+          width: 26.0,
+          height: 26.0,
+          point: point,
+          child: PlaceMarkerItem(place: place, isSelected: isSelected));
 
       if (isSelected) {
         markers.insert(0, marker);
@@ -76,47 +74,49 @@ class _VisitsMapItemState extends ConsumerState<VisitsMapItem> {
       mapController.move(
         LatLng(coordinates.latitude, coordinates.longitude),
         zoom,
-        offset: const Offset(0.0, -20.0),
       );
     }
 
-    return Scaffold(
-      body: FlutterMap(
-        mapController: mapController,
-        children: [
-          TileLayer(
-            urlTemplate: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-          ),
-          PolylineLayer(polylines: [
-            Polyline(
-                points: points,
-                color: colorScheme.secondary,
-                strokeWidth: 3.0,
-                pattern: const StrokePattern.dotted())
-          ]),
-          MarkerLayer(markers: markers.reversed.toList()),
-        ],
-      ),
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.only(bottom: 48.0),
-        child: Wrap(
-          direction: Axis.vertical,
+    return Stack(
+      children: [
+        FlutterMap(
+          mapController: mapController,
           children: [
-            IconButton.filled(
-                onPressed: () {
-                  final MapCamera(:center) = mapController.camera;
-                  mapController.move(center, ++ zoom);
-                },
-                icon: const Icon(Icons.add)),
-            IconButton.filled(
-                onPressed: () {
-                  final MapCamera(:center) = mapController.camera;
-                  mapController.move(center, -- zoom);
-                },
-                icon: const Icon(Icons.remove)),
+            TileLayer(
+              urlTemplate: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+            ),
+            PolylineLayer(polylines: [
+              Polyline(
+                  points: points,
+                  color: colorScheme.secondary,
+                  strokeWidth: 3.0,
+                  pattern: const StrokePattern.dotted())
+            ]),
+            MarkerLayer(markers: markers.reversed.toList()),
           ],
         ),
-      ),
+        Positioned(
+          bottom: 24.0,
+          right: 16.0,
+          child: Wrap(
+            direction: Axis.vertical,
+            children: [
+              IconButton.filled(
+                  onPressed: () {
+                    final MapCamera(:center) = mapController.camera;
+                    mapController.move(center, ++zoom);
+                  },
+                  icon: const Icon(Icons.add)),
+              IconButton.filled(
+                  onPressed: () {
+                    final MapCamera(:center) = mapController.camera;
+                    mapController.move(center, --zoom);
+                  },
+                  icon: const Icon(Icons.remove)),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

@@ -147,51 +147,44 @@ class _TravelDetailPageState extends ConsumerState<TravelDetailPage> {
             return SliverPersistentHeader(
               pinned: true,
               delegate: CustomHeaderDelegate(
-                extent: 340,
-                widget: Stack(
+                extent: MediaQuery.of(context).size.height * 0.4,
+                widget: Column(
                   children: [
-                    VisitsMapItem(
-                        places: places,
-                        visits: filteredVisits,
-                        selectedPlaceId: state.selectedPlaceId),
-                    Column(
-                      children: [
-                        const Expanded(child: SizedBox()),
-                        Container(
-                          decoration: BoxDecoration(
-                              color: colorScheme.surface,
-                              borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(16.0),
-                                topRight: Radius.circular(16.0),
-                              ),
-                              border: Border(
-                                  bottom: BorderSide(
-                                      color: colorScheme.secondaryFixed))),
-                          child: SingleChildScrollView(
-                            primary: true,
-                            scrollDirection: Axis.horizontal,
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 24.0, vertical: 16.0),
-                            child: Row(
-                              children: [
-                                for (var day = 0; day < travelDays; day++) ...[
-                                  FilledChoiceChip(
-                                      isSelected: state.selectedDay == day,
-                                      onSelected: (_) => ref
-                                          .read(travelDetailProvider(
-                                                  widget._travelId)
-                                              .notifier)
-                                          .selectDay(day),
-                                      labelText: DateFormat.MMMEd().format(
-                                          travel.startedOn
-                                              .add(Duration(days: day)))),
-                                  const SizedBox(width: 12.0)
-                                ]
-                              ],
-                            ),
-                          ),
+                    Expanded(
+                      child: VisitsMapItem(
+                          places: places,
+                          visits: filteredVisits,
+                          selectedPlaceId: state.selectedPlaceId),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                          color: colorScheme.surface,
+                          border: Border(
+                              bottom: BorderSide(
+                                  color: colorScheme.secondaryFixed))),
+                      child: SingleChildScrollView(
+                        primary: true,
+                        scrollDirection: Axis.horizontal,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 24.0, vertical: 16.0),
+                        child: Row(
+                          children: [
+                            for (var day = 0; day < travelDays; day++) ...[
+                              FilledChoiceChip(
+                                  isSelected: state.selectedDay == day,
+                                  onSelected: (_) => ref
+                                      .read(travelDetailProvider(
+                                              widget._travelId)
+                                          .notifier)
+                                      .selectDay(day),
+                                  labelText: DateFormat.MMMEd().format(
+                                      travel.startedOn
+                                          .add(Duration(days: day)))),
+                              const SizedBox(width: 12.0)
+                            ]
+                          ],
                         ),
-                      ],
+                      ),
                     ),
                   ],
                 ),

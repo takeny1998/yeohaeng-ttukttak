@@ -22,7 +22,9 @@ PlaceModel _$PlaceModelFromJson(Map<String, dynamic> json) {
 mixin _$PlaceModel {
   int get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
+  PlaceAddress get address => throw _privateConstructorUsedError;
   PlaceCoordinates get coordinates => throw _privateConstructorUsedError;
+  List<PlaceCategory> get categories => throw _privateConstructorUsedError;
 
   /// Serializes this PlaceModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -40,8 +42,14 @@ abstract class $PlaceModelCopyWith<$Res> {
           PlaceModel value, $Res Function(PlaceModel) then) =
       _$PlaceModelCopyWithImpl<$Res, PlaceModel>;
   @useResult
-  $Res call({int id, String name, PlaceCoordinates coordinates});
+  $Res call(
+      {int id,
+      String name,
+      PlaceAddress address,
+      PlaceCoordinates coordinates,
+      List<PlaceCategory> categories});
 
+  $PlaceAddressCopyWith<$Res> get address;
   $PlaceCoordinatesCopyWith<$Res> get coordinates;
 }
 
@@ -62,7 +70,9 @@ class _$PlaceModelCopyWithImpl<$Res, $Val extends PlaceModel>
   $Res call({
     Object? id = null,
     Object? name = null,
+    Object? address = null,
     Object? coordinates = null,
+    Object? categories = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -73,11 +83,29 @@ class _$PlaceModelCopyWithImpl<$Res, $Val extends PlaceModel>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
+      address: null == address
+          ? _value.address
+          : address // ignore: cast_nullable_to_non_nullable
+              as PlaceAddress,
       coordinates: null == coordinates
           ? _value.coordinates
           : coordinates // ignore: cast_nullable_to_non_nullable
               as PlaceCoordinates,
+      categories: null == categories
+          ? _value.categories
+          : categories // ignore: cast_nullable_to_non_nullable
+              as List<PlaceCategory>,
     ) as $Val);
+  }
+
+  /// Create a copy of PlaceModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $PlaceAddressCopyWith<$Res> get address {
+    return $PlaceAddressCopyWith<$Res>(_value.address, (value) {
+      return _then(_value.copyWith(address: value) as $Val);
+    });
   }
 
   /// Create a copy of PlaceModel
@@ -99,8 +127,15 @@ abstract class _$$PlaceModelImplCopyWith<$Res>
       __$$PlaceModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int id, String name, PlaceCoordinates coordinates});
+  $Res call(
+      {int id,
+      String name,
+      PlaceAddress address,
+      PlaceCoordinates coordinates,
+      List<PlaceCategory> categories});
 
+  @override
+  $PlaceAddressCopyWith<$Res> get address;
   @override
   $PlaceCoordinatesCopyWith<$Res> get coordinates;
 }
@@ -120,7 +155,9 @@ class __$$PlaceModelImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? name = null,
+    Object? address = null,
     Object? coordinates = null,
+    Object? categories = null,
   }) {
     return _then(_$PlaceModelImpl(
       id: null == id
@@ -131,10 +168,18 @@ class __$$PlaceModelImplCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
+      address: null == address
+          ? _value.address
+          : address // ignore: cast_nullable_to_non_nullable
+              as PlaceAddress,
       coordinates: null == coordinates
           ? _value.coordinates
           : coordinates // ignore: cast_nullable_to_non_nullable
               as PlaceCoordinates,
+      categories: null == categories
+          ? _value._categories
+          : categories // ignore: cast_nullable_to_non_nullable
+              as List<PlaceCategory>,
     ));
   }
 }
@@ -143,7 +188,12 @@ class __$$PlaceModelImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$PlaceModelImpl implements _PlaceModel {
   const _$PlaceModelImpl(
-      {required this.id, required this.name, required this.coordinates});
+      {required this.id,
+      required this.name,
+      required this.address,
+      required this.coordinates,
+      required final List<PlaceCategory> categories})
+      : _categories = categories;
 
   factory _$PlaceModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$PlaceModelImplFromJson(json);
@@ -153,11 +203,20 @@ class _$PlaceModelImpl implements _PlaceModel {
   @override
   final String name;
   @override
+  final PlaceAddress address;
+  @override
   final PlaceCoordinates coordinates;
+  final List<PlaceCategory> _categories;
+  @override
+  List<PlaceCategory> get categories {
+    if (_categories is EqualUnmodifiableListView) return _categories;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_categories);
+  }
 
   @override
   String toString() {
-    return 'PlaceModel(id: $id, name: $name, coordinates: $coordinates)';
+    return 'PlaceModel(id: $id, name: $name, address: $address, coordinates: $coordinates, categories: $categories)';
   }
 
   @override
@@ -167,13 +226,17 @@ class _$PlaceModelImpl implements _PlaceModel {
             other is _$PlaceModelImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
+            (identical(other.address, address) || other.address == address) &&
             (identical(other.coordinates, coordinates) ||
-                other.coordinates == coordinates));
+                other.coordinates == coordinates) &&
+            const DeepCollectionEquality()
+                .equals(other._categories, _categories));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, name, coordinates);
+  int get hashCode => Object.hash(runtimeType, id, name, address, coordinates,
+      const DeepCollectionEquality().hash(_categories));
 
   /// Create a copy of PlaceModel
   /// with the given fields replaced by the non-null parameter values.
@@ -195,7 +258,9 @@ abstract class _PlaceModel implements PlaceModel {
   const factory _PlaceModel(
       {required final int id,
       required final String name,
-      required final PlaceCoordinates coordinates}) = _$PlaceModelImpl;
+      required final PlaceAddress address,
+      required final PlaceCoordinates coordinates,
+      required final List<PlaceCategory> categories}) = _$PlaceModelImpl;
 
   factory _PlaceModel.fromJson(Map<String, dynamic> json) =
       _$PlaceModelImpl.fromJson;
@@ -205,7 +270,11 @@ abstract class _PlaceModel implements PlaceModel {
   @override
   String get name;
   @override
+  PlaceAddress get address;
+  @override
   PlaceCoordinates get coordinates;
+  @override
+  List<PlaceCategory> get categories;
 
   /// Create a copy of PlaceModel
   /// with the given fields replaced by the non-null parameter values.
@@ -383,5 +452,173 @@ abstract class _PlaceCoordinates implements PlaceCoordinates {
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$PlaceCoordinatesImplCopyWith<_$PlaceCoordinatesImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+PlaceAddress _$PlaceAddressFromJson(Map<String, dynamic> json) {
+  return _PlaceAddress.fromJson(json);
+}
+
+/// @nodoc
+mixin _$PlaceAddress {
+  String get lotNumber => throw _privateConstructorUsedError;
+  String get road => throw _privateConstructorUsedError;
+
+  /// Serializes this PlaceAddress to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of PlaceAddress
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $PlaceAddressCopyWith<PlaceAddress> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $PlaceAddressCopyWith<$Res> {
+  factory $PlaceAddressCopyWith(
+          PlaceAddress value, $Res Function(PlaceAddress) then) =
+      _$PlaceAddressCopyWithImpl<$Res, PlaceAddress>;
+  @useResult
+  $Res call({String lotNumber, String road});
+}
+
+/// @nodoc
+class _$PlaceAddressCopyWithImpl<$Res, $Val extends PlaceAddress>
+    implements $PlaceAddressCopyWith<$Res> {
+  _$PlaceAddressCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of PlaceAddress
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? lotNumber = null,
+    Object? road = null,
+  }) {
+    return _then(_value.copyWith(
+      lotNumber: null == lotNumber
+          ? _value.lotNumber
+          : lotNumber // ignore: cast_nullable_to_non_nullable
+              as String,
+      road: null == road
+          ? _value.road
+          : road // ignore: cast_nullable_to_non_nullable
+              as String,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$PlaceAddressImplCopyWith<$Res>
+    implements $PlaceAddressCopyWith<$Res> {
+  factory _$$PlaceAddressImplCopyWith(
+          _$PlaceAddressImpl value, $Res Function(_$PlaceAddressImpl) then) =
+      __$$PlaceAddressImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String lotNumber, String road});
+}
+
+/// @nodoc
+class __$$PlaceAddressImplCopyWithImpl<$Res>
+    extends _$PlaceAddressCopyWithImpl<$Res, _$PlaceAddressImpl>
+    implements _$$PlaceAddressImplCopyWith<$Res> {
+  __$$PlaceAddressImplCopyWithImpl(
+      _$PlaceAddressImpl _value, $Res Function(_$PlaceAddressImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of PlaceAddress
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? lotNumber = null,
+    Object? road = null,
+  }) {
+    return _then(_$PlaceAddressImpl(
+      lotNumber: null == lotNumber
+          ? _value.lotNumber
+          : lotNumber // ignore: cast_nullable_to_non_nullable
+              as String,
+      road: null == road
+          ? _value.road
+          : road // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$PlaceAddressImpl implements _PlaceAddress {
+  const _$PlaceAddressImpl({required this.lotNumber, required this.road});
+
+  factory _$PlaceAddressImpl.fromJson(Map<String, dynamic> json) =>
+      _$$PlaceAddressImplFromJson(json);
+
+  @override
+  final String lotNumber;
+  @override
+  final String road;
+
+  @override
+  String toString() {
+    return 'PlaceAddress(lotNumber: $lotNumber, road: $road)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$PlaceAddressImpl &&
+            (identical(other.lotNumber, lotNumber) ||
+                other.lotNumber == lotNumber) &&
+            (identical(other.road, road) || other.road == road));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, lotNumber, road);
+
+  /// Create a copy of PlaceAddress
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$PlaceAddressImplCopyWith<_$PlaceAddressImpl> get copyWith =>
+      __$$PlaceAddressImplCopyWithImpl<_$PlaceAddressImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$PlaceAddressImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _PlaceAddress implements PlaceAddress {
+  const factory _PlaceAddress(
+      {required final String lotNumber,
+      required final String road}) = _$PlaceAddressImpl;
+
+  factory _PlaceAddress.fromJson(Map<String, dynamic> json) =
+      _$PlaceAddressImpl.fromJson;
+
+  @override
+  String get lotNumber;
+  @override
+  String get road;
+
+  /// Create a copy of PlaceAddress
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$PlaceAddressImplCopyWith<_$PlaceAddressImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -1,3 +1,5 @@
+import 'package:application_new/common/component/filled_chip.dart';
+import 'package:application_new/common/component/small_filled_chip.dart';
 import 'package:application_new/common/util/translation.dart';
 import 'package:application_new/feature/travel_detail/components/visit_order_item.dart';
 import 'package:application_new/feature/travel_detail/model/travel_detail_model.dart';
@@ -10,7 +12,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'visit_rating_item.dart';
 
 class VisitItem extends ConsumerWidget {
-
   final List<PlaceModel> places;
   final TravelVisitModel visit;
 
@@ -18,12 +19,15 @@ class VisitItem extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
 
     final trKey = baseKey('travel.travel_detail');
     final place = places.firstWhere((e) => e.id == visit.placeId);
+
+    final PlaceAddress(:road, :lotNumber) = place.address;
+
+    final address = road.isNotEmpty ? road : lotNumber;
 
     return Column(
       children: [
@@ -35,9 +39,9 @@ class VisitItem extends ConsumerWidget {
                 ClipRRect(
                     borderRadius: BorderRadius.circular(4.0),
                     child: Container(
-                      width: 156,
+                      width: 176,
                       height: 140,
-                      color: colorScheme.secondaryContainer,
+                      color: colorScheme.primaryContainer,
                     )),
                 const SizedBox(width: 8.0)
               ]
@@ -71,15 +75,21 @@ class VisitItem extends ConsumerWidget {
                         style: textTheme.titleMedium
                             ?.copyWith(fontWeight: FontWeight.w600),
                       ),
-                      Text(
-                        '증평군, 충청북도 · 자연관광지',
-                        style: textTheme.labelMedium,
+                      Text(address, style: textTheme.labelMedium),
+                      Wrap(
+                        spacing: 6.0,
+                        children: [
+                          for (final category in place.categories)
+                            SmallFilledChip(label: enumKey(category).tr())
+
+                        ],
                       ),
                       Container(
-                        margin: const EdgeInsets.symmetric(vertical: 16.0),
+                        margin: const EdgeInsets.only(top: 16.0),
                         padding: const EdgeInsets.all(16.0),
+                        width: double.maxFinite,
                         decoration: BoxDecoration(
-                            color: colorScheme.secondaryContainer,
+                            color: colorScheme.primaryContainer,
                             borderRadius: BorderRadius.circular(4.0)),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -90,7 +100,18 @@ class VisitItem extends ConsumerWidget {
                             Text(enumKey(visit.reason).tr(),
                                 style: textTheme.bodyMedium
                                     ?.copyWith(fontWeight: FontWeight.w600)),
-                            const SizedBox(height: 24.0),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.symmetric(vertical: 16.0),
+                        padding: const EdgeInsets.all(16.0),
+                        decoration: BoxDecoration(
+                            color: colorScheme.primaryContainer,
+                            borderRadius: BorderRadius.circular(4.0)),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
                             VisitRatingItem(
                                 name: 'satisfaction',
                                 rating: visit.rating.satisfaction),
@@ -138,7 +159,7 @@ class VisitItem extends ConsumerWidget {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 24.0),
+                      const SizedBox(height: 32.0),
                     ],
                   )),
               const SizedBox(width: 24.0),

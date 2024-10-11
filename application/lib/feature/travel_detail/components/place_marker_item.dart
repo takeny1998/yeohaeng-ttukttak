@@ -1,4 +1,3 @@
-import 'package:application_new/common/component/outlined_text.dart';
 import 'package:application_new/shared/place/model/place_model.dart';
 import 'package:flutter/material.dart';
 
@@ -22,6 +21,11 @@ class PlaceMarkerItem extends StatelessWidget {
       fontWeight: FontWeight.w600,
     );
 
+    final backgroundColor =
+        _isSelected ? colorScheme.primary : colorScheme.secondary;
+    final foregroundColor =
+        _isSelected ? colorScheme.onPrimary : colorScheme.onSecondary;
+
     return Stack(
       clipBehavior: Clip.none,
       alignment: Alignment.center,
@@ -29,18 +33,19 @@ class PlaceMarkerItem extends StatelessWidget {
         Positioned(
           child: CircleAvatar(
               radius: 18.0,
-              backgroundColor:
-                  _isSelected ? colorScheme.primary : colorScheme.secondary),
+              backgroundColor: backgroundColor,
+              child: Padding(
+                  padding: const EdgeInsets.all(9.0),
+                  child: CircleAvatar(backgroundColor: foregroundColor))),
         ),
         Positioned(
-            top: 36.0,
+            top: 28.0,
             child: Container(
                 decoration: BoxDecoration(
-                  color: _isSelected ? colorScheme.primary : colorScheme.secondary,
-                  border: Border.all(color: colorScheme.primary),
-                  borderRadius: BorderRadius.circular(4.0)
-                ),
-                padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 6.0),
+                    color: backgroundColor,
+                    borderRadius: BorderRadius.circular(4.0)),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 2.0, horizontal: 6.0),
                 child: Text(_place.name, style: labelStyle)))
       ],
     );

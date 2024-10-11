@@ -104,3 +104,19 @@ enum:
     unexpectedFind: I visited by chance while passing by.
     education: Because it was educational.
     other: Other reason
+
+  PlaceCategory:
+    nature: Natural
+    heritage: Landmark
+    culture: Cultural
+    commerce: Commercial
+    recreation: Leisure/sports
+    themePark: Theme park
+    trail: Trail
+    festival: Festival
+    transport: Transportation
+    shop: Shop
+    dining: Restaurant/Café
+    attraction: Attraction
+    lodging: Lodging
+    other: Others
