@@ -1,5 +1,6 @@
 package com.yeohaeng_ttukttak.server.domain.place.dto;
 
+import com.yeohaeng_ttukttak.server.domain.image.dto.ImageDto;
 import com.yeohaeng_ttukttak.server.domain.place.entity.Place;
 import com.yeohaeng_ttukttak.server.domain.place.entity.PlaceCategoryMapping;
 import com.yeohaeng_ttukttak.server.domain.place.entity.PlaceCategory;
@@ -23,8 +24,7 @@ public record PlaceDto(
                 new PlaceCoordinates(
                         place.longitude(), place.latitude()),
                 place.categories().stream()
-                        .map(PlaceCategoryMapping::category)
-                        .toList()
+                        .map(PlaceCategoryMapping::category).toList()
         );
     }
 

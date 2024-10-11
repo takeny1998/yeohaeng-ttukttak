@@ -1,11 +1,14 @@
 package com.yeohaeng_ttukttak.server.domain.travel.entity;
 
+import com.yeohaeng_ttukttak.server.domain.image.entity.TravelVisitImage;
 import com.yeohaeng_ttukttak.server.domain.place.entity.Place;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.ToString;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @ToString
@@ -28,6 +31,9 @@ public class TravelVisit {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "travel_id")
     private Travel travel;
+
+    @OneToMany(mappedBy = "visit")
+    private List<TravelVisitImage> images = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     private VisitReason reason;
@@ -72,5 +78,9 @@ public class TravelVisit {
 
     public Integer recommend() {
         return recommend;
+    }
+
+    public List<TravelVisitImage> images() {
+        return images;
     }
 }

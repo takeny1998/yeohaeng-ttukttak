@@ -1,5 +1,6 @@
 package com.yeohaeng_ttukttak.server.domain.place.entity;
 
+import com.yeohaeng_ttukttak.server.domain.image.entity.TravelVisitImage;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

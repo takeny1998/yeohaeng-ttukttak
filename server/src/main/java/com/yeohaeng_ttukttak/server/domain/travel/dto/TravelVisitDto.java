@@ -1,9 +1,11 @@
 package com.yeohaeng_ttukttak.server.domain.travel.dto;
 
+import com.yeohaeng_ttukttak.server.domain.image.dto.ImageDto;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelVisit;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.VisitReason;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public record TravelVisitDto(
         Long id,
@@ -11,7 +13,8 @@ public record TravelVisitDto(
         Long placeId,
         LocalDate visitedOn,
         VisitReason reason,
-        VisitRating rating) {
+        VisitRating rating,
+        List<ImageDto> images) {
 
     public record VisitRating (
             Integer satisfaction,
@@ -28,7 +31,9 @@ public record TravelVisitDto(
                 new VisitRating(
                         visit.satisfaction(),
                         visit.revisit(),
-                        visit.recommend())
+                        visit.recommend()),
+                visit.images().stream()
+                        .map(ImageDto::of).toList()
         );
     }
 
