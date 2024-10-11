@@ -1,10 +1,8 @@
-import 'package:application_new/common/component/filled_chip.dart';
-import 'package:application_new/common/component/small_filled_chip.dart';
 import 'package:application_new/common/util/translation.dart';
 import 'package:application_new/feature/travel_detail/components/visit_order_item.dart';
-import 'package:application_new/feature/travel_detail/model/travel_detail_model.dart';
 import 'package:application_new/feature/travel_detail/model/travel_visit_model.dart';
-import 'package:application_new/shared/place/model/place_model.dart';
+import 'package:application_new/shared/component/small_filled_chip.dart';
+import 'package:application_new/shared/model/place_model.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -81,7 +79,6 @@ class VisitItem extends ConsumerWidget {
                         children: [
                           for (final category in place.categories)
                             SmallFilledChip(label: enumKey(category).tr())
-
                         ],
                       ),
                       Container(

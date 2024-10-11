@@ -1,4 +1,4 @@
-import 'package:application_new/shared/place/model/place_model.dart';
+import 'package:application_new/shared/model/place_model.dart';
 import 'package:flutter/material.dart';
 
 class PlaceMarkerItem extends StatelessWidget {

@@ -1,8 +1,7 @@
 import 'package:application_new/common/util/translation.dart';
 import 'package:application_new/feature/travel/component/bottom_action_button.dart';
 import 'package:application_new/feature/travel/provider/create_travel_provider.dart';
-import 'package:application_new/shared/travel/model/travel_companion_type.dart';
-import 'package:application_new/shared/travel/model/travel_motivation.dart';
+import 'package:application_new/shared/model/travel_model.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

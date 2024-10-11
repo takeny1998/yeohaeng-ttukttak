@@ -62,3 +62,35 @@ const _$TravelMotivationEnumMap = {
   TravelMotivation.newExperiences: 'newExperiences',
   TravelMotivation.education: 'education',
 };
+
+_$TravelCompanionImpl _$$TravelCompanionImplFromJson(
+        Map<String, dynamic> json) =>
+    _$TravelCompanionImpl(
+      id: (json['id'] as num).toInt(),
+      type: $enumDecode(_$TravelCompanionTypeEnumMap, json['type']),
+      ageGroup: $enumDecode(_$AgeGroupEnumMap, json['ageGroup']),
+      gender: $enumDecode(_$GenderEnumMap, json['gender']),
+    );
+
+Map<String, dynamic> _$$TravelCompanionImplToJson(
+        _$TravelCompanionImpl instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'type': _$TravelCompanionTypeEnumMap[instance.type]!,
+      'ageGroup': _$AgeGroupEnumMap[instance.ageGroup]!,
+      'gender': _$GenderEnumMap[instance.gender]!,
+    };
+
+const _$TravelCompanionTypeEnumMap = {
+  TravelCompanionType.spouse: 'spouse',
+  TravelCompanionType.children: 'children',
+  TravelCompanionType.parents: 'parents',
+  TravelCompanionType.grandparents: 'grandparents',
+  TravelCompanionType.siblings: 'siblings',
+  TravelCompanionType.relatives: 'relatives',
+  TravelCompanionType.friends: 'friends',
+  TravelCompanionType.lover: 'lover',
+  TravelCompanionType.colleagues: 'colleagues',
+  TravelCompanionType.members: 'members',
+  TravelCompanionType.others: 'others',
+};

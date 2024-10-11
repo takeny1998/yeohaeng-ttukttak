@@ -1,7 +1,7 @@
 import 'package:application_new/feature/travel_detail/components/place_marker_item.dart';
 import 'package:application_new/feature/travel_detail/components/visit_order_item.dart';
 import 'package:application_new/feature/travel_detail/model/travel_visit_model.dart';
-import 'package:application_new/shared/place/model/place_model.dart';
+import 'package:application_new/shared/model/place_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

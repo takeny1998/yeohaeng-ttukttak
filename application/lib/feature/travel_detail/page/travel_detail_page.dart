@@ -1,6 +1,4 @@
-import 'package:application_new/common/component/custom_header_delegate.dart';
-import 'package:application_new/common/component/filled_chip.dart';
-import 'package:application_new/common/component/filled_choice_chip.dart';
+
 import 'package:application_new/common/util/translation.dart';
 import 'package:application_new/feature/travel_detail/components/companion_item.dart';
 import 'package:application_new/feature/travel_detail/components/visit_item.dart';
@@ -8,7 +6,10 @@ import 'package:application_new/feature/travel_detail/components/visits_map_item
 import 'package:application_new/feature/travel_detail/model/travel_detail_model.dart';
 import 'package:application_new/feature/travel_detail/model/travel_visit_model.dart';
 import 'package:application_new/feature/travel_detail/provider/travel_detail_provider.dart';
-import 'package:application_new/shared/travel/model/travel_model.dart';
+import 'package:application_new/shared/component/custom_header_delegate.dart';
+import 'package:application_new/shared/component/filled_chip.dart';
+import 'package:application_new/shared/component/filled_choice_chip.dart';
+import 'package:application_new/shared/model/travel_model.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';

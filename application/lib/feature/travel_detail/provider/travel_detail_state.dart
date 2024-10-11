@@ -1,5 +1,5 @@
 import 'package:application_new/feature/travel_detail/model/travel_detail_model.dart';
-import 'package:application_new/shared/travel/model/travel_model.dart';
+import 'package:application_new/shared/model/travel_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'travel_detail_state.freezed.dart';

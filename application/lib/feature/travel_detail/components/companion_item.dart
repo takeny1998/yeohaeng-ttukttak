@@ -1,4 +1,4 @@
-import 'package:application_new/shared/member/model/gender.dart';
+import 'package:application_new/shared/model/member_model.dart';
 import 'package:flutter/material.dart';
 
 class CompanionItem extends StatelessWidget {

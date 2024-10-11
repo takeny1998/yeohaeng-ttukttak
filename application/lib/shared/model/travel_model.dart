@@ -1,7 +1,4 @@
-import 'package:application_new/shared/member/model/age_group.dart';
-import 'package:application_new/shared/member/model/gender.dart';
-import 'package:application_new/shared/travel/model/travel_companion.dart';
-import 'package:application_new/shared/travel/model/travel_motivation.dart';
+import 'package:application_new/shared/model/member_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'travel_model.freezed.dart';
@@ -35,4 +32,41 @@ class TravelModel with _$TravelModel {
   factory TravelModel.fromJson(Map<String, dynamic> json) =>
       _$TravelModelFromJson(json);
 
+}
+
+@freezed
+class TravelCompanion with _$TravelCompanion {
+  const factory TravelCompanion(
+      {required int id,
+        required TravelCompanionType type,
+        required AgeGroup ageGroup,
+        required Gender gender}) = _TravelCompanion;
+
+  factory TravelCompanion.fromJson(Map<String, dynamic> json) =>
+      _$TravelCompanionFromJson(json);
+}
+
+enum TravelMotivation {
+  adventure,
+  rest,
+  friendship,
+  selfReflection,
+  socialNetwork,
+  fitness,
+  newExperiences,
+  education,
+}
+
+enum TravelCompanionType {
+  spouse,
+  children,
+  parents,
+  grandparents,
+  siblings,
+  relatives,
+  friends,
+  lover,
+  colleagues,
+  members,
+  others
 }

@@ -1,4 +1,3 @@
-
 enum AgeGroup {
   underNine,
   teens,
@@ -8,5 +7,11 @@ enum AgeGroup {
   fifties,
   sixties,
   seventiesPlus,
-  none
+  none,
+}
+
+enum Gender {
+  male,
+  female,
+  none,
 }
