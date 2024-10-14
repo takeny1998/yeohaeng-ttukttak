@@ -1,4 +1,3 @@
-
 import 'package:application_new/common/util/translation.dart';
 import 'package:application_new/feature/travel_detail/components/companion_item.dart';
 import 'package:application_new/feature/travel_detail/components/visit_item.dart';
@@ -54,7 +53,8 @@ class _TravelDetailPageState extends ConsumerState<TravelDetailPage> {
   void initState() {
     Future.microtask(() {
       scrollController.addListener(() {
-        final result = getTargetState<TravelVisitModel?>(const Offset(0, 340.0));
+        final result =
+            getTargetState<TravelVisitModel?>(const Offset(0, 340.0));
 
         if (result == null) return;
 
@@ -94,13 +94,8 @@ class _TravelDetailPageState extends ConsumerState<TravelDetailPage> {
             .duration
             .inDays;
 
-    final selectedDay = travel.startedOn.add(Duration(days: state.selectedDay));
-
-    final filteredVisits =
-        visits.where((visit) => visit.visitedOn == selectedDay).toList();
-
     ref.listen(travelDetailProvider(widget._travelId), (prev, next) {
-      if (prev?.selectedDay == next.selectedDay) return;
+      if (prev?.selectedDate == next.selectedDate) return;
       scrollController.animateTo(initOffset,
           duration: const Duration(milliseconds: 500), curve: Curves.linear);
     });
@@ -152,10 +147,7 @@ class _TravelDetailPageState extends ConsumerState<TravelDetailPage> {
                 widget: Column(
                   children: [
                     Expanded(
-                      child: VisitsMapItem(
-                          places: places,
-                          visits: filteredVisits,
-                          selectedPlaceId: state.selectedPlaceId),
+                      child: VisitsMapItem(travelId: widget._travelId),
                     ),
                     Container(
                       width: double.maxFinite,
@@ -171,17 +163,20 @@ class _TravelDetailPageState extends ConsumerState<TravelDetailPage> {
                             horizontal: 24.0, vertical: 16.0),
                         child: Row(
                           children: [
-                            for (var day = 0; day < travelDays; day++) ...[
-                              FilledChoiceChip(
-                                  isSelected: state.selectedDay == day,
-                                  onSelected: (_) => ref
-                                      .read(travelDetailProvider(
-                                              widget._travelId)
-                                          .notifier)
-                                      .selectDay(day),
-                                  labelText: DateFormat.MMMEd().format(
-                                      travel.startedOn
-                                          .add(Duration(days: day)))),
+                            for (var i = 0; i < travelDays; i++) ...[
+                              Builder(builder: (context) {
+                                final day =
+                                    travel.startedOn.add(Duration(days: i));
+
+                                return FilledChoiceChip(
+                                    onSelected: (_) => ref
+                                        .read(travelDetailProvider(
+                                                widget._travelId)
+                                            .notifier)
+                                        .selectDate(day),
+                                    isSelected: state.selectedDate == day,
+                                    labelText: DateFormat.MMMEd().format(day));
+                              }),
                               const SizedBox(width: 12.0)
                             ]
                           ],
@@ -197,7 +192,7 @@ class _TravelDetailPageState extends ConsumerState<TravelDetailPage> {
               key: key,
               delegate: SliverChildListDelegate([
                 const SizedBox(height: 24.0),
-                for (final visit in filteredVisits)
+                for (final visit in state.selectedVisits)
                   MetaData(
                       behavior: HitTestBehavior.translucent,
                       metaData: visit,

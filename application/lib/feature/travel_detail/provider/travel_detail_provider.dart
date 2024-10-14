@@ -15,15 +15,23 @@ class TravelDetail extends _$TravelDetail {
         .watch(httpServiceProvider)
         .request('GET', '/api/v2/travels/$travelId/detail')
         .then((response) {
-      state = state.copyWith(data: TravelDetailModel.fromJson(response));
+      final travelDetail = TravelDetailModel.fromJson(response);
+      final selectedDay = travelDetail.travel.startedOn;
+
+      state = state.copyWith(
+          data: travelDetail,
+          selectedDate: selectedDay,
+          selectedVisits: _filterVisits(travelDetail.visits, selectedDay));
     });
 
     return TravelDetailState.empty();
   }
 
-  void selectDay(int day) {
-    if (state.selectedDay == day) return;
-    state = state.copyWith(selectedDay: day);
+  void selectDate(DateTime date) {
+    if (state.selectedDate == date) return;
+    state = state.copyWith(
+        selectedDate: date,
+        selectedVisits: _filterVisits(state.data.visits, date));
   }
 
   void selectPlace(int id) {
@@ -31,4 +39,13 @@ class TravelDetail extends _$TravelDetail {
     state = state.copyWith(selectedPlaceId: id);
   }
 
+  void setIsMapMoved(bool isMapMoved) {
+    if (state.isMapMoved == isMapMoved) return;
+    state = state.copyWith(isMapMoved: isMapMoved);
+  }
+
+  List<TravelVisitModel> _filterVisits(
+      List<TravelVisitModel> visits, DateTime day) {
+    return visits.where((visit) => visit.visitedOn == day).toList();
+  }
 }

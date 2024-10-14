@@ -30,7 +30,7 @@ class VisitItem extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (visit.images.isNotEmpty)
+        if (visit.images.isNotEmpty)...[
           SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 24.0),
               scrollDirection: Axis.horizontal,
@@ -46,7 +46,8 @@ class VisitItem extends ConsumerWidget {
                   const SizedBox(width: 8.0)
                 ]
               ])),
-        const SizedBox(height: 24.0),
+          const SizedBox(height: 24.0),
+        ],
         IntrinsicHeight(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.stretch,

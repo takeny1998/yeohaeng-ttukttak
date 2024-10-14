@@ -25,12 +25,14 @@ travel:
     ask_recommend: 다른 사람에게 방문을 추천하고 싶으신가요?
 
 
+
 next: 다음으로
 korea: 대한민국
 me: 본인
 
 word:
   travel: 여행
+  reset_camera: 카메라 초기화
 
 rating:
   satisfaction:
@@ -53,8 +55,6 @@ rating:
     3: 괜찮았지만, 특별한 점은 없어요. 시간이 된다면 가볼 만해요.
     4: 좋은 경험이었어요. 추천할만 해요.
     5: 반드시 가봐야 할 곳이예요! 꼭 추천하고 싶어요.
-
-
 
 enum:
   TravelCompanionType:
