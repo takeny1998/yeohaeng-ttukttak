@@ -2,6 +2,7 @@ package com.yeohaeng_ttukttak.server.domain.geography.entity;
 
 import com.yeohaeng_ttukttak.server.common.util.LocaleUtil;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
@@ -20,8 +21,13 @@ public abstract class Geography {
     @Id
     private Long id;
 
+    @NotNull
     @Column(insertable=false, updatable=false)
     private int level;
+
+    @NotNull
+    @Column(insertable = false, updatable = false)
+    private int code;
 
     private String name;
 

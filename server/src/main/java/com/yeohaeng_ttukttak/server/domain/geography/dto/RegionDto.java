@@ -2,6 +2,7 @@ package com.yeohaeng_ttukttak.server.domain.geography.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.Region;
+import org.springframework.context.i18n.LocaleContextHolder;
 
 import java.util.Locale;
 
@@ -12,7 +13,8 @@ public record RegionDto(
         String shortName
 ) {
 
-    public static RegionDto of(Region region, Locale locale) {
+    public static RegionDto of(Region region) {
+        final Locale locale = LocaleContextHolder.getLocale();
         return new RegionDto(
                 region.id(),
                 region.name(locale),

@@ -4,7 +4,7 @@ import com.yeohaeng_ttukttak.server.application.travel.service.dto.CreateTravelC
 import com.yeohaeng_ttukttak.server.common.dto.DateRange;
 import com.yeohaeng_ttukttak.server.common.dto.EntityReference;
 import com.yeohaeng_ttukttak.server.common.validation.annotation.ValidateFutureDateRange;
-import com.yeohaeng_ttukttak.server.domain.travel.entity.Companion;
+import com.yeohaeng_ttukttak.server.domain.travel.entity.CompanionType;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.Motivation;
 import jakarta.validation.constraints.*;
 
@@ -12,7 +12,7 @@ import java.util.List;
 
 public record CreateTravelRequest (
         @ValidateFutureDateRange DateRange date,
-        @NotNull Companion companion,
+        @NotNull CompanionType companionType,
         @NotEmpty @Size(max = 3) List<Motivation> motivations,
         @NotEmpty List<EntityReference<Long>> cities
 ) {
@@ -22,7 +22,7 @@ public record CreateTravelRequest (
                 memberId,
                 date().startedOn(),
                 date().endedOn(),
-                companion(),
+                companionType(),
                 motivations(),
                 cities()
         );

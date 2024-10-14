@@ -44,7 +44,7 @@ public class GoogleProfileDeserializer extends JsonDeserializer<GoogleProfileRes
         try {
             gender = Gender.valueOf(value);
         } catch (IllegalArgumentException ex) {
-            gender = Gender.NONE;
+            gender = null;
         }
 
         return new GoogleProfileResponse(birthDate, gender);

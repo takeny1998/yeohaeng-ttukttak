@@ -2,7 +2,6 @@ import 'package:application_new/common/event/event.dart';
 import 'package:application_new/common/loading/async_loading_provider.dart';
 
 import 'package:application_new/feature/authentication/page/login_provider.dart';
-import 'package:application_new/main.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -19,7 +18,8 @@ class HomePage extends ConsumerWidget {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         actions: const [],
       ),
-      body: Center(
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 36.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -38,6 +38,19 @@ class HomePage extends ConsumerWidget {
             TextButton(
                 onPressed: () => context.push('/travels/create'),
                 child: const Text('여행 생성')),
+            TextButton(
+                onPressed: () => context.setLocale(const Locale('en')),
+                child: const Text('영문으로 변경')),
+            TextButton(
+                onPressed: () => context.setLocale(const Locale('ko')),
+                child: const Text('한글로 변경')),
+            TextField(
+              onSubmitted: (text) {
+                final id = int.tryParse(text);
+                if (id == null) return;
+                context.push('/travels/$id/detail');
+              },
+            )
           ],
         ),
       ),

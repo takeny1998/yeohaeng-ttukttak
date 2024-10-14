@@ -18,16 +18,57 @@ travel:
 
   created: 여행이 성공적으로 생성되었습니다.
 
+  travel_detail:
+    ask_reason: 이곳을 방문하게 된 이유는 무엇인가요?
+    ask_satisfaction: 이번 방문에 만족하셨나요?
+    ask_revisit: 다시 방문하고 싶으신가요?
+    ask_recommend: 다른 사람에게 방문을 추천하고 싶으신가요?
+
+
+
 next: 다음으로
 korea: 대한민국
+me: 본인
+
+word:
+  travel: 여행
+  reset_camera: 카메라 초기화
+
+rating:
+  satisfaction:
+    1: 기대에 한참 못 미치는 경험이예요.
+    2: 전반적으로 만족스럽지 않았어요.
+    3: 나쁘지도 좋지도 않은 평범한 경험이예요.
+    4: 전반적으로 좋은 경험이었고 만족해요.
+    5: 기대 이상으로 훌륭한 경험이에요!
+
+  revisit:
+    1: 다시 방문할 의향이 전혀 없어요.
+    2: 별로 마음에 들지 않아서, 다른 곳을 찾아볼 거예요.
+    3: 다시 방문할 수도 있지만, 고민해봐야 할 것 같아요.
+    4: 좋은 점이 많아서 다시 오고 싶어요.
+    5: 꼭 다시 방문하고 싶어요!
+
+  recommend:
+    1: 기대 이하였어요. 절대 추천하지 않을 거예요.
+    2: 나쁘진 않았지만, 다른 장소를 추천하고 싶어요.
+    3: 괜찮았지만, 특별한 점은 없어요. 시간이 된다면 가볼 만해요.
+    4: 좋은 경험이었어요. 추천할만 해요.
+    5: 반드시 가봐야 할 곳이예요! 꼭 추천하고 싶어요.
 
 enum:
-  TravelCompanion:
-    alone: 혼자서
-    parent: 부모님과
-    children: 자녀와
-    cousin: 친척과
-    friend: 친구와
+  TravelCompanionType:
+    spouse: 배우자
+    children: 자녀
+    parents: 부모님
+    grandparents: 조부모님
+    siblings: 형제
+    relatives: 친척
+    friends: 친구
+    lover: 연인
+    colleagues: 동료
+    members: 회원
+    others: 기타
 
   TravelMotivation:
     adventure: 일상에서 탈피
@@ -38,3 +79,46 @@ enum:
     fitness: 건강 증진
     newExperiences: 새로운 경험 추구
     education: 교육 목적
+
+  AgeGroup:
+    underNine: 9세이하
+    teens: 10대
+    twenties: 20대
+    thirties: 30대
+    forties: 40대
+    fifties: 50대
+    sixties: 60대
+    seventiesPlus: 70세이상
+
+  Gender:
+    male: Male
+    female: Female
+
+  TravelVisitReason:
+    landmark: 지역 명소라서 방문헀어요.
+    goodReviews: 온라인(SNS, 블로그 등) 후기가 좋아서 방문했어요.
+    media: 미디어(TV 프로그램 등)에서 평가가 좋아 방문했어요.
+    goodExperience: 과거 경험이 좋아 다시 방문했어요.
+    recommendation: 지인의 추천이 있어 방문했어요.
+    easyAccess: 찾아가기 편해서 방문했어요.
+    goodAmenities: 편의시설 혹은 서비스가 좋아 방문했어요.
+    goodValue: 가성비가 좋아서 방문했어요.
+    unexpectedFind: 지나가다 우연히 방문했어요.
+    education: 교육적인 장소라 방문헀어요.
+    other: 기타
+
+  PlaceCategory:
+    nature: 자연관광지
+    landmark: 역사/유적/종교 시설
+    culture: 문화 시설
+    commerce: 상업지구
+    recreation: 레저/스포츠
+    themePark: 테마파크
+    trail: 산책로, 둘레길
+    festival: 축제/행사
+    transport: 교통 시설
+    shop: 상점
+    dining: 식당/카페
+    attraction: 체험 활동 관광지
+    lodging: 숙소
+    other: 기타

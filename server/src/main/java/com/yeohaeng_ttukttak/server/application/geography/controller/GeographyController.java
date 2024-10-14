@@ -21,18 +21,18 @@ public class GeographyController {
 
     private final GeographyRepository geographyRepository;
 
-    @Transactional(readOnly = true)
     @GetMapping
-    public ServerResponse<FindAllGeographyResponse> findAll(Locale locale) {
+    @Transactional(readOnly = true)
+    public ServerResponse<FindAllGeographyResponse> findAll() {
 
         List<RegionDto> regions = geographyRepository.findAllRegion()
                 .stream()
-                .map((region) -> RegionDto.of(region, locale))
+                .map(RegionDto::of)
                 .toList();
 
         List<CityDto> cities = geographyRepository.findAllCity()
                 .stream()
-                .map((city -> CityDto.of(city, locale)))
+                .map((CityDto::of))
                 .toList();
 
         return new ServerResponse<>(

@@ -113,7 +113,7 @@ class _MyAppState extends ConsumerState<MyApp> {
       scaffoldMessengerKey: messengerKey,
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
-      locale: locale,
+      locale: context.locale,
       builder: (context, widget) {
         return Stack(
           children: [

@@ -24,6 +24,10 @@ public class TravelMotivation {
         this.travel = travel;
         this.motivation = motivation;
 
-        travel.motivations.add(this);
+        travel.motivations().add(this);
+    }
+
+    public Motivation motivation() {
+        return motivation;
     }
 }

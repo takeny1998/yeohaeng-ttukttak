@@ -1,6 +1,7 @@
 package com.yeohaeng_ttukttak.server.domain.travel.entity;
 
 import com.yeohaeng_ttukttak.server.domain.member.entity.AgeGroup;
+import com.yeohaeng_ttukttak.server.domain.member.entity.Gender;
 import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.City;
 import jakarta.persistence.*;
@@ -9,13 +10,10 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@DiscriminatorValue("Input")
 public final class InputTravel extends Travel {
 
 
@@ -23,25 +21,35 @@ public final class InputTravel extends Travel {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToMany(mappedBy = "travel", cascade = CascadeType.PERSIST)
-    public List<TravelCity> travelCities = new ArrayList<>();
+    @Enumerated(EnumType.STRING)
+    private CompanionType companionType;
 
-    public InputTravel(Member member, LocalDate startedOn, LocalDate endedOn, Companion companion) {
-        super(startedOn, endedOn, companion);
+    public InputTravel(Member member, LocalDate startedOn, LocalDate endedOn, CompanionType companionType) {
+        super(startedOn, endedOn);
         this.member = member;
+        this.companionType = companionType;
     }
 
     @Override
-    AgeGroup ageGroup() {
+    public AgeGroup ageGroup() {
         return member.ageGroup();
     }
 
+    @Override
+    public Gender gender() {
+        return member.gender();
+    }
+
     public void addCity(City city) {
-        final boolean containsCity = travelCities.stream()
+        final boolean containsCity = cities().stream()
                 .anyMatch(tc -> tc.city().equals(city));
 
-        if (containsCity) return;
-        travelCities.add(new TravelCity(this, city));
+        if (containsCity) {
+            return;
+        }
+        cities().add(new TravelCity(this, city));
     }
+
+
 
 }

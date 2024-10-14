@@ -1,10 +1,12 @@
 package com.yeohaeng_ttukttak.server.domain.member.entity;
 
 public enum AgeGroup {
-    Twenties,
-    Thirties,
-    Forties,
-    Fifties,
-    Sixties,
-    Other
+    underNine,
+    teens,
+    twenties,
+    thirties,
+    forties,
+    fifties,
+    sixties,
+    seventiesPlus
 }

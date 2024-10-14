@@ -32,7 +32,7 @@ public class CreateTravelService {
                 member,
                 comm.startedOn(),
                 comm.endedOn(),
-                comm.companion());
+                comm.companionType());
 
         geographyRepository.findAllCityByIds(ids)
                 .forEach(travel::addCity);
