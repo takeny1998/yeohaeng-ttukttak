@@ -39,11 +39,8 @@ class HomePage extends ConsumerWidget {
                 onPressed: () => context.push('/travels/create'),
                 child: const Text('여행 생성')),
             TextButton(
-                onPressed: () => context.setLocale(const Locale('en')),
-                child: const Text('영문으로 변경')),
-            TextButton(
-                onPressed: () => context.setLocale(const Locale('ko')),
-                child: const Text('한글로 변경')),
+                onPressed: () => context.push('/travels'),
+                child: const Text('여행 목록')),
             TextField(
               onSubmitted: (text) {
                 final id = int.tryParse(text);

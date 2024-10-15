@@ -23,7 +23,6 @@ mixin _$TravelDetailModel {
   TravelModel get travel => throw _privateConstructorUsedError;
   List<TravelVisitModel> get visits => throw _privateConstructorUsedError;
   List<PlaceModel> get places => throw _privateConstructorUsedError;
-  List<CityModel> get cities => throw _privateConstructorUsedError;
 
   /// Serializes this TravelDetailModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -44,8 +43,7 @@ abstract class $TravelDetailModelCopyWith<$Res> {
   $Res call(
       {TravelModel travel,
       List<TravelVisitModel> visits,
-      List<PlaceModel> places,
-      List<CityModel> cities});
+      List<PlaceModel> places});
 
   $TravelModelCopyWith<$Res> get travel;
 }
@@ -68,7 +66,6 @@ class _$TravelDetailModelCopyWithImpl<$Res, $Val extends TravelDetailModel>
     Object? travel = null,
     Object? visits = null,
     Object? places = null,
-    Object? cities = null,
   }) {
     return _then(_value.copyWith(
       travel: null == travel
@@ -83,10 +80,6 @@ class _$TravelDetailModelCopyWithImpl<$Res, $Val extends TravelDetailModel>
           ? _value.places
           : places // ignore: cast_nullable_to_non_nullable
               as List<PlaceModel>,
-      cities: null == cities
-          ? _value.cities
-          : cities // ignore: cast_nullable_to_non_nullable
-              as List<CityModel>,
     ) as $Val);
   }
 
@@ -112,8 +105,7 @@ abstract class _$$TravelDetailModelImplCopyWith<$Res>
   $Res call(
       {TravelModel travel,
       List<TravelVisitModel> visits,
-      List<PlaceModel> places,
-      List<CityModel> cities});
+      List<PlaceModel> places});
 
   @override
   $TravelModelCopyWith<$Res> get travel;
@@ -135,7 +127,6 @@ class __$$TravelDetailModelImplCopyWithImpl<$Res>
     Object? travel = null,
     Object? visits = null,
     Object? places = null,
-    Object? cities = null,
   }) {
     return _then(_$TravelDetailModelImpl(
       travel: null == travel
@@ -150,10 +141,6 @@ class __$$TravelDetailModelImplCopyWithImpl<$Res>
           ? _value._places
           : places // ignore: cast_nullable_to_non_nullable
               as List<PlaceModel>,
-      cities: null == cities
-          ? _value._cities
-          : cities // ignore: cast_nullable_to_non_nullable
-              as List<CityModel>,
     ));
   }
 }
@@ -164,11 +151,9 @@ class _$TravelDetailModelImpl implements _TravelDetailModel {
   const _$TravelDetailModelImpl(
       {required this.travel,
       final List<TravelVisitModel> visits = const [],
-      final List<PlaceModel> places = const [],
-      final List<CityModel> cities = const []})
+      final List<PlaceModel> places = const []})
       : _visits = visits,
-        _places = places,
-        _cities = cities;
+        _places = places;
 
   factory _$TravelDetailModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$TravelDetailModelImplFromJson(json);
@@ -193,18 +178,9 @@ class _$TravelDetailModelImpl implements _TravelDetailModel {
     return EqualUnmodifiableListView(_places);
   }
 
-  final List<CityModel> _cities;
-  @override
-  @JsonKey()
-  List<CityModel> get cities {
-    if (_cities is EqualUnmodifiableListView) return _cities;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_cities);
-  }
-
   @override
   String toString() {
-    return 'TravelDetailModel(travel: $travel, visits: $visits, places: $places, cities: $cities)';
+    return 'TravelDetailModel(travel: $travel, visits: $visits, places: $places)';
   }
 
   @override
@@ -214,8 +190,7 @@ class _$TravelDetailModelImpl implements _TravelDetailModel {
             other is _$TravelDetailModelImpl &&
             (identical(other.travel, travel) || other.travel == travel) &&
             const DeepCollectionEquality().equals(other._visits, _visits) &&
-            const DeepCollectionEquality().equals(other._places, _places) &&
-            const DeepCollectionEquality().equals(other._cities, _cities));
+            const DeepCollectionEquality().equals(other._places, _places));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -224,8 +199,7 @@ class _$TravelDetailModelImpl implements _TravelDetailModel {
       runtimeType,
       travel,
       const DeepCollectionEquality().hash(_visits),
-      const DeepCollectionEquality().hash(_places),
-      const DeepCollectionEquality().hash(_cities));
+      const DeepCollectionEquality().hash(_places));
 
   /// Create a copy of TravelDetailModel
   /// with the given fields replaced by the non-null parameter values.
@@ -248,8 +222,7 @@ abstract class _TravelDetailModel implements TravelDetailModel {
   const factory _TravelDetailModel(
       {required final TravelModel travel,
       final List<TravelVisitModel> visits,
-      final List<PlaceModel> places,
-      final List<CityModel> cities}) = _$TravelDetailModelImpl;
+      final List<PlaceModel> places}) = _$TravelDetailModelImpl;
 
   factory _TravelDetailModel.fromJson(Map<String, dynamic> json) =
       _$TravelDetailModelImpl.fromJson;
@@ -260,8 +233,6 @@ abstract class _TravelDetailModel implements TravelDetailModel {
   List<TravelVisitModel> get visits;
   @override
   List<PlaceModel> get places;
-  @override
-  List<CityModel> get cities;
 
   /// Create a copy of TravelDetailModel
   /// with the given fields replaced by the non-null parameter values.

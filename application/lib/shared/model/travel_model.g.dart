@@ -11,14 +11,22 @@ _$TravelModelImpl _$$TravelModelImplFromJson(Map<String, dynamic> json) =>
       id: (json['id'] as num).toInt(),
       startedOn: DateTime.parse(json['startedOn'] as String),
       endedOn: DateTime.parse(json['endedOn'] as String),
-      ageGroup: $enumDecode(_$AgeGroupEnumMap, json['ageGroup']),
-      gender: $enumDecode(_$GenderEnumMap, json['gender']),
-      companions: (json['companions'] as List<dynamic>)
-          .map((e) => TravelCompanion.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      motivations: (json['motivations'] as List<dynamic>)
-          .map((e) => $enumDecode(_$TravelMotivationEnumMap, e))
-          .toList(),
+      ageGroup: $enumDecodeNullable(_$AgeGroupEnumMap, json['ageGroup']) ??
+          AgeGroup.none,
+      gender:
+          $enumDecodeNullable(_$GenderEnumMap, json['gender']) ?? Gender.none,
+      companions: (json['companions'] as List<dynamic>?)
+              ?.map((e) => TravelCompanion.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
+      motivations: (json['motivations'] as List<dynamic>?)
+              ?.map((e) => $enumDecode(_$TravelMotivationEnumMap, e))
+              .toList() ??
+          const [],
+      cities: (json['cities'] as List<dynamic>?)
+              ?.map((e) => CityModel.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
     );
 
 Map<String, dynamic> _$$TravelModelImplToJson(_$TravelModelImpl instance) =>
@@ -32,6 +40,7 @@ Map<String, dynamic> _$$TravelModelImplToJson(_$TravelModelImpl instance) =>
       'motivations': instance.motivations
           .map((e) => _$TravelMotivationEnumMap[e]!)
           .toList(),
+      'cities': instance.cities,
     };
 
 const _$AgeGroupEnumMap = {

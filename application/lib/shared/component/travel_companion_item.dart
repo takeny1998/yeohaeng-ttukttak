@@ -1,13 +1,13 @@
 import 'package:application_new/shared/model/member_model.dart';
 import 'package:flutter/material.dart';
 
-class CompanionItem extends StatelessWidget {
+class TravelCompanionItem extends StatelessWidget {
   final int _id;
   final Gender _gender;
   final String _title;
   final String _subTitle;
 
-  const CompanionItem(
+  const TravelCompanionItem(
       {super.key,
       required int id,
       required Gender gender,

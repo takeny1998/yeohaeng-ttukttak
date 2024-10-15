@@ -18,10 +18,6 @@ _$TravelDetailModelImpl _$$TravelDetailModelImplFromJson(
               ?.map((e) => PlaceModel.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
-      cities: (json['cities'] as List<dynamic>?)
-              ?.map((e) => CityModel.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          const [],
     );
 
 Map<String, dynamic> _$$TravelDetailModelImplToJson(
@@ -30,5 +26,4 @@ Map<String, dynamic> _$$TravelDetailModelImplToJson(
       'travel': instance.travel,
       'visits': instance.visits,
       'places': instance.places,
-      'cities': instance.cities,
     };

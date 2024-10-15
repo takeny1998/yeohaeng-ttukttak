@@ -113,7 +113,7 @@ class CreateTravel extends _$CreateTravel {
               'startedOn': state.startedOn?.toIso8601String(),
               'endedOn': state.endedOn?.toIso8601String(),
             },
-            'companion': state.companion?.name,
+            'companionType': state.companion?.name,
             'motivations':
                 state.motivations.map((motivation) => motivation.name).toList(),
             'cities': state.cities,

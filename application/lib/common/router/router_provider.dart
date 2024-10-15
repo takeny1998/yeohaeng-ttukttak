@@ -2,10 +2,8 @@ import 'package:application_new/common/session/session_provider.dart';
 import 'package:application_new/feature/authentication/page/login_page.dart';
 import 'package:application_new/feature/home/home_page.dart';
 import 'package:application_new/feature/travel/page/create_travel_page.dart';
-import 'package:application_new/feature/travel/page/select_travel_city_form.dart';
-import 'package:application_new/feature/travel/page/select_travel_detail_form.dart';
-import 'package:application_new/feature/travel/page/select_travel_date_form.dart';
 import 'package:application_new/feature/travel_detail/page/travel_detail_page.dart';
+import 'package:application_new/feature/travel_list/page/travel_list_page.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -41,7 +39,8 @@ GoRouter router(RouterRef ref) {
           builder: (context, state) {
             final { 'id': travelId } = state.pathParameters;
             return TravelDetailPage(travelId: int.parse(travelId));
-          })
+          }),
+      GoRoute(path: '/travels', builder: (context, state) => const TravelListPage())
     ],
   );
 }

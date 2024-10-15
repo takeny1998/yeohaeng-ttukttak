@@ -14,8 +14,7 @@ class TravelDetailModel with _$TravelDetailModel {
   const factory TravelDetailModel({
     required TravelModel travel,
     @Default([]) List<TravelVisitModel> visits,
-    @Default([]) List<PlaceModel> places,
-    @Default([]) List<CityModel> cities,
+    @Default([]) List<PlaceModel> places
   }) = _TravelDetailModel;
 
   factory TravelDetailModel.fromJson(Map<String, dynamic> json) =>

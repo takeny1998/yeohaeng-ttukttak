@@ -1,5 +1,5 @@
 import 'package:application_new/common/util/translation.dart';
-import 'package:application_new/feature/travel_detail/components/companion_item.dart';
+import 'package:application_new/shared/component/travel_companion_item.dart';
 import 'package:application_new/feature/travel_detail/components/visit_item.dart';
 import 'package:application_new/feature/travel_detail/components/visits_map_item.dart';
 import 'package:application_new/feature/travel_detail/model/travel_detail_model.dart';
@@ -7,6 +7,7 @@ import 'package:application_new/feature/travel_detail/model/travel_visit_model.d
 import 'package:application_new/feature/travel_detail/provider/travel_detail_provider.dart';
 import 'package:application_new/shared/component/custom_header_delegate.dart';
 import 'package:application_new/shared/component/filled_chip_theme.dart';
+import 'package:application_new/shared/component/travel_header.dart';
 import 'package:application_new/shared/model/travel_model.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -30,23 +31,6 @@ class _TravelDetailPageState extends ConsumerState<TravelDetailPage> {
   double initOffset = 0.0;
 
   final GlobalKey key = GlobalKey();
-
-  String _formatTravelDate(TravelModel? travel) {
-    if (travel == null) return '';
-
-    final startedOn = travel.startedOn;
-    final endedOn = travel.endedOn;
-
-    String formatDate(DateTime date) => DateFormat.yMMMd().format(date);
-
-    if (DateUtils.isSameMonth(startedOn, endedOn)) {
-      return '${formatDate(startedOn)} ~ ${DateFormat.d().format(endedOn)}';
-    } else if (startedOn.year == endedOn.year) {
-      return '${formatDate(startedOn)} ~ ${DateFormat.MMMd().format(endedOn)}';
-    } else {
-      return '${formatDate(startedOn)} ~ ${formatDate(endedOn)}';
-    }
-  }
 
   @override
   void initState() {
@@ -75,18 +59,9 @@ class _TravelDetailPageState extends ConsumerState<TravelDetailPage> {
   Widget build(BuildContext context) {
     final state = ref.watch(travelDetailProvider(widget._travelId));
 
-    final TravelDetailModel(:travel, :cities, :visits, :places) = state.data;
-    final TravelModel(:motivations, :companions) = travel;
+    final TravelDetailModel(:travel, :visits, :places) = state.data;
 
     final colorScheme = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
-    final titleStyle =
-        textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w600);
-
-    final travelName =
-        '${cities.map((city) => city.name).join(' · ')} ${'word.travel'.tr()}';
-
-    final travelDateText = _formatTravelDate(travel);
 
     final travelDays =
         DateTimeRange(start: travel.startedOn, end: travel.endedOn)
@@ -109,33 +84,7 @@ class _TravelDetailPageState extends ConsumerState<TravelDetailPage> {
               padding: const EdgeInsets.fromLTRB(24.0, 6.0, 24.0, 16.0),
               sliver: SliverList(
                   delegate: SliverChildListDelegate([
-                ListTile(
-                  contentPadding: EdgeInsets.zero,
-                  titleTextStyle: titleStyle,
-                  title: Text(travelName),
-                  subtitle: Text(travelDateText),
-                ),
-                Wrap(spacing: 8.0, children: [
-                  for (final motivation in motivations)
-                    Chip(label: Text(enumKey(motivation).tr()))
-                ]),
-                const SizedBox(height: 24.0),
-                Wrap(spacing: 16.0, children: [
-                  CompanionItem(
-                    id: travel.id,
-                    gender: travel.gender,
-                    title: 'me'.tr(),
-                    subTitle: enumKey(travel.ageGroup).tr(),
-                  ),
-                  for (final companion in companions)
-                    CompanionItem(
-                      id: companion.id,
-                      gender: companion.gender,
-                      title: enumKey(companion.type).tr(),
-                      subTitle: enumKey(companion.ageGroup).tr(),
-                    ),
-                ]),
-                const SizedBox(height: 12.0),
+                TravelHeader(travel: travel)
               ])),
             ),
             SliverLayoutBuilder(builder: (context, constraints) {
@@ -167,7 +116,7 @@ class _TravelDetailPageState extends ConsumerState<TravelDetailPage> {
                                 Builder(builder: (context) {
                                   final day =
                                       travel.startedOn.add(Duration(days: i));
-      
+
                                   return ChoiceChip(
                                       onSelected: (_) => ref
                                           .read(travelDetailProvider(
