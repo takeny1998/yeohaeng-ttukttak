@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @Entity
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public final class InputTravel extends Travel {
+public final class MemberTravel extends Travel {
 
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -24,7 +24,7 @@ public final class InputTravel extends Travel {
     @Enumerated(EnumType.STRING)
     private CompanionType companionType;
 
-    public InputTravel(Member member, LocalDate startedOn, LocalDate endedOn, CompanionType companionType) {
+    public MemberTravel(Member member, LocalDate startedOn, LocalDate endedOn, CompanionType companionType) {
         super(startedOn, endedOn);
         this.member = member;
         this.companionType = companionType;

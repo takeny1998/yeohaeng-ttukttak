@@ -10,5 +10,4 @@ import java.util.List;
 public record FindTravelDetailResponse(
         TravelDto travel,
         List<TravelVisitDto> visits,
-        List<PlaceDto> places,
-        List<CityDto> cities) {}
+        List<PlaceDto> places) {}

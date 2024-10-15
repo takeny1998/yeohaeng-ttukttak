@@ -36,13 +36,8 @@ public class FindTravelDetailService {
                 .distinct()
                 .toList();
 
-        final List<City> cities = travel.cities().stream()
-                .map(TravelCity::city)
-                .distinct()
-                .toList();
-
         return FindTravelDetailResult.of(
-                TravelDto.of(travel), visits, places, cities);
+                TravelDto.of(travel), visits, places);
     }
 
 }

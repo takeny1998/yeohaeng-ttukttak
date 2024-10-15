@@ -1,5 +1,6 @@
 package com.yeohaeng_ttukttak.server.domain.travel.dto;
 
+import com.yeohaeng_ttukttak.server.domain.geography.dto.CityDto;
 import com.yeohaeng_ttukttak.server.domain.member.entity.AgeGroup;
 import com.yeohaeng_ttukttak.server.domain.member.entity.Gender;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.*;
@@ -14,7 +15,8 @@ public record TravelDto(
         AgeGroup ageGroup,
         Gender gender,
         List<TravelCompanionDto> companions,
-        List<Motivation> motivations
+        List<Motivation> motivations,
+        List<CityDto> cities
 ) {
 
     public static TravelDto of(Travel travel) {
@@ -29,6 +31,10 @@ public record TravelDto(
                         .toList(),
                 travel.motivations().stream()
                         .map(TravelMotivation::motivation)
+                        .toList(),
+                travel.cities().stream()
+                        .map(TravelCity::city)
+                        .map(CityDto::of)
                         .toList()
         );
     }
