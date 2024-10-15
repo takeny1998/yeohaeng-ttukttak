@@ -4,6 +4,7 @@ import 'package:application_new/feature/geography/provider/geography_provider.da
 import 'package:application_new/feature/travel/component/bottom_action_button.dart';
 import 'package:application_new/feature/travel/component/city_list_item.dart';
 import 'package:application_new/feature/travel/provider/create_travel_provider.dart';
+import 'package:application_new/shared/component/filled_chip_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -55,70 +56,75 @@ class _SelectTravelCityFormState extends ConsumerState<SelectTravelCityForm> {
 
     final filteredCities = geographyState.cities.where(filterCity).toList();
 
-    return Scaffold(
-      appBar: AppBar(
-          surfaceTintColor: colorScheme.surface,
-          scrolledUnderElevation: 0,
-          bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(156),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                  child: Text(trKey('ask_city'), style: titleStyle).tr(),
-                ),
-                const SizedBox(height: 8),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                  child: TextField(
-                    controller: cityNameController,
-                    decoration: const InputDecoration(
-                      suffixIcon: Icon(Icons.search),
-                      hintText: '검색할 도시를 입력해 주세요.',
-                    ),
-                    onChanged:
-                        ref.read(createTravelProvider.notifier).searchCity,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(children: [
-                    const SizedBox(width: 24),
-                    for (final region in geographyState.regions) ...[
-                      FilterChip(
-                        label: Text(region.shortName),
-                        selected: selectedRegions.contains(region),
-                        onSelected: (_) => ref
-                            .read(createTravelProvider.notifier)
-                            .selectRegion(region),
-                      ),
-                      const SizedBox(width: 8),
-                    ]
-                  ]),
-                ),
-                const SizedBox(height: 8),
-              ],
+    return FilledChipTheme(
+      child: Scaffold(
+        appBar: AppBar(
+            scrolledUnderElevation: 0.0,
+            backgroundColor: colorScheme.surface,
+            shape: Border(
+              bottom: BorderSide(color: colorScheme.primaryContainer)
             ),
-          )),
-      body: ListView.builder(
-        itemCount: filteredCities.length,
-        itemBuilder: (context, index) {
-          final city = filteredCities[index];
-          final region = geographyState.regions
-              .firstWhere((region) => region.id == city.regionId);
-          return CityListItem(region: region, city: city);
-        },
+            bottom: PreferredSize(
+              preferredSize: const Size.fromHeight(164),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                    child: Text(trKey('ask_city'), style: titleStyle).tr(),
+                  ),
+                  const SizedBox(height: 8),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                    child: TextField(
+                      controller: cityNameController,
+                      decoration: const InputDecoration(
+                        suffixIcon: Icon(Icons.search),
+                        hintText: '검색할 도시를 입력해 주세요.',
+                      ),
+                      onChanged:
+                          ref.read(createTravelProvider.notifier).searchCity,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(children: [
+                      const SizedBox(width: 24),
+                      for (final region in geographyState.regions) ...[
+                        FilterChip(
+                          label: Text(region.shortName),
+                          selected: selectedRegions.contains(region),
+                          onSelected: (_) => ref
+                              .read(createTravelProvider.notifier)
+                              .selectRegion(region),
+                        ),
+                        const SizedBox(width: 8),
+                      ]
+                    ]),
+                  ),
+                  const SizedBox(height: 16),
+                ],
+              ),
+            )),
+        body: ListView.builder(
+          itemCount: filteredCities.length,
+          itemBuilder: (context, index) {
+            final city = filteredCities[index];
+            final region = geographyState.regions
+                .firstWhere((region) => region.id == city.regionId);
+            return CityListItem(region: region, city: city);
+          },
+        ),
+        bottomNavigationBar: BottomActionButton(
+            onPressed: selectedCities.isNotEmpty
+                ? () => ref.read(createTravelProvider.notifier).submit()
+                : null,
+            child: selectedCities.isNotEmpty
+                ? Text(trKey('display_select'))
+                    .tr(args: ['${selectedCities.length}'])
+                : Text(trKey('require_select')).tr()),
       ),
-      bottomNavigationBar: BottomActionButton(
-          onPressed: selectedCities.isNotEmpty
-              ? () => ref.read(createTravelProvider.notifier).submit()
-              : null,
-          child: selectedCities.isNotEmpty
-              ? Text(trKey('display_select'))
-                  .tr(args: ['${selectedCities.length}'])
-              : Text(trKey('require_select')).tr()),
     );
   }
 }

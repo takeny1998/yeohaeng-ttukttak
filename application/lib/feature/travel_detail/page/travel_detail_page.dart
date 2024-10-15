@@ -6,8 +6,7 @@ import 'package:application_new/feature/travel_detail/model/travel_detail_model.
 import 'package:application_new/feature/travel_detail/model/travel_visit_model.dart';
 import 'package:application_new/feature/travel_detail/provider/travel_detail_provider.dart';
 import 'package:application_new/shared/component/custom_header_delegate.dart';
-import 'package:application_new/shared/component/filled_chip.dart';
-import 'package:application_new/shared/component/filled_choice_chip.dart';
+import 'package:application_new/shared/component/filled_chip_theme.dart';
 import 'package:application_new/shared/model/travel_model.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -100,106 +99,108 @@ class _TravelDetailPageState extends ConsumerState<TravelDetailPage> {
           duration: const Duration(milliseconds: 500), curve: Curves.linear);
     });
 
-    return Scaffold(
-      appBar: AppBar(),
-      body: CustomScrollView(
-        controller: scrollController,
-        slivers: [
-          SliverPadding(
-            padding: const EdgeInsets.fromLTRB(24.0, 6.0, 24.0, 16.0),
-            sliver: SliverList(
-                delegate: SliverChildListDelegate([
-              ListTile(
-                contentPadding: EdgeInsets.zero,
-                titleTextStyle: titleStyle,
-                title: Text(travelName),
-                subtitle: Text(travelDateText),
-              ),
-              Wrap(spacing: 8.0, children: [
-                for (final motivation in motivations)
-                  FilledChip(label: '#${enumKey(motivation).tr()}')
-              ]),
-              const SizedBox(height: 24.0),
-              Wrap(spacing: 16.0, children: [
-                CompanionItem(
-                  id: travel.id,
-                  gender: travel.gender,
-                  title: 'me'.tr(),
-                  subTitle: enumKey(travel.ageGroup).tr(),
+    return FilledChipTheme(
+      child: Scaffold(
+        appBar: AppBar(),
+        body: CustomScrollView(
+          controller: scrollController,
+          slivers: [
+            SliverPadding(
+              padding: const EdgeInsets.fromLTRB(24.0, 6.0, 24.0, 16.0),
+              sliver: SliverList(
+                  delegate: SliverChildListDelegate([
+                ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  titleTextStyle: titleStyle,
+                  title: Text(travelName),
+                  subtitle: Text(travelDateText),
                 ),
-                for (final companion in companions)
+                Wrap(spacing: 8.0, children: [
+                  for (final motivation in motivations)
+                    Chip(label: Text(enumKey(motivation).tr()))
+                ]),
+                const SizedBox(height: 24.0),
+                Wrap(spacing: 16.0, children: [
                   CompanionItem(
-                    id: companion.id,
-                    gender: companion.gender,
-                    title: enumKey(companion.type).tr(),
-                    subTitle: enumKey(companion.ageGroup).tr(),
+                    id: travel.id,
+                    gender: travel.gender,
+                    title: 'me'.tr(),
+                    subTitle: enumKey(travel.ageGroup).tr(),
                   ),
-              ]),
-              const SizedBox(height: 12.0),
-            ])),
-          ),
-          SliverLayoutBuilder(builder: (context, constraints) {
-            initOffset = constraints.precedingScrollExtent;
-            return SliverPersistentHeader(
-              pinned: true,
-              delegate: CustomHeaderDelegate(
-                extent: MediaQuery.of(context).size.height * 0.4,
-                widget: Column(
-                  children: [
-                    Expanded(
-                      child: VisitsMapItem(travelId: widget._travelId),
+                  for (final companion in companions)
+                    CompanionItem(
+                      id: companion.id,
+                      gender: companion.gender,
+                      title: enumKey(companion.type).tr(),
+                      subTitle: enumKey(companion.ageGroup).tr(),
                     ),
-                    Container(
-                      width: double.maxFinite,
-                      decoration: BoxDecoration(
-                          color: colorScheme.surface,
-                          border: Border(
-                              bottom: BorderSide(
-                                  color: colorScheme.secondaryFixed))),
-                      child: SingleChildScrollView(
-                        primary: true,
-                        scrollDirection: Axis.horizontal,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 24.0, vertical: 16.0),
-                        child: Row(
-                          children: [
-                            for (var i = 0; i < travelDays; i++) ...[
-                              Builder(builder: (context) {
-                                final day =
-                                    travel.startedOn.add(Duration(days: i));
-
-                                return FilledChoiceChip(
-                                    onSelected: (_) => ref
-                                        .read(travelDetailProvider(
-                                                widget._travelId)
-                                            .notifier)
-                                        .selectDate(day),
-                                    isSelected: state.selectedDate == day,
-                                    labelText: DateFormat.MMMEd().format(day));
-                              }),
-                              const SizedBox(width: 12.0)
-                            ]
-                          ],
+                ]),
+                const SizedBox(height: 12.0),
+              ])),
+            ),
+            SliverLayoutBuilder(builder: (context, constraints) {
+              initOffset = constraints.precedingScrollExtent;
+              return SliverPersistentHeader(
+                pinned: true,
+                delegate: CustomHeaderDelegate(
+                  extent: MediaQuery.of(context).size.height * 0.4,
+                  widget: Column(
+                    children: [
+                      Expanded(
+                        child: VisitsMapItem(travelId: widget._travelId),
+                      ),
+                      Container(
+                        width: double.maxFinite,
+                        decoration: BoxDecoration(
+                            color: colorScheme.surface,
+                            border: Border(
+                                bottom: BorderSide(
+                                    color: colorScheme.secondaryFixed))),
+                        child: SingleChildScrollView(
+                          primary: true,
+                          scrollDirection: Axis.horizontal,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 24.0, vertical: 16.0),
+                          child: Row(
+                            children: [
+                              for (var i = 0; i < travelDays; i++) ...[
+                                Builder(builder: (context) {
+                                  final day =
+                                      travel.startedOn.add(Duration(days: i));
+      
+                                  return ChoiceChip(
+                                      onSelected: (_) => ref
+                                          .read(travelDetailProvider(
+                                                  widget._travelId)
+                                              .notifier)
+                                          .selectDate(day),
+                                      selected: state.selectedDate == day,
+                                      label: Text(DateFormat.MMMEd().format(day)));
+                                }),
+                                const SizedBox(width: 12.0)
+                              ]
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            );
-          }),
-          SliverList(
-              key: key,
-              delegate: SliverChildListDelegate([
-                const SizedBox(height: 24.0),
-                for (final visit in state.selectedVisits)
-                  MetaData(
-                      behavior: HitTestBehavior.translucent,
-                      metaData: visit,
-                      child: VisitItem(places: places, visit: visit)),
-                const SizedBox(height: 24.0),
-              ])),
-        ],
+              );
+            }),
+            SliverList(
+                key: key,
+                delegate: SliverChildListDelegate([
+                  const SizedBox(height: 24.0),
+                  for (final visit in state.selectedVisits)
+                    MetaData(
+                        behavior: HitTestBehavior.translucent,
+                        metaData: visit,
+                        child: VisitItem(places: places, visit: visit)),
+                  const SizedBox(height: 24.0),
+                ])),
+          ],
+        ),
       ),
     );
   }

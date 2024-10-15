@@ -1,7 +1,7 @@
 import 'package:application_new/common/util/translation.dart';
 import 'package:application_new/feature/travel_detail/components/visit_order_item.dart';
 import 'package:application_new/feature/travel_detail/model/travel_visit_model.dart';
-import 'package:application_new/shared/component/small_filled_chip.dart';
+import 'package:application_new/shared/component/small_chip.dart';
 import 'package:application_new/shared/model/place_model.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -81,7 +81,7 @@ class VisitItem extends ConsumerWidget {
                         spacing: 6.0,
                         children: [
                           for (final category in place.categories)
-                            SmallFilledChip(label: enumKey(category).tr())
+                            SmallChip(label: enumKey(category).tr())
                         ],
                       ),
                       Container(

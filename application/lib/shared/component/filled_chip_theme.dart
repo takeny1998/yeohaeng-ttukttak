@@ -1,18 +1,10 @@
 import 'package:flutter/material.dart';
 
-class FilledChoiceChip extends StatelessWidget {
-  final bool _isSelected;
-  final void Function(bool)? _onSelected;
-  final String _labelText;
+class FilledChipTheme extends StatelessWidget {
 
-  const FilledChoiceChip({
-    super.key,
-    required bool isSelected,
-    required String labelText,
-    void Function(bool)? onSelected,
-  })  : _isSelected = isSelected,
-        _onSelected = onSelected,
-        _labelText = labelText;
+  final Widget _chip;
+
+  const FilledChipTheme({super.key, required Widget child}) : _chip = child;
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +14,15 @@ class FilledChoiceChip extends StatelessWidget {
     return Theme(
       data: Theme.of(context).copyWith(
         chipTheme: ChipThemeData(
+            labelStyle: TextStyle(
+              color: WidgetStateColor.resolveWith((states) {
+                if (states.contains(WidgetState.selected)) {
+                  return colorScheme.onPrimary;
+                }
+                return colorScheme.primary;
+              }),
+              fontWeight: FontWeight.w600,
+            ),
             secondaryLabelStyle: TextStyle(
               color: colorScheme.onPrimary,
               fontWeight: FontWeight.w600,
@@ -29,18 +30,9 @@ class FilledChoiceChip extends StatelessWidget {
             selectedColor: colorScheme.primary,
             checkmarkColor: colorScheme.onPrimary,
             backgroundColor: colorScheme.primaryContainer,
-            labelStyle: TextStyle(
-              color: colorScheme.primary,
-              fontWeight: FontWeight.w600,
-            ),
             side: BorderSide.none,
             padding: const EdgeInsets.all(10.0)),
       ),
-      child: ChoiceChip(
-        selected: _isSelected,
-        onSelected: _onSelected,
-        label: Text(_labelText),
-      ),
-    );
+      child: _chip);
   }
 }
