@@ -59,7 +59,7 @@ class _TravelDetailPageState extends ConsumerState<TravelDetailPage> {
   Widget build(BuildContext context) {
     final state = ref.watch(travelDetailProvider(widget._travelId));
 
-    final TravelDetailModel(:travel, :visits, :places) = state.data;
+    final TravelDetailModel(:travel, :visits, :places) = state.detail;
 
     final colorScheme = Theme.of(context).colorScheme;
 

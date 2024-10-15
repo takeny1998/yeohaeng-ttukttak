@@ -1,6 +1,5 @@
 import 'package:application_new/feature/travel_detail/model/travel_detail_model.dart';
 import 'package:application_new/feature/travel_detail/model/travel_visit_model.dart';
-import 'package:application_new/shared/model/travel_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'travel_detail_state.freezed.dart';
@@ -11,16 +10,10 @@ class TravelDetailState with _$TravelDetailState {
 
   const factory TravelDetailState({
     required DateTime selectedDate,
-    required int selectedPlaceId,
-    required bool isMapMoved,
-    required TravelDetailModel data,
-    required List<TravelVisitModel> selectedVisits,
+    @Default(0) int selectedPlaceId,
+    @Default(false) bool isMapMoved,
+    required TravelDetailModel detail,
+    @Default([]) List<TravelVisitModel> selectedVisits,
   }) = _TravelDetailState;
 
-  factory TravelDetailState.empty() => TravelDetailState(
-      selectedDate: DateTime.now(),
-      selectedPlaceId: 0,
-      isMapMoved: false,
-      selectedVisits: [],
-      data: TravelDetailModel(travel: TravelModel.empty()));
 }

@@ -55,7 +55,7 @@ class _VisitsMapItemState extends ConsumerState<VisitsMapItem> {
     final state = ref.watch(travelDetailProvider(widget.travelId));
 
     final visits = state.selectedVisits;
-    final places = state.data.places;
+    final places = state.detail.places;
 
     for (int i = 0; i < visits.length; i++) {
       final visit = visits[i];

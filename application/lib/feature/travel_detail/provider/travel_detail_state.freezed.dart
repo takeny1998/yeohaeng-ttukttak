@@ -19,7 +19,7 @@ mixin _$TravelDetailState {
   DateTime get selectedDate => throw _privateConstructorUsedError;
   int get selectedPlaceId => throw _privateConstructorUsedError;
   bool get isMapMoved => throw _privateConstructorUsedError;
-  TravelDetailModel get data => throw _privateConstructorUsedError;
+  TravelDetailModel get detail => throw _privateConstructorUsedError;
   List<TravelVisitModel> get selectedVisits =>
       throw _privateConstructorUsedError;
 
@@ -40,10 +40,10 @@ abstract class $TravelDetailStateCopyWith<$Res> {
       {DateTime selectedDate,
       int selectedPlaceId,
       bool isMapMoved,
-      TravelDetailModel data,
+      TravelDetailModel detail,
       List<TravelVisitModel> selectedVisits});
 
-  $TravelDetailModelCopyWith<$Res> get data;
+  $TravelDetailModelCopyWith<$Res> get detail;
 }
 
 /// @nodoc
@@ -64,7 +64,7 @@ class _$TravelDetailStateCopyWithImpl<$Res, $Val extends TravelDetailState>
     Object? selectedDate = null,
     Object? selectedPlaceId = null,
     Object? isMapMoved = null,
-    Object? data = null,
+    Object? detail = null,
     Object? selectedVisits = null,
   }) {
     return _then(_value.copyWith(
@@ -80,9 +80,9 @@ class _$TravelDetailStateCopyWithImpl<$Res, $Val extends TravelDetailState>
           ? _value.isMapMoved
           : isMapMoved // ignore: cast_nullable_to_non_nullable
               as bool,
-      data: null == data
-          ? _value.data
-          : data // ignore: cast_nullable_to_non_nullable
+      detail: null == detail
+          ? _value.detail
+          : detail // ignore: cast_nullable_to_non_nullable
               as TravelDetailModel,
       selectedVisits: null == selectedVisits
           ? _value.selectedVisits
@@ -95,9 +95,9 @@ class _$TravelDetailStateCopyWithImpl<$Res, $Val extends TravelDetailState>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $TravelDetailModelCopyWith<$Res> get data {
-    return $TravelDetailModelCopyWith<$Res>(_value.data, (value) {
-      return _then(_value.copyWith(data: value) as $Val);
+  $TravelDetailModelCopyWith<$Res> get detail {
+    return $TravelDetailModelCopyWith<$Res>(_value.detail, (value) {
+      return _then(_value.copyWith(detail: value) as $Val);
     });
   }
 }
@@ -114,11 +114,11 @@ abstract class _$$TravelDetailStateImplCopyWith<$Res>
       {DateTime selectedDate,
       int selectedPlaceId,
       bool isMapMoved,
-      TravelDetailModel data,
+      TravelDetailModel detail,
       List<TravelVisitModel> selectedVisits});
 
   @override
-  $TravelDetailModelCopyWith<$Res> get data;
+  $TravelDetailModelCopyWith<$Res> get detail;
 }
 
 /// @nodoc
@@ -137,7 +137,7 @@ class __$$TravelDetailStateImplCopyWithImpl<$Res>
     Object? selectedDate = null,
     Object? selectedPlaceId = null,
     Object? isMapMoved = null,
-    Object? data = null,
+    Object? detail = null,
     Object? selectedVisits = null,
   }) {
     return _then(_$TravelDetailStateImpl(
@@ -153,9 +153,9 @@ class __$$TravelDetailStateImplCopyWithImpl<$Res>
           ? _value.isMapMoved
           : isMapMoved // ignore: cast_nullable_to_non_nullable
               as bool,
-      data: null == data
-          ? _value.data
-          : data // ignore: cast_nullable_to_non_nullable
+      detail: null == detail
+          ? _value.detail
+          : detail // ignore: cast_nullable_to_non_nullable
               as TravelDetailModel,
       selectedVisits: null == selectedVisits
           ? _value._selectedVisits
@@ -170,23 +170,26 @@ class __$$TravelDetailStateImplCopyWithImpl<$Res>
 class _$TravelDetailStateImpl extends _TravelDetailState {
   const _$TravelDetailStateImpl(
       {required this.selectedDate,
-      required this.selectedPlaceId,
-      required this.isMapMoved,
-      required this.data,
-      required final List<TravelVisitModel> selectedVisits})
+      this.selectedPlaceId = 0,
+      this.isMapMoved = false,
+      required this.detail,
+      final List<TravelVisitModel> selectedVisits = const []})
       : _selectedVisits = selectedVisits,
         super._();
 
   @override
   final DateTime selectedDate;
   @override
+  @JsonKey()
   final int selectedPlaceId;
   @override
+  @JsonKey()
   final bool isMapMoved;
   @override
-  final TravelDetailModel data;
+  final TravelDetailModel detail;
   final List<TravelVisitModel> _selectedVisits;
   @override
+  @JsonKey()
   List<TravelVisitModel> get selectedVisits {
     if (_selectedVisits is EqualUnmodifiableListView) return _selectedVisits;
     // ignore: implicit_dynamic_type
@@ -195,7 +198,7 @@ class _$TravelDetailStateImpl extends _TravelDetailState {
 
   @override
   String toString() {
-    return 'TravelDetailState(selectedDate: $selectedDate, selectedPlaceId: $selectedPlaceId, isMapMoved: $isMapMoved, data: $data, selectedVisits: $selectedVisits)';
+    return 'TravelDetailState(selectedDate: $selectedDate, selectedPlaceId: $selectedPlaceId, isMapMoved: $isMapMoved, detail: $detail, selectedVisits: $selectedVisits)';
   }
 
   @override
@@ -209,14 +212,14 @@ class _$TravelDetailStateImpl extends _TravelDetailState {
                 other.selectedPlaceId == selectedPlaceId) &&
             (identical(other.isMapMoved, isMapMoved) ||
                 other.isMapMoved == isMapMoved) &&
-            (identical(other.data, data) || other.data == data) &&
+            (identical(other.detail, detail) || other.detail == detail) &&
             const DeepCollectionEquality()
                 .equals(other._selectedVisits, _selectedVisits));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, selectedDate, selectedPlaceId,
-      isMapMoved, data, const DeepCollectionEquality().hash(_selectedVisits));
+      isMapMoved, detail, const DeepCollectionEquality().hash(_selectedVisits));
 
   /// Create a copy of TravelDetailState
   /// with the given fields replaced by the non-null parameter values.
@@ -230,12 +233,11 @@ class _$TravelDetailStateImpl extends _TravelDetailState {
 
 abstract class _TravelDetailState extends TravelDetailState {
   const factory _TravelDetailState(
-          {required final DateTime selectedDate,
-          required final int selectedPlaceId,
-          required final bool isMapMoved,
-          required final TravelDetailModel data,
-          required final List<TravelVisitModel> selectedVisits}) =
-      _$TravelDetailStateImpl;
+      {required final DateTime selectedDate,
+      final int selectedPlaceId,
+      final bool isMapMoved,
+      required final TravelDetailModel detail,
+      final List<TravelVisitModel> selectedVisits}) = _$TravelDetailStateImpl;
   const _TravelDetailState._() : super._();
 
   @override
@@ -245,7 +247,7 @@ abstract class _TravelDetailState extends TravelDetailState {
   @override
   bool get isMapMoved;
   @override
-  TravelDetailModel get data;
+  TravelDetailModel get detail;
   @override
   List<TravelVisitModel> get selectedVisits;
 

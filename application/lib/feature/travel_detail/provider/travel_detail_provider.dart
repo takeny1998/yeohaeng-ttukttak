@@ -3,6 +3,7 @@ import 'package:application_new/feature/travel_detail/model/travel_detail_model.
 import 'package:application_new/feature/travel_detail/model/travel_visit_model.dart';
 import 'package:application_new/feature/travel_detail/provider/travel_detail_state.dart';
 import 'package:application_new/shared/model/travel_model.dart';
+import 'package:application_new/shared/provider/travel_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'travel_detail_provider.g.dart';
@@ -11,27 +12,21 @@ part 'travel_detail_provider.g.dart';
 class TravelDetail extends _$TravelDetail {
   @override
   TravelDetailState build(int travelId) {
-    ref
-        .watch(httpServiceProvider)
-        .request('GET', '/api/v2/travels/$travelId/detail')
-        .then((response) {
-      final travelDetail = TravelDetailModel.fromJson(response);
-      final selectedDay = travelDetail.travel.startedOn;
+    final detail = ref.watch(travelProvider(travelId));
 
-      state = state.copyWith(
-          data: travelDetail,
-          selectedDate: selectedDay,
-          selectedVisits: _filterVisits(travelDetail.visits, selectedDay));
-    });
+    final selectedDate = detail.travel.startedOn;
 
-    return TravelDetailState.empty();
+    return TravelDetailState(
+        selectedDate: selectedDate,
+        detail: detail,
+        selectedVisits: _filterVisits(detail.visits, selectedDate));
   }
 
   void selectDate(DateTime date) {
     if (state.selectedDate == date) return;
     state = state.copyWith(
         selectedDate: date,
-        selectedVisits: _filterVisits(state.data.visits, date));
+        selectedVisits: _filterVisits(state.detail.visits, date));
   }
 
   void selectPlace(int id) {

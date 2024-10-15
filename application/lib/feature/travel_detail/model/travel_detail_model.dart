@@ -7,16 +7,18 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'travel_detail_model.freezed.dart';
 part 'travel_detail_model.g.dart';
 
-
 @freezed
 class TravelDetailModel with _$TravelDetailModel {
+  const TravelDetailModel._();
 
-  const factory TravelDetailModel({
-    required TravelModel travel,
-    @Default([]) List<TravelVisitModel> visits,
-    @Default([]) List<PlaceModel> places
-  }) = _TravelDetailModel;
+  const factory TravelDetailModel(
+      {required TravelModel travel,
+      @Default([]) List<TravelVisitModel> visits,
+      @Default([]) List<PlaceModel> places}) = _TravelDetailModel;
 
   factory TravelDetailModel.fromJson(Map<String, dynamic> json) =>
       _$TravelDetailModelFromJson(json);
+
+  factory TravelDetailModel.empty() =>
+      TravelDetailModel(travel: TravelModel.empty());
 }

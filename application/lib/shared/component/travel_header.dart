@@ -27,7 +27,10 @@ class TravelHeader extends StatelessWidget {
         ListTile(
           contentPadding: EdgeInsets.zero,
           titleTextStyle: titleStyle,
-          title: Text(_travel.formattedName),
+          title: Text(
+            _travel.formattedName,
+            overflow: TextOverflow.ellipsis,
+          ),
           subtitle: Text(_travel.formattedDate),
         ),
         Wrap(spacing: 8.0, children: [

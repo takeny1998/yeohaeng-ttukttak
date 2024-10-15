@@ -147,13 +147,14 @@ class __$$TravelDetailModelImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$TravelDetailModelImpl implements _TravelDetailModel {
+class _$TravelDetailModelImpl extends _TravelDetailModel {
   const _$TravelDetailModelImpl(
       {required this.travel,
       final List<TravelVisitModel> visits = const [],
       final List<PlaceModel> places = const []})
       : _visits = visits,
-        _places = places;
+        _places = places,
+        super._();
 
   factory _$TravelDetailModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$TravelDetailModelImplFromJson(json);
@@ -218,11 +219,12 @@ class _$TravelDetailModelImpl implements _TravelDetailModel {
   }
 }
 
-abstract class _TravelDetailModel implements TravelDetailModel {
+abstract class _TravelDetailModel extends TravelDetailModel {
   const factory _TravelDetailModel(
       {required final TravelModel travel,
       final List<TravelVisitModel> visits,
       final List<PlaceModel> places}) = _$TravelDetailModelImpl;
+  const _TravelDetailModel._() : super._();
 
   factory _TravelDetailModel.fromJson(Map<String, dynamic> json) =
       _$TravelDetailModelImpl.fromJson;
