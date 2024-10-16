@@ -15,6 +15,7 @@ class TravelModel with _$TravelModel {
     required int id,
     required DateTime startedOn,
     required DateTime endedOn,
+    @Default(TravelCompanionType.none) TravelCompanionType companionType,
     @Default(AgeGroup.none) AgeGroup ageGroup,
     @Default(Gender.none) Gender gender,
     @Default([]) List<TravelCompanion> companions,
@@ -79,5 +80,6 @@ enum TravelCompanionType {
   lover,
   colleagues,
   members,
-  others
+  others,
+  none
 }

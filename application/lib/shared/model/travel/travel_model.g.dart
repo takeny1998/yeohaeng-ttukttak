@@ -11,6 +11,9 @@ _$TravelModelImpl _$$TravelModelImplFromJson(Map<String, dynamic> json) =>
       id: (json['id'] as num).toInt(),
       startedOn: DateTime.parse(json['startedOn'] as String),
       endedOn: DateTime.parse(json['endedOn'] as String),
+      companionType: $enumDecodeNullable(
+              _$TravelCompanionTypeEnumMap, json['companionType']) ??
+          TravelCompanionType.none,
       ageGroup: $enumDecodeNullable(_$AgeGroupEnumMap, json['ageGroup']) ??
           AgeGroup.none,
       gender:
@@ -34,6 +37,7 @@ Map<String, dynamic> _$$TravelModelImplToJson(_$TravelModelImpl instance) =>
       'id': instance.id,
       'startedOn': instance.startedOn.toIso8601String(),
       'endedOn': instance.endedOn.toIso8601String(),
+      'companionType': _$TravelCompanionTypeEnumMap[instance.companionType]!,
       'ageGroup': _$AgeGroupEnumMap[instance.ageGroup]!,
       'gender': _$GenderEnumMap[instance.gender]!,
       'companions': instance.companions,
@@ -42,6 +46,21 @@ Map<String, dynamic> _$$TravelModelImplToJson(_$TravelModelImpl instance) =>
           .toList(),
       'cities': instance.cities,
     };
+
+const _$TravelCompanionTypeEnumMap = {
+  TravelCompanionType.spouse: 'spouse',
+  TravelCompanionType.children: 'children',
+  TravelCompanionType.parents: 'parents',
+  TravelCompanionType.grandparents: 'grandparents',
+  TravelCompanionType.siblings: 'siblings',
+  TravelCompanionType.relatives: 'relatives',
+  TravelCompanionType.friends: 'friends',
+  TravelCompanionType.lover: 'lover',
+  TravelCompanionType.colleagues: 'colleagues',
+  TravelCompanionType.members: 'members',
+  TravelCompanionType.others: 'others',
+  TravelCompanionType.none: 'none',
+};
 
 const _$AgeGroupEnumMap = {
   AgeGroup.underNine: 'underNine',
@@ -89,17 +108,3 @@ Map<String, dynamic> _$$TravelCompanionImplToJson(
       'ageGroup': _$AgeGroupEnumMap[instance.ageGroup]!,
       'gender': _$GenderEnumMap[instance.gender]!,
     };
-
-const _$TravelCompanionTypeEnumMap = {
-  TravelCompanionType.spouse: 'spouse',
-  TravelCompanionType.children: 'children',
-  TravelCompanionType.parents: 'parents',
-  TravelCompanionType.grandparents: 'grandparents',
-  TravelCompanionType.siblings: 'siblings',
-  TravelCompanionType.relatives: 'relatives',
-  TravelCompanionType.friends: 'friends',
-  TravelCompanionType.lover: 'lover',
-  TravelCompanionType.colleagues: 'colleagues',
-  TravelCompanionType.members: 'members',
-  TravelCompanionType.others: 'others',
-};

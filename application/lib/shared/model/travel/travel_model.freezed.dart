@@ -23,6 +23,7 @@ mixin _$TravelModel {
   int get id => throw _privateConstructorUsedError;
   DateTime get startedOn => throw _privateConstructorUsedError;
   DateTime get endedOn => throw _privateConstructorUsedError;
+  TravelCompanionType get companionType => throw _privateConstructorUsedError;
   AgeGroup get ageGroup => throw _privateConstructorUsedError;
   Gender get gender => throw _privateConstructorUsedError;
   List<TravelCompanion> get companions => throw _privateConstructorUsedError;
@@ -49,6 +50,7 @@ abstract class $TravelModelCopyWith<$Res> {
       {int id,
       DateTime startedOn,
       DateTime endedOn,
+      TravelCompanionType companionType,
       AgeGroup ageGroup,
       Gender gender,
       List<TravelCompanion> companions,
@@ -74,6 +76,7 @@ class _$TravelModelCopyWithImpl<$Res, $Val extends TravelModel>
     Object? id = null,
     Object? startedOn = null,
     Object? endedOn = null,
+    Object? companionType = null,
     Object? ageGroup = null,
     Object? gender = null,
     Object? companions = null,
@@ -93,6 +96,10 @@ class _$TravelModelCopyWithImpl<$Res, $Val extends TravelModel>
           ? _value.endedOn
           : endedOn // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      companionType: null == companionType
+          ? _value.companionType
+          : companionType // ignore: cast_nullable_to_non_nullable
+              as TravelCompanionType,
       ageGroup: null == ageGroup
           ? _value.ageGroup
           : ageGroup // ignore: cast_nullable_to_non_nullable
@@ -129,6 +136,7 @@ abstract class _$$TravelModelImplCopyWith<$Res>
       {int id,
       DateTime startedOn,
       DateTime endedOn,
+      TravelCompanionType companionType,
       AgeGroup ageGroup,
       Gender gender,
       List<TravelCompanion> companions,
@@ -152,6 +160,7 @@ class __$$TravelModelImplCopyWithImpl<$Res>
     Object? id = null,
     Object? startedOn = null,
     Object? endedOn = null,
+    Object? companionType = null,
     Object? ageGroup = null,
     Object? gender = null,
     Object? companions = null,
@@ -171,6 +180,10 @@ class __$$TravelModelImplCopyWithImpl<$Res>
           ? _value.endedOn
           : endedOn // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      companionType: null == companionType
+          ? _value.companionType
+          : companionType // ignore: cast_nullable_to_non_nullable
+              as TravelCompanionType,
       ageGroup: null == ageGroup
           ? _value.ageGroup
           : ageGroup // ignore: cast_nullable_to_non_nullable
@@ -202,6 +215,7 @@ class _$TravelModelImpl extends _TravelModel {
       {required this.id,
       required this.startedOn,
       required this.endedOn,
+      this.companionType = TravelCompanionType.none,
       this.ageGroup = AgeGroup.none,
       this.gender = Gender.none,
       final List<TravelCompanion> companions = const [],
@@ -221,6 +235,9 @@ class _$TravelModelImpl extends _TravelModel {
   final DateTime startedOn;
   @override
   final DateTime endedOn;
+  @override
+  @JsonKey()
+  final TravelCompanionType companionType;
   @override
   @JsonKey()
   final AgeGroup ageGroup;
@@ -256,7 +273,7 @@ class _$TravelModelImpl extends _TravelModel {
 
   @override
   String toString() {
-    return 'TravelModel(id: $id, startedOn: $startedOn, endedOn: $endedOn, ageGroup: $ageGroup, gender: $gender, companions: $companions, motivations: $motivations, cities: $cities)';
+    return 'TravelModel(id: $id, startedOn: $startedOn, endedOn: $endedOn, companionType: $companionType, ageGroup: $ageGroup, gender: $gender, companions: $companions, motivations: $motivations, cities: $cities)';
   }
 
   @override
@@ -268,6 +285,8 @@ class _$TravelModelImpl extends _TravelModel {
             (identical(other.startedOn, startedOn) ||
                 other.startedOn == startedOn) &&
             (identical(other.endedOn, endedOn) || other.endedOn == endedOn) &&
+            (identical(other.companionType, companionType) ||
+                other.companionType == companionType) &&
             (identical(other.ageGroup, ageGroup) ||
                 other.ageGroup == ageGroup) &&
             (identical(other.gender, gender) || other.gender == gender) &&
@@ -285,6 +304,7 @@ class _$TravelModelImpl extends _TravelModel {
       id,
       startedOn,
       endedOn,
+      companionType,
       ageGroup,
       gender,
       const DeepCollectionEquality().hash(_companions),
@@ -312,6 +332,7 @@ abstract class _TravelModel extends TravelModel {
       {required final int id,
       required final DateTime startedOn,
       required final DateTime endedOn,
+      final TravelCompanionType companionType,
       final AgeGroup ageGroup,
       final Gender gender,
       final List<TravelCompanion> companions,
@@ -328,6 +349,8 @@ abstract class _TravelModel extends TravelModel {
   DateTime get startedOn;
   @override
   DateTime get endedOn;
+  @override
+  TravelCompanionType get companionType;
   @override
   AgeGroup get ageGroup;
   @override
