@@ -22,10 +22,6 @@ public final class Place {
     @Id
     private Long id;
 
-    @NotNull
-    @Column(unique = true, insertable = false, updatable = false)
-    private String poiId;
-
     private String name;
 
     private Integer regionCode;
@@ -43,10 +39,6 @@ public final class Place {
 
     public Long id() {
         return id;
-    }
-
-    public String poiId() {
-        return poiId;
     }
 
     public String name() {
