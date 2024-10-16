@@ -1,7 +1,6 @@
-import 'package:application_new/feature/geography/model/city_model.dart';
-import 'package:application_new/feature/travel_detail/model/travel_visit_model.dart';
+import 'package:application_new/feature/travel_read/model/travel_visit_model.dart';
 import 'package:application_new/shared/model/place_model.dart';
-import 'package:application_new/shared/model/travel_model.dart';
+import 'package:application_new/shared/model/travel/travel_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'travel_detail_model.freezed.dart';

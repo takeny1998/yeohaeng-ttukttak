@@ -1,22 +1,20 @@
-import 'package:application_new/common/http/http_service_provider.dart';
-import 'package:application_new/feature/travel_detail/model/travel_detail_model.dart';
-import 'package:application_new/feature/travel_detail/model/travel_visit_model.dart';
-import 'package:application_new/feature/travel_detail/provider/travel_detail_state.dart';
-import 'package:application_new/shared/model/travel_model.dart';
-import 'package:application_new/shared/provider/travel_provider.dart';
+import 'package:application_new/feature/travel_read/model/travel_visit_model.dart';
+import 'package:application_new/feature/travel_read/provider/travel_read_state.dart';
+import 'package:application_new/shared/provider/travel_detail_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'travel_detail_provider.g.dart';
+part 'travel_read_provider.g.dart';
 
 @riverpod
-class TravelDetail extends _$TravelDetail {
+class TravelRead extends _$TravelRead {
+
   @override
-  TravelDetailState build(int travelId) {
-    final detail = ref.watch(travelProvider(travelId));
+  TravelReadState build(int travelId) {
+    final detail = ref.watch(travelDetailProvider(travelId));
 
     final selectedDate = detail.travel.startedOn;
 
-    return TravelDetailState(
+    return TravelReadState(
         selectedDate: selectedDate,
         detail: detail,
         selectedVisits: _filterVisits(detail.visits, selectedDate));

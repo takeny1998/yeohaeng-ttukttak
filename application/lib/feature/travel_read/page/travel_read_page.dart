@@ -1,30 +1,27 @@
-import 'package:application_new/common/util/translation.dart';
-import 'package:application_new/shared/component/travel_companion_item.dart';
-import 'package:application_new/feature/travel_detail/components/visit_item.dart';
-import 'package:application_new/feature/travel_detail/components/visits_map_item.dart';
-import 'package:application_new/feature/travel_detail/model/travel_detail_model.dart';
-import 'package:application_new/feature/travel_detail/model/travel_visit_model.dart';
-import 'package:application_new/feature/travel_detail/provider/travel_detail_provider.dart';
+import 'package:application_new/feature/travel_read/components/visit_item.dart';
+import 'package:application_new/feature/travel_read/components/visits_map_item.dart';
+import 'package:application_new/shared/model/travel/travel_detail_model.dart';
+import 'package:application_new/feature/travel_read/model/travel_visit_model.dart';
+import 'package:application_new/feature/travel_read/provider/travel_read_provider.dart';
 import 'package:application_new/shared/component/custom_header_delegate.dart';
 import 'package:application_new/shared/component/filled_chip_theme.dart';
 import 'package:application_new/shared/component/travel_header.dart';
-import 'package:application_new/shared/model/travel_model.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class TravelDetailPage extends ConsumerStatefulWidget {
+class TravelReadPage extends ConsumerStatefulWidget {
   final int _travelId;
 
-  const TravelDetailPage({super.key, required int travelId})
+  const TravelReadPage({super.key, required int travelId})
       : _travelId = travelId;
 
   @override
   ConsumerState createState() => _TravelDetailPageState();
 }
 
-class _TravelDetailPageState extends ConsumerState<TravelDetailPage> {
+class _TravelDetailPageState extends ConsumerState<TravelReadPage> {
   final ScrollController scrollController = ScrollController();
   final List<double> itemOffsets = List.generate(100, (_) => 0);
 
@@ -42,7 +39,7 @@ class _TravelDetailPageState extends ConsumerState<TravelDetailPage> {
         if (result == null) return;
 
         ref
-            .read(travelDetailProvider(widget._travelId).notifier)
+            .read(travelReadProvider(widget._travelId).notifier)
             .selectPlace(result.placeId);
       });
     });
@@ -57,7 +54,7 @@ class _TravelDetailPageState extends ConsumerState<TravelDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(travelDetailProvider(widget._travelId));
+    final state = ref.watch(travelReadProvider(widget._travelId));
 
     final TravelDetailModel(:travel, :visits, :places) = state.detail;
 
@@ -68,7 +65,7 @@ class _TravelDetailPageState extends ConsumerState<TravelDetailPage> {
             .duration
             .inDays;
 
-    ref.listen(travelDetailProvider(widget._travelId), (prev, next) {
+    ref.listen(travelReadProvider(widget._travelId), (prev, next) {
       if (prev?.selectedDate == next.selectedDate) return;
       scrollController.animateTo(initOffset,
           duration: const Duration(milliseconds: 500), curve: Curves.linear);
@@ -119,7 +116,7 @@ class _TravelDetailPageState extends ConsumerState<TravelDetailPage> {
 
                                   return ChoiceChip(
                                       onSelected: (_) => ref
-                                          .read(travelDetailProvider(
+                                          .read(travelReadProvider(
                                                   widget._travelId)
                                               .notifier)
                                           .selectDate(day),

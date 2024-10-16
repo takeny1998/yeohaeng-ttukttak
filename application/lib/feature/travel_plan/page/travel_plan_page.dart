@@ -15,6 +15,8 @@ class TravelPlanPage extends ConsumerWidget {
 
     final state = ref.watch(travelPlanProvider(_travelId));
 
+    print(state.detail.travel);
+
     return FilledChipTheme(
       child: Scaffold(
         body: NestedScrollView(headerSliverBuilder: (context, innerBoxIsScrolled) {
@@ -23,10 +25,21 @@ class TravelPlanPage extends ConsumerWidget {
           slivers: [
             SliverAppBar(
               expandedHeight: 307.0,
-              flexibleSpace: SafeArea(child: Padding(
-                padding: const EdgeInsets.fromLTRB(24.0, kToolbarHeight, 24.0, 0.0),
-                child: TravelHeader(travel: state.detail.travel),
-              ))
+              pinned: true,
+              flexibleSpace: FlexibleSpaceBar(
+                collapseMode: CollapseMode.parallax,
+                background: SafeArea(child: Padding(
+                  padding: const EdgeInsets.fromLTRB(24.0, kToolbarHeight, 24.0, 0.0),
+                  child: TravelHeader(travel: state.detail.travel),
+                )),
+              )
+            ),
+            SliverToBoxAdapter(
+              child: Container(
+                width: double.maxFinite,
+                height: 4200,
+                color: Colors.red,
+              ),
             )
           ],
         )),

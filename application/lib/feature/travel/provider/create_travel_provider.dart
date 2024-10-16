@@ -4,7 +4,7 @@ import 'package:application_new/feature/authentication/service/auth_service_prov
 import 'package:application_new/feature/geography/model/city_model.dart';
 import 'package:application_new/feature/geography/model/region_model.dart';
 import 'package:application_new/feature/travel/model/create_travel_state.dart';
-import 'package:application_new/shared/model/travel_model.dart';
+import 'package:application_new/shared/model/travel/travel_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'create_travel_provider.g.dart';

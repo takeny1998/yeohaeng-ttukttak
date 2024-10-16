@@ -1,5 +1,5 @@
-import 'package:application_new/feature/travel_detail/model/travel_visit_rating_model.dart';
-import 'package:application_new/feature/travel_detail/model/travel_visit_reason.dart';
+import 'package:application_new/feature/travel_read/model/travel_visit_rating_model.dart';
+import 'package:application_new/feature/travel_read/model/travel_visit_reason.dart';
 import 'package:application_new/shared/model/image_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 

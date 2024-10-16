@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'travel_detail_state.dart';
+part of 'travel_read_state.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -15,7 +15,7 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
-mixin _$TravelDetailState {
+mixin _$TravelReadState {
   DateTime get selectedDate => throw _privateConstructorUsedError;
   int get selectedPlaceId => throw _privateConstructorUsedError;
   bool get isMapMoved => throw _privateConstructorUsedError;
@@ -23,18 +23,18 @@ mixin _$TravelDetailState {
   List<TravelVisitModel> get selectedVisits =>
       throw _privateConstructorUsedError;
 
-  /// Create a copy of TravelDetailState
+  /// Create a copy of TravelReadState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $TravelDetailStateCopyWith<TravelDetailState> get copyWith =>
+  $TravelReadStateCopyWith<TravelReadState> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $TravelDetailStateCopyWith<$Res> {
-  factory $TravelDetailStateCopyWith(
-          TravelDetailState value, $Res Function(TravelDetailState) then) =
-      _$TravelDetailStateCopyWithImpl<$Res, TravelDetailState>;
+abstract class $TravelReadStateCopyWith<$Res> {
+  factory $TravelReadStateCopyWith(
+          TravelReadState value, $Res Function(TravelReadState) then) =
+      _$TravelReadStateCopyWithImpl<$Res, TravelReadState>;
   @useResult
   $Res call(
       {DateTime selectedDate,
@@ -47,16 +47,16 @@ abstract class $TravelDetailStateCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$TravelDetailStateCopyWithImpl<$Res, $Val extends TravelDetailState>
-    implements $TravelDetailStateCopyWith<$Res> {
-  _$TravelDetailStateCopyWithImpl(this._value, this._then);
+class _$TravelReadStateCopyWithImpl<$Res, $Val extends TravelReadState>
+    implements $TravelReadStateCopyWith<$Res> {
+  _$TravelReadStateCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of TravelDetailState
+  /// Create a copy of TravelReadState
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -91,7 +91,7 @@ class _$TravelDetailStateCopyWithImpl<$Res, $Val extends TravelDetailState>
     ) as $Val);
   }
 
-  /// Create a copy of TravelDetailState
+  /// Create a copy of TravelReadState
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
@@ -103,11 +103,11 @@ class _$TravelDetailStateCopyWithImpl<$Res, $Val extends TravelDetailState>
 }
 
 /// @nodoc
-abstract class _$$TravelDetailStateImplCopyWith<$Res>
-    implements $TravelDetailStateCopyWith<$Res> {
-  factory _$$TravelDetailStateImplCopyWith(_$TravelDetailStateImpl value,
-          $Res Function(_$TravelDetailStateImpl) then) =
-      __$$TravelDetailStateImplCopyWithImpl<$Res>;
+abstract class _$$TravelReadStateImplCopyWith<$Res>
+    implements $TravelReadStateCopyWith<$Res> {
+  factory _$$TravelReadStateImplCopyWith(_$TravelReadStateImpl value,
+          $Res Function(_$TravelReadStateImpl) then) =
+      __$$TravelReadStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -122,14 +122,14 @@ abstract class _$$TravelDetailStateImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$TravelDetailStateImplCopyWithImpl<$Res>
-    extends _$TravelDetailStateCopyWithImpl<$Res, _$TravelDetailStateImpl>
-    implements _$$TravelDetailStateImplCopyWith<$Res> {
-  __$$TravelDetailStateImplCopyWithImpl(_$TravelDetailStateImpl _value,
-      $Res Function(_$TravelDetailStateImpl) _then)
+class __$$TravelReadStateImplCopyWithImpl<$Res>
+    extends _$TravelReadStateCopyWithImpl<$Res, _$TravelReadStateImpl>
+    implements _$$TravelReadStateImplCopyWith<$Res> {
+  __$$TravelReadStateImplCopyWithImpl(
+      _$TravelReadStateImpl _value, $Res Function(_$TravelReadStateImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of TravelDetailState
+  /// Create a copy of TravelReadState
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -140,7 +140,7 @@ class __$$TravelDetailStateImplCopyWithImpl<$Res>
     Object? detail = null,
     Object? selectedVisits = null,
   }) {
-    return _then(_$TravelDetailStateImpl(
+    return _then(_$TravelReadStateImpl(
       selectedDate: null == selectedDate
           ? _value.selectedDate
           : selectedDate // ignore: cast_nullable_to_non_nullable
@@ -167,15 +167,14 @@ class __$$TravelDetailStateImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$TravelDetailStateImpl extends _TravelDetailState {
-  const _$TravelDetailStateImpl(
+class _$TravelReadStateImpl implements _TravelReadState {
+  const _$TravelReadStateImpl(
       {required this.selectedDate,
       this.selectedPlaceId = 0,
       this.isMapMoved = false,
       required this.detail,
       final List<TravelVisitModel> selectedVisits = const []})
-      : _selectedVisits = selectedVisits,
-        super._();
+      : _selectedVisits = selectedVisits;
 
   @override
   final DateTime selectedDate;
@@ -198,14 +197,14 @@ class _$TravelDetailStateImpl extends _TravelDetailState {
 
   @override
   String toString() {
-    return 'TravelDetailState(selectedDate: $selectedDate, selectedPlaceId: $selectedPlaceId, isMapMoved: $isMapMoved, detail: $detail, selectedVisits: $selectedVisits)';
+    return 'TravelReadState(selectedDate: $selectedDate, selectedPlaceId: $selectedPlaceId, isMapMoved: $isMapMoved, detail: $detail, selectedVisits: $selectedVisits)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$TravelDetailStateImpl &&
+            other is _$TravelReadStateImpl &&
             (identical(other.selectedDate, selectedDate) ||
                 other.selectedDate == selectedDate) &&
             (identical(other.selectedPlaceId, selectedPlaceId) ||
@@ -221,24 +220,23 @@ class _$TravelDetailStateImpl extends _TravelDetailState {
   int get hashCode => Object.hash(runtimeType, selectedDate, selectedPlaceId,
       isMapMoved, detail, const DeepCollectionEquality().hash(_selectedVisits));
 
-  /// Create a copy of TravelDetailState
+  /// Create a copy of TravelReadState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$TravelDetailStateImplCopyWith<_$TravelDetailStateImpl> get copyWith =>
-      __$$TravelDetailStateImplCopyWithImpl<_$TravelDetailStateImpl>(
+  _$$TravelReadStateImplCopyWith<_$TravelReadStateImpl> get copyWith =>
+      __$$TravelReadStateImplCopyWithImpl<_$TravelReadStateImpl>(
           this, _$identity);
 }
 
-abstract class _TravelDetailState extends TravelDetailState {
-  const factory _TravelDetailState(
+abstract class _TravelReadState implements TravelReadState {
+  const factory _TravelReadState(
       {required final DateTime selectedDate,
       final int selectedPlaceId,
       final bool isMapMoved,
       required final TravelDetailModel detail,
-      final List<TravelVisitModel> selectedVisits}) = _$TravelDetailStateImpl;
-  const _TravelDetailState._() : super._();
+      final List<TravelVisitModel> selectedVisits}) = _$TravelReadStateImpl;
 
   @override
   DateTime get selectedDate;
@@ -251,10 +249,10 @@ abstract class _TravelDetailState extends TravelDetailState {
   @override
   List<TravelVisitModel> get selectedVisits;
 
-  /// Create a copy of TravelDetailState
+  /// Create a copy of TravelReadState
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$TravelDetailStateImplCopyWith<_$TravelDetailStateImpl> get copyWith =>
+  _$$TravelReadStateImplCopyWith<_$TravelReadStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

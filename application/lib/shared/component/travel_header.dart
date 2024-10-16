@@ -1,7 +1,7 @@
 import 'package:application_new/common/util/translation.dart';
 import 'package:application_new/feature/geography/model/city_model.dart';
 import 'package:application_new/shared/component/travel_companion_item.dart';
-import 'package:application_new/shared/model/travel_model.dart';
+import 'package:application_new/shared/model/travel/travel_model.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 

@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'travel_detail_provider.dart';
+part of 'travel_read_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$travelDetailHash() => r'b924d7e34b81f5e5fc2362d2f4f0122f5872c053';
+String _$travelReadHash() => r'1eaf61dc4100c4edd566af33d32576006a0e1f3d';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,36 +29,36 @@ class _SystemHash {
   }
 }
 
-abstract class _$TravelDetail
-    extends BuildlessAutoDisposeNotifier<TravelDetailState> {
+abstract class _$TravelRead
+    extends BuildlessAutoDisposeNotifier<TravelReadState> {
   late final int travelId;
 
-  TravelDetailState build(
+  TravelReadState build(
     int travelId,
   );
 }
 
-/// See also [TravelDetail].
-@ProviderFor(TravelDetail)
-const travelDetailProvider = TravelDetailFamily();
+/// See also [TravelRead].
+@ProviderFor(TravelRead)
+const travelReadProvider = TravelReadFamily();
 
-/// See also [TravelDetail].
-class TravelDetailFamily extends Family<TravelDetailState> {
-  /// See also [TravelDetail].
-  const TravelDetailFamily();
+/// See also [TravelRead].
+class TravelReadFamily extends Family<TravelReadState> {
+  /// See also [TravelRead].
+  const TravelReadFamily();
 
-  /// See also [TravelDetail].
-  TravelDetailProvider call(
+  /// See also [TravelRead].
+  TravelReadProvider call(
     int travelId,
   ) {
-    return TravelDetailProvider(
+    return TravelReadProvider(
       travelId,
     );
   }
 
   @override
-  TravelDetailProvider getProviderOverride(
-    covariant TravelDetailProvider provider,
+  TravelReadProvider getProviderOverride(
+    covariant TravelReadProvider provider,
   ) {
     return call(
       provider.travelId,
@@ -77,30 +77,30 @@ class TravelDetailFamily extends Family<TravelDetailState> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'travelDetailProvider';
+  String? get name => r'travelReadProvider';
 }
 
-/// See also [TravelDetail].
-class TravelDetailProvider
-    extends AutoDisposeNotifierProviderImpl<TravelDetail, TravelDetailState> {
-  /// See also [TravelDetail].
-  TravelDetailProvider(
+/// See also [TravelRead].
+class TravelReadProvider
+    extends AutoDisposeNotifierProviderImpl<TravelRead, TravelReadState> {
+  /// See also [TravelRead].
+  TravelReadProvider(
     int travelId,
   ) : this._internal(
-          () => TravelDetail()..travelId = travelId,
-          from: travelDetailProvider,
-          name: r'travelDetailProvider',
+          () => TravelRead()..travelId = travelId,
+          from: travelReadProvider,
+          name: r'travelReadProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$travelDetailHash,
-          dependencies: TravelDetailFamily._dependencies,
+                  : _$travelReadHash,
+          dependencies: TravelReadFamily._dependencies,
           allTransitiveDependencies:
-              TravelDetailFamily._allTransitiveDependencies,
+              TravelReadFamily._allTransitiveDependencies,
           travelId: travelId,
         );
 
-  TravelDetailProvider._internal(
+  TravelReadProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -113,8 +113,8 @@ class TravelDetailProvider
   final int travelId;
 
   @override
-  TravelDetailState runNotifierBuild(
-    covariant TravelDetail notifier,
+  TravelReadState runNotifierBuild(
+    covariant TravelRead notifier,
   ) {
     return notifier.build(
       travelId,
@@ -122,10 +122,10 @@ class TravelDetailProvider
   }
 
   @override
-  Override overrideWith(TravelDetail Function() create) {
+  Override overrideWith(TravelRead Function() create) {
     return ProviderOverride(
       origin: this,
-      override: TravelDetailProvider._internal(
+      override: TravelReadProvider._internal(
         () => create()..travelId = travelId,
         from: from,
         name: null,
@@ -138,14 +138,14 @@ class TravelDetailProvider
   }
 
   @override
-  AutoDisposeNotifierProviderElement<TravelDetail, TravelDetailState>
+  AutoDisposeNotifierProviderElement<TravelRead, TravelReadState>
       createElement() {
-    return _TravelDetailProviderElement(this);
+    return _TravelReadProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is TravelDetailProvider && other.travelId == travelId;
+    return other is TravelReadProvider && other.travelId == travelId;
   }
 
   @override
@@ -157,18 +157,18 @@ class TravelDetailProvider
   }
 }
 
-mixin TravelDetailRef on AutoDisposeNotifierProviderRef<TravelDetailState> {
+mixin TravelReadRef on AutoDisposeNotifierProviderRef<TravelReadState> {
   /// The parameter `travelId` of this provider.
   int get travelId;
 }
 
-class _TravelDetailProviderElement
-    extends AutoDisposeNotifierProviderElement<TravelDetail, TravelDetailState>
-    with TravelDetailRef {
-  _TravelDetailProviderElement(super.provider);
+class _TravelReadProviderElement
+    extends AutoDisposeNotifierProviderElement<TravelRead, TravelReadState>
+    with TravelReadRef {
+  _TravelReadProviderElement(super.provider);
 
   @override
-  int get travelId => (origin as TravelDetailProvider).travelId;
+  int get travelId => (origin as TravelReadProvider).travelId;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

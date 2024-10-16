@@ -1,6 +1,5 @@
-import 'package:application_new/feature/home/home_page.dart';
-import 'package:application_new/feature/travel_detail/components/place_marker_item.dart';
-import 'package:application_new/feature/travel_detail/provider/travel_detail_provider.dart';
+import 'package:application_new/feature/travel_read/components/place_marker_item.dart';
+import 'package:application_new/feature/travel_read/provider/travel_read_provider.dart';
 import 'package:application_new/shared/model/place_model.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +39,7 @@ class _VisitsMapItemState extends ConsumerState<VisitsMapItem> {
         LatLng(coordinates.latitude, coordinates.longitude), zoom,
         offset: Offset(0, (markerRadius / 2)));
 
-    final notifier = ref.read(travelDetailProvider(widget.travelId).notifier);
+    final notifier = ref.read(travelReadProvider(widget.travelId).notifier);
 
     notifier.setIsMapMoved(false);
   }
@@ -52,7 +51,7 @@ class _VisitsMapItemState extends ConsumerState<VisitsMapItem> {
     final List<LatLng> points = [];
     final List<Marker> markers = [];
 
-    final state = ref.watch(travelDetailProvider(widget.travelId));
+    final state = ref.watch(travelReadProvider(widget.travelId));
 
     final visits = state.selectedVisits;
     final places = state.detail.places;
@@ -81,7 +80,7 @@ class _VisitsMapItemState extends ConsumerState<VisitsMapItem> {
       }
     }
 
-    ref.listen(travelDetailProvider(widget.travelId), (prev, next) {
+    ref.listen(travelReadProvider(widget.travelId), (prev, next) {
       if (prev?.selectedPlaceId == next.selectedPlaceId) return;
 
       final place = next.selectedPlaceId > 0
@@ -99,7 +98,7 @@ class _VisitsMapItemState extends ConsumerState<VisitsMapItem> {
             if (!hasGesture) return;
 
             final notifier =
-                ref.read(travelDetailProvider(widget.travelId).notifier);
+                ref.read(travelReadProvider(widget.travelId).notifier);
 
             notifier.setIsMapMoved(true);
           }),
