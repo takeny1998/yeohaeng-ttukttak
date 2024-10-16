@@ -30,5 +30,10 @@ public final class InitialTravel extends Travel {
         return gender;
     }
 
+    @Override
+    public CompanionType companionType() {
+        return null;
+    }
+
 
 }

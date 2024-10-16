@@ -14,6 +14,7 @@ public record TravelDto(
         LocalDate endedOn,
         AgeGroup ageGroup,
         Gender gender,
+        CompanionType companionType,
         List<TravelCompanionDto> companions,
         List<Motivation> motivations,
         List<CityDto> cities
@@ -26,6 +27,7 @@ public record TravelDto(
                 travel.endedOn(),
                 travel.ageGroup(),
                 travel.gender(),
+                travel.companionType(),
                 travel.companions().stream()
                         .map(TravelCompanionDto::of)
                         .toList(),

@@ -40,16 +40,28 @@ public final class MemberTravel extends Travel {
         return member.gender();
     }
 
+    @Override
+    public CompanionType companionType() {
+        return companionType;
+    }
+
     public void addCity(City city) {
         final boolean containsCity = cities().stream()
                 .anyMatch(tc -> tc.city().equals(city));
 
-        if (containsCity) {
-            return;
-        }
+        if (containsCity) return;
+
         cities().add(new TravelCity(this, city));
     }
 
+    public void addMotivation(Motivation motivation) {
+        final boolean contains = motivations().stream()
+                .anyMatch(tm -> tm.motivation().equals(motivation));
+
+        if (contains) return;
+
+        motivations().add(new TravelMotivation(this, motivation));
+    }
 
 
 }

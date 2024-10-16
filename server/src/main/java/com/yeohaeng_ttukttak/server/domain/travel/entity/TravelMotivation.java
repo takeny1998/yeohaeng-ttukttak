@@ -10,7 +10,15 @@ import lombok.ToString;
 @ToString
 public class TravelMotivation {
 
-    @Id
+    @Id @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "travel_motivation_generator"
+    )
+    @SequenceGenerator(
+            name = "travel_motivation_generator",
+            sequenceName = "travel_motivation_seq",
+            initialValue = 100000
+    )
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -23,11 +31,10 @@ public class TravelMotivation {
     public TravelMotivation(Travel travel, Motivation motivation) {
         this.travel = travel;
         this.motivation = motivation;
-
-        travel.motivations().add(this);
     }
 
     public Motivation motivation() {
         return motivation;
     }
+
 }

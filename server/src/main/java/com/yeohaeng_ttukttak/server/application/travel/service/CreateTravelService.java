@@ -37,6 +37,8 @@ public class CreateTravelService {
         geographyRepository.findAllCityByIds(ids)
                 .forEach(travel::addCity);
 
+        comm.motivations().forEach(travel::addMotivation);
+
         travelRepository.save(travel);
 
     }
