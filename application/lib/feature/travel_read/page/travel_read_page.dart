@@ -3,7 +3,7 @@ import 'package:application_new/feature/travel_read/components/visits_map_item.d
 import 'package:application_new/shared/model/travel/travel_detail_model.dart';
 import 'package:application_new/feature/travel_read/model/travel_visit_model.dart';
 import 'package:application_new/feature/travel_read/provider/travel_read_provider.dart';
-import 'package:application_new/shared/component/custom_header_delegate.dart';
+import 'package:application_new/shared/component/fixed_header_delegate.dart';
 import 'package:application_new/shared/component/filled_chip_theme.dart';
 import 'package:application_new/shared/component/travel_header.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -88,7 +88,7 @@ class _TravelDetailPageState extends ConsumerState<TravelReadPage> {
               initOffset = constraints.precedingScrollExtent;
               return SliverPersistentHeader(
                 pinned: true,
-                delegate: CustomHeaderDelegate(
+                delegate: FixedHeaderDelegate(
                   extent: MediaQuery.of(context).size.height * 0.4,
                   widget: Column(
                     children: [

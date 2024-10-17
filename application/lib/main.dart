@@ -6,6 +6,8 @@ import 'package:application_new/common/loading/async_loading_provider.dart';
 import 'package:application_new/common/session/session_provider.dart';
 import 'package:application_new/feature/authentication/service/auth_service_provider.dart';
 import 'package:application_new/feature/locale/locale_provider.dart';
+import 'package:application_new/shared/component/filled_chip_theme.dart';
+import 'package:application_new/shared/component/filled_icon_button_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization_loader/easy_localization_loader.dart';
 import 'package:flutter/material.dart';
@@ -115,16 +117,18 @@ class _MyAppState extends ConsumerState<MyApp> {
       supportedLocales: context.supportedLocales,
       locale: context.locale,
       builder: (context, widget) {
-        return Stack(
-          children: [
-            widget!,
-            if (isLoading)
-              Positioned.fill(
-                  child: Container(
-                color: Colors.white.withOpacity(0.5),
-                child: const Center(child: CircularProgressIndicator()),
-              ))
-          ],
+        return FilledChipTheme(
+          child: Stack(
+            children: [
+              widget!,
+              if (isLoading)
+                Positioned.fill(
+                    child: Container(
+                  color: Colors.white.withOpacity(0.5),
+                  child: const Center(child: CircularProgressIndicator()),
+                ))
+            ],
+          ),
         );
       },
     );

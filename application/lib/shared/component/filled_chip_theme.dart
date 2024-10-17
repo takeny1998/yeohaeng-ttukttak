@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 class FilledChipTheme extends StatelessWidget {
 
-  final Widget _chip;
+  final Widget _child;
 
-  const FilledChipTheme({super.key, required Widget child}) : _chip = child;
+  const FilledChipTheme({super.key, required Widget child}) : _child = child;
 
   @override
   Widget build(BuildContext context) {
@@ -30,9 +30,10 @@ class FilledChipTheme extends StatelessWidget {
             selectedColor: colorScheme.primary,
             checkmarkColor: colorScheme.onPrimary,
             backgroundColor: colorScheme.primaryContainer,
+            labelPadding: const EdgeInsets.symmetric(horizontal: 4.0),
             side: BorderSide.none,
             padding: const EdgeInsets.all(10.0)),
       ),
-      child: _chip);
+      child: _child);
   }
 }

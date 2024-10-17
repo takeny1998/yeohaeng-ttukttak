@@ -9,6 +9,7 @@ class TravelPlanState with _$TravelPlanState {
 
   const factory TravelPlanState({
     required TravelDetailModel detail,
+    @Default(0) int pageIndex,
   }) = _TravelPlanState;
 
   factory TravelPlanState.empty() => TravelPlanState(detail: TravelDetailModel.empty());

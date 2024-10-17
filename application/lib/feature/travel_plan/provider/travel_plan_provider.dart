@@ -9,10 +9,18 @@ class TravelPlan extends _$TravelPlan {
 
   @override
    TravelPlanState build(int travelId) {
-
     final detail = ref.watch(travelDetailProvider(travelId));
-
     return TravelPlanState(detail: detail);
+  }
+
+  void changePage(int pageIndex) {
+    final isIndexInRange = 0 <= pageIndex && pageIndex <= 3;
+
+    if (!isIndexInRange || state.pageIndex == pageIndex) return;
+
+    state = state.copyWith(
+      pageIndex: pageIndex
+    );
   }
 
 }

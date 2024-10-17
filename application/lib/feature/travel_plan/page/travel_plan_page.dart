@@ -1,113 +1,78 @@
 import 'package:application_new/common/util/translation.dart';
 import 'package:application_new/feature/geography/provider/geography_provider.dart';
+import 'package:application_new/feature/travel_plan/component/travel_plan_home_header.dart';
+import 'package:application_new/feature/travel_plan/page/travel_plan_bookmark_page.dart';
+import 'package:application_new/feature/travel_plan/page/travel_plan_home_page.dart';
+import 'package:application_new/feature/travel_plan/page/travel_plan_manage_page.dart';
+import 'package:application_new/feature/travel_plan/page/travel_plan_recommend_page.dart';
 import 'package:application_new/feature/travel_plan/provider/travel_plan_provider.dart';
-import 'package:application_new/shared/component/custom_header_delegate.dart';
-import 'package:application_new/shared/component/filled_chip_theme.dart';
-import 'package:application_new/shared/component/travel_header.dart';
 import 'package:application_new/shared/model/travel/travel_detail_model.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class TravelPlanPage extends ConsumerWidget {
+class TravelPlanPage extends ConsumerStatefulWidget {
   final int _travelId;
 
   const TravelPlanPage({super.key, required int travelId})
       : _travelId = travelId;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState createState() => _TravelPlanPageState();
+}
+
+class _TravelPlanPageState extends ConsumerState<TravelPlanPage> {
+  final PageController pageController = PageController();
+
+  @override
+  void dispose() {
+    pageController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
+    final travelId = widget._travelId;
 
-    final state = ref.watch(travelPlanProvider(_travelId));
+    final List<Widget> pages = [
+      TravelPlanHomePage(travelId: travelId),
+      TravelPlanRecommendPage(travelId: travelId),
+      TravelPlanManagePage(travelId: travelId),
+      TravelPlanBookmarkPage(travelId: travelId),
+    ];
 
-    final TravelDetailModel(:travel) = state.detail;
+    final pageIndex = ref.watch(travelPlanProvider(travelId)).pageIndex;
 
-    final nameStyle =
-        textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w600);
-    final dateStyle = textTheme.bodyMedium
-        ?.copyWith(fontWeight: FontWeight.w600, color: colorScheme.secondary);
-
-    final regions = ref.watch(geographyProvider).regions;
-
-    return FilledChipTheme(
-      child: DefaultTabController(
-        length: travel.cities.length,
-        child: Scaffold(
-            body: CustomScrollView(
-          slivers: [
-            SliverAppBar(
-              expandedHeight: 202.0,
-              pinned: true,
-              flexibleSpace: FlexibleSpaceBar(
-                collapseMode: CollapseMode.parallax,
-                background: SafeArea(
-                    child: Padding(
-                  padding: const EdgeInsets.fromLTRB(
-                      24.0, kToolbarHeight, 24.0, 0.0),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(travel.formattedName, style: nameStyle),
-                        Text(travel.formattedDate, style: dateStyle),
-                        const SizedBox(height: 16.0),
-                        Wrap(spacing: 8.0, children: [
-                          Chip(
-                              backgroundColor: colorScheme.primary,
-                              labelStyle:
-                                  TextStyle(color: colorScheme.onPrimary),
-                              label: Text(enumKey(travel.companionType).tr())),
-                          for (final motivation in travel.motivations)
-                            Chip(label: Text(enumKey(motivation).tr())),
-                          const SizedBox(height: 32.0),
-                        ]),
-                      ]),
-                )),
-              ),
-            ),
-            SliverPersistentHeader(
-                pinned: true,
-                delegate: CustomHeaderDelegate(
-                    extent: 64.0,
-                    widget: TabBar(
-                      isScrollable: true,
-                      indicatorSize: TabBarIndicatorSize.tab,
-                      indicatorWeight: 3.0,
-                      labelPadding:
-                          const EdgeInsets.symmetric(horizontal: 21.0),
-                      labelStyle: const TextStyle(fontWeight: FontWeight.w600),
-                      tabs: [
-                        for (final city in travel.cities)
-                          Builder(builder: (context) {
-
-                            final region = regions
-                                .firstWhere(
-                                    (region) => region.id == city.regionId);
-
-                            return Tab(
-                              height: 64.0,
-                              child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                Text(city.name, style: textTheme.titleMedium?.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                  color: colorScheme.primary
-                                )),
-                                Text(region.name, style: textTheme.labelMedium?.copyWith(color: colorScheme.secondary, fontWeight: FontWeight.w600))
-                              ]),
-                            );
-                          })
-                      ],
-                    ))),
-            SliverToBoxAdapter(
-              child: Container(
-                width: double.maxFinite,
-                height: 4200,
-              ),
-            ),
-          ],
-        )),
+    return Scaffold(
+      appBar: AppBar(
+        scrolledUnderElevation: 0.0,
+        backgroundColor: colorScheme.surface,
+        actions: [
+          IconButton(onPressed: () {}, icon: const Icon(Icons.share)),
+          Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: IconButton(onPressed: () {}, icon: const Icon(Icons.edit)),
+          )
+        ],
+      ),
+      body: AnimatedSwitcher(
+        transitionBuilder: (child, animation) => FadeTransition(
+          opacity: animation,
+          child: child,
+        ),
+        duration: const Duration(milliseconds: 200),
+        child: pages[pageIndex],
+      ),
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: pageIndex,
+        onDestinationSelected: (index) =>
+            ref.read(travelPlanProvider(travelId).notifier).changePage(index),
+        destinations: const [
+          NavigationDestination(icon: Icon(Icons.home), label: '메인'),
+          NavigationDestination(icon: Icon(Icons.place), label: '둘러보기'),
+          NavigationDestination(icon: Icon(Icons.map), label: '일정'),
+          NavigationDestination(icon: Icon(Icons.bookmark), label: '저장'),
+        ],
       ),
     );
   }
