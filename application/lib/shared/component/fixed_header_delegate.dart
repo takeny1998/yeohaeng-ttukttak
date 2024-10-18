@@ -11,14 +11,16 @@ class FixedHeaderDelegate extends SliverPersistentHeaderDelegate {
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return _widget;
+    return Align(
+        alignment: Alignment.centerLeft,
+        child: _widget);
   }
 
   @override
   double get maxExtent => _extent;
 
   @override
-  double get minExtent => maxExtent;
+  double get minExtent => _extent;
 
   @override
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {

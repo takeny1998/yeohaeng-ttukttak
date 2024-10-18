@@ -24,12 +24,22 @@ class TravelPlanHomeHeader extends StatelessWidget {
 
     return SliverAppBar(
       scrolledUnderElevation: 0.0,
-      expandedHeight: 180.0,
-      automaticallyImplyLeading: false,
+      pinned: true,
+      floating: true,
+      snap: true,
+      expandedHeight: 180.0 + kToolbarHeight,
+      actions: [
+        IconButton(onPressed: () {}, icon: const Icon(Icons.share)),
+        Padding(
+          padding: const EdgeInsets.only(right: 8.0),
+          child: IconButton(onPressed: () {}, icon: const Icon(Icons.edit)),
+        )
+      ],
+      backgroundColor: colorScheme.primaryContainer,
       flexibleSpace: FlexibleSpaceBar(
         background: SafeArea(
             child: Padding(
-          padding: const EdgeInsets.fromLTRB(24.0, 0.0, 24.0, 0.0),
+          padding: const EdgeInsets.fromLTRB(24.0, kToolbarHeight, 24.0, 0.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -45,7 +55,9 @@ class TravelPlanHomeHeader extends StatelessWidget {
                     labelStyle: TextStyle(color: colorScheme.onPrimary),
                     label: Text(enumKey(_travel.companionType).tr())),
                 for (final motivation in _travel.motivations)
-                  Chip(label: Text(enumKey(motivation).tr())),
+                  Chip(
+                      backgroundColor: colorScheme.primaryFixedDim,
+                      label: Text(enumKey(motivation).tr())),
               ]),
             ],
           ),

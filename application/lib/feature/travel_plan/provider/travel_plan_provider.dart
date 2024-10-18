@@ -6,21 +6,32 @@ part 'travel_plan_provider.g.dart';
 
 @riverpod
 class TravelPlan extends _$TravelPlan {
-
   @override
-   TravelPlanState build(int travelId) {
+  TravelPlanState build(int travelId) {
     final detail = ref.watch(travelDetailProvider(travelId));
     return TravelPlanState(detail: detail);
   }
 
   void changePage(int pageIndex) {
-    final isIndexInRange = 0 <= pageIndex && pageIndex <= 3;
-
-    if (!isIndexInRange || state.pageIndex == pageIndex) return;
+    if (!isIndexInRange(pageIndex, end: 3)) return;
 
     state = state.copyWith(
-      pageIndex: pageIndex
+      pageIndex: pageIndex,
     );
   }
 
+  void selectCity(int cityIndex) {
+    if (state.cityIndex == cityIndex) return;
+
+    final cityCount = state.detail.travel.cities.length;
+    if (!isIndexInRange(cityIndex, end: cityCount - 1)) return;
+
+    state = state.copyWith(
+      cityIndex: cityIndex,
+    );
+  }
+
+  bool isIndexInRange(int index, {int start = 0, required int end}) {
+    return start <= index && index <= end;
+  }
 }

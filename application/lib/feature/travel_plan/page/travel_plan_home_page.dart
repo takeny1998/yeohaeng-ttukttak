@@ -13,17 +13,6 @@ class TravelPlanHomePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final travel = ref.watch(travelPlanProvider(_travelId)).detail.travel;
 
-    return CustomScrollView(
-      slivers: [
-        // FlexibleSpaceBar.createSettings(currentExtent: 236.0, child: FlexibleSpaceBar()),
-        TravelPlanHomeHeader(travel: travel),
-
-        SliverList(delegate: SliverChildListDelegate([
-
-          Container(height: 3600)
-
-        ]))
-      ],
-    );
+    return SliverList(delegate: SliverChildListDelegate([]));
   }
 }

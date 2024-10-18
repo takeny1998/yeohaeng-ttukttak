@@ -18,6 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$TravelPlanState {
   TravelDetailModel get detail => throw _privateConstructorUsedError;
   int get pageIndex => throw _privateConstructorUsedError;
+  int get cityIndex => throw _privateConstructorUsedError;
 
   /// Create a copy of TravelPlanState
   /// with the given fields replaced by the non-null parameter values.
@@ -32,7 +33,7 @@ abstract class $TravelPlanStateCopyWith<$Res> {
           TravelPlanState value, $Res Function(TravelPlanState) then) =
       _$TravelPlanStateCopyWithImpl<$Res, TravelPlanState>;
   @useResult
-  $Res call({TravelDetailModel detail, int pageIndex});
+  $Res call({TravelDetailModel detail, int pageIndex, int cityIndex});
 
   $TravelDetailModelCopyWith<$Res> get detail;
 }
@@ -54,6 +55,7 @@ class _$TravelPlanStateCopyWithImpl<$Res, $Val extends TravelPlanState>
   $Res call({
     Object? detail = null,
     Object? pageIndex = null,
+    Object? cityIndex = null,
   }) {
     return _then(_value.copyWith(
       detail: null == detail
@@ -63,6 +65,10 @@ class _$TravelPlanStateCopyWithImpl<$Res, $Val extends TravelPlanState>
       pageIndex: null == pageIndex
           ? _value.pageIndex
           : pageIndex // ignore: cast_nullable_to_non_nullable
+              as int,
+      cityIndex: null == cityIndex
+          ? _value.cityIndex
+          : cityIndex // ignore: cast_nullable_to_non_nullable
               as int,
     ) as $Val);
   }
@@ -86,7 +92,7 @@ abstract class _$$TravelPlanStateImplCopyWith<$Res>
       __$$TravelPlanStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({TravelDetailModel detail, int pageIndex});
+  $Res call({TravelDetailModel detail, int pageIndex, int cityIndex});
 
   @override
   $TravelDetailModelCopyWith<$Res> get detail;
@@ -107,6 +113,7 @@ class __$$TravelPlanStateImplCopyWithImpl<$Res>
   $Res call({
     Object? detail = null,
     Object? pageIndex = null,
+    Object? cityIndex = null,
   }) {
     return _then(_$TravelPlanStateImpl(
       detail: null == detail
@@ -117,6 +124,10 @@ class __$$TravelPlanStateImplCopyWithImpl<$Res>
           ? _value.pageIndex
           : pageIndex // ignore: cast_nullable_to_non_nullable
               as int,
+      cityIndex: null == cityIndex
+          ? _value.cityIndex
+          : cityIndex // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -124,7 +135,8 @@ class __$$TravelPlanStateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$TravelPlanStateImpl extends _TravelPlanState {
-  const _$TravelPlanStateImpl({required this.detail, this.pageIndex = 0})
+  const _$TravelPlanStateImpl(
+      {required this.detail, this.pageIndex = 0, this.cityIndex = 0})
       : super._();
 
   @override
@@ -132,10 +144,13 @@ class _$TravelPlanStateImpl extends _TravelPlanState {
   @override
   @JsonKey()
   final int pageIndex;
+  @override
+  @JsonKey()
+  final int cityIndex;
 
   @override
   String toString() {
-    return 'TravelPlanState(detail: $detail, pageIndex: $pageIndex)';
+    return 'TravelPlanState(detail: $detail, pageIndex: $pageIndex, cityIndex: $cityIndex)';
   }
 
   @override
@@ -145,11 +160,13 @@ class _$TravelPlanStateImpl extends _TravelPlanState {
             other is _$TravelPlanStateImpl &&
             (identical(other.detail, detail) || other.detail == detail) &&
             (identical(other.pageIndex, pageIndex) ||
-                other.pageIndex == pageIndex));
+                other.pageIndex == pageIndex) &&
+            (identical(other.cityIndex, cityIndex) ||
+                other.cityIndex == cityIndex));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, detail, pageIndex);
+  int get hashCode => Object.hash(runtimeType, detail, pageIndex, cityIndex);
 
   /// Create a copy of TravelPlanState
   /// with the given fields replaced by the non-null parameter values.
@@ -164,13 +181,16 @@ class _$TravelPlanStateImpl extends _TravelPlanState {
 abstract class _TravelPlanState extends TravelPlanState {
   const factory _TravelPlanState(
       {required final TravelDetailModel detail,
-      final int pageIndex}) = _$TravelPlanStateImpl;
+      final int pageIndex,
+      final int cityIndex}) = _$TravelPlanStateImpl;
   const _TravelPlanState._() : super._();
 
   @override
   TravelDetailModel get detail;
   @override
   int get pageIndex;
+  @override
+  int get cityIndex;
 
   /// Create a copy of TravelPlanState
   /// with the given fields replaced by the non-null parameter values.

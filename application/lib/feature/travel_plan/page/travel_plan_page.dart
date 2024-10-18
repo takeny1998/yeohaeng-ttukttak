@@ -21,18 +21,29 @@ class TravelPlanPage extends ConsumerStatefulWidget {
 }
 
 class _TravelPlanPageState extends ConsumerState<TravelPlanPage> {
-  final PageController pageController = PageController();
+  final scrollController = ScrollController();
+  final pageController = PageController();
 
   @override
   void dispose() {
     pageController.dispose();
+    scrollController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
     final travelId = widget._travelId;
+
+    final pageIndex = ref.watch(travelPlanProvider(travelId)).pageIndex;
+    final travel = ref.watch(travelPlanProvider(travelId)).detail.travel;
+
+    ref.listen(travelPlanProvider(travelId), (prev, next) {
+      final offset = next.pageIndex == 0 ? 0.0 : 180.0;
+
+      scrollController.animateTo(offset,
+          duration: const Duration(milliseconds: 300), curve: Curves.ease);
+    });
 
     final List<Widget> pages = [
       TravelPlanHomePage(travelId: travelId),
@@ -41,28 +52,28 @@ class _TravelPlanPageState extends ConsumerState<TravelPlanPage> {
       TravelPlanBookmarkPage(travelId: travelId),
     ];
 
-    final pageIndex = ref.watch(travelPlanProvider(travelId)).pageIndex;
-
     return Scaffold(
-      appBar: AppBar(
-        scrolledUnderElevation: 0.0,
-        backgroundColor: colorScheme.surface,
-        actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.share)),
-          Padding(
-            padding: const EdgeInsets.only(right: 8.0),
-            child: IconButton(onPressed: () {}, icon: const Icon(Icons.edit)),
-          )
-        ],
-      ),
-      body: AnimatedSwitcher(
-        transitionBuilder: (child, animation) => FadeTransition(
-          opacity: animation,
-          child: child,
-        ),
-        duration: const Duration(milliseconds: 200),
-        child: pages[pageIndex],
-      ),
+      body: NestedScrollView(
+          controller: scrollController,
+          headerSliverBuilder: (context, innerBoxIsScrolled) {
+            return [
+              SliverOverlapAbsorber(
+                  handle:
+                      NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                  sliver: TravelPlanHomeHeader(travel: travel))
+            ];
+          },
+          body: Builder(builder: (context) {
+            return CustomScrollView(
+              physics: const ClampingScrollPhysics(),
+              slivers: [
+                SliverOverlapInjector(
+                    handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
+                        context)),
+                pages[pageIndex],
+              ],
+            );
+          })),
       bottomNavigationBar: NavigationBar(
         selectedIndex: pageIndex,
         onDestinationSelected: (index) =>
