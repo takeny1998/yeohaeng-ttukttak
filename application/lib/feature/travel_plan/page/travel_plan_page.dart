@@ -25,6 +25,7 @@ class _TravelPlanPageState extends ConsumerState<TravelPlanPage> {
   final pageController = PageController();
 
   bool isHeaderExpanded = false;
+  bool isHeaderScrolled = false;
 
   @override
   void dispose() {
@@ -42,7 +43,9 @@ class _TravelPlanPageState extends ConsumerState<TravelPlanPage> {
 
     ref.listen(travelPlanProvider(travelId), (prev, next) {
       final isHomePage = next.pageIndex == 0;
-      final offset = isHomePage || !isHeaderExpanded ? 0.0 : 180.0;
+
+      final offset =
+          isHomePage || (!isHeaderExpanded && isHeaderScrolled) ? 0.0 : 180.0;
 
       scrollController.animateTo(offset,
           duration: const Duration(milliseconds: 300), curve: Curves.ease);
@@ -59,6 +62,8 @@ class _TravelPlanPageState extends ConsumerState<TravelPlanPage> {
       body: NestedScrollView(
           controller: scrollController,
           headerSliverBuilder: (context, innerBoxIsScrolled) {
+            isHeaderScrolled = innerBoxIsScrolled;
+
             return [
               SliverOverlapAbsorber(
                   handle:
