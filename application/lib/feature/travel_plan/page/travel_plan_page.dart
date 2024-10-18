@@ -24,6 +24,8 @@ class _TravelPlanPageState extends ConsumerState<TravelPlanPage> {
   final scrollController = ScrollController();
   final pageController = PageController();
 
+  bool isHeaderExpanded = false;
+
   @override
   void dispose() {
     pageController.dispose();
@@ -39,7 +41,8 @@ class _TravelPlanPageState extends ConsumerState<TravelPlanPage> {
     final travel = ref.watch(travelPlanProvider(travelId)).detail.travel;
 
     ref.listen(travelPlanProvider(travelId), (prev, next) {
-      final offset = next.pageIndex == 0 ? 0.0 : 180.0;
+      final isHomePage = next.pageIndex == 0;
+      final offset = isHomePage || !isHeaderExpanded ? 0.0 : 180.0;
 
       scrollController.animateTo(offset,
           duration: const Duration(milliseconds: 300), curve: Curves.ease);
@@ -60,16 +63,21 @@ class _TravelPlanPageState extends ConsumerState<TravelPlanPage> {
               SliverOverlapAbsorber(
                   handle:
                       NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-                  sliver: TravelPlanHomeHeader(travel: travel))
+                  sliver: TravelPlanHomeHeader(
+                    travel: travel,
+                    onScroll: (isExpanded) => isHeaderExpanded = isExpanded,
+                  ))
             ];
           },
           body: Builder(builder: (context) {
             return CustomScrollView(
               physics: const ClampingScrollPhysics(),
               slivers: [
-                SliverOverlapInjector(
-                    handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
-                        context)),
+                SliverLayoutBuilder(builder: (context, constraints) {
+                  return SliverOverlapInjector(
+                      handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
+                          context));
+                }),
                 pages[pageIndex],
               ],
             );

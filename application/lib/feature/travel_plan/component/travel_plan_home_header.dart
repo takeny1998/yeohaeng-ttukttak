@@ -4,10 +4,11 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class TravelPlanHomeHeader extends StatelessWidget {
-  final TravelModel _travel;
+  final TravelModel travel;
+  final void Function(bool isExpanded) onScroll;
 
-  const TravelPlanHomeHeader({super.key, required TravelModel travel})
-      : _travel = travel;
+  const TravelPlanHomeHeader(
+      {super.key, required this.travel, required this.onScroll});
 
   @override
   Widget build(BuildContext context) {
@@ -22,12 +23,15 @@ class TravelPlanHomeHeader extends StatelessWidget {
       color: colorScheme.secondary,
     );
 
+    const appBarHeight = 180.0 + kToolbarHeight;
+    final topPadding = MediaQuery.of(context).padding.top + kToolbarHeight;
+
     return SliverAppBar(
       scrolledUnderElevation: 0.0,
       pinned: true,
       floating: true,
       snap: true,
-      expandedHeight: 180.0 + kToolbarHeight,
+      expandedHeight: appBarHeight,
       actions: [
         IconButton(onPressed: () {}, icon: const Icon(Icons.share)),
         Padding(
@@ -36,33 +40,38 @@ class TravelPlanHomeHeader extends StatelessWidget {
         )
       ],
       backgroundColor: colorScheme.primaryContainer,
-      flexibleSpace: FlexibleSpaceBar(
-        background: SafeArea(
-            child: Padding(
-          padding: const EdgeInsets.fromLTRB(24.0, kToolbarHeight, 24.0, 0.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(_travel.formattedDate, style: dateStyle),
-              const SizedBox(height: 2.0),
-              Text(_travel.formattedName, style: nameStyle),
-              const SizedBox(height: 16.0),
-              Text('여행 설명이 없습니다.', style: dateStyle),
-              const SizedBox(height: 16.0),
-              Wrap(spacing: 8.0, children: [
-                Chip(
-                    backgroundColor: colorScheme.primary,
-                    labelStyle: TextStyle(color: colorScheme.onPrimary),
-                    label: Text(enumKey(_travel.companionType).tr())),
-                for (final motivation in _travel.motivations)
+      flexibleSpace: LayoutBuilder(builder: (context, constraints) {
+        final isExpanded = topPadding == constraints.biggest.height;
+        onScroll(isExpanded);
+
+        return FlexibleSpaceBar(
+          background: Padding(
+            padding: EdgeInsets.fromLTRB(
+                24.0, topPadding, 24.0, 0.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(travel.formattedDate, style: dateStyle),
+                const SizedBox(height: 2.0),
+                Text(travel.formattedName, style: nameStyle),
+                const SizedBox(height: 16.0),
+                Text('여행 설명이 없습니다.', style: dateStyle),
+                const SizedBox(height: 16.0),
+                Wrap(spacing: 8.0, children: [
                   Chip(
-                      backgroundColor: colorScheme.primaryFixedDim,
-                      label: Text(enumKey(motivation).tr())),
-              ]),
-            ],
+                      backgroundColor: colorScheme.primary,
+                      labelStyle: TextStyle(color: colorScheme.onPrimary),
+                      label: Text(enumKey(travel.companionType).tr())),
+                  for (final motivation in travel.motivations)
+                    Chip(
+                        backgroundColor: colorScheme.primaryFixedDim,
+                        label: Text(enumKey(motivation).tr())),
+                ]),
+              ],
+            ),
           ),
-        )),
-      ),
+        );
+      }),
     );
   }
 }
