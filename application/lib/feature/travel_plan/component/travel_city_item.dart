@@ -1,8 +1,8 @@
 import 'package:application_new/feature/geography/model/city_model.dart';
 import 'package:application_new/feature/geography/provider/geography_provider.dart';
+import 'package:application_new/shared/model/image_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:collection/collection.dart';
 
 class TravelCityItem extends ConsumerWidget {
@@ -10,7 +10,7 @@ class TravelCityItem extends ConsumerWidget {
   final bool isSelected;
   final VoidCallback onSelected;
 
-  final double radius = 56.0;
+  final double radius = 24.0;
 
   const TravelCityItem(
       {super.key,
@@ -36,6 +36,8 @@ class TravelCityItem extends ConsumerWidget {
     final backgroundColor =
         isSelected ? colorScheme.primaryContainer : colorScheme.surface;
 
+    final ImageModel(:path, :name, :ext) = city.insignia;
+
     return AnimatedContainer(
       color: backgroundColor,
       duration: const Duration(milliseconds: 350),
@@ -49,15 +51,12 @@ class TravelCityItem extends ConsumerWidget {
             margin:
                 const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
             child: Column(children: [
-              Container(
-                width: radius,
-                height: radius,
-                padding: const EdgeInsets.all(12.0),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(radius),
-                    border:
-                        Border.all(color: colorScheme.surfaceContainerHighest)),
+              CircleAvatar(
+                radius: radius,
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Image.network('https://host.tatine.kr$path/$name.$ext'),
+                ),
               ),
               const SizedBox(height: 6.0),
               Text(city.name, style: cityStyle),

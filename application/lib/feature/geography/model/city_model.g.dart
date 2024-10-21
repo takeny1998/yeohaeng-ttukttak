@@ -11,6 +11,7 @@ _$CityModelImpl _$$CityModelImplFromJson(Map<String, dynamic> json) =>
       id: (json['id'] as num).toInt(),
       name: json['name'] as String,
       regionId: (json['regionId'] as num).toInt(),
+      insignia: ImageModel.fromJson(json['insignia'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$CityModelImplToJson(_$CityModelImpl instance) =>
@@ -18,4 +19,5 @@ Map<String, dynamic> _$$CityModelImplToJson(_$CityModelImpl instance) =>
       'id': instance.id,
       'name': instance.name,
       'regionId': instance.regionId,
+      'insignia': instance.insignia,
     };

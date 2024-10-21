@@ -1,7 +1,7 @@
+import 'package:application_new/feature/geography/model/city_model.dart';
+import 'package:application_new/feature/geography/model/region_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import 'city_model.dart';
-import 'region_model.dart';
 
 part 'geography_state.freezed.dart';
 

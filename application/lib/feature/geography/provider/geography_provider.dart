@@ -2,8 +2,8 @@ import 'package:application_new/common/http/http_service_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../model/city_model.dart';
-import '../model/geography_state.dart';
 import '../model/region_model.dart';
+import 'geography_state.dart';
 
 part 'geography_provider.g.dart';
 

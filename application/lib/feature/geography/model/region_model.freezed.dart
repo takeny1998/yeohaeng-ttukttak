@@ -23,6 +23,7 @@ mixin _$RegionModel {
   int get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   String get shortName => throw _privateConstructorUsedError;
+  ImageModel get insignia => throw _privateConstructorUsedError;
 
   /// Serializes this RegionModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -40,7 +41,9 @@ abstract class $RegionModelCopyWith<$Res> {
           RegionModel value, $Res Function(RegionModel) then) =
       _$RegionModelCopyWithImpl<$Res, RegionModel>;
   @useResult
-  $Res call({int id, String name, String shortName});
+  $Res call({int id, String name, String shortName, ImageModel insignia});
+
+  $ImageModelCopyWith<$Res> get insignia;
 }
 
 /// @nodoc
@@ -61,6 +64,7 @@ class _$RegionModelCopyWithImpl<$Res, $Val extends RegionModel>
     Object? id = null,
     Object? name = null,
     Object? shortName = null,
+    Object? insignia = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -75,7 +79,21 @@ class _$RegionModelCopyWithImpl<$Res, $Val extends RegionModel>
           ? _value.shortName
           : shortName // ignore: cast_nullable_to_non_nullable
               as String,
+      insignia: null == insignia
+          ? _value.insignia
+          : insignia // ignore: cast_nullable_to_non_nullable
+              as ImageModel,
     ) as $Val);
+  }
+
+  /// Create a copy of RegionModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $ImageModelCopyWith<$Res> get insignia {
+    return $ImageModelCopyWith<$Res>(_value.insignia, (value) {
+      return _then(_value.copyWith(insignia: value) as $Val);
+    });
   }
 }
 
@@ -87,7 +105,10 @@ abstract class _$$RegionModelImplCopyWith<$Res>
       __$$RegionModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int id, String name, String shortName});
+  $Res call({int id, String name, String shortName, ImageModel insignia});
+
+  @override
+  $ImageModelCopyWith<$Res> get insignia;
 }
 
 /// @nodoc
@@ -106,6 +127,7 @@ class __$$RegionModelImplCopyWithImpl<$Res>
     Object? id = null,
     Object? name = null,
     Object? shortName = null,
+    Object? insignia = null,
   }) {
     return _then(_$RegionModelImpl(
       id: null == id
@@ -120,6 +142,10 @@ class __$$RegionModelImplCopyWithImpl<$Res>
           ? _value.shortName
           : shortName // ignore: cast_nullable_to_non_nullable
               as String,
+      insignia: null == insignia
+          ? _value.insignia
+          : insignia // ignore: cast_nullable_to_non_nullable
+              as ImageModel,
     ));
   }
 }
@@ -128,7 +154,10 @@ class __$$RegionModelImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$RegionModelImpl implements _RegionModel {
   const _$RegionModelImpl(
-      {required this.id, required this.name, required this.shortName});
+      {required this.id,
+      required this.name,
+      required this.shortName,
+      required this.insignia});
 
   factory _$RegionModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$RegionModelImplFromJson(json);
@@ -139,10 +168,12 @@ class _$RegionModelImpl implements _RegionModel {
   final String name;
   @override
   final String shortName;
+  @override
+  final ImageModel insignia;
 
   @override
   String toString() {
-    return 'RegionModel(id: $id, name: $name, shortName: $shortName)';
+    return 'RegionModel(id: $id, name: $name, shortName: $shortName, insignia: $insignia)';
   }
 
   @override
@@ -153,12 +184,14 @@ class _$RegionModelImpl implements _RegionModel {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.shortName, shortName) ||
-                other.shortName == shortName));
+                other.shortName == shortName) &&
+            (identical(other.insignia, insignia) ||
+                other.insignia == insignia));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, name, shortName);
+  int get hashCode => Object.hash(runtimeType, id, name, shortName, insignia);
 
   /// Create a copy of RegionModel
   /// with the given fields replaced by the non-null parameter values.
@@ -180,7 +213,8 @@ abstract class _RegionModel implements RegionModel {
   const factory _RegionModel(
       {required final int id,
       required final String name,
-      required final String shortName}) = _$RegionModelImpl;
+      required final String shortName,
+      required final ImageModel insignia}) = _$RegionModelImpl;
 
   factory _RegionModel.fromJson(Map<String, dynamic> json) =
       _$RegionModelImpl.fromJson;
@@ -191,6 +225,8 @@ abstract class _RegionModel implements RegionModel {
   String get name;
   @override
   String get shortName;
+  @override
+  ImageModel get insignia;
 
   /// Create a copy of RegionModel
   /// with the given fields replaced by the non-null parameter values.
