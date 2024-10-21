@@ -2,6 +2,7 @@ import 'package:application_new/common/util/translation.dart';
 import 'package:application_new/feature/geography/provider/geography_provider.dart';
 import 'package:application_new/feature/travel/component/bottom_action_button.dart';
 import 'package:application_new/feature/travel/component/city_list_item.dart';
+import 'package:application_new/feature/travel/component/selected_city_item.dart';
 import 'package:application_new/feature/travel/component/travel_region_item.dart';
 import 'package:application_new/feature/travel/delegate/city_search_delegate.dart';
 import 'package:application_new/feature/travel/provider/create_travel_state.dart';
@@ -18,11 +19,11 @@ class SelectTravelCityForm extends ConsumerStatefulWidget {
 }
 
 class _SelectTravelCityFormState extends ConsumerState<SelectTravelCityForm> {
-  final cityNameController = TextEditingController();
+  final scrollController = ScrollController();
 
   @override
   void dispose() {
-    cityNameController.dispose();
+    scrollController.dispose();
     super.dispose();
   }
 
@@ -36,8 +37,7 @@ class _SelectTravelCityFormState extends ConsumerState<SelectTravelCityForm> {
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
 
-    final titleStyle =
-        textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w600);
+    const titleStyle = TextStyle(fontSize: 21.0, fontWeight: FontWeight.w600);
 
     final trKey = baseKey('travel.select_city');
 
@@ -46,22 +46,22 @@ class _SelectTravelCityFormState extends ConsumerState<SelectTravelCityForm> {
       return city.regionId == selectedRegion.id;
     }).toList();
 
+    ref.listen(createTravelProvider, (prev, next) {
+      if (prev?.region == next.region) return;
+
+      scrollController.animateTo(0.0,
+          duration: const Duration(milliseconds: 300), curve: Curves.linear);
+    });
+
     return FilledChipTheme(
       child: Scaffold(
         appBar: AppBar(
-            scrolledUnderElevation: 0.0, backgroundColor: colorScheme.surface),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0),
-              child: Text(trKey('ask_city'), style: titleStyle).tr(),
-            ),
-            const SizedBox(height: 16.0),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+            titleSpacing: 0.0,
+            centerTitle: false,
+            title: Padding(
+              padding: const EdgeInsets.only(right: 24.0),
               child: TextField(
-                controller: cityNameController,
+                autofocus: true,
                 readOnly: true,
                 onTap: () async {
                   final foundCity = await showSearch(
@@ -77,41 +77,52 @@ class _SelectTravelCityFormState extends ConsumerState<SelectTravelCityForm> {
                   ref.read(createTravelProvider.notifier).selectCity(foundCity);
                 },
                 decoration: InputDecoration(
-                  filled: true,
                   fillColor: colorScheme.primaryContainer,
                   suffixIcon: const Icon(Icons.search),
                   hintStyle: TextStyle(color: colorScheme.secondary),
-                  hintText: '도시 이름을 입력해 주세요.',
+                  hintText: trKey('ask_city').tr(),
                 ),
               ),
             ),
+            scrolledUnderElevation: 0.0,
+            backgroundColor: colorScheme.surface),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
             const SizedBox(height: 16.0),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(children: [
-                const SizedBox(width: 24.0),
-                TravelRegionItem(
-                    name: '전체',
-                    isSelected: selectedRegion == null,
-                    onClick: () => ref
-                        .read(createTravelProvider.notifier)
-                        .selectRegion(null)),
-                const SizedBox(width: 8.0),
-                for (final region in geographyState.regions) ...[
-                  TravelRegionItem(
-                      name: region.shortName,
-                      insignia: region.insignia,
-                      isSelected: region == selectedRegion,
-                      onClick: () => ref
-                          .read(createTravelProvider.notifier)
-                          .selectRegion(region)),
-                  const SizedBox(width: 8.0),
-                ]
-              ]),
-            ),
-            const SizedBox(height: 16.0),
+            Column(children: [
+              SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(children: [
+                    const SizedBox(width: 24.0),
+                    TravelRegionItem(
+                        name: '전체',
+                        isSelected: selectedRegion == null,
+                        onClick: () => ref
+                            .read(createTravelProvider.notifier)
+                            .selectRegion(null)),
+                    const SizedBox(width: 8.0),
+                    for (final region in geographyState.regions) ...[
+                      TravelRegionItem(
+                          name: region.shortName,
+                          insignia: region.insignia,
+                          isSelected: region == selectedRegion,
+                          onClick: () => ref
+                              .read(createTravelProvider.notifier)
+                              .selectRegion(region)),
+                      const SizedBox(width: 8.0),
+                    ]
+                  ])),
+            ]),
+            Container(
+                decoration: BoxDecoration(
+                    border: Border(
+                        bottom:
+                            BorderSide(color: colorScheme.surfaceContainer))),
+                height: 12.0),
             Expanded(
               child: ListView.builder(
+                controller: scrollController,
                 itemCount: filteredCities.length,
                 itemBuilder: (context, index) {
                   final city = filteredCities[index];
@@ -130,14 +141,37 @@ class _SelectTravelCityFormState extends ConsumerState<SelectTravelCityForm> {
             ),
           ],
         ),
-        bottomNavigationBar: BottomActionButton(
-            onPressed: selectedCities.isNotEmpty
-                ? () => ref.read(createTravelProvider.notifier).submit()
-                : null,
-            child: selectedCities.isNotEmpty
-                ? Text(trKey('display_select'))
-                    .tr(args: ['${selectedCities.length}'])
-                : Text(trKey('require_select')).tr()),
+        bottomNavigationBar: Container(
+          decoration: BoxDecoration(
+              border:
+                  Border(top: BorderSide(color: colorScheme.surfaceContainer))),
+          child: BottomActionButton(
+              top: Padding(
+                padding: const EdgeInsets.only(bottom: 6.0),
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      for (final city in selectedCities) ...[
+                        SelectedCityItem(
+                            city: city,
+                            onCancel: () => ref
+                                .read(createTravelProvider.notifier)
+                                .selectCity(city)),
+                        const SizedBox(width: 12.0)
+                      ]
+                    ],
+                  ),
+                ),
+              ),
+              onPressed: selectedCities.isNotEmpty
+                  ? () => ref.read(createTravelProvider.notifier).submit()
+                  : null,
+              child: selectedCities.isNotEmpty
+                  ? Text(trKey('display_select'))
+                      .tr(args: ['${selectedCities.length}'])
+                  : Text(trKey('require_select')).tr()),
+        ),
       ),
     );
   }

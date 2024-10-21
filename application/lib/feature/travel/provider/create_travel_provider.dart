@@ -54,6 +54,7 @@ class CreateTravel extends _$CreateTravel {
     final isExist = cities.contains(city);
 
     if (isExist) {
+      
       state = state.copyWith(cities: [
         for (final e in cities)
           if (e != city) e
