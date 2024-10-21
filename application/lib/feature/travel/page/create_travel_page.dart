@@ -50,7 +50,9 @@ class _CreateTravelPageState extends ConsumerState<CreateTravelPage> {
     });
 
     return Scaffold(
-      body: PageView(controller: pageController, children: const [
+      body: PageView(
+          physics: const NeverScrollableScrollPhysics(),
+          controller: pageController, children: const [
         SelectTravelDateForm(),
         SelectTravelDetailForm(),
         SelectTravelCityForm()
