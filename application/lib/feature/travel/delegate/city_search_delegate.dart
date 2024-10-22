@@ -1,4 +1,3 @@
-
 import 'package:application_new/feature/geography/model/city_model.dart';
 import 'package:application_new/feature/geography/model/region_model.dart';
 import 'package:application_new/shared/model/image_model.dart';
@@ -13,12 +12,12 @@ final class CitySearchDelegate extends SearchDelegate<CityModel> {
 
   CitySearchDelegate(
       {super.searchFieldLabel,
-        super.searchFieldStyle,
-        super.searchFieldDecorationTheme,
-        super.keyboardType,
-        super.textInputAction,
-        required this.cities,
-        required this.regions});
+      super.searchFieldDecorationTheme,
+      super.keyboardType,
+      super.textInputAction,
+      required this.cities,
+      required this.regions})
+      : super(searchFieldStyle: const TextStyle(fontSize: 18.0));
 
   @override
   List<Widget>? buildActions(BuildContext context) {
@@ -52,13 +51,13 @@ final class CitySearchDelegate extends SearchDelegate<CityModel> {
       itemBuilder: (context, index) {
         final city = filteredCities[index];
         final region =
-        regions.firstWhere((region) => region.id == city.regionId);
+            regions.firstWhere((region) => region.id == city.regionId);
 
         final ImageModel(:path, :name, :ext) = city.insignia;
         final ThemeData(:textTheme, :colorScheme) = Theme.of(context);
 
         final titleStyle =
-        textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600);
+            textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600);
 
         final otherName = city.name.replaceFirst(query, '');
 
@@ -74,14 +73,14 @@ final class CitySearchDelegate extends SearchDelegate<CityModel> {
             contentPadding: const EdgeInsets.symmetric(horizontal: 24),
             title: RichText(
                 text: TextSpan(style: titleStyle, children: [
-                  TextSpan(
-                      text: query, style: TextStyle(color: colorScheme.primary)),
-                  TextSpan(text: otherName)
-                ])),
+              TextSpan(
+                  text: query, style: TextStyle(color: colorScheme.primary)),
+              TextSpan(text: otherName)
+            ])),
             subtitle: Text(
               '${region.name} · ${'korea'.tr()}',
               style:
-              textTheme.bodyMedium?.copyWith(color: colorScheme.secondary),
+                  textTheme.bodyMedium?.copyWith(color: colorScheme.secondary),
             ));
       },
     );
