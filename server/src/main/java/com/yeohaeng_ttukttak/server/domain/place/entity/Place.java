@@ -16,7 +16,7 @@ import java.util.List;
 import static lombok.AccessLevel.PROTECTED;
 
 @Entity
-@ToString
+@ToString(exclude = {"categories", "visits"})
 @NoArgsConstructor(access = PROTECTED)
 public final class Place {
 

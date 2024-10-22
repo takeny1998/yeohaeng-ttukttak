@@ -1,6 +1,11 @@
 package com.yeohaeng_ttukttak.server.domain.place.repository;
 
+import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberExpression;
+import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.yeohaeng_ttukttak.server.domain.place.entity.Place;
@@ -14,6 +19,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+import static com.querydsl.jpa.JPAExpressions.select;
 import static com.querydsl.jpa.JPAExpressions.selectFrom;
 import static com.yeohaeng_ttukttak.server.domain.place.entity.QPlace.place;
 import static com.yeohaeng_ttukttak.server.domain.travel.entity.QTravel.travel;
@@ -27,41 +33,33 @@ public class PlaceRecommendationRepository {
 
     private final JPAQueryFactory queryFactory;
 
-    public List<Place> find(PlaceCategory category, int codeStart, int codeEnd, Motivation motivation, CompanionType companionType) {
+    public List<Tuple> recommendByMotivation(PlaceCategory category, int codeStart, int codeEnd, Motivation motivation) {
 
-        QPlaceCategoryMapping pc = new QPlaceCategoryMapping("pc");
+        NumberPath<Long> matchedCount = Expressions.numberPath(Long.class, "matchedCount");
 
-        return queryFactory.selectFrom(place)
+        return queryFactory.
+                select(place, travelMotivation.count().as(matchedCount))
+                .from(place)
                 .join(travelVisit).on(travelVisit.place.eq(place))
                 .join(travel).on(travelVisit.travel.eq(travel))
-                .where(
-                        place.regionCode.between(codeStart, codeEnd),
-                        existsCategory(category, pc),
-                        existsMotivation(motivation),
-                        existsCompanionType(companionType))
+                .join(travelMotivation).on(travelMotivation.travel.eq(travel))
+                .where(inRegion(codeStart, codeEnd), existsCategory(category), travelMotivation.motivation.eq(motivation))
+                .groupBy(place, travelMotivation.motivation)
+                .orderBy(matchedCount.desc(), place.id.asc())
                 .fetch();
     }
 
-    private BooleanExpression existsCategory(PlaceCategory category, QPlaceCategoryMapping pc) {
-        return selectFrom(pc)
+    private BooleanExpression inRegion(int codeStart, int codeEnd) {
+        return place.regionCode.between(codeStart, codeEnd);
+    }
+
+    private BooleanExpression existsCategory(PlaceCategory category) {
+        QPlaceCategoryMapping pc = new QPlaceCategoryMapping("pc");
+
+        return select()
+                .from(pc)
                 .where(pc.place.eq(place), pc.category.eq(category))
                 .exists();
-    }
 
-    private BooleanExpression existsMotivation(Motivation motivation) {
-        return motivation != null ?
-                selectFrom(travelMotivation)
-                        .where(travelMotivation.travel.eq(travel),
-                                travelMotivation.motivation.eq(motivation))
-                        .exists() : null;
     }
-
-    private BooleanExpression existsCompanionType(CompanionType companionType) {
-        return companionType != null ?
-                selectFrom(travelCompanion)
-                        .where(travelCompanion.travel.eq(travel),
-                                travelCompanion.type.eq(companionType))
-                        .exists() : null;
-    }
-
 }

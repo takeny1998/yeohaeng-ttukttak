@@ -1,5 +1,6 @@
 package com.yeohaeng_ttukttak.server.application.recommendations.controller;
 
+import com.querydsl.core.Tuple;
 import com.yeohaeng_ttukttak.server.application.recommendations.controller.dto.RecommendPlacesRequest;
 import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundException;
@@ -34,13 +35,17 @@ public class RecommendationsController {
         City city = geographyRepository.findCityById(request.cityId())
                 .orElseThrow(EntityNotFoundException::new);
 
-        List<Place> places = placeRecommendRepository.find(
+        List<Tuple> tuples = placeRecommendRepository.recommendByMotivation(
                 category,
                 city.codeStart(), city.codeEnd(),
-                request.motivation(),
-                request.companion());
+                request.motivation());
 
-        return new ServerResponse<>(places.stream().map(PlaceDto::of).toList());
+        List<PlaceDto> places = tuples.stream()
+                .map(tuple -> tuple.get(0, Place.class))
+                .map(PlaceDto::of)
+                .toList();
+
+        return new ServerResponse<>(places);
     }
 
 }
