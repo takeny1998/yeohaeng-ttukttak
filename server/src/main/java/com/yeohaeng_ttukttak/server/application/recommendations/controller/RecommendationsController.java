@@ -1,15 +1,15 @@
 package com.yeohaeng_ttukttak.server.application.recommendations.controller;
 
-import com.querydsl.core.Tuple;
-import com.yeohaeng_ttukttak.server.application.recommendations.controller.dto.RecommendPlacesRequest;
 import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundException;
-import com.yeohaeng_ttukttak.server.domain.geography.entity.City;
+import com.yeohaeng_ttukttak.server.domain.geography.entity.Geography;
 import com.yeohaeng_ttukttak.server.domain.geography.repository.GeographyRepository;
 import com.yeohaeng_ttukttak.server.domain.place.dto.PlaceDto;
 import com.yeohaeng_ttukttak.server.domain.place.entity.Place;
 import com.yeohaeng_ttukttak.server.domain.place.entity.PlaceCategory;
 import com.yeohaeng_ttukttak.server.domain.place.repository.PlaceRecommendationRepository;
+import com.yeohaeng_ttukttak.server.domain.travel.entity.CompanionType;
+import com.yeohaeng_ttukttak.server.domain.travel.entity.Motivation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,25 +27,37 @@ public class RecommendationsController {
     private final GeographyRepository geographyRepository;
     private final PlaceRecommendationRepository placeRecommendRepository;
 
-    @GetMapping("/places/{category}")
-    public ServerResponse<List<PlaceDto>> recommend(
+    @GetMapping("/places/{category}/motivation/{motivation}")
+    public ServerResponse<List<PlaceDto>> recommendByMotivation(
             @PathVariable PlaceCategory category,
-            @ModelAttribute RecommendPlacesRequest request) {
+            @RequestParam("cityId") Long cityId,
+            @PathVariable("motivation") Motivation motivation) {
 
-        City city = geographyRepository.findCityById(request.cityId())
+        Geography geography = geographyRepository.findById(cityId)
                 .orElseThrow(EntityNotFoundException::new);
 
-        List<Tuple> tuples = placeRecommendRepository.recommendByMotivation(
-                category,
-                city.codeStart(), city.codeEnd(),
-                request.motivation());
+        List<Place> places = placeRecommendRepository.recommendByMotivation(
+                category, geography.codeStart(), geography.codeEnd(), motivation);
 
-        List<PlaceDto> places = tuples.stream()
-                .map(tuple -> tuple.get(0, Place.class))
+        return new ServerResponse<>(places.stream()
                 .map(PlaceDto::of)
-                .toList();
-
-        return new ServerResponse<>(places);
+                .toList());
     }
 
+    @GetMapping("/places/{category}/companionType/{companionType}")
+    public ServerResponse<List<PlaceDto>> recommendByCompanionType(
+            @PathVariable PlaceCategory category,
+            @RequestParam("cityId") Long cityId,
+            @PathVariable("companionType") CompanionType companionType) {
+
+        Geography geography = geographyRepository.findById(cityId)
+                .orElseThrow(EntityNotFoundException::new);
+
+        List<Place> places = placeRecommendRepository.recommendByCompanionType(
+                category, geography.codeStart(), geography.codeEnd(), companionType);
+
+        return new ServerResponse<>(places.stream()
+                .map(PlaceDto::of)
+                .toList());
+    }
 }
