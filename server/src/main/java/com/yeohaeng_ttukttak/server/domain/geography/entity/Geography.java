@@ -28,7 +28,11 @@ public abstract class Geography {
 
     @NotNull
     @Column(insertable = false, updatable = false)
-    private int code;
+    private int codeStart;
+
+    @NotNull
+    @Column(insertable = false, updatable = false)
+    private int codeEnd;
 
     private String name;
 
@@ -66,6 +70,14 @@ public abstract class Geography {
 
     public GeographyInsigniaImage insignia() {
         return insignia;
+    }
+
+    public int codeStart() {
+        return codeStart;
+    }
+
+    public int codeEnd() {
+        return codeEnd;
     }
 }
 
