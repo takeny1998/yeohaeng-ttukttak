@@ -1,16 +1,17 @@
 import 'package:application_new/common/util/translation.dart';
 import 'package:application_new/feature/geography/provider/geography_provider.dart';
-import 'package:application_new/feature/travel/component/bottom_action_button.dart';
-import 'package:application_new/feature/travel/component/city_list_item.dart';
-import 'package:application_new/feature/travel/component/selected_city_item.dart';
-import 'package:application_new/feature/travel/component/travel_region_item.dart';
-import 'package:application_new/feature/travel/delegate/city_search_delegate.dart';
-import 'package:application_new/feature/travel/provider/create_travel_state.dart';
-import 'package:application_new/feature/travel/provider/create_travel_provider.dart';
+import 'package:application_new/feature/travel_create/component/bottom_action_button.dart';
+import 'package:application_new/feature/travel_create/component/city_list_item.dart';
+import 'package:application_new/feature/travel_create/component/selected_city_item.dart';
+import 'package:application_new/feature/travel_create/component/travel_region_item.dart';
+import 'package:application_new/feature/travel_create/delegate/city_search_delegate.dart';
+import 'package:application_new/feature/travel_create/provider/travel_create_state.dart';
 import 'package:application_new/shared/component/filled_chip_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../provider/travel_create_provider.dart';
 
 class SelectTravelCityForm extends ConsumerStatefulWidget {
   const SelectTravelCityForm({super.key});
@@ -29,15 +30,11 @@ class _SelectTravelCityFormState extends ConsumerState<SelectTravelCityForm> {
 
   @override
   Widget build(BuildContext context) {
-    final CreateTravelState(cities: selectedCities, region: selectedRegion) =
-        ref.watch(createTravelProvider);
+    final TravelCreateState(cities: selectedCities, region: selectedRegion) =
+        ref.watch(travelCreateProvider);
 
     final geographyState = ref.watch(geographyProvider);
-
-    final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
-
-    const titleStyle = TextStyle(fontSize: 21.0, fontWeight: FontWeight.w600);
 
     final trKey = baseKey('travel.select_city');
 
@@ -46,7 +43,7 @@ class _SelectTravelCityFormState extends ConsumerState<SelectTravelCityForm> {
       return city.regionId == selectedRegion.id;
     }).toList();
 
-    ref.listen(createTravelProvider, (prev, next) {
+    ref.listen(travelCreateProvider, (prev, next) {
       if (prev?.region == next.region) return;
 
       scrollController.animateTo(0.0,
@@ -74,7 +71,7 @@ class _SelectTravelCityFormState extends ConsumerState<SelectTravelCityForm> {
                     return;
                   }
 
-                  ref.read(createTravelProvider.notifier).selectCity(foundCity);
+                  ref.read(travelCreateProvider.notifier).selectCity(foundCity);
                 },
                 decoration: InputDecoration(
                   fillColor: colorScheme.primaryContainer,
@@ -99,7 +96,7 @@ class _SelectTravelCityFormState extends ConsumerState<SelectTravelCityForm> {
                         name: '전체',
                         isSelected: selectedRegion == null,
                         onClick: () => ref
-                            .read(createTravelProvider.notifier)
+                            .read(travelCreateProvider.notifier)
                             .selectRegion(null)),
                     const SizedBox(width: 8.0),
                     for (final region in geographyState.regions) ...[
@@ -108,7 +105,7 @@ class _SelectTravelCityFormState extends ConsumerState<SelectTravelCityForm> {
                           insignia: region.insignia,
                           isSelected: region == selectedRegion,
                           onClick: () => ref
-                              .read(createTravelProvider.notifier)
+                              .read(travelCreateProvider.notifier)
                               .selectRegion(region)),
                       const SizedBox(width: 8.0),
                     ]
@@ -134,7 +131,7 @@ class _SelectTravelCityFormState extends ConsumerState<SelectTravelCityForm> {
                       city: city,
                       isSelected: selectedCities.contains(city),
                       onSelect: () => ref
-                          .read(createTravelProvider.notifier)
+                          .read(travelCreateProvider.notifier)
                           .selectCity(city));
                 },
               ),
@@ -156,7 +153,7 @@ class _SelectTravelCityFormState extends ConsumerState<SelectTravelCityForm> {
                         SelectedCityItem(
                             city: city,
                             onCancel: () => ref
-                                .read(createTravelProvider.notifier)
+                                .read(travelCreateProvider.notifier)
                                 .selectCity(city)),
                         const SizedBox(width: 12.0)
                       ]
@@ -165,7 +162,7 @@ class _SelectTravelCityFormState extends ConsumerState<SelectTravelCityForm> {
                 ),
               ),
               onPressed: selectedCities.isNotEmpty
-                  ? () => ref.read(createTravelProvider.notifier).submit()
+                  ? () => ref.read(travelCreateProvider.notifier).submit()
                   : null,
               child: selectedCities.isNotEmpty
                   ? Text(trKey('display_select'))

@@ -1,11 +1,13 @@
 import 'package:application_new/common/util/translation.dart';
-import 'package:application_new/feature/travel/component/bottom_action_button.dart';
-import 'package:application_new/feature/travel/provider/create_travel_provider.dart';
+import 'package:application_new/feature/travel_create/component/bottom_action_button.dart';
+import 'package:application_new/feature/travel_create/provider/travel_create_state.dart';
 import 'package:application_new/shared/component/filled_chip_theme.dart';
 import 'package:application_new/shared/model/travel/travel_model.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../provider/travel_create_provider.dart';
 
 class SelectTravelDetailForm extends ConsumerWidget {
   const SelectTravelDetailForm({super.key});
@@ -21,7 +23,7 @@ class SelectTravelDetailForm extends ConsumerWidget {
     final subTitleStyle =
         textTheme.labelLarge?.copyWith(color: colorScheme.secondary);
 
-    final state = ref.watch(createTravelProvider);
+    final state = ref.watch(travelCreateProvider);
 
     final trKey = baseKey('travel.select_detail');
 
@@ -59,7 +61,7 @@ class SelectTravelDetailForm extends ConsumerWidget {
                       selected: state.companion == companion,
                       onSelected: (isSelected) {
                         if (!isSelected) return;
-                        final notifier = ref.read(createTravelProvider.notifier);
+                        final notifier = ref.read(travelCreateProvider.notifier);
                         notifier.selectCompanion(companion);
                       },
                     ),
@@ -77,7 +79,7 @@ class SelectTravelDetailForm extends ConsumerWidget {
                       label: Text(enumKey(motivation)).tr(),
                       selected: state.motivations.contains(motivation),
                       onSelected: (_) {
-                        final notifier = ref.read(createTravelProvider.notifier);
+                        final notifier = ref.read(travelCreateProvider.notifier);
                         notifier.selectMotivation(motivation);
                       },
                     ),
@@ -88,7 +90,7 @@ class SelectTravelDetailForm extends ConsumerWidget {
         ),
         bottomNavigationBar: BottomActionButton(
           onPressed:
-              areSelected ? () => ref.read(createTravelProvider.notifier).nextPage() : null,
+              areSelected ? () => ref.read(travelCreateProvider.notifier).nextPage() : null,
           child: Text(
             areSelected ? 'next' : trKey('require_detail'),
             style: buttonTextStyle,

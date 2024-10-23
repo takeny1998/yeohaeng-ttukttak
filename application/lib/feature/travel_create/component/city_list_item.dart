@@ -1,6 +1,6 @@
 import 'package:application_new/feature/geography/model/city_model.dart';
 import 'package:application_new/feature/geography/model/region_model.dart';
-import 'package:application_new/feature/travel/provider/create_travel_provider.dart';
+import 'package:application_new/feature/travel_create/provider/travel_create_state.dart';
 import 'package:application_new/shared/model/image_model.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';

@@ -3,11 +3,11 @@ import 'package:application_new/feature/geography/model/region_model.dart';
 import 'package:application_new/shared/model/travel/travel_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'create_travel_state.freezed.dart';
+part 'travel_create_state.freezed.dart';
 
 @freezed
-class CreateTravelState with _$CreateTravelState {
-  const factory CreateTravelState({
+class TravelCreateState with _$TravelCreateState {
+  const factory TravelCreateState({
     @Default(0) int pageNumber,
     DateTime? startedOn,
     DateTime? endedOn,
@@ -16,5 +16,5 @@ class CreateTravelState with _$CreateTravelState {
     RegionModel? region,
     @Default([]) List<CityModel> cities,
     @Default(false) bool isSubmitted,
-  }) = _CreateTravelState;
+  }) = _TravelCreateState;
 }

@@ -1,17 +1,18 @@
 import 'package:application_new/common/util/translation.dart';
-import 'package:application_new/feature/travel/component/bottom_action_button.dart';
-import 'package:application_new/feature/travel/provider/create_travel_provider.dart';
+import 'package:application_new/feature/travel_create/component/bottom_action_button.dart';
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../provider/travel_create_provider.dart';
 
 class SelectTravelDateForm extends ConsumerWidget {
   const SelectTravelDateForm({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(createTravelProvider);
+    final state = ref.watch(travelCreateProvider);
     final startedOn = state.startedOn;
     final endedOn = state.endedOn;
 
@@ -63,14 +64,14 @@ class SelectTravelDateForm extends ConsumerWidget {
             if (dates.length < 2) return;
             final [startedOn, endedOn] = dates;
             ref
-                .read(createTravelProvider.notifier)
+                .read(travelCreateProvider.notifier)
                 .selectDate(startedOn, endedOn);
           },
         ),
       ),
       bottomNavigationBar: BottomActionButton(
           onPressed: areSelected
-              ? () => ref.read(createTravelProvider.notifier).nextPage()
+              ? () => ref.read(travelCreateProvider.notifier).nextPage()
               : null,
           child: areSelected
               ? Text(

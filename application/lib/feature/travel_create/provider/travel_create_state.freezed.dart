@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'create_travel_state.dart';
+part of 'travel_create_state.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -15,7 +15,7 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
-mixin _$CreateTravelState {
+mixin _$TravelCreateState {
   int get pageNumber => throw _privateConstructorUsedError;
   DateTime? get startedOn => throw _privateConstructorUsedError;
   DateTime? get endedOn => throw _privateConstructorUsedError;
@@ -25,18 +25,18 @@ mixin _$CreateTravelState {
   List<CityModel> get cities => throw _privateConstructorUsedError;
   bool get isSubmitted => throw _privateConstructorUsedError;
 
-  /// Create a copy of CreateTravelState
+  /// Create a copy of TravelCreateState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $CreateTravelStateCopyWith<CreateTravelState> get copyWith =>
+  $TravelCreateStateCopyWith<TravelCreateState> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $CreateTravelStateCopyWith<$Res> {
-  factory $CreateTravelStateCopyWith(
-          CreateTravelState value, $Res Function(CreateTravelState) then) =
-      _$CreateTravelStateCopyWithImpl<$Res, CreateTravelState>;
+abstract class $TravelCreateStateCopyWith<$Res> {
+  factory $TravelCreateStateCopyWith(
+          TravelCreateState value, $Res Function(TravelCreateState) then) =
+      _$TravelCreateStateCopyWithImpl<$Res, TravelCreateState>;
   @useResult
   $Res call(
       {int pageNumber,
@@ -52,16 +52,16 @@ abstract class $CreateTravelStateCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$CreateTravelStateCopyWithImpl<$Res, $Val extends CreateTravelState>
-    implements $CreateTravelStateCopyWith<$Res> {
-  _$CreateTravelStateCopyWithImpl(this._value, this._then);
+class _$TravelCreateStateCopyWithImpl<$Res, $Val extends TravelCreateState>
+    implements $TravelCreateStateCopyWith<$Res> {
+  _$TravelCreateStateCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of CreateTravelState
+  /// Create a copy of TravelCreateState
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -111,7 +111,7 @@ class _$CreateTravelStateCopyWithImpl<$Res, $Val extends CreateTravelState>
     ) as $Val);
   }
 
-  /// Create a copy of CreateTravelState
+  /// Create a copy of TravelCreateState
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
@@ -127,11 +127,11 @@ class _$CreateTravelStateCopyWithImpl<$Res, $Val extends CreateTravelState>
 }
 
 /// @nodoc
-abstract class _$$CreateTravelStateImplCopyWith<$Res>
-    implements $CreateTravelStateCopyWith<$Res> {
-  factory _$$CreateTravelStateImplCopyWith(_$CreateTravelStateImpl value,
-          $Res Function(_$CreateTravelStateImpl) then) =
-      __$$CreateTravelStateImplCopyWithImpl<$Res>;
+abstract class _$$TravelCreateStateImplCopyWith<$Res>
+    implements $TravelCreateStateCopyWith<$Res> {
+  factory _$$TravelCreateStateImplCopyWith(_$TravelCreateStateImpl value,
+          $Res Function(_$TravelCreateStateImpl) then) =
+      __$$TravelCreateStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -149,14 +149,14 @@ abstract class _$$CreateTravelStateImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$CreateTravelStateImplCopyWithImpl<$Res>
-    extends _$CreateTravelStateCopyWithImpl<$Res, _$CreateTravelStateImpl>
-    implements _$$CreateTravelStateImplCopyWith<$Res> {
-  __$$CreateTravelStateImplCopyWithImpl(_$CreateTravelStateImpl _value,
-      $Res Function(_$CreateTravelStateImpl) _then)
+class __$$TravelCreateStateImplCopyWithImpl<$Res>
+    extends _$TravelCreateStateCopyWithImpl<$Res, _$TravelCreateStateImpl>
+    implements _$$TravelCreateStateImplCopyWith<$Res> {
+  __$$TravelCreateStateImplCopyWithImpl(_$TravelCreateStateImpl _value,
+      $Res Function(_$TravelCreateStateImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of CreateTravelState
+  /// Create a copy of TravelCreateState
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -170,7 +170,7 @@ class __$$CreateTravelStateImplCopyWithImpl<$Res>
     Object? cities = null,
     Object? isSubmitted = null,
   }) {
-    return _then(_$CreateTravelStateImpl(
+    return _then(_$TravelCreateStateImpl(
       pageNumber: null == pageNumber
           ? _value.pageNumber
           : pageNumber // ignore: cast_nullable_to_non_nullable
@@ -209,8 +209,8 @@ class __$$CreateTravelStateImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$CreateTravelStateImpl implements _CreateTravelState {
-  const _$CreateTravelStateImpl(
+class _$TravelCreateStateImpl implements _TravelCreateState {
+  const _$TravelCreateStateImpl(
       {this.pageNumber = 0,
       this.startedOn,
       this.endedOn,
@@ -257,14 +257,14 @@ class _$CreateTravelStateImpl implements _CreateTravelState {
 
   @override
   String toString() {
-    return 'CreateTravelState(pageNumber: $pageNumber, startedOn: $startedOn, endedOn: $endedOn, companion: $companion, motivations: $motivations, region: $region, cities: $cities, isSubmitted: $isSubmitted)';
+    return 'TravelCreateState(pageNumber: $pageNumber, startedOn: $startedOn, endedOn: $endedOn, companion: $companion, motivations: $motivations, region: $region, cities: $cities, isSubmitted: $isSubmitted)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$CreateTravelStateImpl &&
+            other is _$TravelCreateStateImpl &&
             (identical(other.pageNumber, pageNumber) ||
                 other.pageNumber == pageNumber) &&
             (identical(other.startedOn, startedOn) ||
@@ -292,18 +292,18 @@ class _$CreateTravelStateImpl implements _CreateTravelState {
       const DeepCollectionEquality().hash(_cities),
       isSubmitted);
 
-  /// Create a copy of CreateTravelState
+  /// Create a copy of TravelCreateState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$CreateTravelStateImplCopyWith<_$CreateTravelStateImpl> get copyWith =>
-      __$$CreateTravelStateImplCopyWithImpl<_$CreateTravelStateImpl>(
+  _$$TravelCreateStateImplCopyWith<_$TravelCreateStateImpl> get copyWith =>
+      __$$TravelCreateStateImplCopyWithImpl<_$TravelCreateStateImpl>(
           this, _$identity);
 }
 
-abstract class _CreateTravelState implements CreateTravelState {
-  const factory _CreateTravelState(
+abstract class _TravelCreateState implements TravelCreateState {
+  const factory _TravelCreateState(
       {final int pageNumber,
       final DateTime? startedOn,
       final DateTime? endedOn,
@@ -311,7 +311,7 @@ abstract class _CreateTravelState implements CreateTravelState {
       final List<TravelMotivation> motivations,
       final RegionModel? region,
       final List<CityModel> cities,
-      final bool isSubmitted}) = _$CreateTravelStateImpl;
+      final bool isSubmitted}) = _$TravelCreateStateImpl;
 
   @override
   int get pageNumber;
@@ -330,10 +330,10 @@ abstract class _CreateTravelState implements CreateTravelState {
   @override
   bool get isSubmitted;
 
-  /// Create a copy of CreateTravelState
+  /// Create a copy of TravelCreateState
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$CreateTravelStateImplCopyWith<_$CreateTravelStateImpl> get copyWith =>
+  _$$TravelCreateStateImplCopyWith<_$TravelCreateStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
