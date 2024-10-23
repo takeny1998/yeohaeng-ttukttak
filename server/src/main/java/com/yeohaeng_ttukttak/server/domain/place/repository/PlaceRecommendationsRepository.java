@@ -20,39 +20,45 @@ import static com.yeohaeng_ttukttak.server.domain.travel.entity.QTravelMotivatio
 import static com.yeohaeng_ttukttak.server.domain.travel.entity.QTravelVisit.travelVisit;
 @Repository
 @RequiredArgsConstructor
-public class PlaceRecommendationRepository {
+public class PlaceRecommendationsRepository {
 
     private final JPAQueryFactory queryFactory;
 
-    public List<Place> recommendByMotivation(PlaceCategory category, int codeStart, int codeEnd, Motivation motivation) {
+    public List<Place> byMotivationOrderByRatio(PlaceCategory category, int codeStart, int codeEnd, Motivation motivation) {
         NumberExpression<Double> ratioExpression = createRatioExpression(
                 travelMotivation.motivation.eq(motivation),
                 travelMotivation.motivation.count());
 
-        return createBaseQuery(ratioExpression, codeStart, codeEnd, category)
-                .join(travelMotivation).on(travelMotivation.travel.eq(travel))
-                .fetch();
+        JPAQuery<Place> query = createBaseQuery(codeStart, codeEnd, category)
+                .join(travelMotivation).on(travelMotivation.travel.eq(travel));
+
+        return orderByRatio(ratioExpression, query).fetch();
     }
 
-    public List<Place> recommendByCompanionType(PlaceCategory category, int codeStart, int codeEnd, CompanionType companionType) {
+    public List<Place> byCompanionTypeOrderByRatio(PlaceCategory category, int codeStart, int codeEnd, CompanionType companionType) {
         NumberExpression<Double> ratioExpression = createRatioExpression(
                 travelCompanion.type.eq(companionType),
                 travelCompanion.type.count());
 
-        return createBaseQuery(ratioExpression, codeStart, codeEnd, category)
-                .join(travelCompanion).on(travelCompanion.travel.eq(travel))
-                .fetch();
+        JPAQuery<Place> query = createBaseQuery(codeStart, codeEnd, category)
+                .join(travelCompanion).on(travelCompanion.travel.eq(travel));
+
+        return orderByRatio(ratioExpression, query).fetch();
     }
 
-    private JPAQuery<Place> createBaseQuery(NumberExpression<Double> ratioExpression, int codeStart, int codeEnd, PlaceCategory category) {
+    private JPAQuery<Place> orderByRatio(NumberExpression<Double> ratioExpression, JPAQuery<Place> query) {
+        return query
+                .having(ratioExpression.gt(0.0))
+                .orderBy(ratioExpression.desc(), place.id.asc());
+    }
+
+    private JPAQuery<Place> createBaseQuery(int codeStart, int codeEnd, PlaceCategory category) {
         return queryFactory
                 .selectFrom(place)
                 .join(travelVisit).on(travelVisit.place.eq(place))
                 .join(travel).on(travelVisit.travel.eq(travel))
                 .where(inRegion(codeStart, codeEnd), existsCategory(category))
-                .groupBy(place)
-                .having(ratioExpression.gt(0.0))
-                .orderBy(ratioExpression.desc(), place.id.asc());
+                .groupBy(place);
     }
 
     private NumberExpression<Double> createRatioExpression(BooleanExpression eq, NumberExpression<Long> count) {
