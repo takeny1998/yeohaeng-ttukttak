@@ -64,8 +64,17 @@ class _TravelPlanPageState extends ConsumerState<TravelPlanPage> {
           ? 0.0
           : headerOffset;
 
+      scrollController.jumpTo(0.0);
+      isHeaderSnapped = false;
+      isHeaderScrolled = false;
+
       const duration = Duration(milliseconds: 200);
       animateTo(offset, duration: duration);
+
+      final bodyController =
+          globalKey.currentState?.innerController;
+
+      bodyController?.jumpTo(5.0);
     });
 
     final List<Widget> pages = [
@@ -91,19 +100,21 @@ class _TravelPlanPageState extends ConsumerState<TravelPlanPage> {
                     onScroll: (isCollapsed) {
                       isHeaderSnapped = !isCollapsed;
 
-                      if (!isHeaderSnapped ||
-                          !isHeaderScrolled ||
-                          animatingCount > 0) return;
+                      if (isHeaderSnapped &&
+                          isHeaderScrolled &&
+                          animatingCount == 0) {
 
-                      final bodyOffset =
-                          globalKey.currentState?.innerController.offset;
+                        final bodyController =
+                            globalKey.currentState?.innerController;
 
-                      if (bodyOffset == null || bodyOffset > 120.0) return;
+                        if (bodyController == null) return;
 
-                      isHeaderSnapped = false;
+                        if (bodyController.offset > 120.0) return;
 
-                      animateTo(0.0,
-                          duration: const Duration(milliseconds: 300));
+                        isHeaderSnapped = false;
+                        animateTo(0.0,
+                            duration: const Duration(milliseconds: 300));
+                      }
                     },
                   ))
             ];
