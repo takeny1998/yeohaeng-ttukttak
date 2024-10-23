@@ -41,8 +41,8 @@ class TravelPlanHomeHeader extends StatelessWidget {
       ],
       backgroundColor: colorScheme.primaryContainer,
       flexibleSpace: LayoutBuilder(builder: (context, constraints) {
-        final isExpanded = topPadding == constraints.biggest.height;
-        onScroll(isExpanded);
+        final isCollapsed = topPadding == constraints.biggest.height;
+        onScroll(isCollapsed);
 
         return FlexibleSpaceBar(
           background: Padding(

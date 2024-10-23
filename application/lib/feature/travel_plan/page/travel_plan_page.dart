@@ -1,15 +1,13 @@
-import 'package:application_new/common/util/translation.dart';
-import 'package:application_new/feature/geography/provider/geography_provider.dart';
+import 'dart:async';
+
 import 'package:application_new/feature/travel_plan/component/travel_plan_home_header.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_bookmark_page.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_home_page.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_manage_page.dart';
 import 'package:application_new/feature/travel_plan/travel_plan_recommend/page/travel_plan_recommend_page.dart';
 import 'package:application_new/feature/travel_plan/provider/travel_plan_provider.dart';
-import 'package:application_new/feature/travel_plan/travel_plan_recommend/provider/travel_plan_recommend_provider.dart';
-import 'package:application_new/shared/model/travel/travel_detail_model.dart';
-import 'package:application_new/shared/provider/travel_detail_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class TravelPlanPage extends ConsumerStatefulWidget {
@@ -26,8 +24,24 @@ class _TravelPlanPageState extends ConsumerState<TravelPlanPage> {
   final scrollController = ScrollController();
   final pageController = PageController();
 
-  bool isHeaderExpanded = false;
+  bool isHeaderSnapped = false;
   bool isHeaderScrolled = false;
+
+  int animatingCount = 0;
+
+  static const headerOffset = 180.0;
+
+  final GlobalKey<NestedScrollViewState> globalKey = GlobalKey();
+
+  FutureOr<void> animateTo(double offset, {required Duration duration}) {
+    animatingCount++;
+
+    scrollController.animateTo(offset,
+        duration: duration, curve: Curves.linear);
+
+    Future.delayed(Duration(milliseconds: duration.inMilliseconds + 100),
+        () => animatingCount--);
+  }
 
   @override
   void dispose() {
@@ -46,11 +60,12 @@ class _TravelPlanPageState extends ConsumerState<TravelPlanPage> {
     ref.listen(travelPlanProvider(travelId), (prev, next) {
       final isHomePage = next.pageIndex == 0;
 
-      final offset =
-          isHomePage || (!isHeaderExpanded && isHeaderScrolled) ? 0.0 : 180.0;
+      final offset = isHomePage || (isHeaderSnapped && isHeaderScrolled)
+          ? 0.0
+          : headerOffset;
 
-      scrollController.animateTo(offset,
-          duration: const Duration(milliseconds: 300), curve: Curves.ease);
+      const duration = Duration(milliseconds: 200);
+      animateTo(offset, duration: duration);
     });
 
     final List<Widget> pages = [
@@ -62,6 +77,7 @@ class _TravelPlanPageState extends ConsumerState<TravelPlanPage> {
 
     return Scaffold(
       body: NestedScrollView(
+          key: globalKey,
           controller: scrollController,
           headerSliverBuilder: (context, innerBoxIsScrolled) {
             isHeaderScrolled = innerBoxIsScrolled;
@@ -72,7 +88,21 @@ class _TravelPlanPageState extends ConsumerState<TravelPlanPage> {
                       NestedScrollView.sliverOverlapAbsorberHandleFor(context),
                   sliver: TravelPlanHomeHeader(
                     travel: travel,
-                    onScroll: (isExpanded) => isHeaderExpanded = isExpanded,
+                    onScroll: (isCollapsed) {
+                      isHeaderSnapped = !isCollapsed;
+
+                      if (!isHeaderSnapped ||
+                          !isHeaderScrolled ||
+                          animatingCount > 0) return;
+
+                      final bodyOffset =
+                          globalKey.currentState?.innerController.offset;
+
+                      if (bodyOffset == null || bodyOffset > 120.0) return;
+
+                      animateTo(0.0,
+                          duration: const Duration(milliseconds: 100));
+                    },
                   ))
             ];
           },
