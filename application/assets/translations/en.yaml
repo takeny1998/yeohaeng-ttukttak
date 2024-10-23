@@ -24,6 +24,10 @@ travel:
     ask_revisit: Want to revisit this place?
     ask_recommend: Want to recommend others to visit?
 
+travel_plan_recommend:
+  label_motivation: 'Recommended list of {category}s\n visited for ${motivation}'
+  label_companion_type: 'Recommended list of {category}s\n visited with ${companion_type}'
+  add_to_plan: Add to your plan
 
 next: Next
 korea: Republic of Korea

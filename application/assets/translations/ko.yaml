@@ -24,7 +24,10 @@ travel:
     ask_revisit: 다시 방문하고 싶으신가요?
     ask_recommend: 다른 사람에게 방문을 추천하고 싶으신가요?
 
-
+travel_plan_recommend:
+  label_motivation: '{motivation} 목적으로 찾은 {category} 목록'
+  label_companion_type: '{companionType}과 함께 찾은 {category} 목록'
+  add_to_plan: 일정에 추가하기
 
 next: 다음으로
 korea: 대한민국
@@ -117,7 +120,7 @@ enum:
     trail: 산책로, 둘레길
     festival: 축제/행사
     transport: 교통 시설
-    shop: 상점
+    shop: 상업시설
     dining: 식당/카페
     attraction: 체험 활동 관광지
     lodging: 숙소

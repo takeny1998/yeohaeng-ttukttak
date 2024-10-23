@@ -4,9 +4,11 @@ import 'package:application_new/feature/travel_plan/component/travel_plan_home_h
 import 'package:application_new/feature/travel_plan/page/travel_plan_bookmark_page.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_home_page.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_manage_page.dart';
-import 'package:application_new/feature/travel_plan/page/travel_plan_recommend_page.dart';
+import 'package:application_new/feature/travel_plan/travel_plan_recommend/page/travel_plan_recommend_page.dart';
 import 'package:application_new/feature/travel_plan/provider/travel_plan_provider.dart';
+import 'package:application_new/feature/travel_plan/travel_plan_recommend/provider/travel_plan_recommend_provider.dart';
 import 'package:application_new/shared/model/travel/travel_detail_model.dart';
+import 'package:application_new/shared/provider/travel_detail_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
