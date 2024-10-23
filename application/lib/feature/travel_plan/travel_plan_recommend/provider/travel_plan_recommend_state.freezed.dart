@@ -16,8 +16,6 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$TravelPlanRecommendState {
-  CityModel get city => throw _privateConstructorUsedError;
-  List<RecommendTarget> get targets => throw _privateConstructorUsedError;
   List<RecommendModel> get recommendations =>
       throw _privateConstructorUsedError;
 
@@ -34,12 +32,7 @@ abstract class $TravelPlanRecommendStateCopyWith<$Res> {
           $Res Function(TravelPlanRecommendState) then) =
       _$TravelPlanRecommendStateCopyWithImpl<$Res, TravelPlanRecommendState>;
   @useResult
-  $Res call(
-      {CityModel city,
-      List<RecommendTarget> targets,
-      List<RecommendModel> recommendations});
-
-  $CityModelCopyWith<$Res> get city;
+  $Res call({List<RecommendModel> recommendations});
 }
 
 /// @nodoc
@@ -58,34 +51,14 @@ class _$TravelPlanRecommendStateCopyWithImpl<$Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? city = null,
-    Object? targets = null,
     Object? recommendations = null,
   }) {
     return _then(_value.copyWith(
-      city: null == city
-          ? _value.city
-          : city // ignore: cast_nullable_to_non_nullable
-              as CityModel,
-      targets: null == targets
-          ? _value.targets
-          : targets // ignore: cast_nullable_to_non_nullable
-              as List<RecommendTarget>,
       recommendations: null == recommendations
           ? _value.recommendations
           : recommendations // ignore: cast_nullable_to_non_nullable
               as List<RecommendModel>,
     ) as $Val);
-  }
-
-  /// Create a copy of TravelPlanRecommendState
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $CityModelCopyWith<$Res> get city {
-    return $CityModelCopyWith<$Res>(_value.city, (value) {
-      return _then(_value.copyWith(city: value) as $Val);
-    });
   }
 }
 
@@ -98,13 +71,7 @@ abstract class _$$TravelPlanRecommendStateImplCopyWith<$Res>
       __$$TravelPlanRecommendStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {CityModel city,
-      List<RecommendTarget> targets,
-      List<RecommendModel> recommendations});
-
-  @override
-  $CityModelCopyWith<$Res> get city;
+  $Res call({List<RecommendModel> recommendations});
 }
 
 /// @nodoc
@@ -122,19 +89,9 @@ class __$$TravelPlanRecommendStateImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? city = null,
-    Object? targets = null,
     Object? recommendations = null,
   }) {
     return _then(_$TravelPlanRecommendStateImpl(
-      city: null == city
-          ? _value.city
-          : city // ignore: cast_nullable_to_non_nullable
-              as CityModel,
-      targets: null == targets
-          ? _value._targets
-          : targets // ignore: cast_nullable_to_non_nullable
-              as List<RecommendTarget>,
       recommendations: null == recommendations
           ? _value._recommendations
           : recommendations // ignore: cast_nullable_to_non_nullable
@@ -147,23 +104,9 @@ class __$$TravelPlanRecommendStateImplCopyWithImpl<$Res>
 
 class _$TravelPlanRecommendStateImpl extends _TravelPlanRecommendState {
   const _$TravelPlanRecommendStateImpl(
-      {required this.city,
-      final List<RecommendTarget> targets = const [],
-      final List<RecommendModel> recommendations = const []})
-      : _targets = targets,
-        _recommendations = recommendations,
+      {final List<RecommendModel> recommendations = const []})
+      : _recommendations = recommendations,
         super._();
-
-  @override
-  final CityModel city;
-  final List<RecommendTarget> _targets;
-  @override
-  @JsonKey()
-  List<RecommendTarget> get targets {
-    if (_targets is EqualUnmodifiableListView) return _targets;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_targets);
-  }
 
   final List<RecommendModel> _recommendations;
   @override
@@ -176,7 +119,7 @@ class _$TravelPlanRecommendStateImpl extends _TravelPlanRecommendState {
 
   @override
   String toString() {
-    return 'TravelPlanRecommendState(city: $city, targets: $targets, recommendations: $recommendations)';
+    return 'TravelPlanRecommendState(recommendations: $recommendations)';
   }
 
   @override
@@ -184,18 +127,13 @@ class _$TravelPlanRecommendStateImpl extends _TravelPlanRecommendState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$TravelPlanRecommendStateImpl &&
-            (identical(other.city, city) || other.city == city) &&
-            const DeepCollectionEquality().equals(other._targets, _targets) &&
             const DeepCollectionEquality()
                 .equals(other._recommendations, _recommendations));
   }
 
   @override
   int get hashCode => Object.hash(
-      runtimeType,
-      city,
-      const DeepCollectionEquality().hash(_targets),
-      const DeepCollectionEquality().hash(_recommendations));
+      runtimeType, const DeepCollectionEquality().hash(_recommendations));
 
   /// Create a copy of TravelPlanRecommendState
   /// with the given fields replaced by the non-null parameter values.
@@ -209,16 +147,10 @@ class _$TravelPlanRecommendStateImpl extends _TravelPlanRecommendState {
 
 abstract class _TravelPlanRecommendState extends TravelPlanRecommendState {
   const factory _TravelPlanRecommendState(
-          {required final CityModel city,
-          final List<RecommendTarget> targets,
-          final List<RecommendModel> recommendations}) =
+          {final List<RecommendModel> recommendations}) =
       _$TravelPlanRecommendStateImpl;
   const _TravelPlanRecommendState._() : super._();
 
-  @override
-  CityModel get city;
-  @override
-  List<RecommendTarget> get targets;
   @override
   List<RecommendModel> get recommendations;
 

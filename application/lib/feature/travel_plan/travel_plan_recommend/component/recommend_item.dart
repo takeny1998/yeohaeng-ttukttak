@@ -1,9 +1,7 @@
 import 'package:application_new/common/util/string_extension.dart';
 import 'package:application_new/common/util/translation.dart';
-import 'package:application_new/feature/home/home_page.dart';
 import 'package:application_new/feature/travel_plan/travel_plan_recommend/model/recommend_model.dart';
 import 'package:application_new/feature/travel_plan/travel_plan_recommend/provider/travel_plan_recommend_state.dart';
-import 'package:application_new/shared/component/small_chip.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
@@ -45,7 +43,7 @@ class RecommendItem extends StatelessWidget {
 
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Container(
-          width: MediaQuery.of(context).size.width / 2,
+          width: MediaQuery.of(context).size.width * 0.6,
           padding: const EdgeInsets.only(left: 24.0),
           child: Text(labelText.lineBreakByWord(),
               style: labelStyle, softWrap: true)),

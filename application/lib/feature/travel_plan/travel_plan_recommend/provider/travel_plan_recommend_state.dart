@@ -10,21 +10,9 @@ class TravelPlanRecommendState with _$TravelPlanRecommendState {
   const TravelPlanRecommendState._();
 
   const factory TravelPlanRecommendState({
-    required CityModel city,
-    @Default([]) List<RecommendTarget> targets,
     @Default([]) List<RecommendModel> recommendations,
   }) = _TravelPlanRecommendState;
 
-  static TravelPlanRecommendState fromTravel(CityModel city, TravelModel travel) {
-    return TravelPlanRecommendState(
-      city: city,
-      targets: [
-        for (final motivation in travel.motivations)
-          MotivationTarget(motivation: motivation),
-        CompanionTypeTarget(companionType: travel.companionType),
-      ],
-    );
-  }
 }
 
 sealed class RecommendTarget {}
