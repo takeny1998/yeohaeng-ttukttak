@@ -39,7 +39,7 @@ class _TravelPlanPageState extends ConsumerState<TravelPlanPage> {
     scrollController.animateTo(offset,
         duration: duration, curve: Curves.linear);
 
-    Future.delayed(Duration(milliseconds: duration.inMilliseconds + 100),
+    Future.delayed(Duration(milliseconds: duration.inMilliseconds),
         () => animatingCount--);
   }
 
@@ -100,8 +100,10 @@ class _TravelPlanPageState extends ConsumerState<TravelPlanPage> {
 
                       if (bodyOffset == null || bodyOffset > 120.0) return;
 
+                      isHeaderSnapped = false;
+
                       animateTo(0.0,
-                          duration: const Duration(milliseconds: 100));
+                          duration: const Duration(milliseconds: 300));
                     },
                   ))
             ];
