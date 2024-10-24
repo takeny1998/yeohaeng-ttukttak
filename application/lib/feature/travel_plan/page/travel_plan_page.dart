@@ -7,8 +7,9 @@ import 'package:application_new/feature/travel_plan/page/travel_plan_manage_page
 import 'package:application_new/feature/travel_plan/travel_plan_recommend/page/travel_plan_recommend_page.dart';
 import 'package:application_new/feature/travel_plan/provider/travel_plan_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+final GlobalKey<NestedScrollViewState> travelPlanPageKey = GlobalKey();
 
 class TravelPlanPage extends ConsumerStatefulWidget {
   final int _travelId;
@@ -30,8 +31,6 @@ class _TravelPlanPageState extends ConsumerState<TravelPlanPage> {
   int animatingCount = 0;
 
   static const headerOffset = 180.0;
-
-  final GlobalKey<NestedScrollViewState> globalKey = GlobalKey();
 
   FutureOr<void> animateTo(double offset, {required Duration duration}) {
     animatingCount++;
@@ -64,17 +63,9 @@ class _TravelPlanPageState extends ConsumerState<TravelPlanPage> {
           ? 0.0
           : headerOffset;
 
-      scrollController.jumpTo(0.0);
-      isHeaderSnapped = false;
-      isHeaderScrolled = false;
-
       const duration = Duration(milliseconds: 200);
+
       animateTo(offset, duration: duration);
-
-      final bodyController =
-          globalKey.currentState?.innerController;
-
-      bodyController?.jumpTo(5.0);
     });
 
     final List<Widget> pages = [
@@ -86,7 +77,7 @@ class _TravelPlanPageState extends ConsumerState<TravelPlanPage> {
 
     return Scaffold(
       body: NestedScrollView(
-          key: globalKey,
+          key: travelPlanPageKey,
           controller: scrollController,
           headerSliverBuilder: (context, innerBoxIsScrolled) {
             isHeaderScrolled = innerBoxIsScrolled;
@@ -103,9 +94,8 @@ class _TravelPlanPageState extends ConsumerState<TravelPlanPage> {
                       if (isHeaderSnapped &&
                           isHeaderScrolled &&
                           animatingCount == 0) {
-
                         final bodyController =
-                            globalKey.currentState?.innerController;
+                            travelPlanPageKey.currentState?.innerController;
 
                         if (bodyController == null) return;
 

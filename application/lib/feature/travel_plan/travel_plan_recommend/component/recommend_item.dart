@@ -41,7 +41,9 @@ class RecommendItem extends StatelessWidget {
     final placeAddrStyle = textTheme.labelMedium?.copyWith(
         color: colorScheme.onSurfaceVariant, fontWeight: FontWeight.w600);
 
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+    return Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start, children: [
       Container(
           width: MediaQuery.of(context).size.width * 0.6,
           padding: const EdgeInsets.only(left: 24.0),

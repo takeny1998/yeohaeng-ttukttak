@@ -40,6 +40,7 @@ class TravelCityItem extends ConsumerWidget {
 
     return AnimatedContainer(
       color: backgroundColor,
+      height: 120.0,
       duration: const Duration(milliseconds: 350),
       child: Material(
         color: Colors.transparent,
