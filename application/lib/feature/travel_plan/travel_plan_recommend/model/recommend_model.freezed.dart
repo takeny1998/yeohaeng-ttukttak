@@ -19,6 +19,7 @@ mixin _$RecommendModel {
   RecommendTarget get target => throw _privateConstructorUsedError;
   PlaceCategory get category => throw _privateConstructorUsedError;
   List<PlaceModel> get places => throw _privateConstructorUsedError;
+  bool get hasNextPage => throw _privateConstructorUsedError;
 
   /// Create a copy of RecommendModel
   /// with the given fields replaced by the non-null parameter values.
@@ -36,7 +37,8 @@ abstract class $RecommendModelCopyWith<$Res> {
   $Res call(
       {RecommendTarget target,
       PlaceCategory category,
-      List<PlaceModel> places});
+      List<PlaceModel> places,
+      bool hasNextPage});
 }
 
 /// @nodoc
@@ -57,6 +59,7 @@ class _$RecommendModelCopyWithImpl<$Res, $Val extends RecommendModel>
     Object? target = null,
     Object? category = null,
     Object? places = null,
+    Object? hasNextPage = null,
   }) {
     return _then(_value.copyWith(
       target: null == target
@@ -71,6 +74,10 @@ class _$RecommendModelCopyWithImpl<$Res, $Val extends RecommendModel>
           ? _value.places
           : places // ignore: cast_nullable_to_non_nullable
               as List<PlaceModel>,
+      hasNextPage: null == hasNextPage
+          ? _value.hasNextPage
+          : hasNextPage // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -86,7 +93,8 @@ abstract class _$$RecommendModelImplCopyWith<$Res>
   $Res call(
       {RecommendTarget target,
       PlaceCategory category,
-      List<PlaceModel> places});
+      List<PlaceModel> places,
+      bool hasNextPage});
 }
 
 /// @nodoc
@@ -105,6 +113,7 @@ class __$$RecommendModelImplCopyWithImpl<$Res>
     Object? target = null,
     Object? category = null,
     Object? places = null,
+    Object? hasNextPage = null,
   }) {
     return _then(_$RecommendModelImpl(
       target: null == target
@@ -119,6 +128,10 @@ class __$$RecommendModelImplCopyWithImpl<$Res>
           ? _value._places
           : places // ignore: cast_nullable_to_non_nullable
               as List<PlaceModel>,
+      hasNextPage: null == hasNextPage
+          ? _value.hasNextPage
+          : hasNextPage // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -129,7 +142,8 @@ class _$RecommendModelImpl implements _RecommendModel {
   const _$RecommendModelImpl(
       {required this.target,
       required this.category,
-      required final List<PlaceModel> places})
+      required final List<PlaceModel> places,
+      required this.hasNextPage})
       : _places = places;
 
   @override
@@ -145,8 +159,11 @@ class _$RecommendModelImpl implements _RecommendModel {
   }
 
   @override
+  final bool hasNextPage;
+
+  @override
   String toString() {
-    return 'RecommendModel(target: $target, category: $category, places: $places)';
+    return 'RecommendModel(target: $target, category: $category, places: $places, hasNextPage: $hasNextPage)';
   }
 
   @override
@@ -157,12 +174,14 @@ class _$RecommendModelImpl implements _RecommendModel {
             (identical(other.target, target) || other.target == target) &&
             (identical(other.category, category) ||
                 other.category == category) &&
-            const DeepCollectionEquality().equals(other._places, _places));
+            const DeepCollectionEquality().equals(other._places, _places) &&
+            (identical(other.hasNextPage, hasNextPage) ||
+                other.hasNextPage == hasNextPage));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, target, category,
-      const DeepCollectionEquality().hash(_places));
+      const DeepCollectionEquality().hash(_places), hasNextPage);
 
   /// Create a copy of RecommendModel
   /// with the given fields replaced by the non-null parameter values.
@@ -178,7 +197,8 @@ abstract class _RecommendModel implements RecommendModel {
   const factory _RecommendModel(
       {required final RecommendTarget target,
       required final PlaceCategory category,
-      required final List<PlaceModel> places}) = _$RecommendModelImpl;
+      required final List<PlaceModel> places,
+      required final bool hasNextPage}) = _$RecommendModelImpl;
 
   @override
   RecommendTarget get target;
@@ -186,6 +206,8 @@ abstract class _RecommendModel implements RecommendModel {
   PlaceCategory get category;
   @override
   List<PlaceModel> get places;
+  @override
+  bool get hasNextPage;
 
   /// Create a copy of RecommendModel
   /// with the given fields replaced by the non-null parameter values.

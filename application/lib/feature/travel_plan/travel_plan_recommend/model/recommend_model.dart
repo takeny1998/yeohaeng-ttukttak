@@ -11,6 +11,7 @@ class RecommendModel with _$RecommendModel {
     required RecommendTarget target,
     required PlaceCategory category,
     required List<PlaceModel> places,
+    required bool hasNextPage,
   }) = _RecommendModel;
 
 }

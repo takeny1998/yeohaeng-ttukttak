@@ -24,12 +24,9 @@ class TravelPlanRecommendPage extends ConsumerStatefulWidget {
 
 class _TravelPlanRecommendPageState
     extends ConsumerState<TravelPlanRecommendPage> {
-
   @override
   void initState() {
-
     WidgetsBinding.instance.addPostFrameCallback((_) {
-
       final scrollController = travelPlanPageKey.currentState?.innerController;
 
       if (scrollController == null) return;
@@ -38,10 +35,7 @@ class _TravelPlanRecommendPageState
         final offset = scrollController.offset;
 
         if (offset > 120.0) return;
-
-
       });
-
     });
 
     super.initState();
@@ -59,7 +53,7 @@ class _TravelPlanRecommendPageState
     final state = ref.watch(travelPlanProvider(travelId));
     final cityIndex = state.cityIndex;
 
-    final TravelPlanRecommendState(:recommendations) =
+    final TravelPlanRecommendState(:recommendations, :hasNextPage) =
         ref.watch(travelPlanRecommendProvider(travelId, cityIndex));
 
     return SliverMainAxisGroup(slivers: [
@@ -82,24 +76,25 @@ class _TravelPlanRecommendPageState
           child: RecommendItem(recommend: recommendations[index]),
         );
       }, childCount: recommendations.length)),
-      SliverFillRemaining(
-          hasScrollBody: false,
-          child: VisibilityDetector(
-            key: const Key('key'),
-            onVisibilityChanged: (VisibilityInfo info) {
-              final isVisible = info.visibleFraction > 0.0;
-              if (!isVisible) return;
+      if (hasNextPage)
+        SliverFillRemaining(
+            hasScrollBody: false,
+            child: VisibilityDetector(
+              key: const Key('key'),
+              onVisibilityChanged: (VisibilityInfo info) {
+                final isVisible = info.visibleFraction > 0.0;
+                if (!isVisible) return;
 
-              ref
-                  .read(
-                      travelPlanRecommendProvider(travelId, cityIndex).notifier)
-                  .random();
-            },
-            child: Container(
-              constraints: const BoxConstraints(minHeight: 120.0),
-              child: const Center(child: CircularProgressIndicator()),
-            ),
-          )),
+                ref
+                    .read(travelPlanRecommendProvider(travelId, cityIndex)
+                        .notifier)
+                    .random();
+              },
+              child: Container(
+                constraints: const BoxConstraints(minHeight: 120.0),
+                child: const Center(child: CircularProgressIndicator()),
+              ),
+            )),
     ]);
   }
 }

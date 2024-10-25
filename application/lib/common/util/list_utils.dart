@@ -5,8 +5,8 @@ final class ListUtils {
     return start <= index && index <= end;
   }
 
-  static T random<T>(List<T> list) {
+  static T random<T>(Iterable<T> list) {
     final index = Random().nextInt(list.length);
-    return list[index];
+    return list.elementAt(index);
   }
 }

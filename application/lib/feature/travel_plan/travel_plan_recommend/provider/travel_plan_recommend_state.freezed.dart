@@ -18,6 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$TravelPlanRecommendState {
   List<RecommendModel> get recommendations =>
       throw _privateConstructorUsedError;
+  bool get hasNextPage => throw _privateConstructorUsedError;
 
   /// Create a copy of TravelPlanRecommendState
   /// with the given fields replaced by the non-null parameter values.
@@ -32,7 +33,7 @@ abstract class $TravelPlanRecommendStateCopyWith<$Res> {
           $Res Function(TravelPlanRecommendState) then) =
       _$TravelPlanRecommendStateCopyWithImpl<$Res, TravelPlanRecommendState>;
   @useResult
-  $Res call({List<RecommendModel> recommendations});
+  $Res call({List<RecommendModel> recommendations, bool hasNextPage});
 }
 
 /// @nodoc
@@ -52,12 +53,17 @@ class _$TravelPlanRecommendStateCopyWithImpl<$Res,
   @override
   $Res call({
     Object? recommendations = null,
+    Object? hasNextPage = null,
   }) {
     return _then(_value.copyWith(
       recommendations: null == recommendations
           ? _value.recommendations
           : recommendations // ignore: cast_nullable_to_non_nullable
               as List<RecommendModel>,
+      hasNextPage: null == hasNextPage
+          ? _value.hasNextPage
+          : hasNextPage // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -71,7 +77,7 @@ abstract class _$$TravelPlanRecommendStateImplCopyWith<$Res>
       __$$TravelPlanRecommendStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<RecommendModel> recommendations});
+  $Res call({List<RecommendModel> recommendations, bool hasNextPage});
 }
 
 /// @nodoc
@@ -90,12 +96,17 @@ class __$$TravelPlanRecommendStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? recommendations = null,
+    Object? hasNextPage = null,
   }) {
     return _then(_$TravelPlanRecommendStateImpl(
       recommendations: null == recommendations
           ? _value._recommendations
           : recommendations // ignore: cast_nullable_to_non_nullable
               as List<RecommendModel>,
+      hasNextPage: null == hasNextPage
+          ? _value.hasNextPage
+          : hasNextPage // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -104,7 +115,8 @@ class __$$TravelPlanRecommendStateImplCopyWithImpl<$Res>
 
 class _$TravelPlanRecommendStateImpl extends _TravelPlanRecommendState {
   const _$TravelPlanRecommendStateImpl(
-      {final List<RecommendModel> recommendations = const []})
+      {final List<RecommendModel> recommendations = const [],
+      this.hasNextPage = true})
       : _recommendations = recommendations,
         super._();
 
@@ -118,8 +130,12 @@ class _$TravelPlanRecommendStateImpl extends _TravelPlanRecommendState {
   }
 
   @override
+  @JsonKey()
+  final bool hasNextPage;
+
+  @override
   String toString() {
-    return 'TravelPlanRecommendState(recommendations: $recommendations)';
+    return 'TravelPlanRecommendState(recommendations: $recommendations, hasNextPage: $hasNextPage)';
   }
 
   @override
@@ -128,12 +144,14 @@ class _$TravelPlanRecommendStateImpl extends _TravelPlanRecommendState {
         (other.runtimeType == runtimeType &&
             other is _$TravelPlanRecommendStateImpl &&
             const DeepCollectionEquality()
-                .equals(other._recommendations, _recommendations));
+                .equals(other._recommendations, _recommendations) &&
+            (identical(other.hasNextPage, hasNextPage) ||
+                other.hasNextPage == hasNextPage));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(_recommendations));
+  int get hashCode => Object.hash(runtimeType,
+      const DeepCollectionEquality().hash(_recommendations), hasNextPage);
 
   /// Create a copy of TravelPlanRecommendState
   /// with the given fields replaced by the non-null parameter values.
@@ -147,12 +165,14 @@ class _$TravelPlanRecommendStateImpl extends _TravelPlanRecommendState {
 
 abstract class _TravelPlanRecommendState extends TravelPlanRecommendState {
   const factory _TravelPlanRecommendState(
-          {final List<RecommendModel> recommendations}) =
-      _$TravelPlanRecommendStateImpl;
+      {final List<RecommendModel> recommendations,
+      final bool hasNextPage}) = _$TravelPlanRecommendStateImpl;
   const _TravelPlanRecommendState._() : super._();
 
   @override
   List<RecommendModel> get recommendations;
+  @override
+  bool get hasNextPage;
 
   /// Create a copy of TravelPlanRecommendState
   /// with the given fields replaced by the non-null parameter values.
