@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:application_new/common/http/http_service_provider.dart';
 import 'package:application_new/common/loading/async_loading_provider.dart';
 import 'package:application_new/common/util/list_utils.dart';
+import 'package:application_new/common/util/riverpod_extensions.dart';
 import 'package:application_new/feature/geography/model/city_model.dart';
 import 'package:application_new/feature/geography/provider/geography_provider.dart';
 import 'package:application_new/feature/travel_plan/component/travel_city_item.dart';
@@ -54,7 +55,7 @@ class TravelPlanRecommend extends _$TravelPlanRecommend {
     required PlaceCategory category,
     required RecommendTarget target,
   }) async {
-    final httpService = ref.watch(httpServiceProvider);
+    final httpService = ref.read(httpServiceProvider);
 
     final queryParams = {
       'cityId': '${_city.id}',

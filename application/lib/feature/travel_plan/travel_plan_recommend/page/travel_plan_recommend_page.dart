@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:application_new/feature/travel_plan/component/travel_city_item.dart';
+import 'package:application_new/feature/travel_plan/page/travel_plan_page.dart';
 import 'package:application_new/feature/travel_plan/provider/travel_plan_provider.dart';
 import 'package:application_new/feature/travel_plan/travel_plan_recommend/component/recommend_item.dart';
 import 'package:application_new/feature/travel_plan/travel_plan_recommend/model/recommend_model.dart';
@@ -23,17 +24,31 @@ class TravelPlanRecommendPage extends ConsumerStatefulWidget {
 
 class _TravelPlanRecommendPageState
     extends ConsumerState<TravelPlanRecommendPage> {
-  final PagingController<int, RecommendModel> pagingController =
-      PagingController(firstPageKey: 0);
 
   @override
   void initState() {
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+
+      final scrollController = travelPlanPageKey.currentState?.innerController;
+
+      if (scrollController == null) return;
+
+      scrollController.addListener(() {
+        final offset = scrollController.offset;
+
+        if (offset > 120.0) return;
+
+
+      });
+
+    });
+
     super.initState();
   }
 
   @override
   void dispose() {
-    pagingController.dispose();
     super.dispose();
   }
 
@@ -73,7 +88,6 @@ class _TravelPlanRecommendPageState
             key: const Key('key'),
             onVisibilityChanged: (VisibilityInfo info) {
               final isVisible = info.visibleFraction > 0.0;
-
               if (!isVisible) return;
 
               ref

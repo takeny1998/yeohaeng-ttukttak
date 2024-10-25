@@ -13,7 +13,10 @@ class RecommendItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    if (recommend.places.isEmpty) return const SizedBox();
+    // 외부 Indicator 크기 변동을 위해 높이를 부여
+    if (recommend.places.isEmpty) {
+      return const SizedBox(height: 1.0);
+    }
 
     final trKey = baseKey('travel_plan_recommend');
 
