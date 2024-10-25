@@ -5,5 +5,6 @@ import com.yeohaeng_ttukttak.server.domain.place.dto.PlaceDto;
 import java.util.List;
 
 public record PlaceRecommendationResponse(
-        List<PlaceDto> places
+        List<PlaceDto> places,
+        boolean hasNextPage
 ) { }

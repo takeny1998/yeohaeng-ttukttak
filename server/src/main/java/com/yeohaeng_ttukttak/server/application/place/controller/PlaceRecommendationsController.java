@@ -4,6 +4,8 @@ import com.yeohaeng_ttukttak.server.application.place.controller.dto.PlaceRecomm
 import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundException;
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.InvalidArgumentException;
+import com.yeohaeng_ttukttak.server.common.util.dto.PageCommand;
+import com.yeohaeng_ttukttak.server.common.util.dto.PageResult;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.Geography;
 import com.yeohaeng_ttukttak.server.domain.geography.repository.GeographyRepository;
 import com.yeohaeng_ttukttak.server.domain.place.dto.PlaceDto;
@@ -17,7 +19,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Objects;
 
 @Slf4j
@@ -34,6 +35,8 @@ public class PlaceRecommendationsController {
     public ServerResponse<PlaceRecommendationResponse> recommendPlace(
             @RequestParam Long cityId,
             @RequestParam PlaceCategory category,
+            @RequestParam int pageSize,
+            @RequestParam int pageNumber,
             @RequestParam(required = false) Motivation motivation,
             @RequestParam(required = false) CompanionType companionType) {
 
@@ -41,27 +44,31 @@ public class PlaceRecommendationsController {
             throw new InvalidArgumentException();
         }
 
+        PageCommand pageCommand = new PageCommand(pageSize, pageNumber);
+
+
         Geography geography = geographyRepository.findById(cityId)
                 .orElseThrow(EntityNotFoundException::new);
 
         if (Objects.nonNull(motivation)) {
-            List<Place> places = placeRecommendationsRepository.byMotivationOrderByRatio(
-                    category, geography.codeStart(), geography.codeEnd(), motivation);
+            PageResult<Place> places = placeRecommendationsRepository.byMotivationOrderByRatio(
+                    category, geography.codeStart(), geography.codeEnd(), motivation, pageCommand);
 
             return toResponse(places);
         }
 
-        List<Place> places = placeRecommendationsRepository.byCompanionTypeOrderByRatio(
-                        category, geography.codeStart(), geography.codeEnd(), companionType);
+        PageResult<Place> pagedResult = placeRecommendationsRepository.byCompanionTypeOrderByRatio(
+                        category, geography.codeStart(), geography.codeEnd(), companionType, pageCommand);
 
-        return toResponse(places);
+        return toResponse(pagedResult);
     }
 
-    private ServerResponse<PlaceRecommendationResponse> toResponse(List<Place> places) {
+    private ServerResponse<PlaceRecommendationResponse> toResponse(PageResult<Place> result) {
         return new ServerResponse<>(new PlaceRecommendationResponse(
-                places.stream()
+                result.data().stream()
                         .map(PlaceDto::of)
-                        .toList()
+                        .toList(),
+                result.hasNextPage()
         ));
     }
 

@@ -3,6 +3,9 @@ package com.yeohaeng_ttukttak.server.domain.place.repository;
 import com.querydsl.core.types.dsl.*;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.yeohaeng_ttukttak.server.common.util.PageUtil;
+import com.yeohaeng_ttukttak.server.common.util.dto.PageCommand;
+import com.yeohaeng_ttukttak.server.common.util.dto.PageResult;
 import com.yeohaeng_ttukttak.server.domain.place.entity.Place;
 import com.yeohaeng_ttukttak.server.domain.place.entity.PlaceCategory;
 import com.yeohaeng_ttukttak.server.domain.place.entity.QPlaceCategoryMapping;
@@ -10,21 +13,20 @@ import com.yeohaeng_ttukttak.server.domain.travel.entity.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 import static com.querydsl.jpa.JPAExpressions.selectFrom;
 import static com.yeohaeng_ttukttak.server.domain.place.entity.QPlace.place;
 import static com.yeohaeng_ttukttak.server.domain.travel.entity.QTravel.travel;
 import static com.yeohaeng_ttukttak.server.domain.travel.entity.QTravelCompanion.travelCompanion;
 import static com.yeohaeng_ttukttak.server.domain.travel.entity.QTravelMotivation.travelMotivation;
 import static com.yeohaeng_ttukttak.server.domain.travel.entity.QTravelVisit.travelVisit;
+
 @Repository
 @RequiredArgsConstructor
 public class PlaceRecommendationsRepository {
 
     private final JPAQueryFactory queryFactory;
 
-    public List<Place> byMotivationOrderByRatio(PlaceCategory category, int codeStart, int codeEnd, Motivation motivation) {
+    public PageResult<Place> byMotivationOrderByRatio(PlaceCategory category, int codeStart, int codeEnd, Motivation motivation, PageCommand comm) {
         NumberExpression<Double> ratioExpression = createRatioExpression(
                 travelMotivation.motivation.eq(motivation),
                 travelMotivation.motivation.count());
@@ -32,10 +34,10 @@ public class PlaceRecommendationsRepository {
         JPAQuery<Place> query = createBaseQuery(codeStart, codeEnd, category)
                 .join(travelMotivation).on(travelMotivation.travel.eq(travel));
 
-        return orderByRatio(ratioExpression, query).fetch();
+        return PageUtil.pageBy(orderByRatio(ratioExpression, query), comm);
     }
 
-    public List<Place> byCompanionTypeOrderByRatio(PlaceCategory category, int codeStart, int codeEnd, CompanionType companionType) {
+    public PageResult<Place> byCompanionTypeOrderByRatio(PlaceCategory category, int codeStart, int codeEnd, CompanionType companionType, PageCommand comm) {
         NumberExpression<Double> ratioExpression = createRatioExpression(
                 travelCompanion.type.eq(companionType),
                 travelCompanion.type.count());
@@ -43,7 +45,7 @@ public class PlaceRecommendationsRepository {
         JPAQuery<Place> query = createBaseQuery(codeStart, codeEnd, category)
                 .join(travelCompanion).on(travelCompanion.travel.eq(travel));
 
-        return orderByRatio(ratioExpression, query).fetch();
+        return PageUtil.pageBy(orderByRatio(ratioExpression, query), comm);
     }
 
     private JPAQuery<Place> orderByRatio(NumberExpression<Double> ratioExpression, JPAQuery<Place> query) {
