@@ -1,8 +1,10 @@
 package com.yeohaeng_ttukttak.server.application.travel.controller;
 
 import com.yeohaeng_ttukttak.server.application.travel.controller.dto.CreateTravelRequest;
+import com.yeohaeng_ttukttak.server.application.travel.controller.dto.FindMyAllTravelResponse;
 import com.yeohaeng_ttukttak.server.application.travel.controller.dto.FindTravelDetailResponse;
 import com.yeohaeng_ttukttak.server.application.travel.service.CreateTravelService;
+import com.yeohaeng_ttukttak.server.application.travel.service.FindMyAllTravelService;
 import com.yeohaeng_ttukttak.server.application.travel.service.FindTravelsByCityService;
 import com.yeohaeng_ttukttak.server.application.travel.service.FindTravelDetailService;
 import com.yeohaeng_ttukttak.server.application.travel.service.dto.FindTravelsByCityResponse;
@@ -26,6 +28,7 @@ public class TravelController {
     private final CreateTravelService createTravelService;
     private final FindTravelsByCityService findTravelsByCityService;
     private final FindTravelDetailService findTravelDetailService;
+    private final FindMyAllTravelService findMyAllTravelService;
 
     @PostMapping
     @Authorization
@@ -54,6 +57,19 @@ public class TravelController {
             @PathVariable Long id) {
         return new ServerResponse<>(
                 findTravelDetailService.call(id).toResponse());
+    }
+
+    @GetMapping("/members/me")
+    @Authorization
+    public ServerResponse<FindMyAllTravelResponse> findMyAll(
+            AccessTokenDto accessToken
+    ) {
+
+        log.debug("{}", accessToken.memberId());
+
+       return new ServerResponse<>(
+               new FindMyAllTravelResponse(
+                       findMyAllTravelService.call(accessToken.memberId())));
     }
 
 }

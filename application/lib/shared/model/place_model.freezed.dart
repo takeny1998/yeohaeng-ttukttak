@@ -556,8 +556,9 @@ class __$$PlaceAddressImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$PlaceAddressImpl implements _PlaceAddress {
-  const _$PlaceAddressImpl({required this.lotNumber, required this.road});
+class _$PlaceAddressImpl extends _PlaceAddress {
+  const _$PlaceAddressImpl({required this.lotNumber, required this.road})
+      : super._();
 
   factory _$PlaceAddressImpl.fromJson(Map<String, dynamic> json) =>
       _$$PlaceAddressImplFromJson(json);
@@ -602,10 +603,11 @@ class _$PlaceAddressImpl implements _PlaceAddress {
   }
 }
 
-abstract class _PlaceAddress implements PlaceAddress {
+abstract class _PlaceAddress extends PlaceAddress {
   const factory _PlaceAddress(
       {required final String lotNumber,
       required final String road}) = _$PlaceAddressImpl;
+  const _PlaceAddress._() : super._();
 
   factory _PlaceAddress.fromJson(Map<String, dynamic> json) =
       _$PlaceAddressImpl.fromJson;

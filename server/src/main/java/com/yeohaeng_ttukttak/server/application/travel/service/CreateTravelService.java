@@ -5,7 +5,7 @@ import com.yeohaeng_ttukttak.server.common.dto.EntityReference;
 import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
 import com.yeohaeng_ttukttak.server.domain.member.service.MemberService;
 import com.yeohaeng_ttukttak.server.domain.geography.repository.GeographyRepository;
-import com.yeohaeng_ttukttak.server.domain.travel.entity.InputTravel;
+import com.yeohaeng_ttukttak.server.domain.travel.entity.MemberTravel;
 import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,7 +28,7 @@ public class CreateTravelService {
 
         final Member member = memberService.find(comm.memberId());
 
-        final InputTravel travel = new InputTravel(
+        final MemberTravel travel = new MemberTravel(
                 member,
                 comm.startedOn(),
                 comm.endedOn(),
@@ -36,6 +36,8 @@ public class CreateTravelService {
 
         geographyRepository.findAllCityByIds(ids)
                 .forEach(travel::addCity);
+
+        comm.motivations().forEach(travel::addMotivation);
 
         travelRepository.save(travel);
 

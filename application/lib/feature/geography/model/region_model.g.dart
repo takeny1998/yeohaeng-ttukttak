@@ -11,6 +11,7 @@ _$RegionModelImpl _$$RegionModelImplFromJson(Map<String, dynamic> json) =>
       id: (json['id'] as num).toInt(),
       name: json['name'] as String,
       shortName: json['shortName'] as String,
+      insignia: ImageModel.fromJson(json['insignia'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$RegionModelImplToJson(_$RegionModelImpl instance) =>
@@ -18,4 +19,5 @@ Map<String, dynamic> _$$RegionModelImplToJson(_$RegionModelImpl instance) =>
       'id': instance.id,
       'name': instance.name,
       'shortName': instance.shortName,
+      'insignia': instance.insignia,
     };

@@ -5,20 +5,27 @@ import com.yeohaeng_ttukttak.server.domain.member.entity.Gender;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static jakarta.persistence.InheritanceType.TABLE_PER_CLASS;
+import static jakarta.persistence.InheritanceType.JOINED;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Inheritance(strategy = TABLE_PER_CLASS)
+@Inheritance(strategy = JOINED)
 public abstract class Travel {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "travel_id_generator"
+    )
+    @SequenceGenerator(
+            name = "travel_id_generator",
+            sequenceName = "travel_seq",
+            initialValue = 100000
+    )
     private Long id;
 
     private LocalDate startedOn;
@@ -45,6 +52,8 @@ public abstract class Travel {
     abstract public AgeGroup ageGroup();
 
     abstract public Gender gender();
+
+    abstract public CompanionType companionType();
 
     public Long id() {
         return id;
@@ -73,4 +82,5 @@ public abstract class Travel {
     public List<TravelVisit> visits() {
         return visits;
     }
+
 }

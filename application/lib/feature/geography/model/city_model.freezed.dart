@@ -23,6 +23,7 @@ mixin _$CityModel {
   int get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   int get regionId => throw _privateConstructorUsedError;
+  ImageModel get insignia => throw _privateConstructorUsedError;
 
   /// Serializes this CityModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -39,7 +40,9 @@ abstract class $CityModelCopyWith<$Res> {
   factory $CityModelCopyWith(CityModel value, $Res Function(CityModel) then) =
       _$CityModelCopyWithImpl<$Res, CityModel>;
   @useResult
-  $Res call({int id, String name, int regionId});
+  $Res call({int id, String name, int regionId, ImageModel insignia});
+
+  $ImageModelCopyWith<$Res> get insignia;
 }
 
 /// @nodoc
@@ -60,6 +63,7 @@ class _$CityModelCopyWithImpl<$Res, $Val extends CityModel>
     Object? id = null,
     Object? name = null,
     Object? regionId = null,
+    Object? insignia = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -74,7 +78,21 @@ class _$CityModelCopyWithImpl<$Res, $Val extends CityModel>
           ? _value.regionId
           : regionId // ignore: cast_nullable_to_non_nullable
               as int,
+      insignia: null == insignia
+          ? _value.insignia
+          : insignia // ignore: cast_nullable_to_non_nullable
+              as ImageModel,
     ) as $Val);
+  }
+
+  /// Create a copy of CityModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $ImageModelCopyWith<$Res> get insignia {
+    return $ImageModelCopyWith<$Res>(_value.insignia, (value) {
+      return _then(_value.copyWith(insignia: value) as $Val);
+    });
   }
 }
 
@@ -86,7 +104,10 @@ abstract class _$$CityModelImplCopyWith<$Res>
       __$$CityModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int id, String name, int regionId});
+  $Res call({int id, String name, int regionId, ImageModel insignia});
+
+  @override
+  $ImageModelCopyWith<$Res> get insignia;
 }
 
 /// @nodoc
@@ -105,6 +126,7 @@ class __$$CityModelImplCopyWithImpl<$Res>
     Object? id = null,
     Object? name = null,
     Object? regionId = null,
+    Object? insignia = null,
   }) {
     return _then(_$CityModelImpl(
       id: null == id
@@ -119,6 +141,10 @@ class __$$CityModelImplCopyWithImpl<$Res>
           ? _value.regionId
           : regionId // ignore: cast_nullable_to_non_nullable
               as int,
+      insignia: null == insignia
+          ? _value.insignia
+          : insignia // ignore: cast_nullable_to_non_nullable
+              as ImageModel,
     ));
   }
 }
@@ -127,7 +153,10 @@ class __$$CityModelImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$CityModelImpl implements _CityModel {
   const _$CityModelImpl(
-      {required this.id, required this.name, required this.regionId});
+      {required this.id,
+      required this.name,
+      required this.regionId,
+      required this.insignia});
 
   factory _$CityModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$CityModelImplFromJson(json);
@@ -138,10 +167,12 @@ class _$CityModelImpl implements _CityModel {
   final String name;
   @override
   final int regionId;
+  @override
+  final ImageModel insignia;
 
   @override
   String toString() {
-    return 'CityModel(id: $id, name: $name, regionId: $regionId)';
+    return 'CityModel(id: $id, name: $name, regionId: $regionId, insignia: $insignia)';
   }
 
   @override
@@ -152,12 +183,14 @@ class _$CityModelImpl implements _CityModel {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.regionId, regionId) ||
-                other.regionId == regionId));
+                other.regionId == regionId) &&
+            (identical(other.insignia, insignia) ||
+                other.insignia == insignia));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, name, regionId);
+  int get hashCode => Object.hash(runtimeType, id, name, regionId, insignia);
 
   /// Create a copy of CityModel
   /// with the given fields replaced by the non-null parameter values.
@@ -179,7 +212,8 @@ abstract class _CityModel implements CityModel {
   const factory _CityModel(
       {required final int id,
       required final String name,
-      required final int regionId}) = _$CityModelImpl;
+      required final int regionId,
+      required final ImageModel insignia}) = _$CityModelImpl;
 
   factory _CityModel.fromJson(Map<String, dynamic> json) =
       _$CityModelImpl.fromJson;
@@ -190,6 +224,8 @@ abstract class _CityModel implements CityModel {
   String get name;
   @override
   int get regionId;
+  @override
+  ImageModel get insignia;
 
   /// Create a copy of CityModel
   /// with the given fields replaced by the non-null parameter values.

@@ -36,6 +36,8 @@ class PlaceCoordinates with _$PlaceCoordinates {
 @freezed
 class PlaceAddress with _$PlaceAddress {
 
+  const PlaceAddress._();
+
   const factory PlaceAddress({
     required String lotNumber,
     required String road
@@ -43,6 +45,11 @@ class PlaceAddress with _$PlaceAddress {
 
   factory PlaceAddress.fromJson(Map<String, dynamic> json) =>
       _$PlaceAddressFromJson(json);
+
+  String? get value {
+    if (road.isNotEmpty) return road;
+    return lotNumber;
+  }
 
 }
 
@@ -61,5 +68,27 @@ enum PlaceCategory {
   dining,
   attraction,
   lodging,
-  other
+  other;
+
+  static List<PlaceCategory> getRecommendable() {
+    return [
+      PlaceCategory.nature,
+      PlaceCategory.landmark,
+      PlaceCategory.culture,
+      PlaceCategory.themePark,
+      PlaceCategory.trail,
+      PlaceCategory.attraction,
+    ];
+  }
+
+  static List<PlaceCategory> getPopularity() {
+    return [
+      PlaceCategory.nature,
+      PlaceCategory.landmark,
+      PlaceCategory.culture,
+      PlaceCategory.shop,
+      PlaceCategory.commerce,
+      PlaceCategory.dining,
+    ];
+  }
 }

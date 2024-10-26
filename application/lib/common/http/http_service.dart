@@ -1,4 +1,3 @@
-
 import 'dart:ui';
 
 import 'package:application_new/common/exception/exception.dart';
@@ -11,8 +10,7 @@ final class HttpService {
   final Locale _locale;
   final String? _baseUrl;
 
-  HttpService(
-      {required Dio dio, required Locale locale, String? baseUrl})
+  HttpService({required Dio dio, required Locale locale, String? baseUrl})
       : _dio = dio,
         _locale = locale,
         _baseUrl = baseUrl;
@@ -20,6 +18,7 @@ final class HttpService {
   Future<Map<String, dynamic>> request(
     String method,
     String uri, {
+    Map<String, dynamic>? queryParams,
     Map<String, dynamic>? data,
     String? authorization,
   }) async {
@@ -36,6 +35,7 @@ final class HttpService {
     try {
       final response = await _dio.request(
         _baseUrl != null ? _baseUrl + uri : uri,
+        queryParameters: queryParams,
         data: data,
         options: Options(
           method: method,

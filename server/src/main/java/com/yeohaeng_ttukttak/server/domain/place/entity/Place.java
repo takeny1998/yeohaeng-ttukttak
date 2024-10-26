@@ -1,6 +1,7 @@
 package com.yeohaeng_ttukttak.server.domain.place.entity;
 
 import com.yeohaeng_ttukttak.server.domain.image.entity.TravelVisitImage;
+import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelVisit;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -15,16 +16,12 @@ import java.util.List;
 import static lombok.AccessLevel.PROTECTED;
 
 @Entity
-@ToString
+@ToString(exclude = {"categories", "visits"})
 @NoArgsConstructor(access = PROTECTED)
 public final class Place {
 
     @Id
     private Long id;
-
-    @NotNull
-    @Column(unique = true, insertable = false, updatable = false)
-    private String poiId;
 
     private String name;
 
@@ -41,12 +38,11 @@ public final class Place {
     @OneToMany(mappedBy = "place")
     private List<PlaceCategoryMapping> categories = new ArrayList<>();
 
+    @OneToMany(mappedBy = "place")
+    private List<TravelVisit> visits = new ArrayList<>();
+
     public Long id() {
         return id;
-    }
-
-    public String poiId() {
-        return poiId;
     }
 
     public String name() {
@@ -75,6 +71,10 @@ public final class Place {
 
     public List<PlaceCategoryMapping> categories() {
         return categories;
+    }
+
+    public List<TravelVisit> visits() {
+        return visits;
     }
 
 }

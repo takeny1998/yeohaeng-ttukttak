@@ -5,14 +5,21 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import lombok.extern.slf4j.Slf4j;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString
 public class TravelCity {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "travel_city_id_generator"
+    )
+    @SequenceGenerator(
+            name = "travel_city_id_generator",
+            sequenceName = "travel_city_seq",
+            initialValue = 30000
+    )
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -23,7 +30,7 @@ public class TravelCity {
     @JoinColumn(name = "city_id")
     private City city;
 
-    public TravelCity(InputTravel travel, City city) {
+    public TravelCity(MemberTravel travel, City city) {
         this.travel = travel;
         this.city = city;
     }

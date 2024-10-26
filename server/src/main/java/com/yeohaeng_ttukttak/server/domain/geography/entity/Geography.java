@@ -1,6 +1,7 @@
 package com.yeohaeng_ttukttak.server.domain.geography.entity;
 
 import com.yeohaeng_ttukttak.server.common.util.LocaleUtil;
+import com.yeohaeng_ttukttak.server.domain.image.entity.GeographyInsigniaImage;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.NoArgsConstructor;
@@ -27,7 +28,11 @@ public abstract class Geography {
 
     @NotNull
     @Column(insertable = false, updatable = false)
-    private int code;
+    private int codeStart;
+
+    @NotNull
+    @Column(insertable = false, updatable = false)
+    private int codeEnd;
 
     private String name;
 
@@ -39,6 +44,9 @@ public abstract class Geography {
 
     @OneToMany(mappedBy = "parent")
     private List<Geography> children = new ArrayList<>();
+
+    @OneToOne(mappedBy = "geography")
+    private GeographyInsigniaImage insignia;
 
     public Long id() {
         return id;
@@ -60,5 +68,16 @@ public abstract class Geography {
         return parent;
     }
 
+    public GeographyInsigniaImage insignia() {
+        return insignia;
+    }
+
+    public int codeStart() {
+        return codeStart;
+    }
+
+    public int codeEnd() {
+        return codeEnd;
+    }
 }
 
