@@ -34,6 +34,9 @@ class TravelPlanRecommend extends _$TravelPlanRecommend {
           MotivationTarget(motivation: motivation, category: category),
         CompanionTypeTarget(
             companionType: travel.companionType, category: category),
+      ],
+      for (final category in PlaceCategory.getPopularity()) ...[
+        PopularityTarget(category: category)
       ]
     };
   }
@@ -45,28 +48,7 @@ class TravelPlanRecommend extends _$TravelPlanRecommend {
     final recommend = await _fetch(target);
 
     if (recommend.hasNextPage) {
-      final nextTarget = switch (target) {
-        MotivationTarget(
-          :final motivation,
-          :final category,
-          :final pageNumber
-        ) =>
-          MotivationTarget(
-              motivation: motivation,
-              category: category,
-              pageNumber: pageNumber + 1),
-        CompanionTypeTarget(
-          :final companionType,
-          :final category,
-          :final pageNumber
-        ) =>
-          CompanionTypeTarget(
-              companionType: companionType,
-              category: category,
-              pageNumber: pageNumber + 1)
-      };
-
-      _targets.add(nextTarget);
+      _targets.add(target.nextPage());
     }
 
     state = state.copyWith(
@@ -88,17 +70,19 @@ class TravelPlanRecommend extends _$TravelPlanRecommend {
       'pageNumber': target.pageNumber
     };
 
+    String uri = '/api/v2/places/recommendations';
+
     switch (target) {
       case MotivationTarget(:final motivation):
         queryParams['motivation'] = motivation.name;
       case CompanionTypeTarget(:final companionType):
         queryParams['companionType'] = companionType.name;
+      case PopularityTarget():
+        uri = '/api/v2/places/popularity';
     }
 
-    print('$queryParams');
-
     final response = await httpService.request(
-        'GET', '/api/v2/places/recommendations',
+        'GET', uri,
         queryParams: queryParams);
 
     final places = List.of(response['places'])

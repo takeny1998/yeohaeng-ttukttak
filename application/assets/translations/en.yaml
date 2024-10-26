@@ -25,8 +25,9 @@ travel:
     ask_recommend: Want to recommend others to visit?
 
 travel_plan_recommend:
-  label_motivation: 'Recommended list of {category}s\n visited for ${motivation}'
-  label_companion_type: 'Recommended list of {category}s\n visited with ${companion_type}'
+  label_motivation: 'Recommended list of {category}s visited for ${motivation}'
+  label_companion_type: 'Recommended list of {category}s visited with ${companion_type}'
+  label_popularity: 'List of {category}s most visited'
   add_to_plan: Add to your plan
 
 next: Next

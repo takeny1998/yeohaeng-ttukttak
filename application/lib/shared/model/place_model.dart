@@ -77,9 +77,18 @@ enum PlaceCategory {
       PlaceCategory.culture,
       PlaceCategory.themePark,
       PlaceCategory.trail,
-      PlaceCategory.festival,
       PlaceCategory.attraction,
     ];
   }
 
+  static List<PlaceCategory> getPopularity() {
+    return [
+      PlaceCategory.nature,
+      PlaceCategory.landmark,
+      PlaceCategory.culture,
+      PlaceCategory.shop,
+      PlaceCategory.commerce,
+      PlaceCategory.dining,
+    ];
+  }
 }

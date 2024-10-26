@@ -27,6 +27,7 @@ travel:
 travel_plan_recommend:
   label_motivation: '{motivation} 목적으로 찾은 {category} 목록'
   label_companion_type: '{companionType}과 함께 찾은 {category} 목록'
+  label_popularity: '많이 방문한 {category} 목록'
   add_to_plan: 일정에 추가하기
 
 next: 다음으로
@@ -112,7 +113,7 @@ enum:
 
   PlaceCategory:
     nature: 자연관광지
-    landmark: 역사/유적/종교 시설
+    landmark: 랜드마크
     culture: 문화 시설
     commerce: 상업지구
     recreation: 레저/스포츠
