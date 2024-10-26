@@ -13,7 +13,6 @@ import com.yeohaeng_ttukttak.server.domain.travel.entity.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import static com.querydsl.jpa.JPAExpressions.selectFrom;
 import static com.yeohaeng_ttukttak.server.domain.place.entity.QPlace.place;
 import static com.yeohaeng_ttukttak.server.domain.travel.entity.QTravel.travel;
 import static com.yeohaeng_ttukttak.server.domain.travel.entity.QTravelCompanion.travelCompanion;
@@ -27,43 +26,53 @@ public class PlaceRecommendationsRepository {
     private final JPAQueryFactory queryFactory;
 
     public PageResult<Place> byMotivationOrderByRatio(PlaceCategory category, int codeStart, int codeEnd, Motivation motivation, PageCommand comm) {
-        NumberExpression<Double> ratioExpression = createRatioExpression(
+        NumberExpression<Double> ratioExpression = createTargetRatioExpression(
                 travelMotivation.motivation.eq(motivation),
                 travelMotivation.motivation.count());
 
         JPAQuery<Place> query = createBaseQuery(codeStart, codeEnd, category)
                 .join(travelMotivation).on(travelMotivation.travel.eq(travel));
 
-        return PageUtil.pageBy(orderByRatio(ratioExpression, query), comm);
+        return PageUtil.pageBy(orderByRatio(ratioExpression, category, query), comm);
     }
 
     public PageResult<Place> byCompanionTypeOrderByRatio(PlaceCategory category, int codeStart, int codeEnd, CompanionType companionType, PageCommand comm) {
-        NumberExpression<Double> ratioExpression = createRatioExpression(
+        NumberExpression<Double> targetRatioExpression = createTargetRatioExpression(
                 travelCompanion.type.eq(companionType),
                 travelCompanion.type.count());
+
+
 
         JPAQuery<Place> query = createBaseQuery(codeStart, codeEnd, category)
                 .join(travelCompanion).on(travelCompanion.travel.eq(travel));
 
-        return PageUtil.pageBy(orderByRatio(ratioExpression, query), comm);
+        return PageUtil.pageBy(orderByRatio(targetRatioExpression, category, query), comm);
     }
 
-    private JPAQuery<Place> orderByRatio(NumberExpression<Double> ratioExpression, JPAQuery<Place> query) {
+    private JPAQuery<Place> orderByRatio(NumberExpression<Double> targetRatioExpression, PlaceCategory category, JPAQuery<Place> query) {
+
+        NumberExpression<Double> categoryRatioExpression = createCategoryRatioExpression(category);
+
+        NumberExpression<Double> ratioExpression = targetRatioExpression.multiply(categoryRatioExpression.multiply(0.5));
         return query
                 .having(ratioExpression.gt(0.0))
                 .orderBy(ratioExpression.desc(), place.id.asc());
     }
 
     private JPAQuery<Place> createBaseQuery(int codeStart, int codeEnd, PlaceCategory category) {
+
+        QPlaceCategoryMapping placeCategory = new QPlaceCategoryMapping("pc");
+
         return queryFactory
                 .selectFrom(place)
                 .join(travelVisit).on(travelVisit.place.eq(place))
                 .join(travel).on(travelVisit.travel.eq(travel))
-                .where(inRegion(codeStart, codeEnd), existsCategory(category))
+                .join(placeCategory).on(placeCategory.place.eq(place))
+                .where(inRegion(codeStart, codeEnd))
                 .groupBy(place);
     }
 
-    private NumberExpression<Double> createRatioExpression(BooleanExpression eq, NumberExpression<Long> count) {
+    private NumberExpression<Double> createTargetRatioExpression(BooleanExpression eq, NumberExpression<Long> count) {
         return new CaseBuilder()
                 .when(eq)
                 .then(travelVisit.satisfaction
@@ -79,10 +88,14 @@ public class PlaceRecommendationsRepository {
         return place.regionCode.between(codeStart, codeEnd);
     }
 
-    private BooleanExpression existsCategory(PlaceCategory category) {
-        QPlaceCategoryMapping pc = new QPlaceCategoryMapping("pc");
-        return selectFrom(pc)
-                .where(pc.place.eq(place), pc.category.eq(category))
-                .exists();
+    private NumberExpression<Double> createCategoryRatioExpression(PlaceCategory category) {
+        QPlaceCategoryMapping placeCategory = new QPlaceCategoryMapping("pc");
+
+        return new CaseBuilder()
+                .when(placeCategory.category.eq(category))
+                .then(1.0)
+                .otherwise(0.0)
+                .sum()
+                .divide(placeCategory.count());
     }
 }
