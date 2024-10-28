@@ -17,7 +17,7 @@ public class FindTravelsByCityService {
     private final TravelRepository travelRepository;
 
     public List<TravelDto> call(Long cityId) {
-        final List<Travel> travels = travelRepository.findAllByCity(cityId);
+        final List<Travel> travels = travelRepository.findByCity(cityId);
 
         travels.forEach(Travel::motivations);
         travels.forEach(Travel::companions);

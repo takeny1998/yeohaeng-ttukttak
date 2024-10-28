@@ -41,8 +41,6 @@ public class PlaceRecommendationsRepository {
                 travelCompanion.type.eq(companionType),
                 travelCompanion.type.count());
 
-
-
         JPAQuery<Place> query = createBaseQuery(codeStart, codeEnd, category)
                 .join(travelCompanion).on(travelCompanion.travel.eq(travel));
 
