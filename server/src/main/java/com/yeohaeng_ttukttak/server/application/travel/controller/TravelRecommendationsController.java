@@ -1,7 +1,10 @@
 package com.yeohaeng_ttukttak.server.application.travel.controller;
 
+import com.yeohaeng_ttukttak.server.application.travel.controller.dto.RecommendTravelResponse;
 import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.InvalidArgumentException;
+import com.yeohaeng_ttukttak.server.common.util.dto.PageCommand;
+import com.yeohaeng_ttukttak.server.common.util.dto.PageResult;
 import com.yeohaeng_ttukttak.server.domain.travel.dto.TravelDto;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.CompanionType;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.Motivation;
@@ -26,12 +29,12 @@ public class TravelRecommendationsController {
     private final TravelRecommendRepository repository;
 
     @GetMapping
-    public ServerResponse<List<TravelDto>> recommend(
+    public ServerResponse<RecommendTravelResponse> recommend(
             @RequestParam Long cityId,
             @RequestParam(required = false) List<Motivation> motivations,
-            @RequestParam(required = false) List<CompanionType> companionTypes
-//            @RequestParam int pageSize,
-//            @RequestParam int pageNumber
+            @RequestParam(required = false) List<CompanionType> companionTypes,
+            @RequestParam int pageSize,
+            @RequestParam int pageNumber
     ) {
 
         final boolean isCompanionTypeNull = Objects.isNull(companionTypes);
@@ -40,16 +43,16 @@ public class TravelRecommendationsController {
         log.debug("motivations = {}", motivations);
         log.debug("companionTypes = {}", companionTypes);
 
-//        if ((!isMotivationNull && !isCompanionTypeNull)
-//                || (isMotivationNull && isCompanionTypeNull)) {
-//            throw new InvalidArgumentException();
-//        }
+        if (isMotivationNull && isCompanionTypeNull) {
+            throw new InvalidArgumentException();
+        }
 
-        final List<Travel> travels = repository.call(cityId, motivations, companionTypes);
+        PageCommand pageCommand = new PageCommand(pageSize, pageNumber);
 
-        log.debug("{}", travels.size());
+        final PageResult<Travel> pageResult = repository.call(
+                cityId, motivations, companionTypes, pageCommand);
 
-        return new ServerResponse<>(travels.stream().map(TravelDto::of).toList());
+        return new ServerResponse<>(RecommendTravelResponse.of(pageResult));
 
     }
 

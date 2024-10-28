@@ -3,6 +3,9 @@ package com.yeohaeng_ttukttak.server.domain.travel.repository;
 import com.querydsl.core.types.dsl.*;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.yeohaeng_ttukttak.server.common.util.PageUtil;
+import com.yeohaeng_ttukttak.server.common.util.dto.PageCommand;
+import com.yeohaeng_ttukttak.server.common.util.dto.PageResult;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,7 +13,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static com.querydsl.jpa.JPAExpressions.select;
 import static com.yeohaeng_ttukttak.server.domain.travel.entity.QTravel.travel;
 import static com.yeohaeng_ttukttak.server.domain.travel.entity.QTravelCity.travelCity;
 import static com.yeohaeng_ttukttak.server.domain.travel.entity.QTravelCompanion.travelCompanion;
@@ -23,11 +25,10 @@ public class TravelRecommendRepository {
 
     private final JPAQueryFactory queryFactory;
 
-    public List<Travel> call(Long cityId, List<Motivation> motivations, List<CompanionType> companionTypes) {
+    public PageResult<Travel> call(Long cityId, List<Motivation> motivations, List<CompanionType> companionTypes, PageCommand pageCommand) {
 
         final boolean isMotivationsExists = motivations != null && !motivations.isEmpty();
         final boolean isCompanionTypesExists = companionTypes != null && !companionTypes.isEmpty();
-
 
         JPAQuery<Travel> query = queryFactory
                 .select(travel)
@@ -56,7 +57,7 @@ public class TravelRecommendRepository {
             query.orderBy(travelCompanion.count().desc());
         }
 
-        return query.orderBy(travel.id.asc()).fetch();
+        return PageUtil.pageBy(query.orderBy(travel.id.asc()), pageCommand);
 
     }
 
