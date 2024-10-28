@@ -40,14 +40,12 @@ public class TravelRecommendationsController {
         log.debug("motivations = {}", motivations);
         log.debug("companionTypes = {}", companionTypes);
 
-        if ((!isMotivationNull && !isCompanionTypeNull)
-                || (isMotivationNull && isCompanionTypeNull)) {
-            throw new InvalidArgumentException();
-        }
+//        if ((!isMotivationNull && !isCompanionTypeNull)
+//                || (isMotivationNull && isCompanionTypeNull)) {
+//            throw new InvalidArgumentException();
+//        }
 
-        final List<Travel> travels = !isMotivationNull
-                ? repository.byMotivations(cityId, motivations)
-                : repository.byCompanionTypes(cityId, companionTypes);
+        final List<Travel> travels = repository.call(cityId, motivations, companionTypes);
 
         log.debug("{}", travels.size());
 
