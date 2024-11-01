@@ -34,6 +34,8 @@ next: Next
 korea: Republic of Korea
 me: Me
 
+null: ''
+
 word:
   travel: Travel
   reset_camera: Reset camera

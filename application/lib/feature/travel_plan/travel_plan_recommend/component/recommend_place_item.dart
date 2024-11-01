@@ -2,6 +2,7 @@ import 'package:application_new/common/util/string_extension.dart';
 import 'package:application_new/common/util/translation.dart';
 import 'package:application_new/feature/travel_plan/travel_plan_recommend/model/recommend_model.dart';
 import 'package:application_new/feature/travel_plan/travel_plan_recommend/provider/travel_plan_recommend_state.dart';
+import 'package:application_new/shared/component/small_chip.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
@@ -45,11 +46,12 @@ class RecommendPlaceItem extends StatelessWidget {
     final labelStyle =
         textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w600);
 
-    final placeNameStyle =
+    final nameStyle =
         textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w600);
 
-    final placeAddrStyle = textTheme.labelMedium?.copyWith(
+    final subTitleStyle = textTheme.labelMedium?.copyWith(
         color: colorScheme.onSurfaceVariant, fontWeight: FontWeight.w600);
+
 
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 48.0),
@@ -82,18 +84,21 @@ class RecommendPlaceItem extends StatelessWidget {
                                 )),
                             const SizedBox(height: 8.0),
                             Text(place.name,
-                                style: placeNameStyle,
+                                style: nameStyle,
                                 overflow: TextOverflow.ellipsis),
                             Text(place.address.value ?? '',
-                                style: placeAddrStyle,
+                                style: subTitleStyle,
                                 overflow: TextOverflow.ellipsis),
-                            const SizedBox(height: 16.0),
+                            SmallChip(label: enumKey(place.categories.firstOrNull).tr()),
+                            const SizedBox(height: 8.0),
                             SizedBox(
                               width: double.maxFinite,
                               child: OutlinedButton.icon(
                                   onPressed: () {},
+                                  style: OutlinedButton.styleFrom(
+                                    textStyle:subTitleStyle),
                                   icon: const Icon(
-                                      Icons.add_location_alt_outlined,
+                                      Icons.add_location_outlined,
                                       size: 18.0),
                                   label: Text(trKey('add_to_plan')).tr()))
                           ]),

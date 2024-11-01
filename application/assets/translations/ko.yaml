@@ -36,6 +36,8 @@ next: 다음으로
 korea: 대한민국
 me: 본인
 
+null: ''
+
 word:
   travel: 여행
   reset_camera: 카메라 초기화

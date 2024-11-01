@@ -13,7 +13,8 @@ class SmallChip extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Chip(
-      padding: const EdgeInsets.symmetric(horizontal: 2.0, vertical: 0.0),
+        visualDensity: VisualDensity.compact,
+        padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 0.0),
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(4.0)),
         side: BorderSide.none,

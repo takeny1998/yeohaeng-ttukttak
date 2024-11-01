@@ -75,10 +75,15 @@ class _TravelPlanRecommendPageState
         final child = switch (recommendations[index]) {
           (RecommendPlaceModel model) =>
             RecommendPlaceItem(recommendPlaceModel: model),
-          (RecommendTravelModel model) => RecommendTravelItem(recommendTravelModel: model),
+          (RecommendTravelModel model) =>
+            RecommendTravelItem(recommendTravelModel: model),
         };
         return child;
       }, childCount: recommendations.length)),
+      SliverGrid(
+          delegate: SliverChildListDelegate([]),
+          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: 120.0)),
       if (hasNextPage)
         SliverFillRemaining(
             hasScrollBody: false,
