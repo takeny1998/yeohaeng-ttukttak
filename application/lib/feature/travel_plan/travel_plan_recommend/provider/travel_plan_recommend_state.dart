@@ -28,7 +28,7 @@ abstract class RecommendTarget {
 
 sealed class PlaceTarget extends RecommendTarget {
 
-  final PlaceCategory category;
+  final PlaceCategoryType category;
 
   PlaceTarget({super.pageNumber, required this.category});
 

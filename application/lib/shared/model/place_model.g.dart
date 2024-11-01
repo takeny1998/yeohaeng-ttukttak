@@ -14,7 +14,7 @@ _$PlaceModelImpl _$$PlaceModelImplFromJson(Map<String, dynamic> json) =>
       coordinates: PlaceCoordinates.fromJson(
           json['coordinates'] as Map<String, dynamic>),
       categories: (json['categories'] as List<dynamic>)
-          .map((e) => $enumDecode(_$PlaceCategoryEnumMap, e))
+          .map((e) => $enumDecode(_$PlaceCategoryTypeEnumMap, e))
           .toList(),
     );
 
@@ -24,25 +24,19 @@ Map<String, dynamic> _$$PlaceModelImplToJson(_$PlaceModelImpl instance) =>
       'name': instance.name,
       'address': instance.address,
       'coordinates': instance.coordinates,
-      'categories':
-          instance.categories.map((e) => _$PlaceCategoryEnumMap[e]!).toList(),
+      'categories': instance.categories
+          .map((e) => _$PlaceCategoryTypeEnumMap[e]!)
+          .toList(),
     };
 
-const _$PlaceCategoryEnumMap = {
-  PlaceCategory.nature: 'nature',
-  PlaceCategory.landmark: 'landmark',
-  PlaceCategory.culture: 'culture',
-  PlaceCategory.commerce: 'commerce',
-  PlaceCategory.recreation: 'recreation',
-  PlaceCategory.themePark: 'themePark',
-  PlaceCategory.trail: 'trail',
-  PlaceCategory.festival: 'festival',
-  PlaceCategory.transport: 'transport',
-  PlaceCategory.shop: 'shop',
-  PlaceCategory.dining: 'dining',
-  PlaceCategory.attraction: 'attraction',
-  PlaceCategory.lodging: 'lodging',
-  PlaceCategory.other: 'other',
+const _$PlaceCategoryTypeEnumMap = {
+  PlaceCategoryType.nature: 'nature',
+  PlaceCategoryType.tourism: 'tourism',
+  PlaceCategoryType.culture: 'culture',
+  PlaceCategoryType.commerce: 'commerce',
+  PlaceCategoryType.transport: 'transport',
+  PlaceCategoryType.dining: 'dining',
+  PlaceCategoryType.lodging: 'lodging',
 };
 
 _$PlaceCoordinatesImpl _$$PlaceCoordinatesImplFromJson(

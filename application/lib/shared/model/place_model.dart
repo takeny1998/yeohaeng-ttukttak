@@ -12,7 +12,7 @@ class PlaceModel with _$PlaceModel {
     required String name,
     required PlaceAddress address,
     required PlaceCoordinates coordinates,
-    required List<PlaceCategory> categories,
+    required List<PlaceCategoryType> categories,
   }) = _PlaceModel;
 
   factory PlaceModel.fromJson(Map<String, dynamic> json) =>
@@ -54,41 +54,12 @@ class PlaceAddress with _$PlaceAddress {
 }
 
 
-enum PlaceCategory {
+enum PlaceCategoryType {
   nature,
-  landmark,
+  tourism,
   culture,
   commerce,
-  recreation,
-  themePark,
-  trail,
-  festival,
   transport,
-  shop,
   dining,
-  attraction,
-  lodging,
-  other;
-
-  static List<PlaceCategory> getRecommendable() {
-    return [
-      PlaceCategory.nature,
-      PlaceCategory.landmark,
-      PlaceCategory.culture,
-      PlaceCategory.themePark,
-      PlaceCategory.trail,
-      PlaceCategory.attraction,
-    ];
-  }
-
-  static List<PlaceCategory> getPopularity() {
-    return [
-      PlaceCategory.nature,
-      PlaceCategory.landmark,
-      PlaceCategory.culture,
-      PlaceCategory.shop,
-      PlaceCategory.commerce,
-      PlaceCategory.dining,
-    ];
-  }
+  lodging
 }

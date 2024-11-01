@@ -12,7 +12,7 @@ sealed class RecommendModel {
 
 final class RecommendPlaceModel extends RecommendModel {
   final PlaceTarget target;
-  final PlaceCategory category;
+  final PlaceCategoryType category;
   final List<PlaceModel> places;
 
   RecommendPlaceModel({required this.target, required this.category, required this.places, super.hasNextPage});

@@ -31,13 +31,13 @@ class TravelPlanRecommend extends _$TravelPlanRecommend {
 
   void _initTargets(TravelModel travel) {
     _placeTargets = {
-      for (final category in PlaceCategory.getRecommendable()) ...[
+      for (final category in PlaceCategoryType.values) ...[
         for (final motivation in travel.motivations)
           MotivationTarget(motivation: motivation, category: category),
         CompanionTypeTarget(
             companionType: travel.companionType, category: category),
       ],
-      for (final category in PlaceCategory.getPopularity()) ...[
+      for (final category in PlaceCategoryType.values) ...[
         PopularityTarget(category: category)
       ]
     };

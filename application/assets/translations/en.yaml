@@ -113,18 +113,11 @@ enum:
     education: Because it was educational.
     other: Other reason
 
-  PlaceCategory:
+  PlaceCategoryType:
     nature: Natural
-    landmark: Landmark
+    tourism: Tourism Attraction
     culture: Cultural
     commerce: Commercial
-    recreation: Leisure/sports
-    themePark: Theme park
-    trail: Trail
-    festival: Festival
     transport: Transportation
-    shop: Shop
     dining: Restaurant/Café
-    attraction: Attraction
     lodging: Lodging
-    other: Others

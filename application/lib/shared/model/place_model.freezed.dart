@@ -24,7 +24,7 @@ mixin _$PlaceModel {
   String get name => throw _privateConstructorUsedError;
   PlaceAddress get address => throw _privateConstructorUsedError;
   PlaceCoordinates get coordinates => throw _privateConstructorUsedError;
-  List<PlaceCategory> get categories => throw _privateConstructorUsedError;
+  List<PlaceCategoryType> get categories => throw _privateConstructorUsedError;
 
   /// Serializes this PlaceModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -47,7 +47,7 @@ abstract class $PlaceModelCopyWith<$Res> {
       String name,
       PlaceAddress address,
       PlaceCoordinates coordinates,
-      List<PlaceCategory> categories});
+      List<PlaceCategoryType> categories});
 
   $PlaceAddressCopyWith<$Res> get address;
   $PlaceCoordinatesCopyWith<$Res> get coordinates;
@@ -94,7 +94,7 @@ class _$PlaceModelCopyWithImpl<$Res, $Val extends PlaceModel>
       categories: null == categories
           ? _value.categories
           : categories // ignore: cast_nullable_to_non_nullable
-              as List<PlaceCategory>,
+              as List<PlaceCategoryType>,
     ) as $Val);
   }
 
@@ -132,7 +132,7 @@ abstract class _$$PlaceModelImplCopyWith<$Res>
       String name,
       PlaceAddress address,
       PlaceCoordinates coordinates,
-      List<PlaceCategory> categories});
+      List<PlaceCategoryType> categories});
 
   @override
   $PlaceAddressCopyWith<$Res> get address;
@@ -179,7 +179,7 @@ class __$$PlaceModelImplCopyWithImpl<$Res>
       categories: null == categories
           ? _value._categories
           : categories // ignore: cast_nullable_to_non_nullable
-              as List<PlaceCategory>,
+              as List<PlaceCategoryType>,
     ));
   }
 }
@@ -192,7 +192,7 @@ class _$PlaceModelImpl implements _PlaceModel {
       required this.name,
       required this.address,
       required this.coordinates,
-      required final List<PlaceCategory> categories})
+      required final List<PlaceCategoryType> categories})
       : _categories = categories;
 
   factory _$PlaceModelImpl.fromJson(Map<String, dynamic> json) =>
@@ -206,9 +206,9 @@ class _$PlaceModelImpl implements _PlaceModel {
   final PlaceAddress address;
   @override
   final PlaceCoordinates coordinates;
-  final List<PlaceCategory> _categories;
+  final List<PlaceCategoryType> _categories;
   @override
-  List<PlaceCategory> get categories {
+  List<PlaceCategoryType> get categories {
     if (_categories is EqualUnmodifiableListView) return _categories;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_categories);
@@ -260,7 +260,7 @@ abstract class _PlaceModel implements PlaceModel {
       required final String name,
       required final PlaceAddress address,
       required final PlaceCoordinates coordinates,
-      required final List<PlaceCategory> categories}) = _$PlaceModelImpl;
+      required final List<PlaceCategoryType> categories}) = _$PlaceModelImpl;
 
   factory _PlaceModel.fromJson(Map<String, dynamic> json) =
       _$PlaceModelImpl.fromJson;
@@ -274,7 +274,7 @@ abstract class _PlaceModel implements PlaceModel {
   @override
   PlaceCoordinates get coordinates;
   @override
-  List<PlaceCategory> get categories;
+  List<PlaceCategoryType> get categories;
 
   /// Create a copy of PlaceModel
   /// with the given fields replaced by the non-null parameter values.

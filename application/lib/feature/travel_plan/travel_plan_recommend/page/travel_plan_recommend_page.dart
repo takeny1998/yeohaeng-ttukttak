@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:application_new/common/util/translation.dart';
+import 'package:application_new/feature/home/home_page.dart';
 import 'package:application_new/feature/travel_plan/component/travel_city_item.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_page.dart';
 import 'package:application_new/feature/travel_plan/provider/travel_plan_provider.dart';
@@ -8,6 +10,8 @@ import 'package:application_new/feature/travel_plan/travel_plan_recommend/compon
 import 'package:application_new/feature/travel_plan/travel_plan_recommend/model/recommend_model.dart';
 import 'package:application_new/feature/travel_plan/travel_plan_recommend/provider/travel_plan_recommend_provider.dart';
 import 'package:application_new/feature/travel_plan/travel_plan_recommend/provider/travel_plan_recommend_state.dart';
+import 'package:application_new/shared/model/place_model.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -70,6 +74,16 @@ class _TravelPlanRecommendPageState
                     .selectCity(i)),
         ])),
       ),
+      SliverGrid(
+          delegate: SliverChildListDelegate([
+            for (final categoryType in PlaceCategoryType.values)
+              Column(children: [
+                CircleAvatar(),
+                Text(enumKey(categoryType).tr())
+              ])
+          ]),
+          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: 120.0)),
       SliverList(
           delegate: SliverChildBuilderDelegate((context, index) {
         final child = switch (recommendations[index]) {
@@ -80,10 +94,6 @@ class _TravelPlanRecommendPageState
         };
         return child;
       }, childCount: recommendations.length)),
-      SliverGrid(
-          delegate: SliverChildListDelegate([]),
-          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: 120.0)),
       if (hasNextPage)
         SliverFillRemaining(
             hasScrollBody: false,

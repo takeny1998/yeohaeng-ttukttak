@@ -119,18 +119,11 @@ enum:
     education: 교육적인 장소라 방문헀어요.
     other: 기타
 
-  PlaceCategory:
-    nature: 자연관광지
-    landmark: 랜드마크
+  PlaceCategoryType:
+    nature: 자연 관광지
+    tourism: 관광 명소
     culture: 문화 시설
-    commerce: 상업지구
-    recreation: 레저/스포츠
-    themePark: 테마파크
-    trail: 산책로, 둘레길
-    festival: 축제/행사
+    commerce: 상업 시설
     transport: 교통 시설
-    shop: 상업시설
     dining: 식당/카페
-    attraction: 체험 활동 관광지
     lodging: 숙소
-    other: 기타
