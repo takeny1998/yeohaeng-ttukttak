@@ -89,6 +89,8 @@ const _$TravelMotivationEnumMap = {
   TravelMotivation.fitness: 'fitness',
   TravelMotivation.newExperiences: 'newExperiences',
   TravelMotivation.education: 'education',
+  TravelMotivation.special: 'special',
+  TravelMotivation.other: 'other',
 };
 
 _$TravelCompanionImpl _$$TravelCompanionImplFromJson(

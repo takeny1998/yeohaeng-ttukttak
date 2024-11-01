@@ -3,7 +3,8 @@ import 'dart:math';
 import 'package:application_new/feature/travel_plan/component/travel_city_item.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_page.dart';
 import 'package:application_new/feature/travel_plan/provider/travel_plan_provider.dart';
-import 'package:application_new/feature/travel_plan/travel_plan_recommend/component/recommend_item.dart';
+import 'package:application_new/feature/travel_plan/travel_plan_recommend/component/recommend_place_item.dart';
+import 'package:application_new/feature/travel_plan/travel_plan_recommend/component/recommend_travel_item.dart';
 import 'package:application_new/feature/travel_plan/travel_plan_recommend/model/recommend_model.dart';
 import 'package:application_new/feature/travel_plan/travel_plan_recommend/provider/travel_plan_recommend_provider.dart';
 import 'package:application_new/feature/travel_plan/travel_plan_recommend/provider/travel_plan_recommend_state.dart';
@@ -71,10 +72,12 @@ class _TravelPlanRecommendPageState
       ),
       SliverList(
           delegate: SliverChildBuilderDelegate((context, index) {
-        return Container(
-          margin: index == 0 ? const EdgeInsets.only(top: 48.0) : null,
-          child: RecommendItem(recommend: recommendations[index]),
-        );
+        final child = switch (recommendations[index]) {
+          (RecommendPlaceModel model) =>
+            RecommendPlaceItem(recommendPlaceModel: model),
+          (RecommendTravelModel model) => RecommendTravelItem(recommendTravelModel: model),
+        };
+        return child;
       }, childCount: recommendations.length)),
       if (hasNextPage)
         SliverFillRemaining(

@@ -1,17 +1,28 @@
 import 'package:application_new/shared/model/place_model.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:application_new/shared/model/travel/travel_model.dart';
 
 import '../provider/travel_plan_recommend_state.dart';
 
-part 'recommend_model.freezed.dart';
 
-@freezed
-class RecommendModel with _$RecommendModel {
-  const factory RecommendModel({
-    required RecommendTarget target,
-    required PlaceCategory category,
-    required List<PlaceModel> places,
-    required bool hasNextPage,
-  }) = _RecommendModel;
+sealed class RecommendModel {
+  final bool hasNextPage;
+
+  RecommendModel({this.hasNextPage = false});
+}
+
+final class RecommendPlaceModel extends RecommendModel {
+  final PlaceTarget target;
+  final PlaceCategory category;
+  final List<PlaceModel> places;
+
+  RecommendPlaceModel({required this.target, required this.category, required this.places, super.hasNextPage});
+
+}
+
+final class RecommendTravelModel extends RecommendModel {
+
+  final List<TravelModel> travels;
+
+  RecommendTravelModel({super.hasNextPage, required this.travels});
 
 }

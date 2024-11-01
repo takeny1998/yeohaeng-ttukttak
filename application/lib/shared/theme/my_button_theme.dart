@@ -9,15 +9,23 @@ class MyButtonTheme extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData(:colorScheme, :textTheme) = Theme.of(context);
 
+    final buttonTextStyle =
+        textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w600);
+
     return Theme(
       data: Theme.of(context).copyWith(
+        filledButtonTheme: FilledButtonThemeData(
+            style: FilledButton.styleFrom(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(6.0)),
+          textStyle: buttonTextStyle,
+        )),
         outlinedButtonTheme: OutlinedButtonThemeData(
           style: OutlinedButton.styleFrom(
             side: BorderSide(color: colorScheme.surfaceDim),
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(6.0)),
-            textStyle:
-                textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w600),
+            textStyle: buttonTextStyle,
           ),
         ),
       ),

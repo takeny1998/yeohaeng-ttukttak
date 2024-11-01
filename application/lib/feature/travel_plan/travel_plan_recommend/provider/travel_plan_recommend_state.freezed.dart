@@ -19,6 +19,7 @@ mixin _$TravelPlanRecommendState {
   List<RecommendModel> get recommendations =>
       throw _privateConstructorUsedError;
   bool get hasNextPage => throw _privateConstructorUsedError;
+  bool get hasMoreTravel => throw _privateConstructorUsedError;
 
   /// Create a copy of TravelPlanRecommendState
   /// with the given fields replaced by the non-null parameter values.
@@ -33,7 +34,10 @@ abstract class $TravelPlanRecommendStateCopyWith<$Res> {
           $Res Function(TravelPlanRecommendState) then) =
       _$TravelPlanRecommendStateCopyWithImpl<$Res, TravelPlanRecommendState>;
   @useResult
-  $Res call({List<RecommendModel> recommendations, bool hasNextPage});
+  $Res call(
+      {List<RecommendModel> recommendations,
+      bool hasNextPage,
+      bool hasMoreTravel});
 }
 
 /// @nodoc
@@ -54,6 +58,7 @@ class _$TravelPlanRecommendStateCopyWithImpl<$Res,
   $Res call({
     Object? recommendations = null,
     Object? hasNextPage = null,
+    Object? hasMoreTravel = null,
   }) {
     return _then(_value.copyWith(
       recommendations: null == recommendations
@@ -63,6 +68,10 @@ class _$TravelPlanRecommendStateCopyWithImpl<$Res,
       hasNextPage: null == hasNextPage
           ? _value.hasNextPage
           : hasNextPage // ignore: cast_nullable_to_non_nullable
+              as bool,
+      hasMoreTravel: null == hasMoreTravel
+          ? _value.hasMoreTravel
+          : hasMoreTravel // ignore: cast_nullable_to_non_nullable
               as bool,
     ) as $Val);
   }
@@ -77,7 +86,10 @@ abstract class _$$TravelPlanRecommendStateImplCopyWith<$Res>
       __$$TravelPlanRecommendStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<RecommendModel> recommendations, bool hasNextPage});
+  $Res call(
+      {List<RecommendModel> recommendations,
+      bool hasNextPage,
+      bool hasMoreTravel});
 }
 
 /// @nodoc
@@ -97,6 +109,7 @@ class __$$TravelPlanRecommendStateImplCopyWithImpl<$Res>
   $Res call({
     Object? recommendations = null,
     Object? hasNextPage = null,
+    Object? hasMoreTravel = null,
   }) {
     return _then(_$TravelPlanRecommendStateImpl(
       recommendations: null == recommendations
@@ -107,6 +120,10 @@ class __$$TravelPlanRecommendStateImplCopyWithImpl<$Res>
           ? _value.hasNextPage
           : hasNextPage // ignore: cast_nullable_to_non_nullable
               as bool,
+      hasMoreTravel: null == hasMoreTravel
+          ? _value.hasMoreTravel
+          : hasMoreTravel // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -116,7 +133,8 @@ class __$$TravelPlanRecommendStateImplCopyWithImpl<$Res>
 class _$TravelPlanRecommendStateImpl extends _TravelPlanRecommendState {
   const _$TravelPlanRecommendStateImpl(
       {final List<RecommendModel> recommendations = const [],
-      this.hasNextPage = true})
+      this.hasNextPage = true,
+      this.hasMoreTravel = true})
       : _recommendations = recommendations,
         super._();
 
@@ -132,10 +150,13 @@ class _$TravelPlanRecommendStateImpl extends _TravelPlanRecommendState {
   @override
   @JsonKey()
   final bool hasNextPage;
+  @override
+  @JsonKey()
+  final bool hasMoreTravel;
 
   @override
   String toString() {
-    return 'TravelPlanRecommendState(recommendations: $recommendations, hasNextPage: $hasNextPage)';
+    return 'TravelPlanRecommendState(recommendations: $recommendations, hasNextPage: $hasNextPage, hasMoreTravel: $hasMoreTravel)';
   }
 
   @override
@@ -146,12 +167,17 @@ class _$TravelPlanRecommendStateImpl extends _TravelPlanRecommendState {
             const DeepCollectionEquality()
                 .equals(other._recommendations, _recommendations) &&
             (identical(other.hasNextPage, hasNextPage) ||
-                other.hasNextPage == hasNextPage));
+                other.hasNextPage == hasNextPage) &&
+            (identical(other.hasMoreTravel, hasMoreTravel) ||
+                other.hasMoreTravel == hasMoreTravel));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType,
-      const DeepCollectionEquality().hash(_recommendations), hasNextPage);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(_recommendations),
+      hasNextPage,
+      hasMoreTravel);
 
   /// Create a copy of TravelPlanRecommendState
   /// with the given fields replaced by the non-null parameter values.
@@ -166,13 +192,16 @@ class _$TravelPlanRecommendStateImpl extends _TravelPlanRecommendState {
 abstract class _TravelPlanRecommendState extends TravelPlanRecommendState {
   const factory _TravelPlanRecommendState(
       {final List<RecommendModel> recommendations,
-      final bool hasNextPage}) = _$TravelPlanRecommendStateImpl;
+      final bool hasNextPage,
+      final bool hasMoreTravel}) = _$TravelPlanRecommendStateImpl;
   const _TravelPlanRecommendState._() : super._();
 
   @override
   List<RecommendModel> get recommendations;
   @override
   bool get hasNextPage;
+  @override
+  bool get hasMoreTravel;
 
   /// Create a copy of TravelPlanRecommendState
   /// with the given fields replaced by the non-null parameter values.
