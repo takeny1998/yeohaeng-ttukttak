@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:application_new/common/http/http_service_provider.dart';
 import 'package:application_new/common/util/list_utils.dart';
@@ -16,7 +17,8 @@ part 'travel_plan_recommend_provider.g.dart';
 @riverpod
 class TravelPlanRecommend extends _$TravelPlanRecommend {
   late CityModel _city;
-  late Set<RecommendTarget> _targets;
+  late Set<PlaceTarget> _placeTargets;
+  late TravelTarget _travelTarget;
 
   @override
   TravelPlanRecommendState build(int travelId, int cityIndex) {
@@ -28,7 +30,7 @@ class TravelPlanRecommend extends _$TravelPlanRecommend {
   }
 
   void _initTargets(TravelModel travel) {
-    _targets = {
+    _placeTargets = {
       for (final category in PlaceCategory.getRecommendable()) ...[
         for (final motivation in travel.motivations)
           MotivationTarget(motivation: motivation, category: category),
@@ -39,25 +41,73 @@ class TravelPlanRecommend extends _$TravelPlanRecommend {
         PopularityTarget(category: category)
       ]
     };
+
+    _travelTarget = TravelTarget(
+        motivations: travel.motivations,
+        companionTypes: [travel.companionType]);
   }
 
-  Future<void> random() async {
-    final target = ListUtils.random(_targets);
-    _targets.remove(target);
+  Future<RecommendModel> _fetchPlace() async {
+    final target = ListUtils.random(_placeTargets);
+    _placeTargets.remove(target);
 
     final recommend = await _fetch(target);
 
     if (recommend.hasNextPage) {
-      _targets.add(target.nextPage());
+      _placeTargets.add(target.nextPage());
     }
+
+    return recommend;
+  }
+
+  Future<RecommendModel> _fetchTravel() async {
+    final httpService = ref.read(httpServiceProvider);
+
+    final Map<String, dynamic> queryParams = {
+      'cityId': _city.id,
+      'pageNumber': _travelTarget.pageNumber,
+      'pageSize': 5,
+      'motivations': _travelTarget.motivations.map((e) => e.name).join(','),
+      'companionTypes': _travelTarget.companionTypes.map((e) => e.name).join(',')
+    };
+
+    print(queryParams);
+
+    final response = await httpService.request(
+        'GET', '/api/v2/travels/recommendations',
+        queryParams: queryParams);
+
+    final recommendModel = RecommendTravelModel(
+        hasNextPage: response['hasNextPage'],
+        travels: List.of(response['travels'])
+            .map((travel) => TravelModel.fromJson(travel))
+            .toList());
+
+    if (recommendModel.hasNextPage) {
+      _travelTarget = _travelTarget.nextPage();
+    } else {
+      state = state.copyWith(hasMoreTravel: false);
+    }
+
+    return recommendModel;
+  }
+
+  Future<void> random() async {
+    final isTravelPicked =
+        state.hasMoreTravel ? Random().nextInt(3) == 2 : false;
+
+    final recommend = await switch (isTravelPicked) {
+      true => _fetchTravel(),
+      false => _fetchPlace(),
+    };
 
     state = state.copyWith(
         recommendations: [...state.recommendations, recommend],
-        hasNextPage: _targets.isNotEmpty);
+        hasNextPage: _placeTargets.isNotEmpty);
   }
 
   Future<RecommendModel> _fetch(
-    RecommendTarget target,
+    PlaceTarget target,
   ) async {
     final httpService = ref.read(httpServiceProvider);
 
@@ -81,15 +131,14 @@ class TravelPlanRecommend extends _$TravelPlanRecommend {
         uri = '/api/v2/places/popularity';
     }
 
-    final response = await httpService.request(
-        'GET', uri,
-        queryParams: queryParams);
+    final response =
+        await httpService.request('GET', uri, queryParams: queryParams);
 
     final places = List.of(response['places'])
         .map((json) => PlaceModel.fromJson(json))
         .toList();
 
-    return RecommendModel(
+    return RecommendPlaceModel(
         target: target,
         category: category,
         places: places,

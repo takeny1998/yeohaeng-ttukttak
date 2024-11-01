@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Objects;
 
 @Slf4j
+@Transactional(readOnly = true)
 @RestController
 @RequestMapping("/api/v2/places/recommendations")
 @RequiredArgsConstructor
@@ -30,7 +31,6 @@ public class PlaceRecommendationsController {
     private final GeographyRepository geographyRepository;
     private final PlaceRecommendationsRepository placeRecommendationsRepository;
 
-    @Transactional(readOnly = true)
     @GetMapping
     public ServerResponse<PlaceRecommendationResponse> recommendPlace(
             @RequestParam Long cityId,

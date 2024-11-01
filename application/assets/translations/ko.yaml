@@ -29,6 +29,8 @@ travel_plan_recommend:
   label_companion_type: '{companionType}과 함께 찾은 {category} 목록'
   label_popularity: '많이 방문한 {category} 목록'
   add_to_plan: 일정에 추가하기
+  view_detail: 자세히 보기
+  save: 저장
 
 next: 다음으로
 korea: 대한민국
@@ -83,6 +85,8 @@ enum:
     fitness: 건강 증진
     newExperiences: 새로운 경험 추구
     education: 교육 목적
+    special: 특수 목적
+    other: 기타
 
   AgeGroup:
     underNine: 9세이하
@@ -93,10 +97,12 @@ enum:
     fifties: 50대
     sixties: 60대
     seventiesPlus: 70세이상
+    other: 기타
 
   Gender:
     male: Male
     female: Female
+    other: 기타
 
   TravelVisitReason:
     landmark: 지역 명소라서 방문헀어요.

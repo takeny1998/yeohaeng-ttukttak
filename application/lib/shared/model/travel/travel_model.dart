@@ -67,6 +67,8 @@ enum TravelMotivation {
   fitness,
   newExperiences,
   education,
+  special,
+  other
 }
 
 enum TravelCompanionType {

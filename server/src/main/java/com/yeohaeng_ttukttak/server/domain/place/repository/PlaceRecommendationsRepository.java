@@ -1,6 +1,13 @@
 package com.yeohaeng_ttukttak.server.domain.place.repository;
 
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.*;
+import com.querydsl.jpa.JPAExpressions;
+import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.yeohaeng_ttukttak.server.common.util.PageUtil;
@@ -11,14 +18,19 @@ import com.yeohaeng_ttukttak.server.domain.place.entity.PlaceCategory;
 import com.yeohaeng_ttukttak.server.domain.place.entity.QPlaceCategoryMapping;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 import static com.yeohaeng_ttukttak.server.domain.place.entity.QPlace.place;
+import static com.yeohaeng_ttukttak.server.domain.place.entity.QPlaceCategoryMapping.placeCategoryMapping;
 import static com.yeohaeng_ttukttak.server.domain.travel.entity.QTravel.travel;
 import static com.yeohaeng_ttukttak.server.domain.travel.entity.QTravelCompanion.travelCompanion;
 import static com.yeohaeng_ttukttak.server.domain.travel.entity.QTravelMotivation.travelMotivation;
 import static com.yeohaeng_ttukttak.server.domain.travel.entity.QTravelVisit.travelVisit;
 
+@Slf4j
 @Repository
 @RequiredArgsConstructor
 public class PlaceRecommendationsRepository {
@@ -40,8 +52,6 @@ public class PlaceRecommendationsRepository {
         NumberExpression<Double> targetRatioExpression = createTargetRatioExpression(
                 travelCompanion.type.eq(companionType),
                 travelCompanion.type.count());
-
-
 
         JPAQuery<Place> query = createBaseQuery(codeStart, codeEnd, category)
                 .join(travelCompanion).on(travelCompanion.travel.eq(travel));
