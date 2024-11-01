@@ -19,7 +19,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Objects;
 
 @Slf4j
@@ -31,26 +30,6 @@ public class PlaceRecommendationsController {
 
     private final GeographyRepository geographyRepository;
     private final PlaceRecommendationsRepository placeRecommendationsRepository;
-
-    @GetMapping("/temp")
-    public ServerResponse<List<PlaceDto>> temp(
-            @RequestParam Long cityId,
-            @RequestParam PlaceCategory category,
-//            @RequestParam int pageSize,
-//            @RequestParam int pageNumber,
-            @RequestParam(required = false) List<Motivation> motivations,
-            @RequestParam(required = false) List<CompanionType> companionTypes) {
-
-        log.debug("{} {}", motivations, companionTypes);
-
-        Geography geography = geographyRepository.findById(cityId)
-                .orElseThrow(EntityNotFoundException::new);
-
-        List<Place> places = placeRecommendationsRepository
-                .call(category, geography.codeStart(), geography.codeEnd(), motivations, companionTypes);
-
-        return new ServerResponse<>(places.stream().map(PlaceDto::of).toList());
-    }
 
     @GetMapping
     public ServerResponse<PlaceRecommendationResponse> recommendPlace(

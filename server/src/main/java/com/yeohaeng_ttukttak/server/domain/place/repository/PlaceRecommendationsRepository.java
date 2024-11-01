@@ -1,7 +1,13 @@
 package com.yeohaeng_ttukttak.server.domain.place.repository;
 
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.*;
+import com.querydsl.jpa.JPAExpressions;
+import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.yeohaeng_ttukttak.server.common.util.PageUtil;
@@ -30,48 +36,6 @@ import static com.yeohaeng_ttukttak.server.domain.travel.entity.QTravelVisit.tra
 public class PlaceRecommendationsRepository {
 
     private final JPAQueryFactory queryFactory;
-
-    public List<Place> call(PlaceCategory category, int codeStart, int codeEnd, List<Motivation> motivations, List<CompanionType> companionTypes) {
-
-        final boolean isMotivationsExists = !(motivations == null || motivations.isEmpty());
-        final boolean isCompanionTypesExists = !(companionTypes == null || companionTypes.isEmpty());
-
-        BooleanBuilder joinConditionBuilder = new BooleanBuilder();
-        NumberExpression<Long> motivationCount = Expressions.asNumber(0L);
-        NumberExpression<Long> companionTypeCount = Expressions.asNumber(0L);
-
-        JPAQuery<Place> query = queryFactory.select(place).from(place)
-                .join(place.categories, placeCategoryMapping)
-                .join(place.visits, travelVisit)
-                .join(travelVisit.travel, travel)
-                .where(inRegion(codeStart, codeEnd), placeCategoryMapping.category.eq(category))
-                .groupBy(place);
-
-
-        if (isMotivationsExists) {
-            query.leftJoin(travel.motivations, travelMotivation);
-            joinConditionBuilder.or(travelMotivation.motivation.in(motivations));
-
-            motivationCount = new CaseBuilder()
-                    .when(travelMotivation.motivation.in(motivations))
-                    .then(1L).otherwise(0L)
-                    .sum();
-        }
-
-        if (isCompanionTypesExists) {
-            query.leftJoin(travel.companions, travelCompanion);
-            joinConditionBuilder.or(travelCompanion.type.in(companionTypes));
-
-            companionTypeCount = new CaseBuilder()
-                    .when(travelCompanion.type.in(companionTypes))
-                    .then(1L).otherwise(0L)
-                    .sum();
-        }
-
-        return query
-                .orderBy(motivationCount.add(companionTypeCount).desc().nullsLast(), place.id.asc())
-                .fetch();
-    }
 
     public PageResult<Place> byMotivationOrderByRatio(PlaceCategory category, int codeStart, int codeEnd, Motivation motivation, PageCommand comm) {
         NumberExpression<Double> ratioExpression = createTargetRatioExpression(
