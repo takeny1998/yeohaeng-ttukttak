@@ -9,7 +9,7 @@ import com.yeohaeng_ttukttak.server.domain.geography.entity.Geography;
 import com.yeohaeng_ttukttak.server.domain.geography.repository.GeographyRepository;
 import com.yeohaeng_ttukttak.server.domain.place.dto.PlaceDto;
 import com.yeohaeng_ttukttak.server.domain.place.entity.Place;
-import com.yeohaeng_ttukttak.server.domain.place.entity.PlaceCategory;
+import com.yeohaeng_ttukttak.server.domain.place.entity.PlaceCategoryType;
 import com.yeohaeng_ttukttak.server.domain.place.repository.PlacePopularityRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,7 +28,7 @@ public class PlacePopularityController {
     @GetMapping
     public ServerResponse<PlaceRecommendationResponse> byVisit(
             @RequestParam Long cityId,
-            @RequestParam PlaceCategory category,
+            @RequestParam PlaceCategoryType category,
             @RequestParam int pageSize,
             @RequestParam int pageNumber
     ) {

@@ -1,9 +1,8 @@
 package com.yeohaeng_ttukttak.server.domain.place.dto;
 
-import com.yeohaeng_ttukttak.server.domain.image.dto.ImageDto;
 import com.yeohaeng_ttukttak.server.domain.place.entity.Place;
-import com.yeohaeng_ttukttak.server.domain.place.entity.PlaceCategoryMapping;
 import com.yeohaeng_ttukttak.server.domain.place.entity.PlaceCategory;
+import com.yeohaeng_ttukttak.server.domain.place.entity.PlaceCategoryType;
 
 import java.util.List;
 
@@ -12,7 +11,7 @@ public record PlaceDto(
         String name,
         PlaceAddress address,
         PlaceCoordinates coordinates,
-        List<PlaceCategory> categories
+        List<PlaceCategoryType> categories
 ) {
 
     public static PlaceDto of(Place place) {
@@ -24,7 +23,8 @@ public record PlaceDto(
                 new PlaceCoordinates(
                         place.longitude(), place.latitude()),
                 place.categories().stream()
-                        .map(PlaceCategoryMapping::category).toList()
+                        .map(PlaceCategory::type)
+                        .toList()
         );
     }
 

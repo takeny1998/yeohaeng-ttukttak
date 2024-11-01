@@ -1,30 +1,21 @@
 package com.yeohaeng_ttukttak.server.domain.place.repository;
 
-import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.Tuple;
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.ExpressionUtils;
-import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.*;
-import com.querydsl.jpa.JPAExpressions;
-import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.yeohaeng_ttukttak.server.common.util.PageUtil;
 import com.yeohaeng_ttukttak.server.common.util.dto.PageCommand;
 import com.yeohaeng_ttukttak.server.common.util.dto.PageResult;
 import com.yeohaeng_ttukttak.server.domain.place.entity.Place;
-import com.yeohaeng_ttukttak.server.domain.place.entity.PlaceCategory;
-import com.yeohaeng_ttukttak.server.domain.place.entity.QPlaceCategoryMapping;
+import com.yeohaeng_ttukttak.server.domain.place.entity.PlaceCategoryType;
+import com.yeohaeng_ttukttak.server.domain.place.entity.QPlaceCategory;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 import static com.yeohaeng_ttukttak.server.domain.place.entity.QPlace.place;
-import static com.yeohaeng_ttukttak.server.domain.place.entity.QPlaceCategoryMapping.placeCategoryMapping;
+import static com.yeohaeng_ttukttak.server.domain.place.entity.QPlaceCategory.placeCategory;
 import static com.yeohaeng_ttukttak.server.domain.travel.entity.QTravel.travel;
 import static com.yeohaeng_ttukttak.server.domain.travel.entity.QTravelCompanion.travelCompanion;
 import static com.yeohaeng_ttukttak.server.domain.travel.entity.QTravelMotivation.travelMotivation;
@@ -37,7 +28,7 @@ public class PlaceRecommendationsRepository {
 
     private final JPAQueryFactory queryFactory;
 
-    public PageResult<Place> byMotivationOrderByRatio(PlaceCategory category, int codeStart, int codeEnd, Motivation motivation, PageCommand comm) {
+    public PageResult<Place> byMotivationOrderByRatio(PlaceCategoryType category, int codeStart, int codeEnd, Motivation motivation, PageCommand comm) {
         NumberExpression<Double> ratioExpression = createTargetRatioExpression(
                 travelMotivation.motivation.eq(motivation),
                 travelMotivation.motivation.count());
@@ -48,7 +39,7 @@ public class PlaceRecommendationsRepository {
         return PageUtil.pageBy(orderByRatio(ratioExpression, category, query), comm);
     }
 
-    public PageResult<Place> byCompanionTypeOrderByRatio(PlaceCategory category, int codeStart, int codeEnd, CompanionType companionType, PageCommand comm) {
+    public PageResult<Place> byCompanionTypeOrderByRatio(PlaceCategoryType category, int codeStart, int codeEnd, CompanionType companionType, PageCommand comm) {
         NumberExpression<Double> targetRatioExpression = createTargetRatioExpression(
                 travelCompanion.type.eq(companionType),
                 travelCompanion.type.count());
@@ -59,7 +50,7 @@ public class PlaceRecommendationsRepository {
         return PageUtil.pageBy(orderByRatio(targetRatioExpression, category, query), comm);
     }
 
-    private JPAQuery<Place> orderByRatio(NumberExpression<Double> targetRatioExpression, PlaceCategory category, JPAQuery<Place> query) {
+    private JPAQuery<Place> orderByRatio(NumberExpression<Double> targetRatioExpression, PlaceCategoryType category, JPAQuery<Place> query) {
 
         NumberExpression<Double> categoryRatioExpression = createCategoryRatioExpression(category);
 
@@ -69,9 +60,8 @@ public class PlaceRecommendationsRepository {
                 .orderBy(ratioExpression.desc(), place.id.asc());
     }
 
-    private JPAQuery<Place> createBaseQuery(int codeStart, int codeEnd, PlaceCategory category) {
+    private JPAQuery<Place> createBaseQuery(int codeStart, int codeEnd, PlaceCategoryType category) {
 
-        QPlaceCategoryMapping placeCategory = new QPlaceCategoryMapping("pc");
 
         return queryFactory
                 .selectFrom(place)
@@ -98,11 +88,11 @@ public class PlaceRecommendationsRepository {
         return place.regionCode.between(codeStart, codeEnd);
     }
 
-    private NumberExpression<Double> createCategoryRatioExpression(PlaceCategory category) {
-        QPlaceCategoryMapping placeCategory = new QPlaceCategoryMapping("pc");
+    private NumberExpression<Double> createCategoryRatioExpression(PlaceCategoryType category) {
+
 
         return new CaseBuilder()
-                .when(placeCategory.category.eq(category))
+                .when(placeCategory.type.eq(category))
                 .then(1.0)
                 .otherwise(0.0)
                 .sum()

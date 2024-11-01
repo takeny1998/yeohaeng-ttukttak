@@ -10,7 +10,7 @@ import com.yeohaeng_ttukttak.server.domain.geography.entity.Geography;
 import com.yeohaeng_ttukttak.server.domain.geography.repository.GeographyRepository;
 import com.yeohaeng_ttukttak.server.domain.place.dto.PlaceDto;
 import com.yeohaeng_ttukttak.server.domain.place.entity.Place;
-import com.yeohaeng_ttukttak.server.domain.place.entity.PlaceCategory;
+import com.yeohaeng_ttukttak.server.domain.place.entity.PlaceCategoryType;
 import com.yeohaeng_ttukttak.server.domain.place.repository.PlaceRecommendationsRepository;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.CompanionType;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.Motivation;
@@ -34,7 +34,7 @@ public class PlaceRecommendationsController {
     @GetMapping
     public ServerResponse<PlaceRecommendationResponse> recommendPlace(
             @RequestParam Long cityId,
-            @RequestParam PlaceCategory category,
+            @RequestParam PlaceCategoryType category,
             @RequestParam int pageSize,
             @RequestParam int pageNumber,
             @RequestParam(required = false) Motivation motivation,

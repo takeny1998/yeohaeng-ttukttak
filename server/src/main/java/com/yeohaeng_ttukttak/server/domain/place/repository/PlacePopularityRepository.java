@@ -1,6 +1,5 @@
 package com.yeohaeng_ttukttak.server.domain.place.repository;
 
-import com.querydsl.core.Tuple;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.core.types.dsl.NumberExpression;
@@ -10,15 +9,13 @@ import com.yeohaeng_ttukttak.server.common.util.PageUtil;
 import com.yeohaeng_ttukttak.server.common.util.dto.PageCommand;
 import com.yeohaeng_ttukttak.server.common.util.dto.PageResult;
 import com.yeohaeng_ttukttak.server.domain.place.entity.Place;
-import com.yeohaeng_ttukttak.server.domain.place.entity.PlaceCategory;
-import com.yeohaeng_ttukttak.server.domain.place.entity.PlaceCategoryMapping;
-import com.yeohaeng_ttukttak.server.domain.place.entity.QPlaceCategoryMapping;
+import com.yeohaeng_ttukttak.server.domain.place.entity.PlaceCategoryType;
+import com.yeohaeng_ttukttak.server.domain.place.entity.QPlaceCategory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import static com.querydsl.jpa.JPAExpressions.selectFrom;
 import static com.yeohaeng_ttukttak.server.domain.place.entity.QPlace.place;
-import static com.yeohaeng_ttukttak.server.domain.place.entity.QPlaceCategoryMapping.placeCategoryMapping;
+import static com.yeohaeng_ttukttak.server.domain.place.entity.QPlaceCategory.placeCategory;
 import static com.yeohaeng_ttukttak.server.domain.travel.entity.QTravelVisit.travelVisit;
 
 @Repository
@@ -28,7 +25,7 @@ public class PlacePopularityRepository {
     private final JPAQueryFactory queryFactory;
 
     public PageResult<Place> byVisit(
-            PlaceCategory category, int codeStart, int codeEnd, PageCommand comm) {
+            PlaceCategoryType category, int codeStart, int codeEnd, PageCommand comm) {
 
         NumberExpression<Double> expression = travelVisit.count()
                 .castToNum(Double.class)
@@ -38,7 +35,7 @@ public class PlacePopularityRepository {
                 .from(place)
                 .where(inRegion(codeStart, codeEnd))
                 .join(travelVisit).on(travelVisit.place.eq(place))
-                .join(placeCategoryMapping).on(placeCategoryMapping.place.eq(place))
+                .join(placeCategory).on(placeCategory.place.eq(place))
                 .groupBy(place)
                 .having(expression.gt(0.0))
                 .orderBy(expression.desc(), place.id.asc());
@@ -50,13 +47,13 @@ public class PlacePopularityRepository {
         return place.regionCode.between(codeStart, codeEnd);
     }
 
-    private NumberExpression<Double> createCategoryRatioExpression(PlaceCategory category) {
+    private NumberExpression<Double> createCategoryRatioExpression(PlaceCategoryType category) {
 
         return new CaseBuilder()
-                .when(placeCategoryMapping.category.eq(category))
+                .when(placeCategory.type.eq(category))
                 .then(1.0)
                 .otherwise(0.0)
                 .sum()
-                .divide(placeCategoryMapping.count());
+                .divide(placeCategory.count());
     }
 }
