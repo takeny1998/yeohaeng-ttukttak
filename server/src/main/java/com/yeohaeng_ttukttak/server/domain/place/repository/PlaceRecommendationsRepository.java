@@ -1,6 +1,7 @@
 package com.yeohaeng_ttukttak.server.domain.place.repository;
 
 import com.querydsl.core.types.dsl.*;
+import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.yeohaeng_ttukttak.server.common.util.PageUtil;
@@ -8,12 +9,13 @@ import com.yeohaeng_ttukttak.server.common.util.dto.PageCommand;
 import com.yeohaeng_ttukttak.server.common.util.dto.PageResult;
 import com.yeohaeng_ttukttak.server.domain.place.entity.Place;
 import com.yeohaeng_ttukttak.server.domain.place.entity.PlaceCategoryType;
-import com.yeohaeng_ttukttak.server.domain.place.entity.QPlaceCategory;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
+import static com.querydsl.jpa.JPAExpressions.select;
+import static com.querydsl.jpa.JPAExpressions.selectDistinct;
 import static com.yeohaeng_ttukttak.server.domain.place.entity.QPlace.place;
 import static com.yeohaeng_ttukttak.server.domain.place.entity.QPlaceCategory.placeCategory;
 import static com.yeohaeng_ttukttak.server.domain.travel.entity.QTravel.travel;
@@ -52,24 +54,27 @@ public class PlaceRecommendationsRepository {
 
     private JPAQuery<Place> orderByRatio(NumberExpression<Double> targetRatioExpression, PlaceCategoryType category, JPAQuery<Place> query) {
 
-        NumberExpression<Double> categoryRatioExpression = createCategoryRatioExpression(category);
-
-        NumberExpression<Double> ratioExpression = targetRatioExpression.multiply(categoryRatioExpression.multiply(0.5));
         return query
-                .having(ratioExpression.gt(0.0))
-                .orderBy(ratioExpression.desc(), place.id.asc());
+                .having(targetRatioExpression.gt(0.0))
+                .orderBy(targetRatioExpression.desc(), place.id.asc());
     }
 
-    private JPAQuery<Place> createBaseQuery(int codeStart, int codeEnd, PlaceCategoryType category) {
-
-
+    private JPAQuery<Place> createBaseQuery(int codeStart, int codeEnd, PlaceCategoryType categoryType) {
         return queryFactory
                 .selectFrom(place)
-                .join(travelVisit).on(travelVisit.place.eq(place))
-                .join(travel).on(travelVisit.travel.eq(travel))
-                .join(placeCategory).on(placeCategory.place.eq(place))
-                .where(inRegion(codeStart, codeEnd))
+                .leftJoin(place.visits, travelVisit)
+                .leftJoin(travelVisit.travel, travel)
+                .leftJoin(place.categories, placeCategory)
+                .where(inRegion(codeStart, codeEnd),
+                        placeCategory.type.eq(categoryType),
+                        getPrimaryType().eq(placeCategory.count))
                 .groupBy(place);
+    }
+
+    private JPQLQuery<Integer> getPrimaryType() {
+        return select(placeCategory.count.max())
+                .from(placeCategory)
+                .where(placeCategory.place.eq(place));
     }
 
     private NumberExpression<Double> createTargetRatioExpression(BooleanExpression eq, NumberExpression<Long> count) {
@@ -81,21 +86,10 @@ public class PlaceRecommendationsRepository {
                         .castToNum(Double.class))
                 .otherwise(0.0)
                 .sum()
-                .divide(count);
+                .divide(2.0); // 방문 수 33.0 % 반영
     }
 
     private BooleanExpression inRegion(int codeStart, int codeEnd) {
         return place.regionCode.between(codeStart, codeEnd);
-    }
-
-    private NumberExpression<Double> createCategoryRatioExpression(PlaceCategoryType category) {
-
-
-        return new CaseBuilder()
-                .when(placeCategory.type.eq(category))
-                .then(1.0)
-                .otherwise(0.0)
-                .sum()
-                .divide(placeCategory.count());
     }
 }
