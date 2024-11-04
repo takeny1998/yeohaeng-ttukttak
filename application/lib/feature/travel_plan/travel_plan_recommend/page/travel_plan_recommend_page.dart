@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:application_new/common/router/router_provider.dart';
 import 'package:application_new/common/util/translation.dart';
 import 'package:application_new/feature/home/home_page.dart';
 import 'package:application_new/feature/travel_plan/component/travel_city_item.dart';
@@ -14,6 +15,7 @@ import 'package:application_new/shared/model/place_model.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
@@ -63,13 +65,15 @@ class _TravelPlanRecommendPageState
     final TravelPlanRecommendState(:recommendations, :hasNextPage) =
         ref.watch(travelPlanRecommendProvider(travelId, cityIndex));
 
+    final cities = state.detail.travel.cities;
+
     return SliverMainAxisGroup(slivers: [
       SliverToBoxAdapter(
         child: SingleChildScrollView(
             child: Row(children: [
-          for (int i = 0; i < state.detail.travel.cities.length; i++)
+          for (int i = 0; i < cities.length; i++)
             TravelCityItem(
-                city: state.detail.travel.cities[i],
+                city: cities[i],
                 isSelected: cityIndex == i,
                 onSelected: () => ref
                     .read(travelPlanProvider(travelId).notifier)
@@ -82,7 +86,7 @@ class _TravelPlanRecommendPageState
             delegate: SliverChildListDelegate([
               for (final categoryType in PlaceCategoryType.values)
                 InkWell(
-                  onTap: () {},
+                  onTap: () => context.push('/cities/${cities[cityIndex].id}/places?categoryType=${categoryType.name}'),
                   splashColor: colorScheme.primaryContainer,
                   highlightColor: colorScheme.primaryContainer,
                   child: Column(children: [
@@ -90,7 +94,8 @@ class _TravelPlanRecommendPageState
                     CircleAvatar(radius: 24.0,
                     child: Icon(categoryType.iconData, color: colorScheme.primary)),
                     const SizedBox(height: 12.0),
-                    Text(enumKey(categoryType).tr(), style: const TextStyle(fontWeight: FontWeight.w600)),
+                    Text(enumKey(categoryType).tr(),
+                        style: const TextStyle(fontWeight: FontWeight.w600)),
                     const SizedBox(height: 24.0),
                   ]),
                 )

@@ -128,10 +128,10 @@ enum:
     other: 기타
 
   PlaceCategoryType:
-    nature: 자연 관광지
-    tourism: 관광 명소
-    culture: 문화 시설
-    commerce: 상업 시설
-    transport: 교통 시설
+    nature: 자연
+    tourism: 관광지
+    culture: 문화
+    commerce: 상업
+    transport: 교통
     dining: 식당/카페
     lodging: 숙소

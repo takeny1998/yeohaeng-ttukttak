@@ -72,9 +72,14 @@ class RecommendPlaceItem extends StatelessWidget {
                             Text(place.address.value ?? '',
                                 style: subTitleStyle,
                                 overflow: TextOverflow.ellipsis),
-                            SmallChip(
-                                label:
-                                    enumKey(place.categoryTypes.firstOrNull).tr()),
+                            const SizedBox(height: 4.0),
+                            Wrap(spacing: 8.0, children: [
+                              for (int i = 0; i < place.categoryTypes.length; i ++)
+                                SmallChip(
+                                    backgroundColor: i == 0 ? colorScheme.primary : null,
+                                    foregroundColor: i == 0 ? colorScheme.onPrimary : null,
+                                    label: enumKey(place.categoryTypes[i]).tr()),
+                            ]),
                             const SizedBox(height: 8.0),
                             SizedBox(
                                 width: double.maxFinite,

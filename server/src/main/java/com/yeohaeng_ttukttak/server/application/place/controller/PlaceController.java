@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @Transactional(readOnly = true)
 @RestController
 @RequestMapping("/api/v2/places")
@@ -32,7 +30,7 @@ public class PlaceController {
     @GetMapping
     public ServerResponse<FindPlacesByCategoryResponse> findByCategory(
             @RequestParam Long cityId,
-            @RequestParam PlaceCategoryType category,
+            @RequestParam PlaceCategoryType categoryType,
             @RequestParam PlaceSortType sortType,
             PageCommand pageCommand) {
 
@@ -40,7 +38,7 @@ public class PlaceController {
                 .orElseThrow(EntityNotFoundException::new);
 
         PageResult<PlaceMetricsDto> pageResult = placeCategoryRepository.call(
-                category, city.codeStart(), city.codeEnd(),
+                categoryType, city.codeStart(), city.codeEnd(),
                 sortType, pageCommand);
 
         return new ServerResponse<>(FindPlacesByCategoryResponse.of(pageResult));
