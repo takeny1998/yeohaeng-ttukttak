@@ -54,7 +54,7 @@ class RecommendPlaceItem extends StatelessWidget {
                   const SizedBox(width: 24.0),
                   for (final place in recommendPlaceModel.places) ...[
                     SizedBox(
-                      width: 192.0,
+                      width: 240.0,
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -62,7 +62,7 @@ class RecommendPlaceItem extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(8.0),
                                 child: Container(
                                   width: double.maxFinite,
-                                  height: 160.0,
+                                  height: 176.0,
                                   color: colorScheme.surfaceContainer,
                                 )),
                             const SizedBox(height: 8.0),
