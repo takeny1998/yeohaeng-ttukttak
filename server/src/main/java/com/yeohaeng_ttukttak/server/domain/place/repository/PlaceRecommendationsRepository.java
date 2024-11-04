@@ -1,5 +1,7 @@
 package com.yeohaeng_ttukttak.server.domain.place.repository;
 
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.Tuple;
 import com.querydsl.core.types.dsl.*;
 import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -13,6 +15,8 @@ import com.yeohaeng_ttukttak.server.domain.travel.entity.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 import static com.querydsl.jpa.JPAExpressions.select;
 import static com.querydsl.jpa.JPAExpressions.selectDistinct;
@@ -30,63 +34,43 @@ public class PlaceRecommendationsRepository {
 
     private final JPAQueryFactory queryFactory;
 
-    public PageResult<Place> byMotivationOrderByRatio(PlaceCategoryType category, int codeStart, int codeEnd, Motivation motivation, PageCommand comm) {
-        NumberExpression<Double> ratioExpression = createTargetRatioExpression(
-                travelMotivation.motivation.eq(motivation),
-                travelMotivation.motivation.count());
+    public PageResult<Place> call(PlaceCategoryType categoryType,
+                            int codeStart, int codeEnd,
+                            List<Motivation> motivations,
+                            List<CompanionType> companionTypes,
+                            PageCommand pageCommand) {
 
-        JPAQuery<Place> query = createBaseQuery(codeStart, codeEnd, category)
-                .join(travelMotivation).on(travelMotivation.travel.eq(travel));
+        NumberExpression<Long> matchedMotivationType = new CaseBuilder()
+                .when(travelMotivation.motivation.in(motivations))
+                .then(travelMotivation.motivation)
+                .otherwise(Expressions.nullExpression())
+                .countDistinct();
 
-        return PageUtil.pageBy(orderByRatio(ratioExpression, category, query), comm);
-    }
+        NumberExpression<Long> matchedCompanionType = new CaseBuilder()
+                .when(travelCompanion.type.in(companionTypes))
+                .then(travelCompanion.type)
+                .otherwise(Expressions.nullExpression())
+                .countDistinct();
 
-    public PageResult<Place> byCompanionTypeOrderByRatio(PlaceCategoryType category, int codeStart, int codeEnd, CompanionType companionType, PageCommand comm) {
-        NumberExpression<Double> targetRatioExpression = createTargetRatioExpression(
-                travelCompanion.type.eq(companionType),
-                travelCompanion.type.count());
-
-        JPAQuery<Place> query = createBaseQuery(codeStart, codeEnd, category)
-                .join(travelCompanion).on(travelCompanion.travel.eq(travel));
-
-        return PageUtil.pageBy(orderByRatio(targetRatioExpression, category, query), comm);
-    }
-
-    private JPAQuery<Place> orderByRatio(NumberExpression<Double> targetRatioExpression, PlaceCategoryType category, JPAQuery<Place> query) {
-
-        return query
-                .having(targetRatioExpression.gt(0.0))
-                .orderBy(targetRatioExpression.desc(), place.id.asc());
-    }
-
-    private JPAQuery<Place> createBaseQuery(int codeStart, int codeEnd, PlaceCategoryType categoryType) {
-        return queryFactory
-                .selectFrom(place)
-                .leftJoin(place.visits, travelVisit)
-                .leftJoin(travelVisit.travel, travel)
-                .leftJoin(place.categories, placeCategory)
+        JPAQuery<Place> query = queryFactory.selectFrom(place)
+                .join(place.categories, placeCategory)
+                .join(place.visits, travelVisit)
+                .join(travelVisit.travel, travel)
+                .leftJoin(travel.motivations, travelMotivation)
+                .leftJoin(travel.companions, travelCompanion)
                 .where(inRegion(codeStart, codeEnd),
                         placeCategory.type.eq(categoryType),
                         getPrimaryType().eq(placeCategory.count))
-                .groupBy(place);
+                .groupBy(place)
+                .orderBy(matchedMotivationType.add(matchedCompanionType).desc(), travelVisit.countDistinct().desc(), place.id.asc());
+
+        return PageUtil.pageBy(query, pageCommand);
     }
 
     private JPQLQuery<Integer> getPrimaryType() {
         return select(placeCategory.count.max())
                 .from(placeCategory)
                 .where(placeCategory.place.eq(place));
-    }
-
-    private NumberExpression<Double> createTargetRatioExpression(BooleanExpression eq, NumberExpression<Long> count) {
-        return new CaseBuilder()
-                .when(eq)
-                .then(travelVisit.satisfaction
-                        .add(travelVisit.revisit)
-                        .add(travelVisit.recommend)
-                        .castToNum(Double.class))
-                .otherwise(0.0)
-                .sum()
-                .divide(2.0); // 방문 수 33.0 % 반영
     }
 
     private BooleanExpression inRegion(int codeStart, int codeEnd) {

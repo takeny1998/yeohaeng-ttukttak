@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Objects;
+import java.util.List;
 
 @Slf4j
 @Transactional(readOnly = true)
@@ -32,44 +32,27 @@ public class PlaceRecommendationsController {
     private final PlaceRecommendationsRepository placeRecommendationsRepository;
 
     @GetMapping
-    public ServerResponse<PlaceRecommendationResponse> recommendPlace(
+    public ServerResponse<PlaceRecommendationResponse> recommendPlaces(
             @RequestParam Long cityId,
-            @RequestParam PlaceCategoryType category,
+            @RequestParam PlaceCategoryType categoryType,
             @RequestParam int pageSize,
             @RequestParam int pageNumber,
-            @RequestParam(required = false) Motivation motivation,
-            @RequestParam(required = false) CompanionType companionType) {
-
-        if (Objects.nonNull(motivation) && Objects.nonNull(companionType)) {
-            throw new InvalidArgumentException();
-        }
-
-        PageCommand pageCommand = new PageCommand(pageSize, pageNumber);
-
+            @RequestParam List<Motivation> motivations,
+            @RequestParam List<CompanionType> companionTypes) {
 
         Geography geography = geographyRepository.findById(cityId)
                 .orElseThrow(EntityNotFoundException::new);
 
-        if (Objects.nonNull(motivation)) {
-            PageResult<Place> places = placeRecommendationsRepository.byMotivationOrderByRatio(
-                    category, geography.codeStart(), geography.codeEnd(), motivation, pageCommand);
+        PageCommand pageCommand = new PageCommand(pageSize, pageNumber);
 
-            return toResponse(places);
-        }
+        PageResult<Place> pageResult = placeRecommendationsRepository.call(
+                categoryType,
+                geography.codeStart(), geography.codeEnd(),
+                motivations,
+                companionTypes,
+                pageCommand);
 
-        PageResult<Place> pagedResult = placeRecommendationsRepository.byCompanionTypeOrderByRatio(
-                        category, geography.codeStart(), geography.codeEnd(), companionType, pageCommand);
-
-        return toResponse(pagedResult);
-    }
-
-    private ServerResponse<PlaceRecommendationResponse> toResponse(PageResult<Place> result) {
-        return new ServerResponse<>(new PlaceRecommendationResponse(
-                result.data().stream()
-                        .map(PlaceDto::of)
-                        .toList(),
-                result.hasNextPage()
-        ));
+        return new ServerResponse<>(PlaceRecommendationResponse.of(pageResult));
     }
 
 }
