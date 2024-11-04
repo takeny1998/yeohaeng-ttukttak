@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.ToString;
 
 @Entity
-@ToString
+@ToString(exclude = {"place"})
 public class PlaceCategory {
 
     @Id

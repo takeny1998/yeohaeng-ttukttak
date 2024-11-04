@@ -11,7 +11,6 @@ public record PlaceRecommendationResponse(
         boolean hasNextPage
 ) {
 
-
     public static PlaceRecommendationResponse of(PageResult<Place> pageResult) {
         return new PlaceRecommendationResponse(
                 pageResult.data().stream().map(PlaceDto::of).toList(),

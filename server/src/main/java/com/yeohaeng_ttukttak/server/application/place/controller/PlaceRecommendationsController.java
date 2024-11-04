@@ -31,17 +31,14 @@ public class PlaceRecommendationsController {
 
     @GetMapping
     public ServerResponse<PlaceRecommendationResponse> recommendPlaces(
+            PageCommand pageCommand,
             @RequestParam Long cityId,
             @RequestParam PlaceCategoryType categoryType,
-            @RequestParam int pageSize,
-            @RequestParam int pageNumber,
             @RequestParam List<TravelMotivationType> motivationTypes,
             @RequestParam List<TravelCompanionType> companionTypes) {
 
         Geography geography = geographyRepository.findById(cityId)
                 .orElseThrow(EntityNotFoundException::new);
-
-        PageCommand pageCommand = new PageCommand(pageSize, pageNumber);
 
         PageResult<Place> pageResult = placeRecommendationsRepository.call(
                 categoryType,
