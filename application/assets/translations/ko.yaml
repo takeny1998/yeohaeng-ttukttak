@@ -25,9 +25,17 @@ travel:
     ask_recommend: 다른 사람에게 방문을 추천하고 싶으신가요?
 
 travel_plan_recommend:
-  label_motivation: '{motivation} 목적으로 찾은 {category} 목록'
-  label_companion_type: '{companionType}과 함께 찾은 {category} 목록'
-  label_popularity: '많이 방문한 {category} 목록'
+  label_place:
+    nature: 자연 속에서 힐링하세요! 추천하는 자연 관광지 모음
+    tourism: 여행의 묘미는 유명한 곳에서, 인기 관광 명소 모음
+    culture: 문화 생활에 푹 빠져보세요. 추천하는 문화 시설 모음
+    commerce: 여행은 역시 Flex! 추천하는 상업 시설 모음
+    transport: 편리한 이동을 위해! 교통 시설 목록
+    dining: 오늘 뭐 먹지? 추천하는 식당/카페 목록
+    lodging: 편안한 휴식이 필요하신가요? 추천하는 숙소 목록
+
+  label_travel: 다른 사람들은 어떻게 떠났을까? 비슷한 조건의 여행기 실펴보기
+
   add_to_plan: 일정에 추가하기
   view_detail: 자세히 보기
   save: 저장

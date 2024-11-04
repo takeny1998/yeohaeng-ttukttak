@@ -11,11 +11,21 @@ sealed class RecommendModel {
 }
 
 final class RecommendPlaceModel extends RecommendModel {
-  final PlaceTarget target;
   final PlaceCategoryType category;
   final List<PlaceModel> places;
 
-  RecommendPlaceModel({required this.target, required this.category, required this.places, super.hasNextPage});
+  RecommendPlaceModel({required this.category, required this.places, super.hasNextPage});
+
+
+  static RecommendPlaceModel fromJson(PlaceCategoryType categoryType, Map<String, dynamic> json) {
+
+    return RecommendPlaceModel(
+        category: categoryType,
+        places: List.of(json['places'])
+            .map((json) => PlaceModel.fromJson(json))
+            .toList(),
+        hasNextPage: json['hasNextPage']);
+  }
 
 }
 
@@ -24,5 +34,13 @@ final class RecommendTravelModel extends RecommendModel {
   final List<TravelModel> travels;
 
   RecommendTravelModel({super.hasNextPage, required this.travels});
+
+  static RecommendTravelModel fromJson(Map<String, dynamic> json) {
+    return RecommendTravelModel(
+        hasNextPage: json['hasNextPage'],
+        travels: List.of(json['travels'])
+            .map((travel) => TravelModel.fromJson(travel))
+            .toList());
+  }
 
 }

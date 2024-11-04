@@ -25,9 +25,17 @@ travel:
     ask_recommend: Want to recommend others to visit?
 
 travel_plan_recommend:
-  label_motivation: 'Recommended list of {category}s visited for ${motivation}'
-  label_companion_type: 'Recommended list of {category}s visited with ${companion_type}'
-  label_popularity: 'List of {category}s most visited'
+  label_place:
+    nature: "Heal in nature! A collection of recommended natural tourist spots."
+    tourism: "The essence of travel is in famous places—here's a list of popular tourist attractions."
+    culture: "Immerse yourself in cultural life. A collection of recommended cultural facilities."
+    commerce: "Travel is all about flexibility! A list of recommended commercial facilities."
+    transport: "For convenient travel! A list of transportation facilities."
+    dining: "What to eat today? A list of recommended restaurants/cafés."
+    lodging: "Need a comfortable place to rest? A list of recommended accommodations."
+
+  label_travel: "How have others traveled? Explore travel stories with similar conditions."
+
   add_to_plan: Add to your plan
 
 next: Next

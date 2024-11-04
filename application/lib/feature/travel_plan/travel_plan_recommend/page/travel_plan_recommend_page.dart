@@ -106,7 +106,7 @@ class _TravelPlanRecommendPageState
                 ref
                     .read(travelPlanRecommendProvider(travelId, cityIndex)
                         .notifier)
-                    .random();
+                    .fetch();
               },
               child: Container(
                 constraints: const BoxConstraints(minHeight: 120.0),
