@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'place_model.freezed.dart';
@@ -54,11 +55,16 @@ class PlaceAddress with _$PlaceAddress {
 
 
 enum PlaceCategoryType {
-  nature,
-  tourism,
-  culture,
-  commerce,
-  transport,
-  dining,
-  lodging
+  nature(Icons.nature_people),
+  tourism(Icons.tour),
+  culture(Icons.theater_comedy),
+  commerce(Icons.shopping_cart),
+  transport(Icons.directions_bus),
+  dining(Icons.dining),
+  lodging(Icons.hotel);
+
+  final IconData iconData;
+
+  const PlaceCategoryType(this.iconData);
+
 }

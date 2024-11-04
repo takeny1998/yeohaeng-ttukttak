@@ -58,6 +58,8 @@ class _TravelPlanRecommendPageState
     final state = ref.watch(travelPlanProvider(travelId));
     final cityIndex = state.cityIndex;
 
+    final ThemeData(:textTheme, :colorScheme) = Theme.of(context);
+
     final TravelPlanRecommendState(:recommendations, :hasNextPage) =
         ref.watch(travelPlanRecommendProvider(travelId, cityIndex));
 
@@ -74,16 +76,36 @@ class _TravelPlanRecommendPageState
                     .selectCity(i)),
         ])),
       ),
-      SliverGrid(
-          delegate: SliverChildListDelegate([
-            for (final categoryType in PlaceCategoryType.values)
-              Column(children: [
-                CircleAvatar(),
-                Text(enumKey(categoryType).tr())
-              ])
-          ]),
-          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: 120.0)),
+      SliverPadding(
+        padding: const EdgeInsets.only(top: 24.0),
+        sliver: SliverGrid(
+            delegate: SliverChildListDelegate([
+              for (final categoryType in PlaceCategoryType.values)
+                InkWell(
+                  onTap: () {},
+                  splashColor: colorScheme.primaryContainer,
+                  highlightColor: colorScheme.primaryContainer,
+                  child: Column(children: [
+                    const SizedBox(height: 24.0),
+                    CircleAvatar(radius: 24.0,
+                    child: Icon(categoryType.iconData, color: colorScheme.primary)),
+                    const SizedBox(height: 12.0),
+                    Text(enumKey(categoryType).tr(), style: const TextStyle(fontWeight: FontWeight.w600)),
+                    const SizedBox(height: 24.0),
+                  ]),
+                )
+            ]),
+            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+              mainAxisExtent: 141.0,
+                maxCrossAxisExtent: 120.0)),
+      ),
+      SliverToBoxAdapter(
+        child: Container(
+          width: double.maxFinite,
+          height: 16.0,
+          color: colorScheme.surfaceContainerLow,
+        ),
+      ),
       SliverList(
           delegate: SliverChildBuilderDelegate((context, index) {
         final child = switch (recommendations[index]) {
