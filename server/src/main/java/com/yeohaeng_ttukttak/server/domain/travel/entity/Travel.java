@@ -53,8 +53,6 @@ public abstract class Travel {
 
     abstract public Gender gender();
 
-    abstract public CompanionType companionType();
-
     public Long id() {
         return id;
     }

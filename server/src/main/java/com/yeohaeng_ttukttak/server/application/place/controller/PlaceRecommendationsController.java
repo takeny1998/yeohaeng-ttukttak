@@ -3,17 +3,15 @@ package com.yeohaeng_ttukttak.server.application.place.controller;
 import com.yeohaeng_ttukttak.server.application.place.controller.dto.PlaceRecommendationResponse;
 import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundException;
-import com.yeohaeng_ttukttak.server.common.exception.exception.fail.InvalidArgumentException;
 import com.yeohaeng_ttukttak.server.common.util.dto.PageCommand;
 import com.yeohaeng_ttukttak.server.common.util.dto.PageResult;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.Geography;
 import com.yeohaeng_ttukttak.server.domain.geography.repository.GeographyRepository;
-import com.yeohaeng_ttukttak.server.domain.place.dto.PlaceDto;
 import com.yeohaeng_ttukttak.server.domain.place.entity.Place;
 import com.yeohaeng_ttukttak.server.domain.place.entity.PlaceCategoryType;
 import com.yeohaeng_ttukttak.server.domain.place.repository.PlaceRecommendationsRepository;
-import com.yeohaeng_ttukttak.server.domain.travel.entity.CompanionType;
-import com.yeohaeng_ttukttak.server.domain.travel.entity.Motivation;
+import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelCompanionType;
+import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelMotivationType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,8 +35,8 @@ public class PlaceRecommendationsController {
             @RequestParam PlaceCategoryType categoryType,
             @RequestParam int pageSize,
             @RequestParam int pageNumber,
-            @RequestParam List<Motivation> motivations,
-            @RequestParam List<CompanionType> companionTypes) {
+            @RequestParam List<TravelMotivationType> motivationTypes,
+            @RequestParam List<TravelCompanionType> companionTypes) {
 
         Geography geography = geographyRepository.findById(cityId)
                 .orElseThrow(EntityNotFoundException::new);
@@ -48,7 +46,7 @@ public class PlaceRecommendationsController {
         PageResult<Place> pageResult = placeRecommendationsRepository.call(
                 categoryType,
                 geography.codeStart(), geography.codeEnd(),
-                motivations,
+                motivationTypes,
                 companionTypes,
                 pageCommand);
 

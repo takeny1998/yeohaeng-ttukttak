@@ -1,6 +1,6 @@
 package com.yeohaeng_ttukttak.server.domain.travel.entity;
 
-public enum VisitReason {
+public enum TravelVisitReasonType {
     landmark,
     goodReviews,
     media,

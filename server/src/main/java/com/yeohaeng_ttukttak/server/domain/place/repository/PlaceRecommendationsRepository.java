@@ -1,7 +1,5 @@
 package com.yeohaeng_ttukttak.server.domain.place.repository;
 
-import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.Tuple;
 import com.querydsl.core.types.dsl.*;
 import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -36,13 +34,13 @@ public class PlaceRecommendationsRepository {
 
     public PageResult<Place> call(PlaceCategoryType categoryType,
                             int codeStart, int codeEnd,
-                            List<Motivation> motivations,
-                            List<CompanionType> companionTypes,
+                            List<TravelMotivationType> motivationTypes,
+                            List<TravelCompanionType> companionTypes,
                             PageCommand pageCommand) {
 
         NumberExpression<Long> matchedMotivationType = new CaseBuilder()
-                .when(travelMotivation.motivation.in(motivations))
-                .then(travelMotivation.motivation)
+                .when(travelMotivation.type.in(motivationTypes))
+                .then(travelMotivation.type)
                 .otherwise(Expressions.nullExpression())
                 .countDistinct();
 

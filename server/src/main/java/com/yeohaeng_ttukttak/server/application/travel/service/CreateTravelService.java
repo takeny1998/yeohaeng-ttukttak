@@ -8,11 +8,13 @@ import com.yeohaeng_ttukttak.server.domain.geography.repository.GeographyReposit
 import com.yeohaeng_ttukttak.server.domain.travel.entity.MemberTravel;
 import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CreateTravelService {
@@ -22,22 +24,22 @@ public class CreateTravelService {
     private final GeographyRepository geographyRepository;
 
     @Transactional
-    public void call(CreateTravelCommand comm) {
+    public void call(CreateTravelCommand commend) {
 
-        List<Long> ids = EntityReference.extractId(comm.cities());
+        List<Long> ids = EntityReference.extractId(commend.cities());
 
-        final Member member = memberService.find(comm.memberId());
+        final Member member = memberService.find(commend.memberId());
+
+        log.debug("commend={}", commend);
 
         final MemberTravel travel = new MemberTravel(
-                member,
-                comm.startedOn(),
-                comm.endedOn(),
-                comm.companionType());
+                member, commend.startedOn(), commend.endedOn());
 
         geographyRepository.findAllCityByIds(ids)
                 .forEach(travel::addCity);
 
-        comm.motivations().forEach(travel::addMotivation);
+        commend.motivationTypes().forEach(travel::addMotivation);
+        commend.companionTypes().forEach(travel::addCompanion);
 
         travelRepository.save(travel);
 

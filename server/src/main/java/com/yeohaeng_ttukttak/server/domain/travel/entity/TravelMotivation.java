@@ -22,19 +22,19 @@ public class TravelMotivation {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tarvel_id")
+    @JoinColumn(name = "travel_id")
     private Travel travel;
 
     @Enumerated(EnumType.STRING)
-    private Motivation motivation;
+    private TravelMotivationType type;
 
-    public TravelMotivation(Travel travel, Motivation motivation) {
+    public TravelMotivation(Travel travel, TravelMotivationType type) {
         this.travel = travel;
-        this.motivation = motivation;
+        this.type = type;
     }
 
-    public Motivation motivation() {
-        return motivation;
+    public TravelMotivationType type() {
+        return type;
     }
 
 }

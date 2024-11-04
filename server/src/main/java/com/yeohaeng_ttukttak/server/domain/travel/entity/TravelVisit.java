@@ -36,7 +36,7 @@ public class TravelVisit {
     private List<TravelVisitImage> images = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
-    private VisitReason reason;
+    private TravelVisitReasonType reasonType;
 
     private Integer satisfaction;
 
@@ -64,8 +64,8 @@ public class TravelVisit {
         return travel;
     }
 
-    public VisitReason reason() {
-        return reason;
+    public TravelVisitReasonType reasonType() {
+        return reasonType;
     }
 
     public Integer satisfaction() {

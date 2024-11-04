@@ -11,7 +11,7 @@ public record PlaceDto(
         String name,
         PlaceAddress address,
         PlaceCoordinates coordinates,
-        List<PlaceCategoryType> categories
+        List<PlaceCategoryType> categoryTypes
 ) {
 
     public static PlaceDto of(Place place) {
