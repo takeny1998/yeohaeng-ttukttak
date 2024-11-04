@@ -17,7 +17,7 @@ part 'travel_plan_recommend_provider.g.dart';
 class TravelPlanRecommend extends _$TravelPlanRecommend {
   late CityModel _city;
 
-  late List<TravelMotivation> _motivations;
+  late List<TravelMotivationType> _motivationTypes;
   late List<TravelCompanionType> _companionTypes;
 
   late Set<RecommendTarget> _targets;
@@ -34,8 +34,8 @@ class TravelPlanRecommend extends _$TravelPlanRecommend {
   }
 
   void _initTargets(TravelModel travel) {
-    _motivations = travel.motivations;
-    _companionTypes = [travel.companionType];
+    _motivationTypes = travel.motivationTypes;
+    _companionTypes = travel.companions.map((companion) => companion.type).toList();
 
     _targets = {
       for (final categoryType in PlaceCategoryType.values)
@@ -69,7 +69,7 @@ class TravelPlanRecommend extends _$TravelPlanRecommend {
       'cityId': _city.id,
       'pageNumber': target.pageNumber,
       'pageSize': pageSize,
-      'motivations': _motivations.map((e) => e.name).join(','),
+      'motivationTypes': _motivationTypes.map((e) => e.name).join(','),
       'companionTypes': _companionTypes.map((e) => e.name).join(','),
     };
 
@@ -89,7 +89,7 @@ class TravelPlanRecommend extends _$TravelPlanRecommend {
       'categoryType': categoryType.name,
       'pageSize': pageSize,
       'pageNumber': target.pageNumber,
-      'motivations': _motivations.map((e) => e.name).join(','),
+      'motivationTypes': _motivationTypes.map((e) => e.name).join(','),
       'companionTypes': _companionTypes.map((e) => e.name).join(','),
     };
 

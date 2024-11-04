@@ -27,7 +27,7 @@ class SelectTravelDetailForm extends ConsumerWidget {
 
     final trKey = baseKey('travel.select_detail');
 
-    final areSelected = state.companion != null && state.motivations.isNotEmpty;
+    final areSelected = state.companionTypes.isNotEmpty && state.motivationTypes.isNotEmpty;
 
     final buttonTextStyle = textTheme.titleMedium?.copyWith(
       fontWeight: FontWeight.w600,
@@ -49,38 +49,37 @@ class SelectTravelDetailForm extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(trKey('ask_companion'), style: titleStyle).tr(),
-              Text(trKey('hint_companion'), style: subTitleStyle).tr(),
+              Text(trKey('ask_companion_types'), style: titleStyle).tr(),
+              Text(trKey('hint_companion_types'), style: subTitleStyle).tr(),
               const SizedBox(height: 16),
               Wrap(
                 spacing: 6,
                 children: [
-                  for (TravelCompanionType companion in TravelCompanionType.values)
-                    ChoiceChip(
-                      label: Text(enumKey(companion)).tr(),
-                      selected: state.companion == companion,
+                  for (TravelCompanionType companionType in TravelCompanionType.values)
+                    FilterChip(
+                      label: Text(enumKey(companionType)).tr(),
+                      selected: state.companionTypes.contains(companionType),
                       onSelected: (isSelected) {
-                        if (!isSelected) return;
                         final notifier = ref.read(travelCreateProvider.notifier);
-                        notifier.selectCompanion(companion);
+                        notifier.selectCompanionType(companionType);
                       },
                     ),
                 ],
               ),
               const SizedBox(height: 48),
-              Text(trKey('ask_motivation'), style: titleStyle).tr(),
-              Text(trKey('hint_motivation'), style: subTitleStyle).tr(),
+              Text(trKey('ask_motivation_types'), style: titleStyle).tr(),
+              Text(trKey('hint_motivation_types'), style: subTitleStyle).tr(),
               const SizedBox(height: 16),
               Wrap(
                 spacing: 6,
                 children: [
-                  for (TravelMotivation motivation in TravelMotivation.values)
+                  for (TravelMotivationType motivationType in TravelMotivationType.values)
                     FilterChip(
-                      label: Text(enumKey(motivation)).tr(),
-                      selected: state.motivations.contains(motivation),
+                      label: Text(enumKey(motivationType)).tr(),
+                      selected: state.motivationTypes.contains(motivationType),
                       onSelected: (_) {
                         final notifier = ref.read(travelCreateProvider.notifier);
-                        notifier.selectMotivation(motivation);
+                        notifier.selectMotivationType(motivationType);
                       },
                     ),
                 ],

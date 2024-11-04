@@ -74,7 +74,7 @@ class RecommendPlaceItem extends StatelessWidget {
                                 overflow: TextOverflow.ellipsis),
                             SmallChip(
                                 label:
-                                    enumKey(place.categories.firstOrNull).tr()),
+                                    enumKey(place.categoryTypes.firstOrNull).tr()),
                             const SizedBox(height: 8.0),
                             SizedBox(
                                 width: double.maxFinite,

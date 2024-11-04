@@ -15,11 +15,10 @@ class TravelModel with _$TravelModel {
     required int id,
     required DateTime startedOn,
     required DateTime endedOn,
-    @Default(TravelCompanionType.none) TravelCompanionType companionType,
     @Default(AgeGroup.none) AgeGroup ageGroup,
     @Default(Gender.none) Gender gender,
     @Default([]) List<TravelCompanion> companions,
-    @Default([]) List<TravelMotivation> motivations,
+    @Default([]) List<TravelMotivationType> motivationTypes,
     @Default([]) List<CityModel> cities,
   }) = _TravelModel;
 
@@ -51,14 +50,14 @@ class TravelCompanion with _$TravelCompanion {
   const factory TravelCompanion(
       {required int id,
       required TravelCompanionType type,
-      required AgeGroup ageGroup,
-      required Gender gender}) = _TravelCompanion;
+      AgeGroup? ageGroup,
+       Gender? gender}) = _TravelCompanion;
 
   factory TravelCompanion.fromJson(Map<String, dynamic> json) =>
       _$TravelCompanionFromJson(json);
 }
 
-enum TravelMotivation {
+enum TravelMotivationType {
   adventure,
   rest,
   friendship,

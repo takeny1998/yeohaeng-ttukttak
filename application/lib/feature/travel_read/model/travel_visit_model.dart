@@ -12,7 +12,7 @@ class TravelVisitModel with _$TravelVisitModel {
     required int placeId,
     required DateTime visitedOn,
     required TravelVisitRatingModel rating,
-    required TravelVisitReason reason,
+    required TravelVisitReasonType reasonType,
     required List<ImageModel> images,
   }) = _TravelVisitModel;
 
@@ -32,7 +32,7 @@ class TravelVisitRatingModel with _$TravelVisitRatingModel {
       _$TravelVisitRatingModelFromJson(json);
 }
 
-enum TravelVisitReason {
+enum TravelVisitReasonType {
   landmark,
   goodReviews,
   media,

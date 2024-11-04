@@ -5,10 +5,10 @@ travel:
     display_select_date: '{start} - {end} ({days} days)'
 
   select_detail:
-    ask_companion: Who will you travel with?
-    hint_companion: (No duplicate selections)
-    ask_motivation: What's the purpose of your trip?
-    hint_motivation: (Select at least one, up to three)
+    ask_companion_types: Who will you travel with?
+    hint_companion_types: (Select at least one, up to three)
+    ask_motivation_types: What's the purpose of your trip?
+    hint_motivation_types: (Select at least one, up to five)
     require_detail: Please select all of your trip details.
 
   select_city:
@@ -108,7 +108,7 @@ enum:
     male: Male
     female: Female
 
-  TravelVisitReason:
+  TravelVisitReasonType:
     landmark: Because it's a local landmark.
     goodReviews: Because the online reviews were great.
     media: Because the media had positive reviews.

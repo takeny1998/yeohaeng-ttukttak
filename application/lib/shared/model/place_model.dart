@@ -1,4 +1,3 @@
-import 'package:application_new/shared/model/image_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'place_model.freezed.dart';
@@ -12,7 +11,7 @@ class PlaceModel with _$PlaceModel {
     required String name,
     required PlaceAddress address,
     required PlaceCoordinates coordinates,
-    required List<PlaceCategoryType> categories,
+    required List<PlaceCategoryType> categoryTypes,
   }) = _PlaceModel;
 
   factory PlaceModel.fromJson(Map<String, dynamic> json) =>

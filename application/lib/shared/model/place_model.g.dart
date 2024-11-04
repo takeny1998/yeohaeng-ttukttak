@@ -13,7 +13,7 @@ _$PlaceModelImpl _$$PlaceModelImplFromJson(Map<String, dynamic> json) =>
       address: PlaceAddress.fromJson(json['address'] as Map<String, dynamic>),
       coordinates: PlaceCoordinates.fromJson(
           json['coordinates'] as Map<String, dynamic>),
-      categories: (json['categories'] as List<dynamic>)
+      categoryTypes: (json['categoryTypes'] as List<dynamic>)
           .map((e) => $enumDecode(_$PlaceCategoryTypeEnumMap, e))
           .toList(),
     );
@@ -24,7 +24,7 @@ Map<String, dynamic> _$$PlaceModelImplToJson(_$PlaceModelImpl instance) =>
       'name': instance.name,
       'address': instance.address,
       'coordinates': instance.coordinates,
-      'categories': instance.categories
+      'categoryTypes': instance.categoryTypes
           .map((e) => _$PlaceCategoryTypeEnumMap[e]!)
           .toList(),
     };

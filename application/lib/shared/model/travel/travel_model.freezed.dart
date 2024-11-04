@@ -23,11 +23,11 @@ mixin _$TravelModel {
   int get id => throw _privateConstructorUsedError;
   DateTime get startedOn => throw _privateConstructorUsedError;
   DateTime get endedOn => throw _privateConstructorUsedError;
-  TravelCompanionType get companionType => throw _privateConstructorUsedError;
   AgeGroup get ageGroup => throw _privateConstructorUsedError;
   Gender get gender => throw _privateConstructorUsedError;
   List<TravelCompanion> get companions => throw _privateConstructorUsedError;
-  List<TravelMotivation> get motivations => throw _privateConstructorUsedError;
+  List<TravelMotivationType> get motivationTypes =>
+      throw _privateConstructorUsedError;
   List<CityModel> get cities => throw _privateConstructorUsedError;
 
   /// Serializes this TravelModel to a JSON map.
@@ -50,11 +50,10 @@ abstract class $TravelModelCopyWith<$Res> {
       {int id,
       DateTime startedOn,
       DateTime endedOn,
-      TravelCompanionType companionType,
       AgeGroup ageGroup,
       Gender gender,
       List<TravelCompanion> companions,
-      List<TravelMotivation> motivations,
+      List<TravelMotivationType> motivationTypes,
       List<CityModel> cities});
 }
 
@@ -76,11 +75,10 @@ class _$TravelModelCopyWithImpl<$Res, $Val extends TravelModel>
     Object? id = null,
     Object? startedOn = null,
     Object? endedOn = null,
-    Object? companionType = null,
     Object? ageGroup = null,
     Object? gender = null,
     Object? companions = null,
-    Object? motivations = null,
+    Object? motivationTypes = null,
     Object? cities = null,
   }) {
     return _then(_value.copyWith(
@@ -96,10 +94,6 @@ class _$TravelModelCopyWithImpl<$Res, $Val extends TravelModel>
           ? _value.endedOn
           : endedOn // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      companionType: null == companionType
-          ? _value.companionType
-          : companionType // ignore: cast_nullable_to_non_nullable
-              as TravelCompanionType,
       ageGroup: null == ageGroup
           ? _value.ageGroup
           : ageGroup // ignore: cast_nullable_to_non_nullable
@@ -112,10 +106,10 @@ class _$TravelModelCopyWithImpl<$Res, $Val extends TravelModel>
           ? _value.companions
           : companions // ignore: cast_nullable_to_non_nullable
               as List<TravelCompanion>,
-      motivations: null == motivations
-          ? _value.motivations
-          : motivations // ignore: cast_nullable_to_non_nullable
-              as List<TravelMotivation>,
+      motivationTypes: null == motivationTypes
+          ? _value.motivationTypes
+          : motivationTypes // ignore: cast_nullable_to_non_nullable
+              as List<TravelMotivationType>,
       cities: null == cities
           ? _value.cities
           : cities // ignore: cast_nullable_to_non_nullable
@@ -136,11 +130,10 @@ abstract class _$$TravelModelImplCopyWith<$Res>
       {int id,
       DateTime startedOn,
       DateTime endedOn,
-      TravelCompanionType companionType,
       AgeGroup ageGroup,
       Gender gender,
       List<TravelCompanion> companions,
-      List<TravelMotivation> motivations,
+      List<TravelMotivationType> motivationTypes,
       List<CityModel> cities});
 }
 
@@ -160,11 +153,10 @@ class __$$TravelModelImplCopyWithImpl<$Res>
     Object? id = null,
     Object? startedOn = null,
     Object? endedOn = null,
-    Object? companionType = null,
     Object? ageGroup = null,
     Object? gender = null,
     Object? companions = null,
-    Object? motivations = null,
+    Object? motivationTypes = null,
     Object? cities = null,
   }) {
     return _then(_$TravelModelImpl(
@@ -180,10 +172,6 @@ class __$$TravelModelImplCopyWithImpl<$Res>
           ? _value.endedOn
           : endedOn // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      companionType: null == companionType
-          ? _value.companionType
-          : companionType // ignore: cast_nullable_to_non_nullable
-              as TravelCompanionType,
       ageGroup: null == ageGroup
           ? _value.ageGroup
           : ageGroup // ignore: cast_nullable_to_non_nullable
@@ -196,10 +184,10 @@ class __$$TravelModelImplCopyWithImpl<$Res>
           ? _value._companions
           : companions // ignore: cast_nullable_to_non_nullable
               as List<TravelCompanion>,
-      motivations: null == motivations
-          ? _value._motivations
-          : motivations // ignore: cast_nullable_to_non_nullable
-              as List<TravelMotivation>,
+      motivationTypes: null == motivationTypes
+          ? _value._motivationTypes
+          : motivationTypes // ignore: cast_nullable_to_non_nullable
+              as List<TravelMotivationType>,
       cities: null == cities
           ? _value._cities
           : cities // ignore: cast_nullable_to_non_nullable
@@ -215,14 +203,13 @@ class _$TravelModelImpl extends _TravelModel {
       {required this.id,
       required this.startedOn,
       required this.endedOn,
-      this.companionType = TravelCompanionType.none,
       this.ageGroup = AgeGroup.none,
       this.gender = Gender.none,
       final List<TravelCompanion> companions = const [],
-      final List<TravelMotivation> motivations = const [],
+      final List<TravelMotivationType> motivationTypes = const [],
       final List<CityModel> cities = const []})
       : _companions = companions,
-        _motivations = motivations,
+        _motivationTypes = motivationTypes,
         _cities = cities,
         super._();
 
@@ -235,9 +222,6 @@ class _$TravelModelImpl extends _TravelModel {
   final DateTime startedOn;
   @override
   final DateTime endedOn;
-  @override
-  @JsonKey()
-  final TravelCompanionType companionType;
   @override
   @JsonKey()
   final AgeGroup ageGroup;
@@ -253,13 +237,13 @@ class _$TravelModelImpl extends _TravelModel {
     return EqualUnmodifiableListView(_companions);
   }
 
-  final List<TravelMotivation> _motivations;
+  final List<TravelMotivationType> _motivationTypes;
   @override
   @JsonKey()
-  List<TravelMotivation> get motivations {
-    if (_motivations is EqualUnmodifiableListView) return _motivations;
+  List<TravelMotivationType> get motivationTypes {
+    if (_motivationTypes is EqualUnmodifiableListView) return _motivationTypes;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_motivations);
+    return EqualUnmodifiableListView(_motivationTypes);
   }
 
   final List<CityModel> _cities;
@@ -273,7 +257,7 @@ class _$TravelModelImpl extends _TravelModel {
 
   @override
   String toString() {
-    return 'TravelModel(id: $id, startedOn: $startedOn, endedOn: $endedOn, companionType: $companionType, ageGroup: $ageGroup, gender: $gender, companions: $companions, motivations: $motivations, cities: $cities)';
+    return 'TravelModel(id: $id, startedOn: $startedOn, endedOn: $endedOn, ageGroup: $ageGroup, gender: $gender, companions: $companions, motivationTypes: $motivationTypes, cities: $cities)';
   }
 
   @override
@@ -285,15 +269,13 @@ class _$TravelModelImpl extends _TravelModel {
             (identical(other.startedOn, startedOn) ||
                 other.startedOn == startedOn) &&
             (identical(other.endedOn, endedOn) || other.endedOn == endedOn) &&
-            (identical(other.companionType, companionType) ||
-                other.companionType == companionType) &&
             (identical(other.ageGroup, ageGroup) ||
                 other.ageGroup == ageGroup) &&
             (identical(other.gender, gender) || other.gender == gender) &&
             const DeepCollectionEquality()
                 .equals(other._companions, _companions) &&
             const DeepCollectionEquality()
-                .equals(other._motivations, _motivations) &&
+                .equals(other._motivationTypes, _motivationTypes) &&
             const DeepCollectionEquality().equals(other._cities, _cities));
   }
 
@@ -304,11 +286,10 @@ class _$TravelModelImpl extends _TravelModel {
       id,
       startedOn,
       endedOn,
-      companionType,
       ageGroup,
       gender,
       const DeepCollectionEquality().hash(_companions),
-      const DeepCollectionEquality().hash(_motivations),
+      const DeepCollectionEquality().hash(_motivationTypes),
       const DeepCollectionEquality().hash(_cities));
 
   /// Create a copy of TravelModel
@@ -332,11 +313,10 @@ abstract class _TravelModel extends TravelModel {
       {required final int id,
       required final DateTime startedOn,
       required final DateTime endedOn,
-      final TravelCompanionType companionType,
       final AgeGroup ageGroup,
       final Gender gender,
       final List<TravelCompanion> companions,
-      final List<TravelMotivation> motivations,
+      final List<TravelMotivationType> motivationTypes,
       final List<CityModel> cities}) = _$TravelModelImpl;
   const _TravelModel._() : super._();
 
@@ -350,15 +330,13 @@ abstract class _TravelModel extends TravelModel {
   @override
   DateTime get endedOn;
   @override
-  TravelCompanionType get companionType;
-  @override
   AgeGroup get ageGroup;
   @override
   Gender get gender;
   @override
   List<TravelCompanion> get companions;
   @override
-  List<TravelMotivation> get motivations;
+  List<TravelMotivationType> get motivationTypes;
   @override
   List<CityModel> get cities;
 
@@ -378,8 +356,8 @@ TravelCompanion _$TravelCompanionFromJson(Map<String, dynamic> json) {
 mixin _$TravelCompanion {
   int get id => throw _privateConstructorUsedError;
   TravelCompanionType get type => throw _privateConstructorUsedError;
-  AgeGroup get ageGroup => throw _privateConstructorUsedError;
-  Gender get gender => throw _privateConstructorUsedError;
+  AgeGroup? get ageGroup => throw _privateConstructorUsedError;
+  Gender? get gender => throw _privateConstructorUsedError;
 
   /// Serializes this TravelCompanion to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -398,7 +376,7 @@ abstract class $TravelCompanionCopyWith<$Res> {
       _$TravelCompanionCopyWithImpl<$Res, TravelCompanion>;
   @useResult
   $Res call(
-      {int id, TravelCompanionType type, AgeGroup ageGroup, Gender gender});
+      {int id, TravelCompanionType type, AgeGroup? ageGroup, Gender? gender});
 }
 
 /// @nodoc
@@ -418,8 +396,8 @@ class _$TravelCompanionCopyWithImpl<$Res, $Val extends TravelCompanion>
   $Res call({
     Object? id = null,
     Object? type = null,
-    Object? ageGroup = null,
-    Object? gender = null,
+    Object? ageGroup = freezed,
+    Object? gender = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -430,14 +408,14 @@ class _$TravelCompanionCopyWithImpl<$Res, $Val extends TravelCompanion>
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as TravelCompanionType,
-      ageGroup: null == ageGroup
+      ageGroup: freezed == ageGroup
           ? _value.ageGroup
           : ageGroup // ignore: cast_nullable_to_non_nullable
-              as AgeGroup,
-      gender: null == gender
+              as AgeGroup?,
+      gender: freezed == gender
           ? _value.gender
           : gender // ignore: cast_nullable_to_non_nullable
-              as Gender,
+              as Gender?,
     ) as $Val);
   }
 }
@@ -451,7 +429,7 @@ abstract class _$$TravelCompanionImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {int id, TravelCompanionType type, AgeGroup ageGroup, Gender gender});
+      {int id, TravelCompanionType type, AgeGroup? ageGroup, Gender? gender});
 }
 
 /// @nodoc
@@ -469,8 +447,8 @@ class __$$TravelCompanionImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? type = null,
-    Object? ageGroup = null,
-    Object? gender = null,
+    Object? ageGroup = freezed,
+    Object? gender = freezed,
   }) {
     return _then(_$TravelCompanionImpl(
       id: null == id
@@ -481,14 +459,14 @@ class __$$TravelCompanionImplCopyWithImpl<$Res>
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as TravelCompanionType,
-      ageGroup: null == ageGroup
+      ageGroup: freezed == ageGroup
           ? _value.ageGroup
           : ageGroup // ignore: cast_nullable_to_non_nullable
-              as AgeGroup,
-      gender: null == gender
+              as AgeGroup?,
+      gender: freezed == gender
           ? _value.gender
           : gender // ignore: cast_nullable_to_non_nullable
-              as Gender,
+              as Gender?,
     ));
   }
 }
@@ -497,10 +475,7 @@ class __$$TravelCompanionImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$TravelCompanionImpl implements _TravelCompanion {
   const _$TravelCompanionImpl(
-      {required this.id,
-      required this.type,
-      required this.ageGroup,
-      required this.gender});
+      {required this.id, required this.type, this.ageGroup, this.gender});
 
   factory _$TravelCompanionImpl.fromJson(Map<String, dynamic> json) =>
       _$$TravelCompanionImplFromJson(json);
@@ -510,9 +485,9 @@ class _$TravelCompanionImpl implements _TravelCompanion {
   @override
   final TravelCompanionType type;
   @override
-  final AgeGroup ageGroup;
+  final AgeGroup? ageGroup;
   @override
-  final Gender gender;
+  final Gender? gender;
 
   @override
   String toString() {
@@ -556,8 +531,8 @@ abstract class _TravelCompanion implements TravelCompanion {
   const factory _TravelCompanion(
       {required final int id,
       required final TravelCompanionType type,
-      required final AgeGroup ageGroup,
-      required final Gender gender}) = _$TravelCompanionImpl;
+      final AgeGroup? ageGroup,
+      final Gender? gender}) = _$TravelCompanionImpl;
 
   factory _TravelCompanion.fromJson(Map<String, dynamic> json) =
       _$TravelCompanionImpl.fromJson;
@@ -567,9 +542,9 @@ abstract class _TravelCompanion implements TravelCompanion {
   @override
   TravelCompanionType get type;
   @override
-  AgeGroup get ageGroup;
+  AgeGroup? get ageGroup;
   @override
-  Gender get gender;
+  Gender? get gender;
 
   /// Create a copy of TravelCompanion
   /// with the given fields replaced by the non-null parameter values.

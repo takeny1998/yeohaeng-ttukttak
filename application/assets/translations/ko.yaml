@@ -5,10 +5,10 @@ travel:
     display_select_date: '{start} - {end} ({nights}박 {days}일)'
 
   select_detail:
-    ask_companion: 누구와 함께 여행할 예정인가요?
-    hint_companion: (중복 선택 불가능)
-    ask_motivation: 여행 목적은 무엇인가요?
-    hint_motivation: (최소 1개, 최대 3개 선택 가능)
+    ask_companion_types: 누구와 함께 여행할 예정인가요?
+    hint_companion_types: (최소 1개, 최대 3개 선택 가능)
+    ask_motivation_types: 여행 목적은 무엇인가요?
+    hint_motivation_types: (최소 1개, 최대 5개 선택 가능)
     require_detail: 여행 상세 정보를 모두 선택해 주세요.
 
   select_city:
@@ -86,7 +86,7 @@ enum:
     members: 회원
     others: 기타
 
-  TravelMotivation:
+  TravelMotivationType:
     adventure: 일상에서 탈피
     rest: 휴식
     friendship: 친목 쌓기
@@ -114,7 +114,7 @@ enum:
     female: Female
     other: 기타
 
-  TravelVisitReason:
+  TravelVisitReasonType:
     landmark: 지역 명소라서 방문헀어요.
     goodReviews: 온라인(SNS, 블로그 등) 후기가 좋아서 방문했어요.
     media: 미디어(TV 프로그램 등)에서 평가가 좋아 방문했어요.
