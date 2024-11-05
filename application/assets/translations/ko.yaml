@@ -40,6 +40,9 @@ travel_plan_recommend:
   view_detail: 자세히 보기
   save: 저장
 
+city_place_pois:
+  sort_by: 정렬 조건을 선택하세요.
+
 next: 다음으로
 korea: 대한민국
 me: 본인
@@ -135,3 +138,7 @@ enum:
     transport: 교통
     dining: 식당/카페
     lodging: 숙소
+
+  PlaceSortType:
+    rating: 평점 높은 순
+    popularity: 많이 방문한 순

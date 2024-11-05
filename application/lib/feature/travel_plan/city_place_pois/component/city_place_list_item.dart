@@ -1,5 +1,5 @@
 import 'package:application_new/common/util/translation.dart';
-import 'package:application_new/feature/travel_plan/city_place_list/provider/city_place_list_state.dart';
+import 'package:application_new/feature/travel_plan/city_place_pois/provider/city_place_pois_state.dart';
 import 'package:application_new/shared/component/small_chip.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';

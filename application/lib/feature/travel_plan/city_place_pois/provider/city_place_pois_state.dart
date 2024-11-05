@@ -1,17 +1,15 @@
 import 'package:application_new/shared/model/place_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'city_place_list_state.freezed.dart';
-part 'city_place_list_state.g.dart';
+part 'city_place_pois_state.freezed.dart';
+part 'city_place_pois_state.g.dart';
 
 @freezed
-class CityPlaceListState with _$CityPlaceListState {
-  const factory CityPlaceListState({
+class CityPlacePoisState with _$CityPlacePoisState {
+  const factory CityPlacePoisState({
     @Default([]) List<PlaceMetricModel> placeMetrics,
     @Default(true) bool hasNextPage,
-    @Default(PlaceViewType.list) PlaceViewType viewType,
-    @Default(PlaceSortType.rating) PlaceSortType sortType,
-  }) = _CityPlaceListState;
+  }) = _CityPlacePoisState;
 }
 
 @freezed
