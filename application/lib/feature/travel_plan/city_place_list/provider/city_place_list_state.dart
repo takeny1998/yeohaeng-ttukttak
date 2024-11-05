@@ -9,6 +9,7 @@ class CityPlaceListState with _$CityPlaceListState {
   const factory CityPlaceListState({
     @Default([]) List<PlaceMetricModel> placeMetrics,
     @Default(true) bool hasNextPage,
+    @Default(PlaceViewType.list) PlaceViewType viewType,
     @Default(PlaceSortType.rating) PlaceSortType sortType,
   }) = _CityPlaceListState;
 }
@@ -26,3 +27,5 @@ class PlaceMetricModel with _$PlaceMetricModel {
 }
 
 enum PlaceSortType { rating, popularity }
+
+enum PlaceViewType { list, map }

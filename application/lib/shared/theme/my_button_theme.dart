@@ -14,6 +14,14 @@ class MyButtonTheme extends StatelessWidget {
 
     return Theme(
       data: Theme.of(context).copyWith(
+        textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(24.0)
+            ),
+            foregroundColor: colorScheme.onSurface,
+            textStyle: textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w600)
+          )),
         filledButtonTheme: FilledButtonThemeData(
             style: FilledButton.styleFrom(
           shape:

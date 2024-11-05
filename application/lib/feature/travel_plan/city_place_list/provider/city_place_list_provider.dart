@@ -1,6 +1,5 @@
 import 'package:application_new/common/http/http_service_provider.dart';
 import 'package:application_new/feature/travel_plan/city_place_list/provider/city_place_list_state.dart';
-import 'package:application_new/shared/model/place_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'city_place_list_provider.g.dart';
@@ -8,15 +7,13 @@ part 'city_place_list_provider.g.dart';
 @riverpod
 class CityPlaceList extends _$CityPlaceList {
   late final int _cityId;
-  late final PlaceCategoryType _categoryType;
 
   int _pageNumber = 0;
   final int _pageSize = 10;
 
   @override
-  CityPlaceListState build(int cityId, PlaceCategoryType categoryType) {
+  CityPlaceListState build(int cityId) {
     _cityId = cityId;
-    _categoryType = categoryType;
 
     return const CityPlaceListState();
   }
@@ -26,13 +23,12 @@ class CityPlaceList extends _$CityPlaceList {
 
     final Map<String, dynamic> queryParams = {
       'cityId': _cityId,
-      'categoryType': _categoryType.name,
       'pageNumber': _pageNumber,
       'pageSize': _pageSize,
       'sortType': state.sortType.name,
     };
 
-    final response = await httpService.request('GET', '/api/v2/places',
+    final response = await httpService.request('GET', '/api/v2/places/pois',
         queryParams: queryParams);
 
     final placeMetrics = List.of(response['places'])
@@ -45,5 +41,12 @@ class CityPlaceList extends _$CityPlaceList {
     );
 
     _pageNumber++;
+  }
+
+  void selectViewType(PlaceViewType viewType) {
+    if (state.viewType == viewType) return;
+
+    state = state.copyWith(viewType: viewType);
+
   }
 }

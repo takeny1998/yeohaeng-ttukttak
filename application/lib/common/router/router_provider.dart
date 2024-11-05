@@ -54,17 +54,11 @@ GoRouter router(RouterRef ref) {
             return TravelPlanPage(travelId: int.parse(travelId));
           }),
       GoRoute(
-          path: '/cities/:id/places',
+          path: '/cities/:id/places/pois',
           builder: (context, state) {
             final {'id': cityId} = state.pathParameters;
-            final {'categoryType': categoryType} =
-                state.uri.queryParameters;
 
-            return CityPlaceListPage(
-              cityId: int.parse(cityId),
-              categoryType: PlaceCategoryType.values
-                  .firstWhere((e) => e.name == categoryType),
-            );
+            return CityPlacePoisPage(cityId: int.parse(cityId));
           })
     ],
   );

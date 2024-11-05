@@ -1,95 +1,112 @@
 import 'package:application_new/common/util/translation.dart';
-import 'package:application_new/feature/home/home_page.dart';
+import 'package:application_new/feature/travel_plan/city_place_list/component/city_place_list_item.dart';
 import 'package:application_new/feature/travel_plan/city_place_list/provider/city_place_list_provider.dart';
 import 'package:application_new/feature/travel_plan/city_place_list/provider/city_place_list_state.dart';
-import 'package:application_new/shared/component/small_chip.dart';
 import 'package:application_new/shared/model/place_model.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
-class CityPlaceListPage extends ConsumerWidget {
+class CityPlacePoisPage extends ConsumerStatefulWidget {
   final int cityId;
-  final PlaceCategoryType categoryType;
 
-  const CityPlaceListPage(
-      {super.key, required this.cityId, required this.categoryType});
+  const CityPlacePoisPage(
+      {super.key, required this.cityId});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState createState() => _CityPlaceListPageState();
+}
+
+class _CityPlaceListPageState extends ConsumerState<CityPlacePoisPage> {
+  final scrollController = ScrollController();
+
+  bool hasScrollDown = false;
+
+  static const double scrollThreshold = 240.0;
+
+  @override
+  void initState() {
+    scrollController.addListener(() {
+      if (scrollController.offset <= scrollThreshold) {
+        setState(() => hasScrollDown = false);
+        return;
+      }
+      setState(() => hasScrollDown = true);
+    });
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final ThemeData(:textTheme, :colorScheme) = Theme.of(context);
 
-    final CityPlaceListState(:placeMetrics, :hasNextPage) =
-        ref.watch(cityPlaceListProvider(cityId, categoryType));
+    final cityId = widget.cityId;
+
+    final CityPlaceListState(:placeMetrics, :hasNextPage, :viewType) =
+        ref.watch(cityPlaceListProvider(cityId));
 
     return Scaffold(
-      appBar: AppBar(),
-      body: CustomScrollView(slivers: [
-        SliverList(
-            delegate: SliverChildBuilderDelegate((context, index) {
-          final PlaceMetricModel(:place, :rating) = placeMetrics[index];
-
-          final titleStyle =
-              textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600);
-          final subTitleStyle =
-              TextStyle(fontSize: 13.0, color: colorScheme.onSurfaceVariant);
-
-          return Container(
-            margin: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
-            child: Row(
-                children: [
-              Expanded(
-                  flex: 4,
-                  child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8.0),
-                      child: Container(
-                          height: 80.0, color: colorScheme.primaryContainer))),
-              const Spacer(flex: 1),
-              Expanded(
-                  flex: 16,
-
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(place.name, style: titleStyle),
-                        Text(place.address.value ?? '', style: subTitleStyle),
-                        const SizedBox(height: 4.0),
-                        Wrap(spacing: 8.0, children: [
-                          if (rating != null)
-                            SmallChip(
-                                backgroundColor: colorScheme.primary,
-                                foregroundColor: colorScheme.onPrimary,
-                                leading: Icon(Icons.star_rate_rounded,
-                                    color: colorScheme.onPrimary),
-                                label: rating.toStringAsFixed(1)),
-                          for (final categoryType in place.categoryTypes)
-                            SmallChip(label: enumKey(categoryType).tr()),
-
-                        ])
-                      ])),
+        appBar: AppBar(
+          backgroundColor: colorScheme.surface,
+          scrolledUnderElevation: 0.0,
+          title: Text('목록'),
+        ),
+        floatingActionButton: hasScrollDown
+            ? FloatingActionButton(
+                child: const Icon(Icons.arrow_upward),
+                onPressed: () => scrollController.animateTo(0.0,
+                    duration: Duration(
+                        milliseconds: (scrollController.offset / 5).toInt()),
+                    curve: Curves.linear))
+            : null,
+        body: CustomScrollView(controller: scrollController, slivers: [
+          const SliverToBoxAdapter(child: SizedBox(height: 16.0)),
+          SliverToBoxAdapter(
+            child: Row(children: [
+              const SizedBox(width: 16.0),
+              TextButton(
+                  style: TextButton.styleFrom(
+                      foregroundColor: colorScheme.onSurface),
+                  onPressed: () {},
+                  child: Row(children: [
+                    Text('평점 높은 순',
+                        style: textTheme.bodyLarge
+                            ?.copyWith(fontWeight: FontWeight.w600)),
+                    const Icon(Icons.arrow_drop_down),
+                  ]))
             ]),
-          );
-        }, childCount: placeMetrics.length)),
-        if (hasNextPage)
-          SliverFillRemaining(
-              hasScrollBody: false,
-              child: VisibilityDetector(
-                key: const Key('key'),
-                onVisibilityChanged: (VisibilityInfo info) {
-                  final isVisible = info.visibleFraction > 0.0;
-                  if (!isVisible) return;
-                  ref
-                      .read(
-                          cityPlaceListProvider(cityId, categoryType).notifier)
-                      .fetch();
-                },
-                child: Container(
-                  constraints: const BoxConstraints(minHeight: 120.0),
-                  child: const Center(child: CircularProgressIndicator()),
-                ),
-              )),
-      ]),
-    );
+          ),
+          SliverList(
+              delegate: SliverChildBuilderDelegate(
+                  (context, index) =>
+                      CityPlaceListItem(placeMetric: placeMetrics[index]),
+                  childCount: placeMetrics.length)),
+          if (hasNextPage)
+            SliverFillRemaining(
+                hasScrollBody: false,
+                child: VisibilityDetector(
+                  key: const Key('key'),
+                  onVisibilityChanged: (VisibilityInfo info) {
+                    final isVisible = info.visibleFraction > 0.0;
+                    if (!isVisible) return;
+                    ref.read(cityPlaceListProvider(cityId).notifier)
+                        .fetch();
+                  },
+                  child: Container(
+                    constraints: const BoxConstraints(minHeight: 120.0),
+                    child: const Center(child: CircularProgressIndicator()),
+                  ),
+                )),
+          const SliverToBoxAdapter(child: SizedBox(height: 48.0)),
+        ]));
   }
 }

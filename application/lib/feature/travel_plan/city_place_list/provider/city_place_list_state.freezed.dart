@@ -18,6 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$CityPlaceListState {
   List<PlaceMetricModel> get placeMetrics => throw _privateConstructorUsedError;
   bool get hasNextPage => throw _privateConstructorUsedError;
+  PlaceViewType get viewType => throw _privateConstructorUsedError;
   PlaceSortType get sortType => throw _privateConstructorUsedError;
 
   /// Create a copy of CityPlaceListState
@@ -36,6 +37,7 @@ abstract class $CityPlaceListStateCopyWith<$Res> {
   $Res call(
       {List<PlaceMetricModel> placeMetrics,
       bool hasNextPage,
+      PlaceViewType viewType,
       PlaceSortType sortType});
 }
 
@@ -56,6 +58,7 @@ class _$CityPlaceListStateCopyWithImpl<$Res, $Val extends CityPlaceListState>
   $Res call({
     Object? placeMetrics = null,
     Object? hasNextPage = null,
+    Object? viewType = null,
     Object? sortType = null,
   }) {
     return _then(_value.copyWith(
@@ -67,6 +70,10 @@ class _$CityPlaceListStateCopyWithImpl<$Res, $Val extends CityPlaceListState>
           ? _value.hasNextPage
           : hasNextPage // ignore: cast_nullable_to_non_nullable
               as bool,
+      viewType: null == viewType
+          ? _value.viewType
+          : viewType // ignore: cast_nullable_to_non_nullable
+              as PlaceViewType,
       sortType: null == sortType
           ? _value.sortType
           : sortType // ignore: cast_nullable_to_non_nullable
@@ -86,6 +93,7 @@ abstract class _$$CityPlaceListStateImplCopyWith<$Res>
   $Res call(
       {List<PlaceMetricModel> placeMetrics,
       bool hasNextPage,
+      PlaceViewType viewType,
       PlaceSortType sortType});
 }
 
@@ -104,6 +112,7 @@ class __$$CityPlaceListStateImplCopyWithImpl<$Res>
   $Res call({
     Object? placeMetrics = null,
     Object? hasNextPage = null,
+    Object? viewType = null,
     Object? sortType = null,
   }) {
     return _then(_$CityPlaceListStateImpl(
@@ -115,6 +124,10 @@ class __$$CityPlaceListStateImplCopyWithImpl<$Res>
           ? _value.hasNextPage
           : hasNextPage // ignore: cast_nullable_to_non_nullable
               as bool,
+      viewType: null == viewType
+          ? _value.viewType
+          : viewType // ignore: cast_nullable_to_non_nullable
+              as PlaceViewType,
       sortType: null == sortType
           ? _value.sortType
           : sortType // ignore: cast_nullable_to_non_nullable
@@ -129,6 +142,7 @@ class _$CityPlaceListStateImpl implements _CityPlaceListState {
   const _$CityPlaceListStateImpl(
       {final List<PlaceMetricModel> placeMetrics = const [],
       this.hasNextPage = true,
+      this.viewType = PlaceViewType.list,
       this.sortType = PlaceSortType.rating})
       : _placeMetrics = placeMetrics;
 
@@ -146,11 +160,14 @@ class _$CityPlaceListStateImpl implements _CityPlaceListState {
   final bool hasNextPage;
   @override
   @JsonKey()
+  final PlaceViewType viewType;
+  @override
+  @JsonKey()
   final PlaceSortType sortType;
 
   @override
   String toString() {
-    return 'CityPlaceListState(placeMetrics: $placeMetrics, hasNextPage: $hasNextPage, sortType: $sortType)';
+    return 'CityPlaceListState(placeMetrics: $placeMetrics, hasNextPage: $hasNextPage, viewType: $viewType, sortType: $sortType)';
   }
 
   @override
@@ -162,6 +179,8 @@ class _$CityPlaceListStateImpl implements _CityPlaceListState {
                 .equals(other._placeMetrics, _placeMetrics) &&
             (identical(other.hasNextPage, hasNextPage) ||
                 other.hasNextPage == hasNextPage) &&
+            (identical(other.viewType, viewType) ||
+                other.viewType == viewType) &&
             (identical(other.sortType, sortType) ||
                 other.sortType == sortType));
   }
@@ -171,6 +190,7 @@ class _$CityPlaceListStateImpl implements _CityPlaceListState {
       runtimeType,
       const DeepCollectionEquality().hash(_placeMetrics),
       hasNextPage,
+      viewType,
       sortType);
 
   /// Create a copy of CityPlaceListState
@@ -187,12 +207,15 @@ abstract class _CityPlaceListState implements CityPlaceListState {
   const factory _CityPlaceListState(
       {final List<PlaceMetricModel> placeMetrics,
       final bool hasNextPage,
+      final PlaceViewType viewType,
       final PlaceSortType sortType}) = _$CityPlaceListStateImpl;
 
   @override
   List<PlaceMetricModel> get placeMetrics;
   @override
   bool get hasNextPage;
+  @override
+  PlaceViewType get viewType;
   @override
   PlaceSortType get sortType;
 

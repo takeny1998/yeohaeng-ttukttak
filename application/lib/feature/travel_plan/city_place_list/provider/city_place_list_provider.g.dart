@@ -6,7 +6,7 @@ part of 'city_place_list_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$cityPlaceListHash() => r'7fe60bb92875e43524e9015bd7f989c3368fb06c';
+String _$cityPlaceListHash() => r'659d8614610fe9967080213c093e12a061424124';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -32,11 +32,9 @@ class _SystemHash {
 abstract class _$CityPlaceList
     extends BuildlessAutoDisposeNotifier<CityPlaceListState> {
   late final int cityId;
-  late final PlaceCategoryType categoryType;
 
   CityPlaceListState build(
     int cityId,
-    PlaceCategoryType categoryType,
   );
 }
 
@@ -52,11 +50,9 @@ class CityPlaceListFamily extends Family<CityPlaceListState> {
   /// See also [CityPlaceList].
   CityPlaceListProvider call(
     int cityId,
-    PlaceCategoryType categoryType,
   ) {
     return CityPlaceListProvider(
       cityId,
-      categoryType,
     );
   }
 
@@ -66,7 +62,6 @@ class CityPlaceListFamily extends Family<CityPlaceListState> {
   ) {
     return call(
       provider.cityId,
-      provider.categoryType,
     );
   }
 
@@ -91,11 +86,8 @@ class CityPlaceListProvider
   /// See also [CityPlaceList].
   CityPlaceListProvider(
     int cityId,
-    PlaceCategoryType categoryType,
   ) : this._internal(
-          () => CityPlaceList()
-            ..cityId = cityId
-            ..categoryType = categoryType,
+          () => CityPlaceList()..cityId = cityId,
           from: cityPlaceListProvider,
           name: r'cityPlaceListProvider',
           debugGetCreateSourceHash:
@@ -106,7 +98,6 @@ class CityPlaceListProvider
           allTransitiveDependencies:
               CityPlaceListFamily._allTransitiveDependencies,
           cityId: cityId,
-          categoryType: categoryType,
         );
 
   CityPlaceListProvider._internal(
@@ -117,11 +108,9 @@ class CityPlaceListProvider
     required super.debugGetCreateSourceHash,
     required super.from,
     required this.cityId,
-    required this.categoryType,
   }) : super.internal();
 
   final int cityId;
-  final PlaceCategoryType categoryType;
 
   @override
   CityPlaceListState runNotifierBuild(
@@ -129,7 +118,6 @@ class CityPlaceListProvider
   ) {
     return notifier.build(
       cityId,
-      categoryType,
     );
   }
 
@@ -138,16 +126,13 @@ class CityPlaceListProvider
     return ProviderOverride(
       origin: this,
       override: CityPlaceListProvider._internal(
-        () => create()
-          ..cityId = cityId
-          ..categoryType = categoryType,
+        () => create()..cityId = cityId,
         from: from,
         name: null,
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
         cityId: cityId,
-        categoryType: categoryType,
       ),
     );
   }
@@ -160,16 +145,13 @@ class CityPlaceListProvider
 
   @override
   bool operator ==(Object other) {
-    return other is CityPlaceListProvider &&
-        other.cityId == cityId &&
-        other.categoryType == categoryType;
+    return other is CityPlaceListProvider && other.cityId == cityId;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
     hash = _SystemHash.combine(hash, cityId.hashCode);
-    hash = _SystemHash.combine(hash, categoryType.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -178,9 +160,6 @@ class CityPlaceListProvider
 mixin CityPlaceListRef on AutoDisposeNotifierProviderRef<CityPlaceListState> {
   /// The parameter `cityId` of this provider.
   int get cityId;
-
-  /// The parameter `categoryType` of this provider.
-  PlaceCategoryType get categoryType;
 }
 
 class _CityPlaceListProviderElement extends AutoDisposeNotifierProviderElement<
@@ -189,9 +168,6 @@ class _CityPlaceListProviderElement extends AutoDisposeNotifierProviderElement<
 
   @override
   int get cityId => (origin as CityPlaceListProvider).cityId;
-  @override
-  PlaceCategoryType get categoryType =>
-      (origin as CityPlaceListProvider).categoryType;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
