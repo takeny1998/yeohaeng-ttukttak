@@ -5,10 +5,6 @@ import com.yeohaeng_ttukttak.server.domain.member.entity.Gender;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.OneToMany;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 @Entity
@@ -29,11 +25,5 @@ public final class InitialTravel extends Travel {
     public Gender gender() {
         return gender;
     }
-
-    @Override
-    public CompanionType companionType() {
-        return null;
-    }
-
 
 }

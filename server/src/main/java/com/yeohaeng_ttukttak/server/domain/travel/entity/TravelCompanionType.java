@@ -1,6 +1,6 @@
 package com.yeohaeng_ttukttak.server.domain.travel.entity;
 
-public enum CompanionType {
+public enum TravelCompanionType {
     spouse,
     children,
     parents,

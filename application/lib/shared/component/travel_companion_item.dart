@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 
 class TravelCompanionItem extends StatelessWidget {
   final int _id;
-  final Gender _gender;
+  final Gender? _gender;
   final String _title;
   final String _subTitle;
 
   const TravelCompanionItem(
       {super.key,
       required int id,
-      required Gender gender,
+      required Gender? gender,
       required String title,
       required String subTitle})
       : _id = id,

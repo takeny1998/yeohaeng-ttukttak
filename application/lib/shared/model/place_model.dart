@@ -1,4 +1,4 @@
-import 'package:application_new/shared/model/image_model.dart';
+import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'place_model.freezed.dart';
@@ -12,7 +12,7 @@ class PlaceModel with _$PlaceModel {
     required String name,
     required PlaceAddress address,
     required PlaceCoordinates coordinates,
-    required List<PlaceCategory> categories,
+    required List<PlaceCategoryType> categoryTypes,
   }) = _PlaceModel;
 
   factory PlaceModel.fromJson(Map<String, dynamic> json) =>
@@ -54,41 +54,17 @@ class PlaceAddress with _$PlaceAddress {
 }
 
 
-enum PlaceCategory {
-  nature,
-  landmark,
-  culture,
-  commerce,
-  recreation,
-  themePark,
-  trail,
-  festival,
-  transport,
-  shop,
-  dining,
-  attraction,
-  lodging,
-  other;
+enum PlaceCategoryType {
+  nature(Icons.nature_people),
+  tourism(Icons.tour),
+  culture(Icons.theater_comedy),
+  commerce(Icons.shopping_cart),
+  transport(Icons.directions_bus),
+  dining(Icons.dining),
+  lodging(Icons.hotel);
 
-  static List<PlaceCategory> getRecommendable() {
-    return [
-      PlaceCategory.nature,
-      PlaceCategory.landmark,
-      PlaceCategory.culture,
-      PlaceCategory.themePark,
-      PlaceCategory.trail,
-      PlaceCategory.attraction,
-    ];
-  }
+  final IconData iconData;
 
-  static List<PlaceCategory> getPopularity() {
-    return [
-      PlaceCategory.nature,
-      PlaceCategory.landmark,
-      PlaceCategory.culture,
-      PlaceCategory.shop,
-      PlaceCategory.commerce,
-      PlaceCategory.dining,
-    ];
-  }
+  const PlaceCategoryType(this.iconData);
+
 }

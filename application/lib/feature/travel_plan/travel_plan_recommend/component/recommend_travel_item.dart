@@ -95,7 +95,7 @@ class _RecommendTravelItemState extends State<RecommendTravelItem> {
                                       ]))),
                               const SizedBox(height: 16.0),
                               Wrap(spacing: 8.0, children: [
-                                for (final motivation in travel.motivations)
+                                for (final motivation in travel.motivationTypes)
                                   Chip(label: Text(enumKey(motivation).tr()))
                               ]),
                               const SizedBox(height: 24.0),

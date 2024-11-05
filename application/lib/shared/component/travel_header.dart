@@ -34,7 +34,7 @@ class TravelHeader extends StatelessWidget {
           subtitle: Text(_travel.formattedDate),
         ),
         Wrap(spacing: 8.0, children: [
-          for (final motivation in _travel.motivations)
+          for (final motivation in _travel.motivationTypes)
             Chip(label: Text(enumKey(motivation).tr()))
         ]),
         const SizedBox(height: 24.0),

@@ -80,7 +80,7 @@ class VisitItem extends ConsumerWidget {
                       Wrap(
                         spacing: 6.0,
                         children: [
-                          for (final category in place.categories)
+                          for (final category in place.categoryTypes)
                             SmallChip(label: enumKey(category).tr())
                         ],
                       ),
@@ -97,7 +97,7 @@ class VisitItem extends ConsumerWidget {
                             Text(trKey('ask_reason').tr(),
                                 style: textTheme.labelMedium),
                             const SizedBox(height: 2.0),
-                            Text(enumKey(visit.reason).tr(),
+                            Text(enumKey(visit.reasonType).tr(),
                                 style: textTheme.bodyMedium
                                     ?.copyWith(fontWeight: FontWeight.w600)),
                           ],

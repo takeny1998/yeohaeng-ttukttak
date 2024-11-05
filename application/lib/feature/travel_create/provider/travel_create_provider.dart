@@ -28,23 +28,31 @@ class TravelCreate extends _$TravelCreate {
     );
   }
 
-  void selectCompanion(TravelCompanionType companion) {
-    state = state.copyWith(companion: companion);
-  }
+  void selectCompanionType(TravelCompanionType companionType) {
+    final companionTypes = state.companionTypes;
 
-  void selectMotivation(TravelMotivation motivation) {
-    final curtMotivations = state.motivations;
-
-    final isExist = curtMotivations.contains(motivation);
-
-    if (isExist) {
-      state = state.copyWith(motivations: [
-        for (final e in curtMotivations)
-          if (e != motivation) e
+    if (companionTypes.contains(companionType)) {
+      state = state.copyWith(companionTypes: [
+        for (final e in companionTypes)
+          if (e != companionType) e
       ]);
     } else {
-      if (curtMotivations.length >= 3) return;
-      state = state.copyWith(motivations: [...curtMotivations, motivation]);
+      if (companionTypes.length >= 3) return;
+      state = state.copyWith(companionTypes: [...companionTypes, companionType]);
+    }
+  }
+
+  void selectMotivationType(TravelMotivationType motivationType) {
+    final motivationTypes = state.motivationTypes;
+
+    if (motivationTypes.contains(motivationType)) {
+      state = state.copyWith(motivationTypes: [
+        for (final e in motivationTypes)
+          if (e != motivationType) e
+      ]);
+    } else {
+      if (motivationTypes.length >= 5) return;
+      state = state.copyWith(motivationTypes: [...motivationTypes, motivationType]);
     }
   }
 
@@ -97,9 +105,9 @@ class TravelCreate extends _$TravelCreate {
               'startedOn': state.startedOn?.toIso8601String(),
               'endedOn': state.endedOn?.toIso8601String(),
             },
-            'companionType': state.companion?.name,
-            'motivations':
-                state.motivations.map((motivation) => motivation.name).toList(),
+            'companionTypes': state.companionTypes.map((e) => e.name).toList(),
+            'motivationTypes':
+                state.motivationTypes.map((e) => e.name).toList(),
             'cities': state.cities,
           });
     });

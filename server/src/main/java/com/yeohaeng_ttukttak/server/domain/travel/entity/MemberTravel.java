@@ -16,18 +16,13 @@ import java.time.LocalDate;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public final class MemberTravel extends Travel {
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @Enumerated(EnumType.STRING)
-    private CompanionType companionType;
-
-    public MemberTravel(Member member, LocalDate startedOn, LocalDate endedOn, CompanionType companionType) {
+    public MemberTravel(Member member, LocalDate startedOn, LocalDate endedOn) {
         super(startedOn, endedOn);
         this.member = member;
-        this.companionType = companionType;
     }
 
     @Override
@@ -40,27 +35,31 @@ public final class MemberTravel extends Travel {
         return member.gender();
     }
 
-    @Override
-    public CompanionType companionType() {
-        return companionType;
-    }
-
     public void addCity(City city) {
-        final boolean containsCity = cities().stream()
+        final boolean isAlreadyExist = cities().stream()
                 .anyMatch(tc -> tc.city().equals(city));
 
-        if (containsCity) return;
+        if (isAlreadyExist) return;
 
         cities().add(new TravelCity(this, city));
     }
 
-    public void addMotivation(Motivation motivation) {
-        final boolean contains = motivations().stream()
-                .anyMatch(tm -> tm.motivation().equals(motivation));
+    public void addMotivation(TravelMotivationType travelMotivationType) {
+        final boolean isAlreadyExist = motivations().stream()
+                .anyMatch(tm -> tm.type().equals(travelMotivationType));
 
-        if (contains) return;
+        if (isAlreadyExist) return;
 
-        motivations().add(new TravelMotivation(this, motivation));
+        motivations().add(new TravelMotivation(this, travelMotivationType));
+    }
+
+    public void addCompanion(TravelCompanionType travelCompanionType) {
+        final boolean isAlreadyExist = companions().stream()
+                .anyMatch(tc -> tc.type().equals(travelCompanionType));
+
+        if (isAlreadyExist) return;
+
+        companions().add(new TravelCompanion(this, travelCompanionType));
     }
 
 

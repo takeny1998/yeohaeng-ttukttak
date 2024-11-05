@@ -15,7 +15,8 @@ _$TravelVisitModelImpl _$$TravelVisitModelImplFromJson(
       visitedOn: DateTime.parse(json['visitedOn'] as String),
       rating: TravelVisitRatingModel.fromJson(
           json['rating'] as Map<String, dynamic>),
-      reason: $enumDecode(_$TravelVisitReasonEnumMap, json['reason']),
+      reasonType:
+          $enumDecode(_$TravelVisitReasonTypeEnumMap, json['reasonType']),
       images: (json['images'] as List<dynamic>)
           .map((e) => ImageModel.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -29,22 +30,22 @@ Map<String, dynamic> _$$TravelVisitModelImplToJson(
       'placeId': instance.placeId,
       'visitedOn': instance.visitedOn.toIso8601String(),
       'rating': instance.rating,
-      'reason': _$TravelVisitReasonEnumMap[instance.reason]!,
+      'reasonType': _$TravelVisitReasonTypeEnumMap[instance.reasonType]!,
       'images': instance.images,
     };
 
-const _$TravelVisitReasonEnumMap = {
-  TravelVisitReason.landmark: 'landmark',
-  TravelVisitReason.goodReviews: 'goodReviews',
-  TravelVisitReason.media: 'media',
-  TravelVisitReason.goodExperience: 'goodExperience',
-  TravelVisitReason.recommendation: 'recommendation',
-  TravelVisitReason.easyAccess: 'easyAccess',
-  TravelVisitReason.goodAmenities: 'goodAmenities',
-  TravelVisitReason.goodValue: 'goodValue',
-  TravelVisitReason.unexpectedFind: 'unexpectedFind',
-  TravelVisitReason.education: 'education',
-  TravelVisitReason.other: 'other',
+const _$TravelVisitReasonTypeEnumMap = {
+  TravelVisitReasonType.landmark: 'landmark',
+  TravelVisitReasonType.goodReviews: 'goodReviews',
+  TravelVisitReasonType.media: 'media',
+  TravelVisitReasonType.goodExperience: 'goodExperience',
+  TravelVisitReasonType.recommendation: 'recommendation',
+  TravelVisitReasonType.easyAccess: 'easyAccess',
+  TravelVisitReasonType.goodAmenities: 'goodAmenities',
+  TravelVisitReasonType.goodValue: 'goodValue',
+  TravelVisitReasonType.unexpectedFind: 'unexpectedFind',
+  TravelVisitReasonType.education: 'education',
+  TravelVisitReasonType.other: 'other',
 };
 
 _$TravelVisitRatingModelImpl _$$TravelVisitRatingModelImplFromJson(

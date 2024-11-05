@@ -25,22 +25,22 @@ public class TravelRecommendRepository {
 
     private final JPAQueryFactory queryFactory;
 
-    public PageResult<Travel> call(Long cityId, List<Motivation> motivations, List<CompanionType> companionTypes, PageCommand pageCommand) {
+    public PageResult<Travel> call(Long cityId, List<TravelMotivationType> motivationTypes, List<TravelCompanionType> companionTypes, PageCommand pageCommand) {
 
-        final boolean isMotivationsExists = motivations != null && !motivations.isEmpty();
+        final boolean isMotivationsExists = motivationTypes != null && !motivationTypes.isEmpty();
         final boolean isCompanionTypesExists = companionTypes != null && !companionTypes.isEmpty();
 
         JPAQuery<Travel> query = queryFactory
                 .select(travel)
                 .from(travel)
                 .where(isMatchedTravel(cityId),
-                        travelMotivation.motivation.in(motivations))
+                        travelMotivation.type.in(motivationTypes))
                 .groupBy(travel);
 
         if (isMotivationsExists) {
             query.join(travel.motivations, travelMotivation)
-                    .where(travelMotivation.motivation.in(motivations))
-                    .orderBy(travelMotivation.motivation.countDistinct().desc());
+                    .where(travelMotivation.type.in(motivationTypes))
+                    .orderBy(travelMotivation.type.countDistinct().desc());
         }
 
         if (isCompanionTypesExists) {

@@ -5,10 +5,10 @@ travel:
     display_select_date: '{start} - {end} ({nights}박 {days}일)'
 
   select_detail:
-    ask_companion: 누구와 함께 여행할 예정인가요?
-    hint_companion: (중복 선택 불가능)
-    ask_motivation: 여행 목적은 무엇인가요?
-    hint_motivation: (최소 1개, 최대 3개 선택 가능)
+    ask_companion_types: 누구와 함께 여행할 예정인가요?
+    hint_companion_types: (최소 1개, 최대 3개 선택 가능)
+    ask_motivation_types: 여행 목적은 무엇인가요?
+    hint_motivation_types: (최소 1개, 최대 5개 선택 가능)
     require_detail: 여행 상세 정보를 모두 선택해 주세요.
 
   select_city:
@@ -25,9 +25,17 @@ travel:
     ask_recommend: 다른 사람에게 방문을 추천하고 싶으신가요?
 
 travel_plan_recommend:
-  label_motivation: '{motivation} 목적으로 찾은 {category} 목록'
-  label_companion_type: '{companionType}과 함께 찾은 {category} 목록'
-  label_popularity: '많이 방문한 {category} 목록'
+  label_place:
+    nature: 자연 속에서 힐링하세요! 추천하는 자연 관광지 모음
+    tourism: 여행의 묘미는 유명한 곳에서, 인기 관광 명소 모음
+    culture: 문화 생활에 푹 빠져보세요. 추천하는 문화 시설 모음
+    commerce: 여행은 역시 Flex! 추천하는 상업 시설 모음
+    transport: 편리한 이동을 위해! 교통 시설 목록
+    dining: 오늘 뭐 먹지? 추천하는 식당/카페 목록
+    lodging: 편안한 휴식이 필요하신가요? 추천하는 숙소 목록
+
+  label_travel: 다른 사람들은 어떻게 떠났을까? 비슷한 조건의 여행기 실펴보기
+
   add_to_plan: 일정에 추가하기
   view_detail: 자세히 보기
   save: 저장
@@ -35,6 +43,8 @@ travel_plan_recommend:
 next: 다음으로
 korea: 대한민국
 me: 본인
+
+null: ''
 
 word:
   travel: 여행
@@ -76,7 +86,7 @@ enum:
     members: 회원
     others: 기타
 
-  TravelMotivation:
+  TravelMotivationType:
     adventure: 일상에서 탈피
     rest: 휴식
     friendship: 친목 쌓기
@@ -104,7 +114,7 @@ enum:
     female: Female
     other: 기타
 
-  TravelVisitReason:
+  TravelVisitReasonType:
     landmark: 지역 명소라서 방문헀어요.
     goodReviews: 온라인(SNS, 블로그 등) 후기가 좋아서 방문했어요.
     media: 미디어(TV 프로그램 등)에서 평가가 좋아 방문했어요.
@@ -117,18 +127,11 @@ enum:
     education: 교육적인 장소라 방문헀어요.
     other: 기타
 
-  PlaceCategory:
-    nature: 자연관광지
-    landmark: 랜드마크
-    culture: 문화 시설
-    commerce: 상업지구
-    recreation: 레저/스포츠
-    themePark: 테마파크
-    trail: 산책로, 둘레길
-    festival: 축제/행사
-    transport: 교통 시설
-    shop: 상업시설
+  PlaceCategoryType:
+    nature: 자연
+    tourism: 관광지
+    culture: 문화
+    commerce: 상업
+    transport: 교통
     dining: 식당/카페
-    attraction: 체험 활동 관광지
     lodging: 숙소
-    other: 기타

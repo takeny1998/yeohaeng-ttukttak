@@ -1,12 +1,7 @@
 package com.yeohaeng_ttukttak.server.domain.place.entity;
 
-import com.yeohaeng_ttukttak.server.domain.image.entity.TravelVisitImage;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelVisit;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.validation.constraints.NotNull;
+import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
@@ -35,8 +30,9 @@ public final class Place {
 
     private Double latitude;
 
+    @OrderBy("count DESC, type ASC")
     @OneToMany(mappedBy = "place")
-    private List<PlaceCategoryMapping> categories = new ArrayList<>();
+    private List<PlaceCategory> categories = new ArrayList<>();
 
     @OneToMany(mappedBy = "place")
     private List<TravelVisit> visits = new ArrayList<>();
@@ -69,7 +65,7 @@ public final class Place {
         return latitude;
     }
 
-    public List<PlaceCategoryMapping> categories() {
+    public List<PlaceCategory> categories() {
         return categories;
     }
 

@@ -2,7 +2,7 @@ package com.yeohaeng_ttukttak.server.domain.travel.dto;
 
 import com.yeohaeng_ttukttak.server.domain.image.dto.ImageDto;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelVisit;
-import com.yeohaeng_ttukttak.server.domain.travel.entity.VisitReason;
+import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelVisitReasonType;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -12,7 +12,7 @@ public record TravelVisitDto(
         Integer seq,
         Long placeId,
         LocalDate visitedOn,
-        VisitReason reason,
+        TravelVisitReasonType reasonType,
         VisitRating rating,
         List<ImageDto> images) {
 
@@ -27,7 +27,7 @@ public record TravelVisitDto(
                 visit.seq(),
                 visit.place().id(),
                 visit.visitedOn(),
-                visit.reason(),
+                visit.reasonType(),
                 new VisitRating(
                         visit.satisfaction(),
                         visit.revisit(),

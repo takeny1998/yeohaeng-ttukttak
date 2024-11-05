@@ -1,7 +1,7 @@
 import 'package:application_new/common/util/string_extension.dart';
 import 'package:application_new/common/util/translation.dart';
 import 'package:application_new/feature/travel_plan/travel_plan_recommend/model/recommend_model.dart';
-import 'package:application_new/feature/travel_plan/travel_plan_recommend/provider/travel_plan_recommend_state.dart';
+import 'package:application_new/shared/component/small_chip.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
@@ -12,8 +12,6 @@ class RecommendPlaceItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-
     // 외부 Indicator 크기 변동을 위해 높이를 부여
     if (recommendPlaceModel.places.isEmpty) {
       return const SizedBox(height: 1.0);
@@ -21,35 +19,20 @@ class RecommendPlaceItem extends StatelessWidget {
 
     final trKey = baseKey('travel_plan_recommend');
 
-    final category = enumKey(recommendPlaceModel.category).tr();
-
-    final labelText = switch (recommendPlaceModel.target) {
-      MotivationTarget(:final motivation) =>
-        trKey('label_motivation').tr(namedArgs: {
-          'motivation': enumKey(motivation).tr(),
-          'category': category,
-        }),
-      CompanionTypeTarget(:final companionType) =>
-        trKey('label_companion_type').tr(namedArgs: {
-          'companionType': enumKey(companionType).tr(),
-          'category': category,
-        }),
-      PopularityTarget() => trKey('label_popularity').tr(namedArgs: {
-          'category': category,
-        }),
-      PlaceTarget() => throw UnimplementedError(),
-    };
-
     final ThemeData(:textTheme, :colorScheme) = Theme.of(context);
 
     final labelStyle =
         textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w600);
 
-    final placeNameStyle =
+    final nameStyle =
         textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w600);
 
-    final placeAddrStyle = textTheme.labelMedium?.copyWith(
+    final subTitleStyle = textTheme.labelMedium?.copyWith(
         color: colorScheme.onSurfaceVariant, fontWeight: FontWeight.w600);
+
+    final labelText = trKey('label_place.${recommendPlaceModel.category.name}')
+                        .tr()
+    .lineBreakByWord();
 
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 48.0),
@@ -58,10 +41,12 @@ class RecommendPlaceItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-                width: MediaQuery.of(context).size.width * 0.6,
+                width: MediaQuery.of(context).size.width * 0.7,
                 padding: const EdgeInsets.only(left: 24.0),
-                child: Text(labelText.lineBreakByWord(),
-                    style: labelStyle, softWrap: true)),
+                child: Text(
+                    labelText,
+                    style: labelStyle,
+                    softWrap: true)),
             const SizedBox(height: 16.0),
             SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
@@ -69,7 +54,7 @@ class RecommendPlaceItem extends StatelessWidget {
                   const SizedBox(width: 24.0),
                   for (final place in recommendPlaceModel.places) ...[
                     SizedBox(
-                      width: 192.0,
+                      width: 240.0,
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -77,25 +62,35 @@ class RecommendPlaceItem extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(8.0),
                                 child: Container(
                                   width: double.maxFinite,
-                                  height: 160.0,
+                                  height: 176.0,
                                   color: colorScheme.surfaceContainer,
                                 )),
                             const SizedBox(height: 8.0),
                             Text(place.name,
-                                style: placeNameStyle,
+                                style: nameStyle,
                                 overflow: TextOverflow.ellipsis),
                             Text(place.address.value ?? '',
-                                style: placeAddrStyle,
+                                style: subTitleStyle,
                                 overflow: TextOverflow.ellipsis),
-                            const SizedBox(height: 16.0),
+                            const SizedBox(height: 4.0),
+                            Wrap(spacing: 8.0, children: [
+                              for (int i = 0; i < place.categoryTypes.length; i ++)
+                                SmallChip(
+                                    backgroundColor: i == 0 ? colorScheme.primary : null,
+                                    foregroundColor: i == 0 ? colorScheme.onPrimary : null,
+                                    label: enumKey(place.categoryTypes[i]).tr()),
+                            ]),
+                            const SizedBox(height: 8.0),
                             SizedBox(
-                              width: double.maxFinite,
-                              child: OutlinedButton.icon(
-                                  onPressed: () {},
-                                  icon: const Icon(
-                                      Icons.add_location_alt_outlined,
-                                      size: 18.0),
-                                  label: Text(trKey('add_to_plan')).tr()))
+                                width: double.maxFinite,
+                                child: OutlinedButton.icon(
+                                    onPressed: () {},
+                                    style: OutlinedButton.styleFrom(
+                                        textStyle: subTitleStyle),
+                                    icon: const Icon(
+                                        Icons.add_location_outlined,
+                                        size: 18.0),
+                                    label: Text(trKey('add_to_plan')).tr()))
                           ]),
                     ),
                     const SizedBox(width: 24.0),

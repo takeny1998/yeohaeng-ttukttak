@@ -59,14 +59,17 @@ class TravelPlanHomeHeader extends StatelessWidget {
                 Text('여행 설명이 없습니다.', style: dateStyle),
                 const SizedBox(height: 16.0),
                 Wrap(spacing: 8.0, children: [
-                  Chip(
-                      backgroundColor: colorScheme.primary,
-                      labelStyle: TextStyle(color: colorScheme.onPrimary),
-                      label: Text(enumKey(travel.companionType).tr())),
-                  for (final motivation in travel.motivations)
+                  // for (final companion in travel.companions)
+                  //   Chip(
+                  //       backgroundColor: colorScheme.primary,
+                  //       labelStyle: TextStyle(color: colorScheme.onPrimary),
+                  //       label: Text(enumKey(companion.type).tr())),
+                  for (final motivationType in travel.motivationTypes)
                     Chip(
+                      labelPadding: EdgeInsets.zero,
+                      visualDensity: VisualDensity.compact,
                         backgroundColor: colorScheme.primaryFixedDim,
-                        label: Text(enumKey(motivation).tr())),
+                        label: Text(enumKey(motivationType).tr())),
                 ]),
               ],
             ),
