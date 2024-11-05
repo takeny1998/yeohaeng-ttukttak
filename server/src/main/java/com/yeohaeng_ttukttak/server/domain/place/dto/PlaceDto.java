@@ -15,6 +15,11 @@ public record PlaceDto(
 ) {
 
     public static PlaceDto of(Place place) {
+        return of(place, place.categories());
+    }
+
+    public static PlaceDto of(Place place, List<PlaceCategory> categories) {
+
         return new PlaceDto(
                 place.id(),
                 place.name(),
@@ -22,7 +27,7 @@ public record PlaceDto(
                         place.lotNumberAddress(), place.roadAddress()),
                 new PlaceCoordinates(
                         place.longitude(), place.latitude()),
-                place.categories().stream()
+                categories.stream()
                         .map(PlaceCategory::type)
                         .toList()
         );
