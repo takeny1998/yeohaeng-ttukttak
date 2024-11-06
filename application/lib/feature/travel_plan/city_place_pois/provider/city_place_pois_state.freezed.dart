@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'city_place_list_state.dart';
+part of 'city_place_pois_state.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -15,48 +15,43 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
-mixin _$CityPlaceListState {
+mixin _$CityPlacePoisState {
   List<PlaceMetricModel> get placeMetrics => throw _privateConstructorUsedError;
   bool get hasNextPage => throw _privateConstructorUsedError;
-  PlaceSortType get sortType => throw _privateConstructorUsedError;
 
-  /// Create a copy of CityPlaceListState
+  /// Create a copy of CityPlacePoisState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $CityPlaceListStateCopyWith<CityPlaceListState> get copyWith =>
+  $CityPlacePoisStateCopyWith<CityPlacePoisState> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $CityPlaceListStateCopyWith<$Res> {
-  factory $CityPlaceListStateCopyWith(
-          CityPlaceListState value, $Res Function(CityPlaceListState) then) =
-      _$CityPlaceListStateCopyWithImpl<$Res, CityPlaceListState>;
+abstract class $CityPlacePoisStateCopyWith<$Res> {
+  factory $CityPlacePoisStateCopyWith(
+          CityPlacePoisState value, $Res Function(CityPlacePoisState) then) =
+      _$CityPlacePoisStateCopyWithImpl<$Res, CityPlacePoisState>;
   @useResult
-  $Res call(
-      {List<PlaceMetricModel> placeMetrics,
-      bool hasNextPage,
-      PlaceSortType sortType});
+  $Res call({List<PlaceMetricModel> placeMetrics, bool hasNextPage});
 }
 
 /// @nodoc
-class _$CityPlaceListStateCopyWithImpl<$Res, $Val extends CityPlaceListState>
-    implements $CityPlaceListStateCopyWith<$Res> {
-  _$CityPlaceListStateCopyWithImpl(this._value, this._then);
+class _$CityPlacePoisStateCopyWithImpl<$Res, $Val extends CityPlacePoisState>
+    implements $CityPlacePoisStateCopyWith<$Res> {
+  _$CityPlacePoisStateCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of CityPlaceListState
+  /// Create a copy of CityPlacePoisState
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? placeMetrics = null,
     Object? hasNextPage = null,
-    Object? sortType = null,
   }) {
     return _then(_value.copyWith(
       placeMetrics: null == placeMetrics
@@ -67,46 +62,38 @@ class _$CityPlaceListStateCopyWithImpl<$Res, $Val extends CityPlaceListState>
           ? _value.hasNextPage
           : hasNextPage // ignore: cast_nullable_to_non_nullable
               as bool,
-      sortType: null == sortType
-          ? _value.sortType
-          : sortType // ignore: cast_nullable_to_non_nullable
-              as PlaceSortType,
     ) as $Val);
   }
 }
 
 /// @nodoc
-abstract class _$$CityPlaceListStateImplCopyWith<$Res>
-    implements $CityPlaceListStateCopyWith<$Res> {
-  factory _$$CityPlaceListStateImplCopyWith(_$CityPlaceListStateImpl value,
-          $Res Function(_$CityPlaceListStateImpl) then) =
-      __$$CityPlaceListStateImplCopyWithImpl<$Res>;
+abstract class _$$CityPlacePoisStateImplCopyWith<$Res>
+    implements $CityPlacePoisStateCopyWith<$Res> {
+  factory _$$CityPlacePoisStateImplCopyWith(_$CityPlacePoisStateImpl value,
+          $Res Function(_$CityPlacePoisStateImpl) then) =
+      __$$CityPlacePoisStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {List<PlaceMetricModel> placeMetrics,
-      bool hasNextPage,
-      PlaceSortType sortType});
+  $Res call({List<PlaceMetricModel> placeMetrics, bool hasNextPage});
 }
 
 /// @nodoc
-class __$$CityPlaceListStateImplCopyWithImpl<$Res>
-    extends _$CityPlaceListStateCopyWithImpl<$Res, _$CityPlaceListStateImpl>
-    implements _$$CityPlaceListStateImplCopyWith<$Res> {
-  __$$CityPlaceListStateImplCopyWithImpl(_$CityPlaceListStateImpl _value,
-      $Res Function(_$CityPlaceListStateImpl) _then)
+class __$$CityPlacePoisStateImplCopyWithImpl<$Res>
+    extends _$CityPlacePoisStateCopyWithImpl<$Res, _$CityPlacePoisStateImpl>
+    implements _$$CityPlacePoisStateImplCopyWith<$Res> {
+  __$$CityPlacePoisStateImplCopyWithImpl(_$CityPlacePoisStateImpl _value,
+      $Res Function(_$CityPlacePoisStateImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of CityPlaceListState
+  /// Create a copy of CityPlacePoisState
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? placeMetrics = null,
     Object? hasNextPage = null,
-    Object? sortType = null,
   }) {
-    return _then(_$CityPlaceListStateImpl(
+    return _then(_$CityPlacePoisStateImpl(
       placeMetrics: null == placeMetrics
           ? _value._placeMetrics
           : placeMetrics // ignore: cast_nullable_to_non_nullable
@@ -115,21 +102,16 @@ class __$$CityPlaceListStateImplCopyWithImpl<$Res>
           ? _value.hasNextPage
           : hasNextPage // ignore: cast_nullable_to_non_nullable
               as bool,
-      sortType: null == sortType
-          ? _value.sortType
-          : sortType // ignore: cast_nullable_to_non_nullable
-              as PlaceSortType,
     ));
   }
 }
 
 /// @nodoc
 
-class _$CityPlaceListStateImpl implements _CityPlaceListState {
-  const _$CityPlaceListStateImpl(
+class _$CityPlacePoisStateImpl implements _CityPlacePoisState {
+  const _$CityPlacePoisStateImpl(
       {final List<PlaceMetricModel> placeMetrics = const [],
-      this.hasNextPage = true,
-      this.sortType = PlaceSortType.rating})
+      this.hasNextPage = true})
       : _placeMetrics = placeMetrics;
 
   final List<PlaceMetricModel> _placeMetrics;
@@ -144,63 +126,52 @@ class _$CityPlaceListStateImpl implements _CityPlaceListState {
   @override
   @JsonKey()
   final bool hasNextPage;
-  @override
-  @JsonKey()
-  final PlaceSortType sortType;
 
   @override
   String toString() {
-    return 'CityPlaceListState(placeMetrics: $placeMetrics, hasNextPage: $hasNextPage, sortType: $sortType)';
+    return 'CityPlacePoisState(placeMetrics: $placeMetrics, hasNextPage: $hasNextPage)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$CityPlaceListStateImpl &&
+            other is _$CityPlacePoisStateImpl &&
             const DeepCollectionEquality()
                 .equals(other._placeMetrics, _placeMetrics) &&
             (identical(other.hasNextPage, hasNextPage) ||
-                other.hasNextPage == hasNextPage) &&
-            (identical(other.sortType, sortType) ||
-                other.sortType == sortType));
+                other.hasNextPage == hasNextPage));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(_placeMetrics),
-      hasNextPage,
-      sortType);
+  int get hashCode => Object.hash(runtimeType,
+      const DeepCollectionEquality().hash(_placeMetrics), hasNextPage);
 
-  /// Create a copy of CityPlaceListState
+  /// Create a copy of CityPlacePoisState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$CityPlaceListStateImplCopyWith<_$CityPlaceListStateImpl> get copyWith =>
-      __$$CityPlaceListStateImplCopyWithImpl<_$CityPlaceListStateImpl>(
+  _$$CityPlacePoisStateImplCopyWith<_$CityPlacePoisStateImpl> get copyWith =>
+      __$$CityPlacePoisStateImplCopyWithImpl<_$CityPlacePoisStateImpl>(
           this, _$identity);
 }
 
-abstract class _CityPlaceListState implements CityPlaceListState {
-  const factory _CityPlaceListState(
+abstract class _CityPlacePoisState implements CityPlacePoisState {
+  const factory _CityPlacePoisState(
       {final List<PlaceMetricModel> placeMetrics,
-      final bool hasNextPage,
-      final PlaceSortType sortType}) = _$CityPlaceListStateImpl;
+      final bool hasNextPage}) = _$CityPlacePoisStateImpl;
 
   @override
   List<PlaceMetricModel> get placeMetrics;
   @override
   bool get hasNextPage;
-  @override
-  PlaceSortType get sortType;
 
-  /// Create a copy of CityPlaceListState
+  /// Create a copy of CityPlacePoisState
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$CityPlaceListStateImplCopyWith<_$CityPlaceListStateImpl> get copyWith =>
+  _$$CityPlacePoisStateImplCopyWith<_$CityPlacePoisStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 

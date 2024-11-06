@@ -38,6 +38,9 @@ travel_plan_recommend:
 
   add_to_plan: Add to your plan
 
+city_place_pois:
+  sort_by: Sort By
+
 next: Next
 korea: Republic of Korea
 me: Me
@@ -129,3 +132,7 @@ enum:
     transport: Transportation
     dining: Restaurant/Café
     lodging: Lodging
+
+  PlaceSortType:
+    rating: Top Rated
+    popularity: Most Popular

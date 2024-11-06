@@ -1,24 +1,23 @@
 import 'package:application_new/common/http/http_service_provider.dart';
-import 'package:application_new/feature/travel_plan/city_place_list/provider/city_place_list_state.dart';
-import 'package:application_new/shared/model/place_model.dart';
+import 'package:application_new/feature/travel_plan/city_place_pois/provider/city_place_pois_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'city_place_list_provider.g.dart';
+part 'city_place_pois_provider.g.dart';
 
 @riverpod
-class CityPlaceList extends _$CityPlaceList {
+class CityPlacePois extends _$CityPlacePois {
   late final int _cityId;
-  late final PlaceCategoryType _categoryType;
+  late final PlaceSortType _sortType;
 
   int _pageNumber = 0;
   final int _pageSize = 10;
 
   @override
-  CityPlaceListState build(int cityId, PlaceCategoryType categoryType) {
+  CityPlacePoisState build(int cityId, PlaceSortType sortType) {
     _cityId = cityId;
-    _categoryType = categoryType;
+    _sortType = sortType;
 
-    return const CityPlaceListState();
+    return const CityPlacePoisState();
   }
 
   void fetch() async {
@@ -26,13 +25,12 @@ class CityPlaceList extends _$CityPlaceList {
 
     final Map<String, dynamic> queryParams = {
       'cityId': _cityId,
-      'categoryType': _categoryType.name,
       'pageNumber': _pageNumber,
       'pageSize': _pageSize,
-      'sortType': state.sortType.name,
+      'sortType': _sortType.name,
     };
 
-    final response = await httpService.request('GET', '/api/v2/places',
+    final response = await httpService.request('GET', '/api/v2/places/pois',
         queryParams: queryParams);
 
     final placeMetrics = List.of(response['places'])

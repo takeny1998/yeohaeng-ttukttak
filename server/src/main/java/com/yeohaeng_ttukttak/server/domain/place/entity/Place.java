@@ -4,6 +4,7 @@ import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelVisit;
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.BatchSize;
 
 import java.util.ArrayList;
 import java.util.List;

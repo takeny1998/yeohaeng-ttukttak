@@ -80,30 +80,50 @@ class _TravelPlanRecommendPageState
                     .selectCity(i)),
         ])),
       ),
-      SliverPadding(
-        padding: const EdgeInsets.only(top: 24.0),
-        sliver: SliverGrid(
-            delegate: SliverChildListDelegate([
-              for (final categoryType in PlaceCategoryType.values)
-                InkWell(
-                  onTap: () => context.push('/cities/${cities[cityIndex].id}/places?categoryType=${categoryType.name}'),
-                  splashColor: colorScheme.primaryContainer,
-                  highlightColor: colorScheme.primaryContainer,
-                  child: Column(children: [
-                    const SizedBox(height: 24.0),
-                    CircleAvatar(radius: 24.0,
-                    child: Icon(categoryType.iconData, color: colorScheme.primary)),
-                    const SizedBox(height: 12.0),
-                    Text(enumKey(categoryType).tr(),
-                        style: const TextStyle(fontWeight: FontWeight.w600)),
-                    const SizedBox(height: 24.0),
-                  ]),
-                )
-            ]),
-            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-              mainAxisExtent: 141.0,
-                maxCrossAxisExtent: 120.0)),
-      ),
+      SliverToBoxAdapter(
+          child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 24.0),
+        child:
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          TextButton(
+              onPressed: () =>
+                  context.push('/cities/${cities[cityIndex].id}/places/pois'),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(children: [
+                  CircleAvatar(
+                      radius: 26.0,
+                      child: Icon(Icons.place, color: colorScheme.primary)),
+                  const SizedBox(height: 8.0),
+                  const Text('관광명소'),
+                ]),
+              )),
+          TextButton(
+              onPressed: () {},
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(children: [
+                  CircleAvatar(
+                      radius: 26.0,
+                      child: Icon(Icons.dining, color: colorScheme.primary)),
+                  const SizedBox(height: 8.0),
+                  const Text('식당/카페'),
+                ]),
+              )),
+          TextButton(
+              onPressed: () {},
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(children: [
+                  CircleAvatar(
+                      radius: 26.0,
+                      child: Icon(Icons.hotel, color: colorScheme.primary)),
+                  const SizedBox(height: 8.0),
+                  const Text('숙박시설'),
+                ]),
+              )),
+        ]),
+      )),
       SliverToBoxAdapter(
         child: Container(
           width: double.maxFinite,

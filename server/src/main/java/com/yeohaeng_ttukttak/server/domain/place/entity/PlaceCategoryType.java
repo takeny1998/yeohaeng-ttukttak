@@ -1,5 +1,7 @@
 package com.yeohaeng_ttukttak.server.domain.place.entity;
 
+import java.util.List;
+
 public enum PlaceCategoryType {
     nature,
     tourism,
@@ -7,7 +9,16 @@ public enum PlaceCategoryType {
     commerce,
     transport,
     dining,
-    lodging
+    lodging;
+
+    public static List<PlaceCategoryType> thingsToDo() {
+        return List.of(
+                PlaceCategoryType.nature,
+                PlaceCategoryType.culture,
+                PlaceCategoryType.commerce,
+                PlaceCategoryType.tourism,
+                PlaceCategoryType.transport);
+    }
 }
 
 // nature, trail -> 자연 관광 (Nature)

@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'city_place_list_state.dart';
+part of 'city_place_pois_state.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
