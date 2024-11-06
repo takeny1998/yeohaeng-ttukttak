@@ -1,23 +1,35 @@
+import 'dart:async';
+import 'dart:ffi';
+
+import 'package:application_new/feature/travel_plan/city_place_pois/provider/city_place_map_provider.dart';
 import 'package:application_new/feature/travel_read/components/place_marker_item.dart';
 import 'package:application_new/shared/model/place_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:vector_map_tiles/vector_map_tiles.dart';
+import 'package:collection/collection.dart';
 
-class CityPlacesMap extends StatefulWidget {
+class CityPlacesMap extends ConsumerStatefulWidget {
   final List<PlaceModel> places;
+  final double bottomPadding;
 
-  const CityPlacesMap({super.key, required this.places});
+  const CityPlacesMap({super.key, required this.places, this.bottomPadding = 0.0});
 
   @override
-  State<CityPlacesMap> createState() => _CityPlacesMapState();
+  ConsumerState createState() => _CityPlacesMapState();
 }
 
-class _CityPlacesMapState extends State<CityPlacesMap> {
+class _CityPlacesMapState extends ConsumerState<CityPlacesMap> {
   final MapController mapController = MapController();
+
+  Style? mapStyle;
 
   final double markerRadius = 26.0;
   double zoom = 15.0;
+
+  List<Marker> markers = [];
 
   @override
   void dispose() {
@@ -26,29 +38,61 @@ class _CityPlacesMapState extends State<CityPlacesMap> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final markers = _buildMarkers(widget.places);
+  void initState() {
+    fetchStyle().then((style) => setState(() => mapStyle = style));
+    super.initState();
+  }
 
-    if (markers.isNotEmpty) {
+  Future<Style> fetchStyle() => StyleReader(
+          uri:
+              'https://kr-api.tomtom.com/style/2/custom/style/dG9tdG9tQEBAQU1MSkFRZ1QyNjU0NU9WODs0OWFjMTBhMi0yODM5LTQ4NjItYjczMi01NGEwN2JiYTI0Y2I=/drafts/0.json?key={key}',
+          apiKey: const String.fromEnvironment('TOMTOM_API_KEY'))
+      .read();
+
+  Future<void> moveToPlace(PlaceModel? place) async {
+    if (place == null) return;
+
+    final PlaceCoordinates(:latitude, :longitude) = place.coordinates;
+
+    final bottomPadding = (widget.bottomPadding / 2);
+
+    mapController.move(LatLng(latitude, longitude), zoom,
+        offset: Offset(0, -bottomPadding + (markerRadius / 2)));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final topPadding = MediaQuery.of(context).padding.top;
+
+    final markers = ref.watch(cityPlaceMapProvider(widget.places)).markers;
+
+    ref.listen(cityPlaceMapProvider(widget.places), (prev, next) {
+      if (prev?.selectedId == next.selectedId) return;
+
       mapController.fitCamera(CameraFit.coordinates(
-          padding: EdgeInsets.fromLTRB(16.0, MediaQuery.of(context).padding.top,
-              16.0, 48.0),
+          padding: EdgeInsets.fromLTRB(16.0, topPadding, 16.0, 48.0),
           coordinates: markers.map((marker) => marker.point).toList()));
-    }
+
+      final place = widget.places
+          .firstWhereOrNull((place) => place.id == next.selectedId);
+
+      moveToPlace(place);
+    });
 
     return Stack(
       children: [
         FlutterMap(
           mapController: mapController,
+          options: MapOptions(onMapReady: () => moveToPlace(widget.places.first)),
           children: [
-            TileLayer(
-              urlTemplate: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-            ),
+            if (mapStyle != null)
+              VectorTileLayer(
+                  tileProviders: mapStyle!.providers, theme: mapStyle!.theme),
             MarkerLayer(markers: markers.reversed.toList()),
           ],
         ),
         Positioned(
-            bottom: 24.0,
+            bottom: widget.bottomPadding + 24.0,
             right: 16.0,
             child: Wrap(
               direction: Axis.vertical,
@@ -69,16 +113,5 @@ class _CityPlacesMapState extends State<CityPlacesMap> {
             ))
       ],
     );
-  }
-
-  List<Marker> _buildMarkers(List<PlaceModel> places) {
-    return places.map((place) {
-      final PlaceCoordinates(:longitude, :latitude) = place.coordinates;
-      return Marker(
-          width: markerRadius,
-          height: markerRadius,
-          point: LatLng(latitude, longitude),
-          child: PlaceMarkerItem(place: place, isSelected: true));
-    }).toList();
   }
 }

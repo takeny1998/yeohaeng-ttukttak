@@ -1,9 +1,13 @@
+import 'dart:async';
+
 import 'package:application_new/common/util/string_extension.dart';
 import 'package:application_new/common/util/translation.dart';
 import 'package:application_new/feature/home/home_page.dart';
 import 'package:application_new/feature/travel_plan/city_place_pois/component/city_place_list_item.dart';
+import 'package:application_new/feature/travel_plan/city_place_pois/component/city_places_map.dart';
 import 'package:application_new/feature/travel_plan/city_place_pois/component/place_metric_card_indicator.dart';
 import 'package:application_new/feature/travel_plan/city_place_pois/component/place_metric_card_item.dart';
+import 'package:application_new/feature/travel_plan/city_place_pois/provider/city_place_map_provider.dart';
 import 'package:application_new/feature/travel_plan/city_place_pois/provider/city_place_pois_provider.dart';
 import 'package:application_new/feature/travel_plan/city_place_pois/provider/city_place_pois_state.dart';
 import 'package:application_new/shared/component/small_chip.dart';
@@ -26,6 +30,7 @@ class _CityPlaceListPageState extends ConsumerState<CityPlacePoisPage> {
   final scrollController = ScrollController();
   final pageController = PageController(viewportFraction: 0.9);
 
+  int pageIndex = 0;
   bool hasScrollDown = false;
   PlaceSortType sortType = PlaceSortType.rating;
   PlaceViewType viewType = PlaceViewType.list;
@@ -34,6 +39,7 @@ class _CityPlaceListPageState extends ConsumerState<CityPlacePoisPage> {
 
   final Set<PlaceCategoryType> selectedTypes = {};
 
+  static const cardHeight = 160.0;
   final trKey = baseKey('city_place_pois');
 
   @override
@@ -79,6 +85,9 @@ class _CityPlaceListPageState extends ConsumerState<CityPlacePoisPage> {
 
     final bottomPadding = MediaQuery.of(context).padding.bottom + 16.0;
 
+    final places =
+        placeMetrics.map((placeMetric) => placeMetric.place).toList();
+
     return Scaffold(
         backgroundColor: colorScheme.surfaceContainer,
         appBar: AppBar(
@@ -87,14 +96,10 @@ class _CityPlaceListPageState extends ConsumerState<CityPlacePoisPage> {
           title: const Text('목록'),
           bottom: PreferredSize(
               preferredSize: const Size.fromHeight(72.0),
-              child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 300),
+              child: Container(
                   height: 73.0,
                   decoration: BoxDecoration(
-                      color: switch (viewType) {
-                        PlaceViewType.list => colorScheme.surfaceContainer,
-                        PlaceViewType.map => colorScheme.surface,
-                      },
+                      color: colorScheme.surface,
                       border: Border(
                           top: BorderSide(
                               color: colorScheme.surfaceContainerHigh))),
@@ -115,16 +120,19 @@ class _CityPlaceListPageState extends ConsumerState<CityPlacePoisPage> {
                     duration: const Duration(milliseconds: 300),
                     child: switch (viewType) {
                       PlaceViewType.list => buildListView(data),
-                      PlaceViewType.map => Stack(
-                          alignment: Alignment.bottomCenter,
-                          children: [
-                            Container(),
-                            Container(
-                              height: 160.0,
+                      PlaceViewType.map =>
+                        Stack(alignment: Alignment.bottomCenter, children: [
+                          CityPlacesMap(places: places, bottomPadding: bottomPadding + 50.0 + cardHeight + 24.0),
+                          Container(
+                              height: cardHeight,
                               margin: EdgeInsets.only(
                                   bottom: bottomPadding + 50.0 + 24.0),
                               child: PageView.builder(
                                   controller: pageController,
+                                  onPageChanged: (pageIndex) => ref
+                                      .read(
+                                          cityPlaceMapProvider(places).notifier)
+                                      .selectPlace(places[pageIndex]),
                                   itemCount: hasNextPage
                                       ? data.length + 1
                                       : data.length,
@@ -135,10 +143,8 @@ class _CityPlaceListPageState extends ConsumerState<CityPlacePoisPage> {
                                     }
                                     return PlaceMetricCardItem(
                                         placeMetric: data[index]);
-                                  }),
-                            ),
-                          ],
-                        ),
+                                  })),
+                        ])
                     })),
             Positioned(
                 left: 0,
