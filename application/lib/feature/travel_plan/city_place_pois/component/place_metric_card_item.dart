@@ -25,6 +25,7 @@ class PlaceMetricCardItem extends StatelessWidget {
     return Container(
         decoration: BoxDecoration(
             color: colorScheme.surface,
+            border: Border.all(color: colorScheme.primaryFixedDim),
             borderRadius: BorderRadius.circular(8.0)),
         margin: const EdgeInsets.symmetric(horizontal: 8.0),
         child: Row(children: [

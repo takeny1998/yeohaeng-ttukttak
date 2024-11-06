@@ -70,10 +70,8 @@ class _CityPlaceListPageState extends ConsumerState<CityPlacePoisPage> {
 
     final cityId = widget.cityId;
 
-    final CityPlacePoisState(
-      :placeMetrics,
-      :hasNextPage,
-    ) = ref.watch(cityPlacePoisProvider(cityId, sortType));
+    final CityPlacePoisState(:placeMetrics, :hasNextPage) =
+        ref.watch(cityPlacePoisProvider(cityId, sortType));
 
     final data = selectedTypes.isNotEmpty
         ? placeMetrics
@@ -84,9 +82,6 @@ class _CityPlaceListPageState extends ConsumerState<CityPlacePoisPage> {
         : placeMetrics;
 
     final bottomPadding = MediaQuery.of(context).padding.bottom + 16.0;
-
-    final places =
-        placeMetrics.map((placeMetric) => placeMetric.place).toList();
 
     return Scaffold(
         backgroundColor: colorScheme.surfaceContainer,
@@ -120,31 +115,7 @@ class _CityPlaceListPageState extends ConsumerState<CityPlacePoisPage> {
                     duration: const Duration(milliseconds: 300),
                     child: switch (viewType) {
                       PlaceViewType.list => buildListView(data),
-                      PlaceViewType.map =>
-                        Stack(alignment: Alignment.bottomCenter, children: [
-                          CityPlacesMap(places: places, bottomPadding: bottomPadding + 50.0 + cardHeight + 24.0),
-                          Container(
-                              height: cardHeight,
-                              margin: EdgeInsets.only(
-                                  bottom: bottomPadding + 50.0 + 24.0),
-                              child: PageView.builder(
-                                  controller: pageController,
-                                  onPageChanged: (pageIndex) => ref
-                                      .read(
-                                          cityPlaceMapProvider(places).notifier)
-                                      .selectPlace(places[pageIndex]),
-                                  itemCount: hasNextPage
-                                      ? data.length + 1
-                                      : data.length,
-                                  itemBuilder: (context, index) {
-                                    if (index == data.length && hasNextPage) {
-                                      return PlaceMetricCardIndicator(
-                                          cityId, sortType);
-                                    }
-                                    return PlaceMetricCardItem(
-                                        placeMetric: data[index]);
-                                  })),
-                        ])
+                      PlaceViewType.map => buildMapView(data, bottomPadding)
                     })),
             Positioned(
                 left: 0,
@@ -153,6 +124,36 @@ class _CityPlaceListPageState extends ConsumerState<CityPlacePoisPage> {
                 child: Center(child: buildToggleViewButton()))
           ],
         ));
+  }
+
+  Stack buildMapView(List<PlaceMetricModel> data, double bottomPadding) {
+    final CityPlacePoisState(:placeMetrics, :hasNextPage) =
+        ref.watch(cityPlacePoisProvider(widget.cityId, sortType));
+
+    final bottomPadding = MediaQuery.of(context).padding.bottom + 16.0;
+
+    final places = data.map((placeMetric) => placeMetric.place).toList();
+
+    return Stack(alignment: Alignment.bottomCenter, children: [
+      CityPlacesMap(
+          places: places,
+          bottomPadding: bottomPadding + 50.0 + cardHeight + 24.0),
+      Container(
+          height: cardHeight,
+          margin: EdgeInsets.only(bottom: bottomPadding + 50.0 + 24.0),
+          child: PageView.builder(
+              controller: pageController,
+              onPageChanged: (pageIndex) => ref
+                  .read(cityPlaceMapProvider(places).notifier)
+                  .selectPlace(places[pageIndex]),
+              itemCount: hasNextPage ? data.length + 1 : data.length,
+              itemBuilder: (context, index) {
+                if (index == data.length && hasNextPage) {
+                  return PlaceMetricCardIndicator(widget.cityId, sortType);
+                }
+                return PlaceMetricCardItem(placeMetric: data[index]);
+              })),
+    ]);
   }
 
   CustomScrollView buildListView(List<PlaceMetricModel> data) {
@@ -213,10 +214,11 @@ class _CityPlaceListPageState extends ConsumerState<CityPlacePoisPage> {
   }
 
   SingleChildScrollView buildSelectTypeView() {
+
     return SingleChildScrollView(
         scrollDirection: Axis.horizontal,
-        child: Wrap(spacing: 16.0, children: [
-          const SizedBox(width: 8.0),
+        child: Row(children: [
+          const SizedBox(width: 24.0),
           FilterChip(
               label: Text(trKey('all').tr()),
               selected: selectedTypes.isEmpty,
@@ -225,9 +227,12 @@ class _CityPlaceListPageState extends ConsumerState<CityPlacePoisPage> {
                 selectedTypes.clear();
                 setState(() {});
               }),
-          for (final categoryType in PlaceCategoryType.pois())
+          const SizedBox(width: 12.0),
+          for (final categoryType in PlaceCategoryType.pois()) ...[
             buildFilterChip(categoryType),
-          const SizedBox(width: 24.0),
+            const SizedBox(width: 12.0),
+          ],
+          const SizedBox(width: 12.0),
         ]));
   }
 

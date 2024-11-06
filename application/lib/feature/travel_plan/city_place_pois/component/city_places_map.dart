@@ -15,7 +15,8 @@ class CityPlacesMap extends ConsumerStatefulWidget {
   final List<PlaceModel> places;
   final double bottomPadding;
 
-  const CityPlacesMap({super.key, required this.places, this.bottomPadding = 0.0});
+  const CityPlacesMap(
+      {super.key, required this.places, this.bottomPadding = 0.0});
 
   @override
   ConsumerState createState() => _CityPlacesMapState();
@@ -27,7 +28,7 @@ class _CityPlacesMapState extends ConsumerState<CityPlacesMap> {
   Style? mapStyle;
 
   final double markerRadius = 26.0;
-  double zoom = 15.0;
+  double zoom = 16.0;
 
   List<Marker> markers = [];
 
@@ -43,11 +44,12 @@ class _CityPlacesMapState extends ConsumerState<CityPlacesMap> {
     super.initState();
   }
 
-  Future<Style> fetchStyle() => StyleReader(
-          uri:
-              'https://kr-api.tomtom.com/style/2/custom/style/dG9tdG9tQEBAQU1MSkFRZ1QyNjU0NU9WODs0OWFjMTBhMi0yODM5LTQ4NjItYjczMi01NGEwN2JiYTI0Y2I=/drafts/0.json?key={key}',
+  Future<Style> fetchStyle() async {
+    return StyleReader(
+          uri: 'https://api.tomtom.com/style/2/custom/style/dG9tdG9tQEBAQU1MSkFRZ1QyNjU0NU9WODthMzc4MGJhYy00Y2FhLTQxZmMtYWZjOS1hN2I1ZTMxODJkZjU=/drafts/0.json?key={key}',
           apiKey: const String.fromEnvironment('TOMTOM_API_KEY'))
       .read();
+  }
 
   Future<void> moveToPlace(PlaceModel? place) async {
     if (place == null) return;
@@ -83,7 +85,10 @@ class _CityPlacesMapState extends ConsumerState<CityPlacesMap> {
       children: [
         FlutterMap(
           mapController: mapController,
-          options: MapOptions(onMapReady: () => moveToPlace(widget.places.first)),
+          options: MapOptions(
+              onMapReady: () => moveToPlace(widget.places.first),
+              maxZoom: 22.0,
+              initialZoom: mapStyle?.zoom ?? zoom),
           children: [
             if (mapStyle != null)
               VectorTileLayer(
