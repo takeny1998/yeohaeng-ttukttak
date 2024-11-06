@@ -42,6 +42,7 @@ travel_plan_recommend:
 
 city_place_pois:
   sort_by: 정렬 조건을 선택하세요.
+  all: 전체
 
 next: 다음으로
 korea: 대한민국

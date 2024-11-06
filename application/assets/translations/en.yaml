@@ -40,6 +40,7 @@ travel_plan_recommend:
 
 city_place_pois:
   sort_by: Sort By
+  all: All
 
 next: Next
 korea: Republic of Korea

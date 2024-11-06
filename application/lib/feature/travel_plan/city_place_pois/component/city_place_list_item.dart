@@ -20,7 +20,8 @@ class CityPlaceListItem extends StatelessWidget {
         TextStyle(fontSize: 13.0, color: colorScheme.onSurfaceVariant);
 
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+      color: colorScheme.surface,
+      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
       child: Row(children: [
         Expanded(
             flex: 4,

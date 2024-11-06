@@ -3,6 +3,7 @@ import 'package:application_new/feature/home/home_page.dart';
 import 'package:application_new/feature/travel_plan/city_place_pois/component/city_place_list_item.dart';
 import 'package:application_new/feature/travel_plan/city_place_pois/provider/city_place_pois_provider.dart';
 import 'package:application_new/feature/travel_plan/city_place_pois/provider/city_place_pois_state.dart';
+import 'package:application_new/shared/model/place_model.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -24,6 +25,10 @@ class _CityPlaceListPageState extends ConsumerState<CityPlacePoisPage> {
   PlaceSortType sortType = PlaceSortType.rating;
 
   static const double scrollThreshold = 240.0;
+
+  final Set<PlaceCategoryType> selectedTypes = {};
+
+  final trKey = baseKey('city_place_pois');
 
   @override
   void initState() {
@@ -55,7 +60,16 @@ class _CityPlaceListPageState extends ConsumerState<CityPlacePoisPage> {
       :hasNextPage,
     ) = ref.watch(cityPlacePoisProvider(cityId, sortType));
 
+    final data = selectedTypes.isNotEmpty
+        ? placeMetrics
+            .where((placeMetric) => selectedTypes
+                .intersection(placeMetric.place.categoryTypes.toSet())
+                .isNotEmpty)
+            .toList()
+        : placeMetrics;
+
     return Scaffold(
+        backgroundColor: colorScheme.surfaceContainer,
         appBar: AppBar(
           backgroundColor: colorScheme.surface,
           scrolledUnderElevation: 0.0,
@@ -70,8 +84,35 @@ class _CityPlaceListPageState extends ConsumerState<CityPlacePoisPage> {
                     curve: Curves.linear))
             : null,
         body: CustomScrollView(controller: scrollController, slivers: [
-          const SliverToBoxAdapter(child: SizedBox(height: 16.0)),
           SliverToBoxAdapter(
+              child: Container(
+            decoration: BoxDecoration(
+                color: colorScheme.surfaceContainer,
+                border: Border(
+                    bottom:
+                        BorderSide(color: colorScheme.surfaceContainerHigh))),
+            padding: const EdgeInsets.symmetric(vertical: 12.0),
+            child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Wrap(spacing: 16.0, children: [
+                  const SizedBox(width: 8.0),
+                  FilterChip(
+                      label: Text(trKey('all').tr()),
+                      selected: selectedTypes.isEmpty,
+                      onSelected: (isSelected) {
+                        if (!isSelected) return;
+                        selectedTypes.clear();
+                        setState(() {});
+                      }),
+                  for (final categoryType in PlaceCategoryType.pois())
+                    buildFilterChip(categoryType),
+                  const SizedBox(width: 24.0),
+                ])),
+          )),
+          SliverToBoxAdapter(
+              child: Container(
+            padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+            color: colorScheme.surface,
             child: Row(children: [
               const SizedBox(width: 16.0),
               TextButton(
@@ -79,7 +120,6 @@ class _CityPlaceListPageState extends ConsumerState<CityPlacePoisPage> {
                       foregroundColor: colorScheme.onSurface),
                   onPressed: () async {
                     final sortType = await showSortTypeSelectSheet();
-
                     if (sortType == null) return;
                     setState(() => this.sortType = sortType);
                   },
@@ -90,12 +130,12 @@ class _CityPlaceListPageState extends ConsumerState<CityPlacePoisPage> {
                     const Icon(Icons.arrow_drop_down),
                   ]))
             ]),
-          ),
+          )),
           SliverList(
               delegate: SliverChildBuilderDelegate(
                   (context, index) =>
-                      CityPlaceListItem(placeMetric: placeMetrics[index]),
-                  childCount: placeMetrics.length)),
+                      CityPlaceListItem(placeMetric: data[index]),
+                  childCount: data.length)),
           if (hasNextPage)
             SliverFillRemaining(
                 hasScrollBody: false,
@@ -109,12 +149,43 @@ class _CityPlaceListPageState extends ConsumerState<CityPlacePoisPage> {
                         .fetch();
                   },
                   child: Container(
+                    color: colorScheme.surface,
                     constraints: const BoxConstraints(minHeight: 120.0),
                     child: const Center(child: CircularProgressIndicator()),
                   ),
                 )),
           const SliverToBoxAdapter(child: SizedBox(height: 48.0)),
         ]));
+  }
+
+  FilterChip buildFilterChip(PlaceCategoryType categoryType) {
+    final ThemeData(:textTheme, :colorScheme) = Theme.of(context);
+
+    final isSelected = selectedTypes.contains(categoryType);
+    return FilterChip(
+        deleteIcon: Icon(Icons.close, color: colorScheme.onPrimary),
+        labelPadding: const EdgeInsets.symmetric(horizontal: 8.0),
+        showCheckmark: false,
+        onDeleted: isSelected
+            ? () {
+                if (!isSelected) return;
+
+                selectedTypes.remove(categoryType);
+                setState(() {});
+              }
+            : null,
+        onSelected: (_) {
+          if (isSelected) {
+            selectedTypes.remove(categoryType);
+          } else {
+            selectedTypes.add(categoryType);
+          }
+          setState(() {});
+        },
+        label: Text(enumKey(categoryType).tr()),
+        avatar: Icon(categoryType.iconData,
+            color: isSelected ? colorScheme.onPrimary : null),
+        selected: isSelected);
   }
 
   Future<PlaceSortType?> showSortTypeSelectSheet() async {
@@ -127,10 +198,10 @@ class _CityPlaceListPageState extends ConsumerState<CityPlacePoisPage> {
               child: Padding(
                 padding: const EdgeInsets.only(top: 24.0, bottom: 16.0),
                 child: Column(mainAxisSize: MainAxisSize.min, children: [
-                  const Row(children: [
-                    SizedBox(width: 24.0),
-                    Text('정렬 옵션',
-                        style: TextStyle(
+                  Row(children: [
+                    const SizedBox(width: 24.0),
+                    Text(trKey('sort_by').tr(),
+                        style: const TextStyle(
                             fontSize: 21.0, fontWeight: FontWeight.w600))
                   ]),
                   const SizedBox(height: 16.0),
