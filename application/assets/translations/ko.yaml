@@ -143,3 +143,7 @@ enum:
   PlaceSortType:
     rating: 평점 높은 순
     popularity: 많이 방문한 순
+
+  PlaceViewType:
+    map: 지도
+    list: 목록

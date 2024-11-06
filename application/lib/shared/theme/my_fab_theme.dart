@@ -11,7 +11,7 @@ class MyFabTheme extends StatelessWidget {
 
     final themeData = Theme.of(context).copyWith(
         floatingActionButtonTheme: FloatingActionButtonThemeData(
-      shape: CircleBorder(side: BorderSide(color: colorScheme.primaryFixed)),
+      shape: CircleBorder(side: BorderSide(color: colorScheme.primaryFixedDim)),
       elevation: 0.0,
       foregroundColor: colorScheme.primary,
       backgroundColor: colorScheme.primaryContainer,
