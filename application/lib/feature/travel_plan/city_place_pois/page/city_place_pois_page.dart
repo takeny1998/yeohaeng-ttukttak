@@ -1,17 +1,17 @@
 import 'dart:async';
+import 'dart:math';
 
-import 'package:application_new/common/util/string_extension.dart';
 import 'package:application_new/common/util/translation.dart';
-import 'package:application_new/feature/home/home_page.dart';
-import 'package:application_new/feature/travel_plan/city_place_pois/component/city_place_list_item.dart';
+import 'package:application_new/feature/travel_plan/city_place_pois/component/place_metric_list_item.dart';
 import 'package:application_new/feature/travel_plan/city_place_pois/component/city_places_map.dart';
 import 'package:application_new/feature/travel_plan/city_place_pois/component/place_metric_card_indicator.dart';
 import 'package:application_new/feature/travel_plan/city_place_pois/component/place_metric_card_item.dart';
 import 'package:application_new/feature/travel_plan/city_place_pois/provider/city_place_map_provider.dart';
 import 'package:application_new/feature/travel_plan/city_place_pois/provider/city_place_pois_provider.dart';
 import 'package:application_new/feature/travel_plan/city_place_pois/provider/city_place_pois_state.dart';
-import 'package:application_new/shared/component/small_chip.dart';
 import 'package:application_new/shared/model/place_model.dart';
+import 'package:application_new/shared/util/constants.dart';
+import 'package:application_new/shared/util/snap_scroll_physics.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -30,7 +30,6 @@ class _CityPlaceListPageState extends ConsumerState<CityPlacePoisPage> {
   final scrollController = ScrollController();
   final pageController = PageController(viewportFraction: 0.9);
 
-  int pageIndex = 0;
   bool hasScrollDown = false;
   PlaceSortType sortType = PlaceSortType.rating;
   PlaceViewType viewType = PlaceViewType.list;
@@ -39,7 +38,6 @@ class _CityPlaceListPageState extends ConsumerState<CityPlacePoisPage> {
 
   final Set<PlaceCategoryType> selectedTypes = {};
 
-  static const cardHeight = 160.0;
   final trKey = baseKey('city_place_pois');
 
   @override
@@ -84,7 +82,6 @@ class _CityPlaceListPageState extends ConsumerState<CityPlacePoisPage> {
     final bottomPadding = MediaQuery.of(context).padding.bottom + 16.0;
 
     return Scaffold(
-        backgroundColor: colorScheme.surfaceContainer,
         appBar: AppBar(
           backgroundColor: colorScheme.surface,
           scrolledUnderElevation: 0.0,
@@ -130,6 +127,11 @@ class _CityPlaceListPageState extends ConsumerState<CityPlacePoisPage> {
     final CityPlacePoisState(:placeMetrics, :hasNextPage) =
         ref.watch(cityPlacePoisProvider(widget.cityId, sortType));
 
+    final screenSize = MediaQuery.of(context).size.width;
+
+    const cardHeight = 152.0;
+    final itemWidth = min(screenSize, Constants.maxItemWidth);
+
     final bottomPadding = MediaQuery.of(context).padding.bottom + 16.0;
 
     final places = data.map((placeMetric) => placeMetric.place).toList();
@@ -138,25 +140,38 @@ class _CityPlaceListPageState extends ConsumerState<CityPlacePoisPage> {
       CityPlacesMap(
           places: places,
           bottomPadding: bottomPadding + 50.0 + cardHeight + 24.0),
+
       Container(
-          height: cardHeight,
-          margin: EdgeInsets.only(bottom: bottomPadding + 50.0 + 24.0),
-          child: PageView.builder(
-              controller: pageController,
-              onPageChanged: (pageIndex) => ref
-                  .read(cityPlaceMapProvider(places).notifier)
-                  .selectPlace(places[pageIndex]),
-              itemCount: hasNextPage ? data.length + 1 : data.length,
-              itemBuilder: (context, index) {
-                if (index == data.length && hasNextPage) {
-                  return PlaceMetricCardIndicator(widget.cityId, sortType);
-                }
-                return PlaceMetricCardItem(placeMetric: data[index]);
-              })),
+        height: cardHeight,
+        margin: EdgeInsets.only(bottom: bottomPadding + 50.0 + 24.0),
+        child: ListView.builder(
+            padding: EdgeInsets.only(left: (screenSize - itemWidth) / 2.0),
+            physics: SnapScrollPhysics(itemWidth: itemWidth),
+            scrollDirection: Axis.horizontal,
+            itemCount: hasNextPage ? data.length + 1 : data.length,
+            itemBuilder: (context, index) {
+              if (index == data.length && hasNextPage) {
+                return PlaceMetricCardIndicator(widget.cityId, sortType);
+              }
+              return VisibilityDetector(
+                key: ValueKey<int>(data[index].place.id),
+                onVisibilityChanged: (info) {
+                  if (info.visibleFraction != 1.0) return;
+
+                  ref.read(cityPlaceMapProvider(places).notifier)
+                      .selectPlace(places[index]);
+                },
+                child: Container(
+                    width: itemWidth,
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: PlaceMetricCardItem(placeMetric: data[index])),
+              );
+            }),
+      ),
     ]);
   }
 
-  CustomScrollView buildListView(List<PlaceMetricModel> data) {
+  Widget buildListView(List<PlaceMetricModel> data) {
     final ThemeData(:textTheme, :colorScheme) = Theme.of(context);
 
     final cityId = widget.cityId;
@@ -164,53 +179,56 @@ class _CityPlaceListPageState extends ConsumerState<CityPlacePoisPage> {
     final CityPlacePoisState(:hasNextPage) =
         ref.watch(cityPlacePoisProvider(cityId, sortType));
 
-    return CustomScrollView(controller: scrollController, slivers: [
-      SliverToBoxAdapter(
-          child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-        color: colorScheme.surface,
-        child:
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          TextButton(
-              style:
-                  TextButton.styleFrom(foregroundColor: colorScheme.onSurface),
-              onPressed: () async {
-                final sortType = await showSortTypeSelectSheet();
-                if (sortType == null) return;
-                setState(() => this.sortType = sortType);
-              },
-              child: Row(children: [
-                Text(enumKey(sortType).tr(),
-                    style: textTheme.bodyLarge
-                        ?.copyWith(fontWeight: FontWeight.w600)),
-                const Icon(Icons.arrow_drop_down),
-              ])),
-        ]),
-      )),
-      SliverList(
-          delegate: SliverChildBuilderDelegate(
-              (context, index) => CityPlaceListItem(placeMetric: data[index]),
-              childCount: data.length)),
-      if (hasNextPage)
-        SliverFillRemaining(
-            hasScrollBody: false,
-            child: VisibilityDetector(
-              key: const Key('key'),
-              onVisibilityChanged: (info) {
-                final isVisible = info.visibleFraction > 0.0;
-                if (!isVisible) return;
-                ref
-                    .read(cityPlacePoisProvider(cityId, sortType).notifier)
-                    .fetch();
-              },
-              child: Container(
-                color: colorScheme.surface,
-                constraints: const BoxConstraints(minHeight: 120.0),
-                child: const Center(child: CircularProgressIndicator()),
-              ),
-            )),
-      const SliverToBoxAdapter(child: SizedBox(height: 48.0)),
-    ]);
+    return Container(
+      constraints: BoxConstraints(maxWidth: Constants.maxContentWidth),
+      child: CustomScrollView(controller: scrollController, slivers: [
+        SliverToBoxAdapter(
+            child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+          color: colorScheme.surface,
+          child:
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            TextButton(
+                style:
+                    TextButton.styleFrom(foregroundColor: colorScheme.onSurface),
+                onPressed: () async {
+                  final sortType = await showSortTypeSelectSheet();
+                  if (sortType == null) return;
+                  setState(() => this.sortType = sortType);
+                },
+                child: Row(children: [
+                  Text(enumKey(sortType).tr(),
+                      style: textTheme.bodyLarge
+                          ?.copyWith(fontWeight: FontWeight.w600)),
+                  const Icon(Icons.arrow_drop_down),
+                ])),
+          ]),
+        )),
+        SliverList(
+            delegate: SliverChildBuilderDelegate(
+                (context, index) => PlaceMetricListItem(placeMetric: data[index]),
+                childCount: data.length)),
+        if (hasNextPage)
+          SliverFillRemaining(
+              hasScrollBody: false,
+              child: VisibilityDetector(
+                key: const Key('key'),
+                onVisibilityChanged: (info) {
+                  final isVisible = info.visibleFraction > 0.0;
+                  if (!isVisible) return;
+                  ref
+                      .read(cityPlacePoisProvider(cityId, sortType).notifier)
+                      .fetch();
+                },
+                child: Container(
+                  color: colorScheme.surface,
+                  constraints: const BoxConstraints(minHeight: 120.0),
+                  child: const Center(child: CircularProgressIndicator()),
+                ),
+              )),
+        const SliverToBoxAdapter(child: SizedBox(height: 48.0)),
+      ]),
+    );
   }
 
   SingleChildScrollView buildSelectTypeView() {
@@ -224,8 +242,7 @@ class _CityPlaceListPageState extends ConsumerState<CityPlacePoisPage> {
               selected: selectedTypes.isEmpty,
               onSelected: (isSelected) {
                 if (!isSelected) return;
-                selectedTypes.clear();
-                setState(() {});
+                setState(() => selectedTypes.clear());
               }),
           const SizedBox(width: 12.0),
           for (final categoryType in PlaceCategoryType.pois()) ...[

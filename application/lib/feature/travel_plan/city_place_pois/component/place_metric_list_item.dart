@@ -3,12 +3,13 @@ import 'package:application_new/common/util/translation.dart';
 import 'package:application_new/feature/travel_plan/city_place_pois/provider/city_place_pois_state.dart';
 import 'package:application_new/shared/component/small_chip.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:extended_wrap/extended_wrap.dart';
 import 'package:flutter/material.dart';
 
-class CityPlaceListItem extends StatelessWidget {
+class PlaceMetricListItem extends StatelessWidget {
   final PlaceMetricModel placeMetric;
 
-  const CityPlaceListItem({super.key, required this.placeMetric});
+  const PlaceMetricListItem({super.key, required this.placeMetric});
 
   @override
   Widget build(BuildContext context) {
@@ -21,25 +22,25 @@ class CityPlaceListItem extends StatelessWidget {
         TextStyle(fontSize: 13.0, color: colorScheme.onSurfaceVariant);
 
     return Container(
+      constraints: const BoxConstraints(maxWidth: 640.0),
       color: colorScheme.surface,
       padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
       child: IntrinsicHeight(
         child: Row(children: [
+          ClipRRect(
+              borderRadius: BorderRadius.circular(6.0),
+              child: Container(
+                  width: 104.0,
+                  color: colorScheme.surfaceContainer)),
+          const SizedBox(width: 16.0),
           Expanded(
-            flex: 6,
-            child: ClipRRect(
-                borderRadius: BorderRadius.circular(8.0),
-                child: Container(color: colorScheme.primaryContainer)),
-          ),
-          const Spacer(flex: 1),
-          Expanded(
-              flex: 16,
               child:
                   Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Text(place.name, style: titleStyle),
-                Text(place.address.value?.lineBreakByWord() ?? '', style: subTitleStyle),
+                Text(place.address.value?.lineBreakByWord() ?? '',
+                    style: subTitleStyle, overflow: TextOverflow.ellipsis),
                 const SizedBox(height: 8.0),
-                Wrap(spacing: 8.0, children: [
+                ExtendedWrap(maxLines: 1, spacing: 8.0, children: [
                   if (rating != null)
                     SmallChip(
                         backgroundColor: colorScheme.primary,

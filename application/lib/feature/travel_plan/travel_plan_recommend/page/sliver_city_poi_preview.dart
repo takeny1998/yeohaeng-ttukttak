@@ -2,7 +2,7 @@ import 'package:application_new/feature/geography/model/city_model.dart';
 import 'package:application_new/feature/travel_plan/city_place_pois/provider/city_place_pois_provider.dart';
 import 'package:application_new/feature/travel_plan/city_place_pois/provider/city_place_pois_state.dart';
 import 'package:application_new/feature/travel_plan/travel_plan_recommend/component/place_metric_item.dart';
-import 'package:application_new/feature/travel_plan/travel_plan_recommend/page/sliver_city_travel_preview.dart';
+import 'package:application_new/shared/util/snap_scroll_physics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -24,6 +24,9 @@ class SliverCityPoiPreview extends ConsumerWidget {
     final titleStyle =
     textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w600);
 
+    const itemWidth = 240.0;
+    const paddingWidth = 24.0;
+
     return SliverToBoxAdapter(
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
 
@@ -33,14 +36,14 @@ class SliverCityPoiPreview extends ConsumerWidget {
           ),
           const SizedBox(height: 16.0),
           SingleChildScrollView(
-              physics: const CustomScrollPhysics(itemDimension: 264.0),
+              physics: const SnapScrollPhysics(itemWidth: itemWidth + paddingWidth),
               scrollDirection: Axis.horizontal,
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                padding: const EdgeInsets.symmetric(horizontal: paddingWidth),
                 child: Row(children: [
                   for (final placeMetric in placeMetrics.take(5)) ...[
                     SizedBox(
-                        width: 240.0,
+                        width: itemWidth,
                         child: PlaceMetricItem(placeMetric: placeMetric)),
                     const SizedBox(width: 24.0),
                   ],

@@ -27,13 +27,12 @@ class PlaceMetricCardItem extends StatelessWidget {
             color: colorScheme.surface,
             border: Border.all(color: colorScheme.primaryFixedDim),
             borderRadius: BorderRadius.circular(8.0)),
-        margin: const EdgeInsets.symmetric(horizontal: 8.0),
         child: Row(children: [
           Expanded(
-              flex: 8,
+              flex: 6,
               child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8.0),
-                  child: Container(color: colorScheme.primaryContainer))),
+                  borderRadius: BorderRadius.circular(6.0),
+                  child: Container(color: colorScheme.surfaceContainer))),
           const Spacer(flex: 1),
           Expanded(
               flex: 12,
