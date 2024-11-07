@@ -5,7 +5,7 @@ class Constants {
 
   static double get maxItemWidth => 480.0;
 
-  static double get maxContentWidth => 640.0;
+  static double get maxContentWidth => 560.0;
 
   static double get horizontalPadding => 24.0;
 
