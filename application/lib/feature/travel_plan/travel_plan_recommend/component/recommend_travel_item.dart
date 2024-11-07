@@ -53,7 +53,6 @@ class _RecommendTravelItemState extends State<RecommendTravelItem> {
                   itemBuilder: (context, index) {
                     final travel = widget.recommendTravelModel.travels[index];
                     return Container(
-
                         width: double.maxFinite,
                         constraints: const BoxConstraints(maxWidth: 480.0),
                         padding: const EdgeInsets.symmetric(horizontal: 24.0),

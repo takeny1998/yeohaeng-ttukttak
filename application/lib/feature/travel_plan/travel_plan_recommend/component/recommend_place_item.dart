@@ -21,8 +21,7 @@ class RecommendPlaceItem extends StatelessWidget {
 
     final ThemeData(:textTheme, :colorScheme) = Theme.of(context);
 
-    final labelStyle =
-        textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w600);
+    const labelStyle = TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600);
 
     final nameStyle =
         textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w600);
@@ -41,7 +40,7 @@ class RecommendPlaceItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-                width: MediaQuery.of(context).size.width * 0.7,
+                width: MediaQuery.of(context).size.width * 0.6,
                 padding: const EdgeInsets.only(left: 24.0),
                 child: Text(
                     labelText,

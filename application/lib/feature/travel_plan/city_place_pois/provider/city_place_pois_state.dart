@@ -1,4 +1,6 @@
 import 'package:application_new/shared/model/place_model.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'city_place_pois_state.freezed.dart';
@@ -26,4 +28,10 @@ class PlaceMetricModel with _$PlaceMetricModel {
 
 enum PlaceSortType { rating, popularity }
 
-enum PlaceViewType { list, map }
+enum PlaceViewType {
+  list(Icons.view_list), map(Icons.map);
+
+  final IconData iconData;
+
+  const PlaceViewType(this.iconData);
+}
