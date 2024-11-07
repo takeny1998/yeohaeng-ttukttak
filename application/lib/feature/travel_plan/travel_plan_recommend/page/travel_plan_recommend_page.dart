@@ -37,12 +37,10 @@ class _TravelPlanRecommendPageState
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final scrollController = travelPlanPageKey.currentState?.innerController;
-
       if (scrollController == null) return;
 
       scrollController.addListener(() {
         final offset = scrollController.offset;
-
         if (offset > 120.0) return;
       });
     });
@@ -50,10 +48,6 @@ class _TravelPlanRecommendPageState
     super.initState();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {

@@ -5,6 +5,7 @@ import 'package:application_new/feature/travel_plan/city_travels/model/paged_tra
 import 'package:application_new/feature/travel_plan/city_travels/provider/city_travels_provider.dart';
 import 'package:application_new/feature/travel_plan/travel_plan_recommend/component/travel_item.dart';
 import 'package:application_new/shared/model/travel/travel_model.dart';
+import 'package:application_new/shared/util/constants.dart';
 import 'package:application_new/shared/util/snap_scroll_physics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -28,10 +29,9 @@ class SliverCityTravelPreview extends ConsumerWidget {
     final PagedTravelsModel(:travels) =
         ref.watch(cityTravelsProvider(travel, city.id)).pagedTravels;
 
-    const itemWidth = 420.0;
     final Size(width: deviceWidth) = MediaQuery.of(context).size;
 
-    final itemExtent = min(itemWidth, deviceWidth);
+    final itemExtent = min(Constants.maxItemWidth, deviceWidth);
 
     return SliverToBoxAdapter(
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
