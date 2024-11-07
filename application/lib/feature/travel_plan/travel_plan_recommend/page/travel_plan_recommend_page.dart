@@ -9,6 +9,8 @@ import 'package:application_new/feature/travel_plan/provider/travel_plan_provide
 import 'package:application_new/feature/travel_plan/travel_plan_recommend/component/recommend_place_item.dart';
 import 'package:application_new/feature/travel_plan/travel_plan_recommend/component/recommend_travel_item.dart';
 import 'package:application_new/feature/travel_plan/travel_plan_recommend/model/recommend_model.dart';
+import 'package:application_new/feature/travel_plan/travel_plan_recommend/page/sliver_city_poi_preview.dart';
+import 'package:application_new/feature/travel_plan/travel_plan_recommend/page/sliver_city_travel_preview.dart';
 import 'package:application_new/feature/travel_plan/travel_plan_recommend/provider/travel_plan_recommend_provider.dart';
 import 'package:application_new/feature/travel_plan/travel_plan_recommend/provider/travel_plan_recommend_state.dart';
 import 'package:application_new/shared/model/place_model.dart';
@@ -65,7 +67,8 @@ class _TravelPlanRecommendPageState
     final TravelPlanRecommendState(:recommendations, :hasNextPage) =
         ref.watch(travelPlanRecommendProvider(travelId, cityIndex));
 
-    final cities = state.detail.travel.cities;
+    final travel = state.detail.travel;
+    final cities = travel.cities;
 
     return SliverMainAxisGroup(slivers: [
       SliverToBoxAdapter(
@@ -80,62 +83,25 @@ class _TravelPlanRecommendPageState
                     .selectCity(i)),
         ])),
       ),
-      SliverToBoxAdapter(
-          child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 24.0),
-        child:
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          TextButton(
-              onPressed: () =>
-                  context.push('/cities/${cities[cityIndex].id}/places/pois'),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(children: [
-                  CircleAvatar(
-                      radius: 26.0,
-                      child: Icon(Icons.place, color: colorScheme.primary)),
-                  const SizedBox(height: 8.0),
-                  const Text('관광명소'),
-                ]),
-              )),
-          TextButton(
-              onPressed: () {},
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(children: [
-                  CircleAvatar(
-                      radius: 26.0,
-                      child: Icon(Icons.dining, color: colorScheme.primary)),
-                  const SizedBox(height: 8.0),
-                  const Text('식당/카페'),
-                ]),
-              )),
-          TextButton(
-              onPressed: () {},
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(children: [
-                  CircleAvatar(
-                      radius: 26.0,
-                      child: Icon(Icons.hotel, color: colorScheme.primary)),
-                  const SizedBox(height: 8.0),
-                  const Text('숙박시설'),
-                ]),
-              )),
-        ]),
-      )),
+      const SliverToBoxAdapter(child: SizedBox(height: 48.0)),
+      SliverCityPoiPreview(city: cities[cityIndex]),
+      const SliverToBoxAdapter(child: SizedBox(height: 72.0)),
+      SliverCityTravelPreview(travel: travel, city: cities[cityIndex]),
+      const SliverToBoxAdapter(child: SizedBox(height: 48.0)),
       SliverToBoxAdapter(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              width: double.maxFinite,
-              height: 16.0,
-              color: colorScheme.surfaceContainerLow),
+                width: double.maxFinite,
+                height: 16.0,
+                color: colorScheme.surfaceContainerLow),
             const SizedBox(height: 32.0),
             Padding(
               padding: const EdgeInsets.only(left: 24.0),
-              child: Text('추천 관광지 모음', style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w600)),
+              child: Text('추천 관광지 모음',
+                  style: textTheme.titleLarge
+                      ?.copyWith(fontWeight: FontWeight.w600)),
             ),
           ],
         ),

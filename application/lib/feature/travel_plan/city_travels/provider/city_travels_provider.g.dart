@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'city_place_pois_provider.dart';
+part of 'city_travels_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$cityPlacePoisHash() => r'f087d758ff56a690f569adda9e9e00e9bd56569b';
+String _$cityTravelsHash() => r'555695d6ded15f43fa67c2d64d689c912e835250';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,44 +29,44 @@ class _SystemHash {
   }
 }
 
-abstract class _$CityPlacePois
-    extends BuildlessAutoDisposeNotifier<CityPlacePoisState> {
+abstract class _$CityTravels
+    extends BuildlessAutoDisposeNotifier<CityTravelsState> {
+  late final TravelModel travel;
   late final int cityId;
-  late final PlaceSortType sortType;
 
-  CityPlacePoisState build(
+  CityTravelsState build(
+    TravelModel travel,
     int cityId,
-    PlaceSortType sortType,
   );
 }
 
-/// See also [CityPlacePois].
-@ProviderFor(CityPlacePois)
-const cityPlacePoisProvider = CityPlacePoisFamily();
+/// See also [CityTravels].
+@ProviderFor(CityTravels)
+const cityTravelsProvider = CityTravelsFamily();
 
-/// See also [CityPlacePois].
-class CityPlacePoisFamily extends Family<CityPlacePoisState> {
-  /// See also [CityPlacePois].
-  const CityPlacePoisFamily();
+/// See also [CityTravels].
+class CityTravelsFamily extends Family<CityTravelsState> {
+  /// See also [CityTravels].
+  const CityTravelsFamily();
 
-  /// See also [CityPlacePois].
-  CityPlacePoisProvider call(
+  /// See also [CityTravels].
+  CityTravelsProvider call(
+    TravelModel travel,
     int cityId,
-    PlaceSortType sortType,
   ) {
-    return CityPlacePoisProvider(
+    return CityTravelsProvider(
+      travel,
       cityId,
-      sortType,
     );
   }
 
   @override
-  CityPlacePoisProvider getProviderOverride(
-    covariant CityPlacePoisProvider provider,
+  CityTravelsProvider getProviderOverride(
+    covariant CityTravelsProvider provider,
   ) {
     return call(
+      provider.travel,
       provider.cityId,
-      provider.sortType,
     );
   }
 
@@ -82,115 +82,116 @@ class CityPlacePoisFamily extends Family<CityPlacePoisState> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'cityPlacePoisProvider';
+  String? get name => r'cityTravelsProvider';
 }
 
-/// See also [CityPlacePois].
-class CityPlacePoisProvider
-    extends AutoDisposeNotifierProviderImpl<CityPlacePois, CityPlacePoisState> {
-  /// See also [CityPlacePois].
-  CityPlacePoisProvider(
+/// See also [CityTravels].
+class CityTravelsProvider
+    extends AutoDisposeNotifierProviderImpl<CityTravels, CityTravelsState> {
+  /// See also [CityTravels].
+  CityTravelsProvider(
+    TravelModel travel,
     int cityId,
-    PlaceSortType sortType,
   ) : this._internal(
-          () => CityPlacePois()
-            ..cityId = cityId
-            ..sortType = sortType,
-          from: cityPlacePoisProvider,
-          name: r'cityPlacePoisProvider',
+          () => CityTravels()
+            ..travel = travel
+            ..cityId = cityId,
+          from: cityTravelsProvider,
+          name: r'cityTravelsProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$cityPlacePoisHash,
-          dependencies: CityPlacePoisFamily._dependencies,
+                  : _$cityTravelsHash,
+          dependencies: CityTravelsFamily._dependencies,
           allTransitiveDependencies:
-              CityPlacePoisFamily._allTransitiveDependencies,
+              CityTravelsFamily._allTransitiveDependencies,
+          travel: travel,
           cityId: cityId,
-          sortType: sortType,
         );
 
-  CityPlacePoisProvider._internal(
+  CityTravelsProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
     required super.allTransitiveDependencies,
     required super.debugGetCreateSourceHash,
     required super.from,
+    required this.travel,
     required this.cityId,
-    required this.sortType,
   }) : super.internal();
 
+  final TravelModel travel;
   final int cityId;
-  final PlaceSortType sortType;
 
   @override
-  CityPlacePoisState runNotifierBuild(
-    covariant CityPlacePois notifier,
+  CityTravelsState runNotifierBuild(
+    covariant CityTravels notifier,
   ) {
     return notifier.build(
+      travel,
       cityId,
-      sortType,
     );
   }
 
   @override
-  Override overrideWith(CityPlacePois Function() create) {
+  Override overrideWith(CityTravels Function() create) {
     return ProviderOverride(
       origin: this,
-      override: CityPlacePoisProvider._internal(
+      override: CityTravelsProvider._internal(
         () => create()
-          ..cityId = cityId
-          ..sortType = sortType,
+          ..travel = travel
+          ..cityId = cityId,
         from: from,
         name: null,
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
+        travel: travel,
         cityId: cityId,
-        sortType: sortType,
       ),
     );
   }
 
   @override
-  AutoDisposeNotifierProviderElement<CityPlacePois, CityPlacePoisState>
+  AutoDisposeNotifierProviderElement<CityTravels, CityTravelsState>
       createElement() {
-    return _CityPlacePoisProviderElement(this);
+    return _CityTravelsProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is CityPlacePoisProvider &&
-        other.cityId == cityId &&
-        other.sortType == sortType;
+    return other is CityTravelsProvider &&
+        other.travel == travel &&
+        other.cityId == cityId;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, travel.hashCode);
     hash = _SystemHash.combine(hash, cityId.hashCode);
-    hash = _SystemHash.combine(hash, sortType.hashCode);
 
     return _SystemHash.finish(hash);
   }
 }
 
-mixin CityPlacePoisRef on AutoDisposeNotifierProviderRef<CityPlacePoisState> {
+mixin CityTravelsRef on AutoDisposeNotifierProviderRef<CityTravelsState> {
+  /// The parameter `travel` of this provider.
+  TravelModel get travel;
+
   /// The parameter `cityId` of this provider.
   int get cityId;
-
-  /// The parameter `sortType` of this provider.
-  PlaceSortType get sortType;
 }
 
-class _CityPlacePoisProviderElement extends AutoDisposeNotifierProviderElement<
-    CityPlacePois, CityPlacePoisState> with CityPlacePoisRef {
-  _CityPlacePoisProviderElement(super.provider);
+class _CityTravelsProviderElement
+    extends AutoDisposeNotifierProviderElement<CityTravels, CityTravelsState>
+    with CityTravelsRef {
+  _CityTravelsProviderElement(super.provider);
 
   @override
-  int get cityId => (origin as CityPlacePoisProvider).cityId;
+  TravelModel get travel => (origin as CityTravelsProvider).travel;
   @override
-  PlaceSortType get sortType => (origin as CityPlacePoisProvider).sortType;
+  int get cityId => (origin as CityTravelsProvider).cityId;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

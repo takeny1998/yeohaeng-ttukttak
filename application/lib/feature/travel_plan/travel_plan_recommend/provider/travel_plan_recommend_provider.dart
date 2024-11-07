@@ -39,8 +39,7 @@ class TravelPlanRecommend extends _$TravelPlanRecommend {
 
     _targets = {
       for (final categoryType in PlaceCategoryType.values)
-        PlaceRecommendTarget(categoryType: categoryType),
-      TravelRecommendTarget()
+        PlaceRecommendTarget(categoryType: categoryType)
     };
   }
 
@@ -50,7 +49,6 @@ class TravelPlanRecommend extends _$TravelPlanRecommend {
 
     final recommend = await switch (target) {
       (PlaceRecommendTarget target) => _fetchPlaces(target),
-      (TravelRecommendTarget target) => _fetchTravel(target),
     };
 
     if (recommend.hasNextPage) {
@@ -62,23 +60,23 @@ class TravelPlanRecommend extends _$TravelPlanRecommend {
         hasNextPage: _targets.isNotEmpty);
   }
 
-  Future<RecommendModel> _fetchTravel(TravelRecommendTarget target) async {
-    final httpService = ref.read(httpServiceProvider);
-
-    final Map<String, dynamic> queryParams = {
-      'cityId': _city.id,
-      'pageNumber': target.pageNumber,
-      'pageSize': pageSize,
-      'motivationTypes': _motivationTypes.map((e) => e.name).join(','),
-      'companionTypes': _companionTypes.map((e) => e.name).join(','),
-    };
-
-    final response = await httpService.request(
-        'GET', '/api/v2/travels/recommendations',
-        queryParams: queryParams);
-
-    return RecommendTravelModel.fromJson(response);
-  }
+  // Future<RecommendModel> _fetchTravel(TravelRecommendTarget target) async {
+  //   final httpService = ref.read(httpServiceProvider);
+  //
+  //   final Map<String, dynamic> queryParams = {
+  //     'cityId': _city.id,
+  //     'pageNumber': target.pageNumber,
+  //     'pageSize': pageSize,
+  //     'motivationTypes': _motivationTypes.map((e) => e.name).join(','),
+  //     'companionTypes': _companionTypes.map((e) => e.name).join(','),
+  //   };
+  //
+  //   final response = await httpService.request(
+  //       'GET', '/api/v2/travels/recommendations',
+  //       queryParams: queryParams);
+  //
+  //   return RecommendTravelModel.fromJson(response);
+  // }
 
   Future<RecommendModel> _fetchPlaces(PlaceRecommendTarget target) async {
     final httpService = ref.read(httpServiceProvider);

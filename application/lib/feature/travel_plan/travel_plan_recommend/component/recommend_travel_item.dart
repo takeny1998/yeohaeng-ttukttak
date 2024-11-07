@@ -39,7 +39,7 @@ class _RecommendTravelItemState extends State<RecommendTravelItem> {
     final trKey = baseKey('travel_plan_recommend');
 
     return Container(
-      color: colorScheme.surfaceContainerLow,
+        color: colorScheme.surfaceContainerLow,
         padding: const EdgeInsets.symmetric(vertical: 48.0),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Padding(
@@ -101,7 +101,8 @@ class _RecommendTravelItemState extends State<RecommendTravelItem> {
                               Row(children: [
                                 Expanded(
                                     child: OutlinedButton(
-                                        onPressed: () => context.push('/travels/${travel.id}/detail'),
+                                        onPressed: () => context.push(
+                                            '/travels/${travel.id}/detail'),
                                         style: OutlinedButton.styleFrom(
                                             backgroundColor:
                                                 colorScheme.surface,

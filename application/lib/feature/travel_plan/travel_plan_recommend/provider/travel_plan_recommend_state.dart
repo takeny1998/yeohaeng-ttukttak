@@ -37,13 +37,3 @@ final class PlaceRecommendTarget extends RecommendTarget {
     return PlaceRecommendTarget(categoryType: categoryType, pageNumber: pageNumber + 1);
   }
 }
-
-final class TravelRecommendTarget extends RecommendTarget {
-
-  TravelRecommendTarget({super.pageNumber});
-
-  @override
-  TravelRecommendTarget nextPage() {
-    return TravelRecommendTarget(pageNumber: pageNumber + 1);
-  }
-}

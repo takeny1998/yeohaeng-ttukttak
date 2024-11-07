@@ -40,7 +40,7 @@ class RecommendPlaceItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-                width: MediaQuery.of(context).size.width * 0.6,
+                width: 260.0,
                 padding: const EdgeInsets.only(left: 24.0),
                 child: Text(
                     labelText,
