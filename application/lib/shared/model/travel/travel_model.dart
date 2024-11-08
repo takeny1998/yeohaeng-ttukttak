@@ -17,7 +17,7 @@ class TravelModel with _$TravelModel {
     required DateTime endedOn,
     @Default(AgeGroup.none) AgeGroup ageGroup,
     @Default(Gender.none) Gender gender,
-    @Default([]) List<TravelCompanion> companions,
+    @Default([]) List<TravelCompanionModel> companions,
     @Default([]) List<TravelMotivationType> motivationTypes,
     @Default([]) List<CityModel> cities,
   }) = _TravelModel;
@@ -46,14 +46,15 @@ class TravelModel with _$TravelModel {
 }
 
 @freezed
-class TravelCompanion with _$TravelCompanion {
-  const factory TravelCompanion(
-      {required int id,
-      required TravelCompanionType type,
-      AgeGroup? ageGroup,
-       Gender? gender}) = _TravelCompanion;
+class TravelCompanionModel with _$TravelCompanion {
+  const factory TravelCompanionModel({
+    required int id,
+    required TravelCompanionType type,
+    AgeGroup? ageGroup,
+    Gender? gender,
+  }) = _TravelCompanion;
 
-  factory TravelCompanion.fromJson(Map<String, dynamic> json) =>
+  factory TravelCompanionModel.fromJson(Map<String, dynamic> json) =>
       _$TravelCompanionFromJson(json);
 }
 
@@ -67,7 +68,19 @@ enum TravelMotivationType {
   newExperiences,
   education,
   special,
-  other
+  other;
+
+  static Iterable<TravelMotivationType> active() => [
+        adventure,
+        rest,
+        friendship,
+        selfReflection,
+        socialNetwork,
+        fitness,
+        newExperiences,
+        education,
+        special
+      ];
 }
 
 enum TravelCompanionType {
@@ -82,5 +95,19 @@ enum TravelCompanionType {
   colleagues,
   members,
   others,
-  none
+  none;
+
+  static Iterable<TravelCompanionType> active() => [
+        spouse,
+        children,
+        parents,
+        grandparents,
+        siblings,
+        relatives,
+        friends,
+        lover,
+        colleagues,
+        members,
+        others
+      ];
 }

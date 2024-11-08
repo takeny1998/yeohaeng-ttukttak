@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:application_new/common/http/http_service_provider.dart';
-import 'package:application_new/common/util/list_utils.dart';
+import 'package:application_new/common/util/iterable_utils.dart';
 import 'package:application_new/feature/geography/model/city_model.dart';
 import 'package:application_new/feature/travel_plan/provider/travel_plan_provider.dart';
 import 'package:application_new/feature/travel_plan/travel_plan_recommend/model/place_recommend_model.dart';
@@ -45,7 +45,7 @@ class TravelPlanRecommend extends _$TravelPlanRecommend {
   }
 
   Future<void> fetch() async {
-    final target = ListUtils.random(_targets);
+    final target = IterableUtil.random(_targets);
     _targets.remove(target);
 
     final (curtItem, hasNextPage) = await switch (target) {

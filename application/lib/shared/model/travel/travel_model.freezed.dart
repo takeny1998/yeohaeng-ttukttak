@@ -25,7 +25,7 @@ mixin _$TravelModel {
   DateTime get endedOn => throw _privateConstructorUsedError;
   AgeGroup get ageGroup => throw _privateConstructorUsedError;
   Gender get gender => throw _privateConstructorUsedError;
-  List<TravelCompanion> get companions => throw _privateConstructorUsedError;
+  List<TravelCompanionModel> get companions => throw _privateConstructorUsedError;
   List<TravelMotivationType> get motivationTypes =>
       throw _privateConstructorUsedError;
   List<CityModel> get cities => throw _privateConstructorUsedError;
@@ -52,7 +52,7 @@ abstract class $TravelModelCopyWith<$Res> {
       DateTime endedOn,
       AgeGroup ageGroup,
       Gender gender,
-      List<TravelCompanion> companions,
+      List<TravelCompanionModel> companions,
       List<TravelMotivationType> motivationTypes,
       List<CityModel> cities});
 }
@@ -105,7 +105,7 @@ class _$TravelModelCopyWithImpl<$Res, $Val extends TravelModel>
       companions: null == companions
           ? _value.companions
           : companions // ignore: cast_nullable_to_non_nullable
-              as List<TravelCompanion>,
+              as List<TravelCompanionModel>,
       motivationTypes: null == motivationTypes
           ? _value.motivationTypes
           : motivationTypes // ignore: cast_nullable_to_non_nullable
@@ -132,7 +132,7 @@ abstract class _$$TravelModelImplCopyWith<$Res>
       DateTime endedOn,
       AgeGroup ageGroup,
       Gender gender,
-      List<TravelCompanion> companions,
+      List<TravelCompanionModel> companions,
       List<TravelMotivationType> motivationTypes,
       List<CityModel> cities});
 }
@@ -183,7 +183,7 @@ class __$$TravelModelImplCopyWithImpl<$Res>
       companions: null == companions
           ? _value._companions
           : companions // ignore: cast_nullable_to_non_nullable
-              as List<TravelCompanion>,
+              as List<TravelCompanionModel>,
       motivationTypes: null == motivationTypes
           ? _value._motivationTypes
           : motivationTypes // ignore: cast_nullable_to_non_nullable
@@ -205,7 +205,7 @@ class _$TravelModelImpl extends _TravelModel {
       required this.endedOn,
       this.ageGroup = AgeGroup.none,
       this.gender = Gender.none,
-      final List<TravelCompanion> companions = const [],
+      final List<TravelCompanionModel> companions = const [],
       final List<TravelMotivationType> motivationTypes = const [],
       final List<CityModel> cities = const []})
       : _companions = companions,
@@ -228,10 +228,10 @@ class _$TravelModelImpl extends _TravelModel {
   @override
   @JsonKey()
   final Gender gender;
-  final List<TravelCompanion> _companions;
+  final List<TravelCompanionModel> _companions;
   @override
   @JsonKey()
-  List<TravelCompanion> get companions {
+  List<TravelCompanionModel> get companions {
     if (_companions is EqualUnmodifiableListView) return _companions;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_companions);
@@ -315,7 +315,7 @@ abstract class _TravelModel extends TravelModel {
       required final DateTime endedOn,
       final AgeGroup ageGroup,
       final Gender gender,
-      final List<TravelCompanion> companions,
+      final List<TravelCompanionModel> companions,
       final List<TravelMotivationType> motivationTypes,
       final List<CityModel> cities}) = _$TravelModelImpl;
   const _TravelModel._() : super._();
@@ -334,7 +334,7 @@ abstract class _TravelModel extends TravelModel {
   @override
   Gender get gender;
   @override
-  List<TravelCompanion> get companions;
+  List<TravelCompanionModel> get companions;
   @override
   List<TravelMotivationType> get motivationTypes;
   @override
@@ -348,7 +348,7 @@ abstract class _TravelModel extends TravelModel {
       throw _privateConstructorUsedError;
 }
 
-TravelCompanion _$TravelCompanionFromJson(Map<String, dynamic> json) {
+TravelCompanionModel _$TravelCompanionFromJson(Map<String, dynamic> json) {
   return _TravelCompanion.fromJson(json);
 }
 
@@ -365,22 +365,22 @@ mixin _$TravelCompanion {
   /// Create a copy of TravelCompanion
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $TravelCompanionCopyWith<TravelCompanion> get copyWith =>
+  $TravelCompanionCopyWith<TravelCompanionModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $TravelCompanionCopyWith<$Res> {
   factory $TravelCompanionCopyWith(
-          TravelCompanion value, $Res Function(TravelCompanion) then) =
-      _$TravelCompanionCopyWithImpl<$Res, TravelCompanion>;
+          TravelCompanionModel value, $Res Function(TravelCompanionModel) then) =
+      _$TravelCompanionCopyWithImpl<$Res, TravelCompanionModel>;
   @useResult
   $Res call(
       {int id, TravelCompanionType type, AgeGroup? ageGroup, Gender? gender});
 }
 
 /// @nodoc
-class _$TravelCompanionCopyWithImpl<$Res, $Val extends TravelCompanion>
+class _$TravelCompanionCopyWithImpl<$Res, $Val extends TravelCompanionModel>
     implements $TravelCompanionCopyWith<$Res> {
   _$TravelCompanionCopyWithImpl(this._value, this._then);
 
@@ -527,7 +527,7 @@ class _$TravelCompanionImpl implements _TravelCompanion {
   }
 }
 
-abstract class _TravelCompanion implements TravelCompanion {
+abstract class _TravelCompanion implements TravelCompanionModel {
   const factory _TravelCompanion(
       {required final int id,
       required final TravelCompanionType type,

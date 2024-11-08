@@ -1,4 +1,4 @@
-import 'package:application_new/common/util/list_utils.dart';
+import 'package:application_new/common/util/iterable_utils.dart';
 import 'package:application_new/feature/travel_plan/provider/travel_plan_state.dart';
 import 'package:application_new/shared/provider/travel_detail_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -14,7 +14,7 @@ class TravelPlan extends _$TravelPlan {
   }
 
   void changePage(int pageIndex) {
-    if (!ListUtils.isIndexInRange(pageIndex, end: 3)) return;
+    if (!IterableUtil.isIndexInRange(pageIndex, end: 3)) return;
 
     state = state.copyWith(
       pageIndex: pageIndex,
@@ -25,7 +25,7 @@ class TravelPlan extends _$TravelPlan {
     if (state.cityIndex == cityIndex) return;
 
     final cityCount = state.detail.travel.cities.length;
-    if (!ListUtils.isIndexInRange(cityIndex, end: cityCount - 1)) return;
+    if (!IterableUtil.isIndexInRange(cityIndex, end: cityCount - 1)) return;
 
     state = state.copyWith(
       cityIndex: cityIndex,

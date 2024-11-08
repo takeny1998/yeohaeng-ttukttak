@@ -1,4 +1,5 @@
 import 'package:application_new/common/router/router_provider.dart';
+import 'package:application_new/common/util/iterable_utils.dart';
 import 'package:application_new/common/util/translation.dart';
 import 'package:application_new/common/util/translation_util.dart';
 import 'package:application_new/feature/geography/model/city_model.dart';
@@ -28,80 +29,65 @@ class _CityTravelsPageState extends ConsumerState<CityTravelsPage> {
   Set<TravelMotivationType> selectedMotivationTypes = {};
   Set<TravelCompanionType> selectedCompanionTypes = {};
 
+  bool isMatchedTravel(TravelModel travel) {
+
+    final motivationTypes = travel.motivationTypes;
+    final companionTypes = travel.companions.map((e) => e.type).toSet();
+
+    return IterableUtil.anyMatched(selectedMotivationTypes, motivationTypes) &&
+        IterableUtil.anyMatched(selectedCompanionTypes, companionTypes);
+  }
+
   @override
   Widget build(BuildContext context) {
+    final ThemeData(:textTheme, :colorScheme) = Theme.of(context);
     final CityTravelsState(:travels, :hasNextPage) =
         ref.watch(cityTravelsProvider(widget.travel, widget.city.id));
 
     final isMotivationTypeSelected = selectedMotivationTypes.isNotEmpty;
     final isCompanionTypeSelected = selectedCompanionTypes.isNotEmpty;
 
-    List<TravelModel> data = List.of(travels);
-
-    if (isMotivationTypeSelected) {
-      data = data.where((travel) {
-        final motivationTypes = travel.motivationTypes.toSet();
-        return selectedMotivationTypes.intersection(motivationTypes).isNotEmpty;
-      }).toList();
-    }
-
-    if (isCompanionTypeSelected) {
-      data = data.where((travel) {
-        final companionTypes =
-            travel.companions.map((companion) => companion.type).toSet();
-        return selectedCompanionTypes.intersection(companionTypes).isNotEmpty;
-      }).toList();
-    }
-
     return Scaffold(
       appBar: AppBar(),
       body: CustomScrollView(slivers: [
-        const SliverToBoxAdapter(child: SizedBox(height: 24.0)),
+        const SliverToBoxAdapter(child: SizedBox(height: 16.0)),
         SliverToBoxAdapter(
           child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(children: [
                 const SizedBox(width: 24.0),
-                FilterChip(
-                    selected: isMotivationTypeSelected,
-                    label: Text(isMotivationTypeSelected
-                        ? '${selectedMotivationTypes.length}개 선택됨'
-                        : TranslationUtil.enumName<TravelMotivationType>()),
-                    onSelected: (_) async {
-                      final selectedItems =
-                          await showCollectionFilterSheet<TravelMotivationType>(
-                              TravelMotivationType.values,
-                              selectedMotivationTypes);
-
-                      if (selectedItems == null) return;
-                      setState(() => selectedMotivationTypes = selectedItems);
-                    }),
+                buildFilterOptionChip(
+                    isSelected: isMotivationTypeSelected,
+                    values: TravelMotivationType.active(),
+                    selectedValues: selectedMotivationTypes,
+                    onUpdate: (selectedItems) => setState(
+                        () => selectedMotivationTypes = selectedItems)),
                 const SizedBox(width: 8.0),
-                FilterChip(
-                    selected: isCompanionTypeSelected,
-                    label: Text(isCompanionTypeSelected
-                        ? '${selectedCompanionTypes.length}개 선택됨'
-                        : TranslationUtil.enumName<TravelCompanionType>()),
-                    onSelected: (_) async {
-                      final selectedItems =
-                          await showCollectionFilterSheet<TravelCompanionType>(
-                              TravelCompanionType.values,
-                              selectedCompanionTypes);
-
-                      if (selectedItems == null) return;
-                      setState(() => selectedCompanionTypes = selectedItems);
-                    }),
+                buildFilterOptionChip(
+                    isSelected: isCompanionTypeSelected,
+                    values: TravelCompanionType.active(),
+                    selectedValues: selectedCompanionTypes,
+                    onUpdate: (selectedItems) =>
+                        setState(() => selectedCompanionTypes = selectedItems)),
                 const SizedBox(width: 24.0),
               ])),
         ),
-        const SliverToBoxAdapter(child: SizedBox(height: 32.0)),
-        SliverList.separated(
-            itemCount: data.length,
-            separatorBuilder: (context, index) => const SizedBox(height: 56.0),
-            itemBuilder: (context, index) => Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                  child: TravelItem(travel: data[index]),
-                )),
+        const SliverToBoxAdapter(child: SizedBox(height: 8.0)),
+        SliverToBoxAdapter(child: Divider(color: colorScheme.surfaceContainerHigh)),
+        const SliverToBoxAdapter(child: SizedBox(height: 8.0)),
+        SliverList.builder(
+            itemCount: travels.length,
+            itemBuilder: (context, index) {
+              // 무한 스크롤 인디케이터 크기 변화를 위해 높이 부여
+              if (!isMatchedTravel(travels[index])) {
+                return const SizedBox(height: 0.01);
+              }
+
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 24.0),
+                child: TravelItem(travel:  travels[index]),
+              );
+            }),
         const SliverToBoxAdapter(child: SizedBox(height: 48.0)),
         SliverInfiniteListIndicator(
             onVisible: ref
@@ -113,8 +99,35 @@ class _CityTravelsPageState extends ConsumerState<CityTravelsPage> {
     );
   }
 
+  Widget buildFilterOptionChip<T extends Enum>({
+    required bool isSelected,
+    required Iterable<T> values,
+    required Set<T> selectedValues,
+    required Function(Set<T>) onUpdate,
+  }) {
+    Future<void> onConfirmed() async {
+      final selectedItems =
+          await showCollectionFilterSheet<T>(values, selectedValues);
+      if (selectedItems == null) return;
+      onUpdate(selectedItems);
+    }
+
+    final ThemeData(:textTheme, :colorScheme) = Theme.of(context);
+
+    return FilterChip(
+        selected: isSelected,
+        deleteIconColor:
+            isSelected ? colorScheme.onPrimary : colorScheme.primary,
+        deleteIcon: const Icon(Icons.arrow_drop_down),
+        onDeleted: onConfirmed,
+        label: Text(isSelected
+            ? '${selectedValues.length}개 선택됨'
+            : TranslationUtil.enumName<T>()),
+        onSelected: (_) => onConfirmed());
+  }
+
   Future<Set<T>?> showCollectionFilterSheet<T extends Enum>(
-      Iterable<T> values, Set<T> selectedValues) async {
+      Iterable<T> values, Set<T> selectedValues) {
     final ThemeData(:textTheme, :colorScheme) = Theme.of(context);
 
     final titleStyle =

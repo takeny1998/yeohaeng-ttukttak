@@ -16,7 +16,7 @@ _$TravelModelImpl _$$TravelModelImplFromJson(Map<String, dynamic> json) =>
       gender:
           $enumDecodeNullable(_$GenderEnumMap, json['gender']) ?? Gender.none,
       companions: (json['companions'] as List<dynamic>?)
-              ?.map((e) => TravelCompanion.fromJson(e as Map<String, dynamic>))
+              ?.map((e) => TravelCompanionModel.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
       motivationTypes: (json['motivationTypes'] as List<dynamic>?)
