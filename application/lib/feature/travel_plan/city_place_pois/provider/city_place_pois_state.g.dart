@@ -10,7 +10,7 @@ _$PlaceMetricsModelImpl _$$PlaceMetricsModelImplFromJson(
         Map<String, dynamic> json) =>
     _$PlaceMetricsModelImpl(
       place: PlaceModel.fromJson(json['place'] as Map<String, dynamic>),
-      visitCount: (json['visitCount'] as num).toInt(),
+      visitCount: (json['visitCount'] as num?)?.toInt() ?? 0,
       rating: (json['rating'] as num?)?.toDouble(),
     );
 

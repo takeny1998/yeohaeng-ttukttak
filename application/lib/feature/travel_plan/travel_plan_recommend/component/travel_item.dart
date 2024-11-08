@@ -66,16 +66,15 @@ class TravelItem extends StatelessWidget {
                 child: OutlinedButton(
                     onPressed: () => context.push('/travels/${travel.id}/detail'),
                     style: OutlinedButton.styleFrom(
-                      textStyle: const TextStyle(fontSize: 13.0, fontWeight: FontWeight.w600),
+                      textStyle: const TextStyle(fontSize: 12.0, fontWeight: FontWeight.w600),
                         backgroundColor: colorScheme.surface),
                     child: Text(trKey('view_detail')).tr())),
-            const Spacer(flex: 1),
+            const SizedBox(width: 16.0),
             Expanded(
               flex: 6,
               child: OutlinedButton.icon(
                 style: OutlinedButton.styleFrom(
-
-                    textStyle: const TextStyle(fontSize: 13.0, fontWeight: FontWeight.w600),
+                    textStyle: const TextStyle(fontSize: 12.0, fontWeight: FontWeight.w600),
                     backgroundColor: colorScheme.surface),
                 onPressed: () {},
                 icon: const Icon(Icons.bookmark_outline, size: 18.0),

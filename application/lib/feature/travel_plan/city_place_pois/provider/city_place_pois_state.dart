@@ -18,7 +18,7 @@ class CityPlacePoisState with _$CityPlacePoisState {
 class PlaceMetricModel with _$PlaceMetricModel {
   const factory PlaceMetricModel({
     required PlaceModel place,
-    required int visitCount,
+    @Default(0) int visitCount,
     double? rating,
   }) = _PlaceMetricsModel;
 

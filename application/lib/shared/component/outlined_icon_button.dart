@@ -16,6 +16,7 @@ final class OutlinedIconButton extends StatelessWidget {
       style: IconButton.styleFrom(
           iconSize: iconSize ?? 18.0,
           foregroundColor: colorScheme.primary,
+          padding: EdgeInsets.zero,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(6.0)),
           side: BorderSide(color: colorScheme.surfaceDim)),

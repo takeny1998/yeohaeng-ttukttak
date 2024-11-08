@@ -30,54 +30,53 @@ class PlaceMetricListItem extends StatelessWidget {
     final deviceWidth = MediaQuery.of(context).size.width;
 
     return Container(
+      height: 168.0,
       constraints: const BoxConstraints(maxWidth: 640.0),
       color: colorScheme.surface,
       padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
-      child: IntrinsicHeight(
-        child: Row(children: [
-          ClipRRect(
-              borderRadius: BorderRadius.circular(6.0),
-              child: Container(
-                  constraints: BoxConstraints(
-                      maxWidth: deviceWidth * 0.3),
-                  width: 156.0,
-                  color: colorScheme.surfaceContainer)),
-          const SizedBox(width: 16.0),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(place.name, style: titleStyle),
-                Text(place.address.value?.lineBreakByWord() ?? '',
-                    style: subTitleStyle, overflow: TextOverflow.ellipsis),
-                const SizedBox(height: 4.0),
-                ExtendedWrap(maxLines: 1, spacing: 8.0, children: [
-                  if (rating != null)
-                    SmallChip(
-                        backgroundColor: colorScheme.primary,
-                        foregroundColor: colorScheme.onPrimary,
-                        leading: Icon(Icons.star_rate_rounded,
-                            color: colorScheme.onPrimary),
-                        label: rating.toStringAsFixed(2)),
-                  for (final categoryType in place.categoryTypes)
-                    SmallChip(label: enumKey(categoryType).tr()),
-                ]),
-                const SizedBox(height: 16.0),
-                Row(children: [
-                  OutlinedButton.icon(
-                      onPressed: () {},
-                      style: buttonStyle,
-                      icon: const Icon(Icons.add_location_alt_outlined,
-                          size: 18.0),
-                      label: const Text('일정에 추가')),
-                  const SizedBox(width: 8.0),
-                  const OutlinedIconButton(icon: Icon(Icons.bookmark_outline)),
-                ]),
-              ],
-            ),
+      child: Row(children: [
+        ClipRRect(
+            borderRadius: BorderRadius.circular(6.0),
+            child: Container(
+                constraints: BoxConstraints(
+                    maxWidth: deviceWidth * 0.3),
+                width: 156.0,
+                color: colorScheme.surfaceContainer)),
+        const SizedBox(width: 16.0),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(place.name, style: titleStyle),
+              Text(place.address.value?.lineBreakByWord() ?? '',
+                  style: subTitleStyle, overflow: TextOverflow.ellipsis),
+              const SizedBox(height: 4.0),
+              ExtendedWrap(maxLines: 1, spacing: 8.0, children: [
+                if (rating != null)
+                  SmallChip(
+                      backgroundColor: colorScheme.primary,
+                      foregroundColor: colorScheme.onPrimary,
+                      leading: Icon(Icons.star_rate_rounded,
+                          color: colorScheme.onPrimary),
+                      label: rating.toStringAsFixed(2)),
+                for (final categoryType in place.categoryTypes)
+                  SmallChip(label: enumKey(categoryType).tr()),
+              ]),
+              const Expanded(child: SizedBox()),
+              Row(children: [
+                OutlinedButton.icon(
+                    onPressed: () {},
+                    style: buttonStyle,
+                    icon: const Icon(Icons.add_location_alt_outlined,
+                        size: 18.0),
+                    label: const Text('일정에 추가')),
+                const SizedBox(width: 8.0),
+                const OutlinedIconButton(icon: Icon(Icons.bookmark_outline)),
+              ]),
+            ],
           ),
-        ]),
-      ),
+        ),
+      ]),
     );
   }
 }

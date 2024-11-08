@@ -29,8 +29,6 @@ class TravelPlanHomeHeader extends StatelessWidget {
     return SliverAppBar(
       scrolledUnderElevation: 0.0,
       pinned: true,
-      floating: true,
-      snap: true,
       expandedHeight: appBarHeight,
       actions: [
         IconButton(onPressed: () {}, icon: const Icon(Icons.share)),
