@@ -1,4 +1,5 @@
 import 'package:application_new/common/util/translation.dart';
+import 'package:application_new/common/util/translation_util.dart';
 import 'package:application_new/feature/geography/model/city_model.dart';
 import 'package:application_new/shared/component/travel_companion_item.dart';
 import 'package:application_new/shared/model/travel/travel_model.dart';
@@ -34,8 +35,8 @@ class TravelHeader extends StatelessWidget {
           subtitle: Text(_travel.formattedDate),
         ),
         Wrap(spacing: 8.0, children: [
-          for (final motivation in _travel.motivationTypes)
-            Chip(label: Text(enumKey(motivation).tr()))
+          for (final motivationType in _travel.motivationTypes)
+            Chip(label: Text(TranslationUtil.enumValue(motivationType)))
         ]),
         const SizedBox(height: 24.0),
         Wrap(spacing: 16.0, children: [
@@ -43,14 +44,14 @@ class TravelHeader extends StatelessWidget {
             id: _travel.id,
             gender: _travel.gender,
             title: 'me'.tr(),
-            subTitle: enumKey(_travel.ageGroup).tr(),
+            subTitle: TranslationUtil.enumValue(_travel.ageGroup),
           ),
           for (final companion in _travel.companions)
             TravelCompanionItem(
               id: companion.id,
               gender: companion.gender,
-              title: enumKey(companion.type).tr(),
-              subTitle: enumKey(companion.ageGroup).tr(),
+              title: TranslationUtil.enumValue(companion.type),
+              subTitle: TranslationUtil.enumValue(companion.ageGroup),
             ),
         ]),
         const SizedBox(height: 12.0),

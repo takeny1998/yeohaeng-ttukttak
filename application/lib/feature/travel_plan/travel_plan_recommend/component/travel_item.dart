@@ -1,4 +1,5 @@
 import 'package:application_new/common/util/translation.dart';
+import 'package:application_new/common/util/translation_util.dart';
 import 'package:application_new/shared/component/small_chip.dart';
 import 'package:application_new/shared/model/travel/travel_model.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -56,8 +57,8 @@ class TravelItem extends StatelessWidget {
           Text(travel.formattedDate, style: travelDateStyle),
           const SizedBox(height: 8.0),
           ExtendedWrap(maxLines: 1, spacing: 8.0, children: [
-            for (final motivation in travel.motivationTypes)
-              SmallChip(label: enumKey(motivation).tr())
+            for (final motivationType in travel.motivationTypes)
+              SmallChip(label: TranslationUtil.enumValue(motivationType))
           ]),
           const SizedBox(height: 16.0),
           Row(children: [

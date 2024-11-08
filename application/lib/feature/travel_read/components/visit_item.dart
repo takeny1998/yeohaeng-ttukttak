@@ -1,4 +1,5 @@
 import 'package:application_new/common/util/translation.dart';
+import 'package:application_new/common/util/translation_util.dart';
 import 'package:application_new/feature/travel_read/components/visit_order_item.dart';
 import 'package:application_new/feature/travel_read/model/travel_visit_model.dart';
 import 'package:application_new/shared/component/small_chip.dart';
@@ -80,8 +81,8 @@ class VisitItem extends ConsumerWidget {
                       Wrap(
                         spacing: 6.0,
                         children: [
-                          for (final category in place.categoryTypes)
-                            SmallChip(label: enumKey(category).tr())
+                          for (final categoryType in place.categoryTypes)
+                            SmallChip(label: TranslationUtil.enumValue(categoryType))
                         ],
                       ),
                       Container(
@@ -97,7 +98,7 @@ class VisitItem extends ConsumerWidget {
                             Text(trKey('ask_reason').tr(),
                                 style: textTheme.labelMedium),
                             const SizedBox(height: 2.0),
-                            Text(enumKey(visit.reasonType).tr(),
+                            Text(TranslationUtil.enumValue(visit.reasonType),
                                 style: textTheme.bodyMedium
                                     ?.copyWith(fontWeight: FontWeight.w600)),
                           ],

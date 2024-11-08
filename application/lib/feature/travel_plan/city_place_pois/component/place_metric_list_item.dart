@@ -1,5 +1,6 @@
 import 'package:application_new/common/util/string_extension.dart';
 import 'package:application_new/common/util/translation.dart';
+import 'package:application_new/common/util/translation_util.dart';
 import 'package:application_new/feature/travel_plan/city_place_pois/provider/city_place_pois_state.dart';
 import 'package:application_new/shared/component/outlined_icon_button.dart';
 import 'package:application_new/shared/component/small_chip.dart';
@@ -60,7 +61,7 @@ class PlaceMetricListItem extends StatelessWidget {
                           color: colorScheme.onPrimary),
                       label: rating.toStringAsFixed(2)),
                 for (final categoryType in place.categoryTypes)
-                  SmallChip(label: enumKey(categoryType).tr()),
+                  SmallChip(label: TranslationUtil.enumValue(categoryType)),
               ]),
               const Expanded(child: SizedBox()),
               Row(children: [

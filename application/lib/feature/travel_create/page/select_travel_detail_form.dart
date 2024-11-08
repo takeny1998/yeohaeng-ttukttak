@@ -1,4 +1,5 @@
 import 'package:application_new/common/util/translation.dart';
+import 'package:application_new/common/util/translation_util.dart';
 import 'package:application_new/feature/travel_create/component/bottom_action_button.dart';
 import 'package:application_new/feature/travel_create/provider/travel_create_state.dart';
 import 'package:application_new/shared/component/filled_chip_theme.dart';
@@ -57,7 +58,7 @@ class SelectTravelDetailForm extends ConsumerWidget {
                 children: [
                   for (TravelCompanionType companionType in TravelCompanionType.values)
                     FilterChip(
-                      label: Text(enumKey(companionType)).tr(),
+                      label: Text(TranslationUtil.enumValue(companionType)),
                       selected: state.companionTypes.contains(companionType),
                       onSelected: (isSelected) {
                         final notifier = ref.read(travelCreateProvider.notifier);
@@ -75,7 +76,7 @@ class SelectTravelDetailForm extends ConsumerWidget {
                 children: [
                   for (TravelMotivationType motivationType in TravelMotivationType.values)
                     FilterChip(
-                      label: Text(enumKey(motivationType)).tr(),
+                      label: Text(TranslationUtil.enumValue(motivationType)),
                       selected: state.motivationTypes.contains(motivationType),
                       onSelected: (_) {
                         final notifier = ref.read(travelCreateProvider.notifier);

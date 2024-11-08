@@ -76,74 +76,92 @@ rating:
     4: 좋은 경험이었어요. 추천할만 해요.
     5: 반드시 가봐야 할 곳이예요! 꼭 추천하고 싶어요.
 
+
+
 enum:
   TravelCompanionType:
-    spouse: 배우자
-    children: 자녀
-    parents: 부모님
-    grandparents: 조부모님
-    siblings: 형제
-    relatives: 친척
-    friends: 친구
-    lover: 연인
-    colleagues: 동료
-    members: 회원
-    others: 기타
+    name: 동반 현황
+    values:
+      spouse: 배우자
+      children: 자녀
+      parents: 부모님
+      grandparents: 조부모님
+      siblings: 형제
+      relatives: 친척
+      friends: 친구
+      lover: 연인
+      colleagues: 동료
+      members: 회원
+      others: 기타
 
   TravelMotivationType:
-    adventure: 일상에서 탈피
-    rest: 휴식
-    friendship: 친목 쌓기
-    selfReflection: 자아 성찰
-    socialNetwork: SNS 등록
-    fitness: 건강 증진
-    newExperiences: 새로운 경험 추구
-    education: 교육 목적
-    special: 특수 목적
-    other: 기타
+    name: 여행 동기
+    values:
+      adventure: 일상에서 탈피
+      rest: 휴식
+      friendship: 친목 쌓기
+      selfReflection: 자아 성찰
+      socialNetwork: SNS 등록
+      fitness: 건강 증진
+      newExperiences: 새로운 경험 추구
+      education: 교육 목적
+      special: 특수 목적
+      other: 기타
 
   AgeGroup:
-    underNine: 9세이하
-    teens: 10대
-    twenties: 20대
-    thirties: 30대
-    forties: 40대
-    fifties: 50대
-    sixties: 60대
-    seventiesPlus: 70세이상
-    other: 기타
+    name: 연령대
+    values:
+      underNine: 9세이하
+      teens: 10대
+      twenties: 20대
+      thirties: 30대
+      forties: 40대
+      fifties: 50대
+      sixties: 60대
+      seventiesPlus: 70세이상
+      other: 기타
 
   Gender:
-    male: Male
-    female: Female
-    other: 기타
+    name: 성별
+    values:
+      male: Male
+      female: Female
+      other: 기타
 
   TravelVisitReasonType:
-    landmark: 지역 명소라서 방문헀어요.
-    goodReviews: 온라인(SNS, 블로그 등) 후기가 좋아서 방문했어요.
-    media: 미디어(TV 프로그램 등)에서 평가가 좋아 방문했어요.
-    goodExperience: 과거 경험이 좋아 다시 방문했어요.
-    recommendation: 지인의 추천이 있어 방문했어요.
-    easyAccess: 찾아가기 편해서 방문했어요.
-    goodAmenities: 편의시설 혹은 서비스가 좋아 방문했어요.
-    goodValue: 가성비가 좋아서 방문했어요.
-    unexpectedFind: 지나가다 우연히 방문했어요.
-    education: 교육적인 장소라 방문헀어요.
-    other: 기타
+    name: 방문 이유
+    values:
+      landmark: 지역 명소라서 방문헀어요.
+      goodReviews: 온라인(SNS, 블로그 등) 후기가 좋아서 방문했어요.
+      media: 미디어(TV 프로그램 등)에서 평가가 좋아 방문했어요.
+      goodExperience: 과거 경험이 좋아 다시 방문했어요.
+      recommendation: 지인의 추천이 있어 방문했어요.
+      easyAccess: 찾아가기 편해서 방문했어요.
+      goodAmenities: 편의시설 혹은 서비스가 좋아 방문했어요.
+      goodValue: 가성비가 좋아서 방문했어요.
+      unexpectedFind: 지나가다 우연히 방문했어요.
+      education: 교육적인 장소라 방문헀어요.
+      other: 기타
 
   PlaceCategoryType:
-    nature: 자연
-    tourism: 관광지
-    culture: 문화
-    commerce: 상업
-    transport: 교통
-    dining: 식당/카페
-    lodging: 숙소
+    name: 장소 유형
+    values:
+      nature: 자연
+      tourism: 관광지
+      culture: 문화
+      commerce: 상업
+      transport: 교통
+      dining: 식당/카페
+      lodging: 숙소
 
   PlaceSortType:
-    rating: 평점 높은 순
-    popularity: 많이 방문한 순
+    name: 정렬 유형
+    values:
+      rating: 평점 높은 순
+      popularity: 많이 방문한 순
 
   PlaceViewType:
-    map: 지도
-    list: 목록
+    name: 보기 유형
+    values:
+      map: 지도
+      list: 목록

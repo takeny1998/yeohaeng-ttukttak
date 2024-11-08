@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:application_new/common/util/translation.dart';
+import 'package:application_new/common/util/translation_util.dart';
 import 'package:application_new/feature/travel_plan/city_place_pois/component/place_metric_list_item.dart';
 import 'package:application_new/feature/travel_plan/city_place_pois/component/city_places_map.dart';
 import 'package:application_new/feature/travel_plan/city_place_pois/component/place_metric_card_indicator.dart';
@@ -198,7 +199,7 @@ class _CityPlaceListPageState extends ConsumerState<CityPlacePoisPage> {
                   setState(() => this.sortType = sortType);
                 },
                 child: Row(children: [
-                  Text(enumKey(sortType).tr(),
+                  Text(TranslationUtil.enumValue(sortType),
                       style: textTheme.bodyLarge
                           ?.copyWith(fontWeight: FontWeight.w600)),
                   const Icon(Icons.arrow_drop_down),
@@ -274,7 +275,7 @@ class _CityPlaceListPageState extends ConsumerState<CityPlacePoisPage> {
                         children: [
                           Icon(viewType.iconData, size: 18.0),
                           const SizedBox(width: 8.0),
-                          Text(enumKey(viewType).tr()),
+                          Text(TranslationUtil.enumValue(viewType)),
                         ])),
             ]));
   }
@@ -302,7 +303,7 @@ class _CityPlaceListPageState extends ConsumerState<CityPlacePoisPage> {
           }
           setState(() {});
         },
-        label: Text(enumKey(categoryType).tr()),
+        label: Text(TranslationUtil.enumValue(categoryType)),
         avatar: Icon(categoryType.iconData,
             color: isSelected ? colorScheme.onPrimary : null),
         selected: isSelected);
@@ -336,7 +337,7 @@ class _CityPlaceListPageState extends ConsumerState<CityPlacePoisPage> {
                         onTap: () => Navigator.of(context).pop(sortType),
                         contentPadding:
                             const EdgeInsets.symmetric(horizontal: 24.0),
-                        title: Text(enumKey(sortType).tr()),
+                        title: Text(TranslationUtil.enumValue(sortType)),
                         titleTextStyle: textTheme.titleMedium
                             ?.copyWith(fontWeight: FontWeight.w600)),
                 ]),

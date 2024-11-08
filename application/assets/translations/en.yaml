@@ -76,68 +76,84 @@ rating:
 
 enum:
   TravelCompanionType:
-    spouse: Spouse
-    children: Children
-    parents: Parents
-    grandparents: Grandparents
-    siblings: Siblings
-    relatives: Relatives
-    friends: Friends
-    lover: Lover
-    colleagues: Colleagues
-    members: Members
-    others: Others
+    name: Type of companion
+    values:
+      spouse: Spouse
+      children: Children
+      parents: Parents
+      grandparents: Grandparents
+      siblings: Siblings
+      relatives: Relatives
+      friends: Friends
+      lover: Lover
+      colleagues: Colleagues
+      members: Members
+      others: Others
 
   TravelMotivation:
-    adventure: Break out of routine
-    rest: Rest
-    friendship: Friendship
-    selfReflection: Self-reflection
-    socialNetwork: Social network
-    fitness: Fitness
-    newExperiences: Seek new experiences
-    education: Education
+    name: Motivation for travel
+    values:
+      adventure: Break out of routine
+      rest: Rest
+      friendship: Friendship
+      selfReflection: Self-reflection
+      socialNetwork: Social network
+      fitness: Fitness
+      newExperiences: Seek new experiences
+      education: Education
 
   AgeGroup:
-    underNine: Under 9 years old
-    teens: Teens
-    twenties: Twenties
-    thirties: Twenties
-    forties: Forties
-    fifties: Fifties
-    sixties: Sixties
-    seventiesPlus: Over 70 years old
+    name: Age Group
+    values:
+      underNine: Under 9 years old
+      teens: Teens
+      twenties: Twenties
+      thirties: Twenties
+      forties: Forties
+      fifties: Fifties
+      sixties: Sixties
+      seventiesPlus: Over 70 years old
 
   Gender:
-    male: Male
-    female: Female
+    name: Gender
+    values:
+      male: Male
+      female: Female
 
   TravelVisitReasonType:
-    landmark: Because it's a local landmark.
-    goodReviews: Because the online reviews were great.
-    media: Because the media had positive reviews.
-    goodExperience: Because I had a great experience in the past.
-    recommendation: Because my friend recommended to visit.
-    easyAccess: Because it’s convenient to get to.
-    goodAmenities: Because I liked its amenities or services.
-    goodValue: Because it was a good value
-    unexpectedFind: I visited by chance while passing by.
-    education: Because it was educational.
-    other: Other reason
+    name: Reasons for visiting
+    values:
+      landmark: Because it's a local landmark.
+      goodReviews: Because the online reviews were great.
+      media: Because the media had positive reviews.
+      goodExperience: Because I had a great experience in the past.
+      recommendation: Because my friend recommended to visit.
+      easyAccess: Because it’s convenient to get to.
+      goodAmenities: Because I liked its amenities or services.
+      goodValue: Because it was a good value
+      unexpectedFind: I visited by chance while passing by.
+      education: Because it was educational.
+      other: Other reason
 
   PlaceCategoryType:
-    nature: Natural
-    tourism: Tourism Attraction
-    culture: Cultural
-    commerce: Commercial
-    transport: Transportation
-    dining: Restaurant/Café
-    lodging: Lodging
+    name: Place type
+    values:
+      nature: Natural
+      tourism: Tourism Attraction
+      culture: Cultural
+      commerce: Commercial
+      transport: Transportation
+      dining: Restaurant/Café
+      lodging: Lodging
 
   PlaceSortType:
-    rating: Top Rated
-    popularity: Most Popular
+    name: Type of sorting place
+    values:
+      rating: Top Rated
+      popularity: Most Popular
 
   PlaceViewType:
-    map: Map
-    list: List
+    name: Type of view
+    values:
+      map: Map
+      list: List

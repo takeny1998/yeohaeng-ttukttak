@@ -1,5 +1,6 @@
 import 'package:application_new/common/util/string_extension.dart';
 import 'package:application_new/common/util/translation.dart';
+import 'package:application_new/common/util/translation_util.dart';
 import 'package:application_new/feature/travel_plan/city_place_pois/provider/city_place_pois_state.dart';
 import 'package:application_new/shared/component/outlined_icon_button.dart';
 import 'package:application_new/shared/component/small_chip.dart';
@@ -58,7 +59,7 @@ class PlaceMetricItem extends StatelessWidget {
         for (int i = 0; i < place.categoryTypes.length; i++)
           SmallChip(
               borderColor: i == 0 ? colorScheme.primaryFixedDim : null,
-              label: enumKey(place.categoryTypes[i]).tr()),
+              label: TranslationUtil.enumValue(place.categoryTypes[i])),
       ]),
       const SizedBox(height: 12.0),
       Row(children: [
