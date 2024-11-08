@@ -26,23 +26,32 @@ class CityTravelsPage extends ConsumerStatefulWidget {
 
 class _CityTravelsPageState extends ConsumerState<CityTravelsPage> {
   Set<TravelMotivationType> selectedMotivationTypes = {};
+  Set<TravelCompanionType> selectedCompanionTypes = {};
 
   @override
   Widget build(BuildContext context) {
     final CityTravelsState(:travels, :hasNextPage) =
         ref.watch(cityTravelsProvider(widget.travel, widget.city.id));
 
+    final isMotivationTypeSelected = selectedMotivationTypes.isNotEmpty;
+    final isCompanionTypeSelected = selectedCompanionTypes.isNotEmpty;
 
-    var isMotivationTypeSelected = selectedMotivationTypes.isNotEmpty;
+    List<TravelModel> data = List.of(travels);
 
-    final data = switch (isMotivationTypeSelected) {
-      true => travels
-          .where((travel) => selectedMotivationTypes
-              .intersection(travel.motivationTypes.toSet())
-              .isNotEmpty)
-          .toList(),
-      false => travels,
-    };
+    if (isMotivationTypeSelected) {
+      data = data.where((travel) {
+        final motivationTypes = travel.motivationTypes.toSet();
+        return selectedMotivationTypes.intersection(motivationTypes).isNotEmpty;
+      }).toList();
+    }
+
+    if (isCompanionTypeSelected) {
+      data = data.where((travel) {
+        final companionTypes =
+            travel.companions.map((companion) => companion.type).toSet();
+        return selectedCompanionTypes.intersection(companionTypes).isNotEmpty;
+      }).toList();
+    }
 
     return Scaffold(
       appBar: AppBar(),
@@ -57,19 +66,32 @@ class _CityTravelsPageState extends ConsumerState<CityTravelsPage> {
                     selected: isMotivationTypeSelected,
                     label: Text(isMotivationTypeSelected
                         ? '${selectedMotivationTypes.length}개 선택됨'
-                        : '여행 동기'),
+                        : TranslationUtil.enumName<TravelMotivationType>()),
                     onSelected: (_) async {
                       final selectedItems =
                           await showCollectionFilterSheet<TravelMotivationType>(
-                              TravelMotivationType.values, selectedMotivationTypes);
+                              TravelMotivationType.values,
+                              selectedMotivationTypes);
 
                       if (selectedItems == null) return;
-
-                      setState(() {
-                        selectedMotivationTypes = selectedItems;
-                      });
+                      setState(() => selectedMotivationTypes = selectedItems);
                     }),
-                const SizedBox(width: 16.0),
+                const SizedBox(width: 8.0),
+                FilterChip(
+                    selected: isCompanionTypeSelected,
+                    label: Text(isCompanionTypeSelected
+                        ? '${selectedCompanionTypes.length}개 선택됨'
+                        : TranslationUtil.enumName<TravelCompanionType>()),
+                    onSelected: (_) async {
+                      final selectedItems =
+                          await showCollectionFilterSheet<TravelCompanionType>(
+                              TravelCompanionType.values,
+                              selectedCompanionTypes);
+
+                      if (selectedItems == null) return;
+                      setState(() => selectedCompanionTypes = selectedItems);
+                    }),
+                const SizedBox(width: 24.0),
               ])),
         ),
         const SliverToBoxAdapter(child: SizedBox(height: 32.0)),
@@ -91,85 +113,80 @@ class _CityTravelsPageState extends ConsumerState<CityTravelsPage> {
     );
   }
 
-
-  Future<Set<T>?> showCollectionFilterSheet<T extends Enum>(Iterable<T> values,
-      Set<T> selectedValues) async {
+  Future<Set<T>?> showCollectionFilterSheet<T extends Enum>(
+      Iterable<T> values, Set<T> selectedValues) async {
     final ThemeData(:textTheme, :colorScheme) = Theme.of(context);
 
     final titleStyle =
-    textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w600);
+        textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w600);
 
     var selectedItems = Set.of(selectedValues).toSet();
 
     return showModalContentSheet<Set<T>>(context,
         StatefulBuilder(builder: (context, setBottomSheetState) {
-          return Theme(
-            data: Theme.of(context).copyWith(
-                chipTheme: ChipThemeData(
-                  side: BorderSide(color: colorScheme.surfaceDim),
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 10.0, horizontal: 8.0),
-                  labelStyle:
-                  const TextStyle(fontSize: 14.0, fontWeight: FontWeight.w600),
-                  color: WidgetStateColor.resolveWith((states) {
-                    if (states.contains(WidgetState.selected)) {
-                      return colorScheme.primary;
-                    }
-                    return colorScheme.surface;
-                  }),
-                )),
-            child: Container(
-                width: double.maxFinite,
-                padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 8.0),
-                      Text(TranslationUtil.enumName<T>(), style: titleStyle),
-                      const SizedBox(height: 24.0),
-                      Wrap(spacing: 8.0, runSpacing: 6.0, children: [
-                        for (final item in values)
-                          FilterChip(
-                              checkmarkColor: colorScheme.onPrimary,
-                              selected: selectedItems.contains(item),
-                              label: Text(
-                                TranslationUtil.enumValue(item),
-                                style: TextStyle(
-                                    color: selectedItems.contains(
-                                        item)
-                                        ? colorScheme.onPrimary
-                                        : colorScheme.onSurfaceVariant),
-                              ),
-                              onSelected: (_) =>
-                                  setBottomSheetState(() {
-                                    if (selectedItems.contains(item)) {
-                                      selectedItems.remove(item);
-                                    } else {
-                                      selectedItems.add(item);
-                                    }
-                                  }))
-                      ]),
-                      const SizedBox(height: 32.0),
-                      Row(
-                        children: [
-                          Expanded(
-                              child: OutlinedButton(
-                                  onPressed: () =>
-                                      setBottomSheetState(
-                                              () => selectedItems.clear()),
-                                  child: const Text('초기화'))),
-                          const SizedBox(width: 8.0),
-                          Expanded(
-                            child: FilledButton(
-                                onPressed: () =>
-                                    Navigator.of(context).pop(selectedItems),
-                                child: const Text('선택 완료')),
+      return Theme(
+        data: Theme.of(context).copyWith(
+            chipTheme: ChipThemeData(
+          side: BorderSide(color: colorScheme.surfaceDim),
+          padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 8.0),
+          labelStyle:
+              const TextStyle(fontSize: 14.0, fontWeight: FontWeight.w600),
+          color: WidgetStateColor.resolveWith((states) {
+            if (states.contains(WidgetState.selected)) {
+              return colorScheme.primary;
+            }
+            return colorScheme.surface;
+          }),
+        )),
+        child: Container(
+            width: double.maxFinite,
+            padding: const EdgeInsets.symmetric(horizontal: 24.0),
+            child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 8.0),
+                  Text(TranslationUtil.enumName<T>(), style: titleStyle),
+                  const SizedBox(height: 24.0),
+                  Wrap(spacing: 8.0, runSpacing: 6.0, children: [
+                    for (final item in values)
+                      FilterChip(
+                          checkmarkColor: colorScheme.onPrimary,
+                          selected: selectedItems.contains(item),
+                          label: Text(
+                            TranslationUtil.enumValue(item),
+                            style: TextStyle(
+                                color: selectedItems.contains(item)
+                                    ? colorScheme.onPrimary
+                                    : colorScheme.onSurfaceVariant),
                           ),
-                        ],
-                      )
-                    ])),
-          );
-        }));
+                          onSelected: (_) => setBottomSheetState(() {
+                                if (selectedItems.contains(item)) {
+                                  selectedItems.remove(item);
+                                } else {
+                                  selectedItems.add(item);
+                                }
+                              }))
+                  ]),
+                  const SizedBox(height: 32.0),
+                  Row(
+                    children: [
+                      Expanded(
+                          child: OutlinedButton(
+                              onPressed: () => setBottomSheetState(
+                                  () => selectedItems.clear()),
+                              child: const Text('초기화'))),
+                      const SizedBox(width: 8.0),
+                      Expanded(
+                        child: FilledButton(
+                            onPressed: () =>
+                                Navigator.of(context).pop(selectedItems),
+                            child: const Text('선택 완료')),
+                      ),
+                    ],
+                  )
+                ])),
+      );
+    }));
   }
 }
