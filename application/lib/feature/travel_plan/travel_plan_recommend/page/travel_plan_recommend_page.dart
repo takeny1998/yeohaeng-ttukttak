@@ -78,13 +78,7 @@ class _TravelPlanRecommendPageState
                 width: double.maxFinite,
                 height: 16.0,
                 color: colorScheme.surfaceContainerLow),
-            const SizedBox(height: 32.0),
-            Padding(
-              padding: const EdgeInsets.only(left: 24.0),
-              child: Text('추천 관광지 모음',
-                  style: textTheme.titleLarge
-                      ?.copyWith(fontWeight: FontWeight.w600)),
-            ),
+            const SizedBox(height: 48.0),
           ],
         ),
       ),
