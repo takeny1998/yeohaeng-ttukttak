@@ -16,7 +16,8 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$CityTravelsState {
-  PagedTravelsModel get pagedTravels => throw _privateConstructorUsedError;
+  List<TravelModel> get travels => throw _privateConstructorUsedError;
+  dynamic get hasNextPage => throw _privateConstructorUsedError;
 
   /// Create a copy of CityTravelsState
   /// with the given fields replaced by the non-null parameter values.
@@ -31,9 +32,7 @@ abstract class $CityTravelsStateCopyWith<$Res> {
           CityTravelsState value, $Res Function(CityTravelsState) then) =
       _$CityTravelsStateCopyWithImpl<$Res, CityTravelsState>;
   @useResult
-  $Res call({PagedTravelsModel pagedTravels});
-
-  $PagedTravelsModelCopyWith<$Res> get pagedTravels;
+  $Res call({List<TravelModel> travels, dynamic hasNextPage});
 }
 
 /// @nodoc
@@ -51,24 +50,19 @@ class _$CityTravelsStateCopyWithImpl<$Res, $Val extends CityTravelsState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? pagedTravels = null,
+    Object? travels = null,
+    Object? hasNextPage = freezed,
   }) {
     return _then(_value.copyWith(
-      pagedTravels: null == pagedTravels
-          ? _value.pagedTravels
-          : pagedTravels // ignore: cast_nullable_to_non_nullable
-              as PagedTravelsModel,
+      travels: null == travels
+          ? _value.travels
+          : travels // ignore: cast_nullable_to_non_nullable
+              as List<TravelModel>,
+      hasNextPage: freezed == hasNextPage
+          ? _value.hasNextPage
+          : hasNextPage // ignore: cast_nullable_to_non_nullable
+              as dynamic,
     ) as $Val);
-  }
-
-  /// Create a copy of CityTravelsState
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $PagedTravelsModelCopyWith<$Res> get pagedTravels {
-    return $PagedTravelsModelCopyWith<$Res>(_value.pagedTravels, (value) {
-      return _then(_value.copyWith(pagedTravels: value) as $Val);
-    });
   }
 }
 
@@ -80,10 +74,7 @@ abstract class _$$CityTravelsStateImplCopyWith<$Res>
       __$$CityTravelsStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({PagedTravelsModel pagedTravels});
-
-  @override
-  $PagedTravelsModelCopyWith<$Res> get pagedTravels;
+  $Res call({List<TravelModel> travels, dynamic hasNextPage});
 }
 
 /// @nodoc
@@ -99,28 +90,43 @@ class __$$CityTravelsStateImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? pagedTravels = null,
+    Object? travels = null,
+    Object? hasNextPage = freezed,
   }) {
     return _then(_$CityTravelsStateImpl(
-      pagedTravels: null == pagedTravels
-          ? _value.pagedTravels
-          : pagedTravels // ignore: cast_nullable_to_non_nullable
-              as PagedTravelsModel,
+      travels: null == travels
+          ? _value._travels
+          : travels // ignore: cast_nullable_to_non_nullable
+              as List<TravelModel>,
+      hasNextPage: freezed == hasNextPage ? _value.hasNextPage! : hasNextPage,
     ));
   }
 }
 
 /// @nodoc
 
-class _$CityTravelsStateImpl implements _CityTravelsState {
-  const _$CityTravelsStateImpl({required this.pagedTravels});
+class _$CityTravelsStateImpl extends _CityTravelsState {
+  const _$CityTravelsStateImpl(
+      {final List<TravelModel> travels = const [], this.hasNextPage = false})
+      : _travels = travels,
+        super._();
+
+  final List<TravelModel> _travels;
+  @override
+  @JsonKey()
+  List<TravelModel> get travels {
+    if (_travels is EqualUnmodifiableListView) return _travels;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_travels);
+  }
 
   @override
-  final PagedTravelsModel pagedTravels;
+  @JsonKey()
+  final dynamic hasNextPage;
 
   @override
   String toString() {
-    return 'CityTravelsState(pagedTravels: $pagedTravels)';
+    return 'CityTravelsState(travels: $travels, hasNextPage: $hasNextPage)';
   }
 
   @override
@@ -128,12 +134,16 @@ class _$CityTravelsStateImpl implements _CityTravelsState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$CityTravelsStateImpl &&
-            (identical(other.pagedTravels, pagedTravels) ||
-                other.pagedTravels == pagedTravels));
+            const DeepCollectionEquality().equals(other._travels, _travels) &&
+            const DeepCollectionEquality()
+                .equals(other.hasNextPage, hasNextPage));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, pagedTravels);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(_travels),
+      const DeepCollectionEquality().hash(hasNextPage));
 
   /// Create a copy of CityTravelsState
   /// with the given fields replaced by the non-null parameter values.
@@ -145,12 +155,16 @@ class _$CityTravelsStateImpl implements _CityTravelsState {
           this, _$identity);
 }
 
-abstract class _CityTravelsState implements CityTravelsState {
+abstract class _CityTravelsState extends CityTravelsState {
   const factory _CityTravelsState(
-      {required final PagedTravelsModel pagedTravels}) = _$CityTravelsStateImpl;
+      {final List<TravelModel> travels,
+      final dynamic hasNextPage}) = _$CityTravelsStateImpl;
+  const _CityTravelsState._() : super._();
 
   @override
-  PagedTravelsModel get pagedTravels;
+  List<TravelModel> get travels;
+  @override
+  dynamic get hasNextPage;
 
   /// Create a copy of CityTravelsState
   /// with the given fields replaced by the non-null parameter values.

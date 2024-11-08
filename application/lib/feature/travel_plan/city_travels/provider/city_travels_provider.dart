@@ -27,14 +27,13 @@ class CityTravels extends _$CityTravels {
 
     fetch();
 
-    return const CityTravelsState(pagedTravels: PagedTravelsModel());
+    return const CityTravelsState();
   }
 
   void fetch() async {
     final pagedTravels = await _fetch();
 
-    state = state.copyWith(
-        pagedTravels: state.pagedTravels.mergeWith(pagedTravels));
+    state = state.mergeWith(pagedTravels);
 
     _pageNumber ++;
   }

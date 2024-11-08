@@ -6,7 +6,7 @@ part of 'city_travels_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$cityTravelsHash() => r'555695d6ded15f43fa67c2d64d689c912e835250';
+String _$cityTravelsHash() => r'3ca4ee0981c1e226680f9f0ce53e60882e9db343';
 
 /// Copied from Dart SDK
 class _SystemHash {

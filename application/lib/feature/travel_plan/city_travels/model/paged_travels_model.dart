@@ -15,10 +15,4 @@ class PagedTravelsModel with _$PagedTravelsModel {
 
   factory PagedTravelsModel.fromJson(Map<String, dynamic> json) =>
       _$PagedTravelsModelFromJson(json);
-
-  PagedTravelsModel mergeWith(PagedTravelsModel pagedTravels) {
-    return PagedTravelsModel(
-        travels: [...travels, ...pagedTravels.travels],
-        hasNextPage: hasNextPage || pagedTravels.hasNextPage);
-  }
 }

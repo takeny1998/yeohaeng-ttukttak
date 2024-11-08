@@ -1,14 +1,17 @@
 import 'dart:math';
 
+import 'package:application_new/common/router/router_provider.dart';
 import 'package:application_new/feature/geography/model/city_model.dart';
 import 'package:application_new/feature/travel_plan/city_travels/model/paged_travels_model.dart';
 import 'package:application_new/feature/travel_plan/city_travels/provider/city_travels_provider.dart';
+import 'package:application_new/feature/travel_plan/city_travels/provider/city_travels_state.dart';
 import 'package:application_new/feature/travel_plan/travel_plan_recommend/component/travel_item.dart';
 import 'package:application_new/shared/model/travel/travel_model.dart';
 import 'package:application_new/shared/util/constants.dart';
 import 'package:application_new/shared/util/snap_scroll_physics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class SliverCityTravelPreview extends ConsumerWidget {
   final TravelModel travel;
@@ -26,8 +29,8 @@ class SliverCityTravelPreview extends ConsumerWidget {
     final titleStyle =
         textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w600);
 
-    final PagedTravelsModel(:travels) =
-        ref.watch(cityTravelsProvider(travel, city.id)).pagedTravels;
+    final CityTravelsState(:travels) =
+        ref.watch(cityTravelsProvider(travel, city.id));
 
     final Size(width: deviceWidth) = MediaQuery.of(context).size;
 
@@ -54,7 +57,10 @@ class SliverCityTravelPreview extends ConsumerWidget {
       Container(
           width: double.maxFinite,
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
-          child: FilledButton(onPressed: () {}, child: const Text('자세히 보기'))),
+          child: FilledButton(
+              onPressed: () => context
+                  .push('/travels/${travel.id}/cities/${city.id}/travels/'),
+              child: const Text('자세히 보기'))),
     ]));
   }
 }

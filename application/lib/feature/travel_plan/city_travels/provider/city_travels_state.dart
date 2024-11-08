@@ -6,7 +6,17 @@ part 'city_travels_state.freezed.dart';
 
 @freezed
 class CityTravelsState with _$CityTravelsState {
+  const CityTravelsState._();
+
   const factory CityTravelsState({
-    required PagedTravelsModel pagedTravels,
+    @Default([]) List<TravelModel> travels,
+    @Default(false) hasNextPage,
   }) = _CityTravelsState;
+
+  CityTravelsState mergeWith(PagedTravelsModel pagedTravels) {
+
+    return CityTravelsState(
+        travels: [...travels, ...pagedTravels.travels],
+        hasNextPage: hasNextPage || pagedTravels.hasNextPage);
+  }
 }

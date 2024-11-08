@@ -6,6 +6,7 @@ import 'package:application_new/feature/travel_plan/travel_plan_recommend/page/c
 import 'package:application_new/feature/travel_plan/travel_plan_recommend/page/sliver_city_travel_preview.dart';
 import 'package:application_new/feature/travel_plan/travel_plan_recommend/provider/travel_plan_recommend_provider.dart';
 import 'package:application_new/feature/travel_plan/travel_plan_recommend/provider/travel_plan_recommend_state.dart';
+import 'package:application_new/shared/component/sliver_infinite_list_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:visibility_detector/visibility_detector.dart';
@@ -87,25 +88,11 @@ class _TravelPlanRecommendPageState
               (context, index) => CityRecommendPlaceView(
                   placeRecommend: placeRecommends[index]),
               childCount: placeRecommends.length)),
-      if (hasNextPage)
-        SliverFillRemaining(
-            hasScrollBody: false,
-            child: VisibilityDetector(
-              key: const Key('key'),
-              onVisibilityChanged: (VisibilityInfo info) {
-                final isVisible = info.visibleFraction > 0.0;
-                if (!isVisible) return;
-
-                ref
-                    .read(travelPlanRecommendProvider(travelId, cityIndex)
-                        .notifier)
-                    .fetch();
-              },
-              child: Container(
-                constraints: const BoxConstraints(minHeight: 120.0),
-                child: const Center(child: CircularProgressIndicator()),
-              ),
-            )),
+      SliverInfiniteListIndicator(
+          hasNextPage: hasNextPage,
+          onVisible: ref
+              .read(travelPlanRecommendProvider(travelId, cityIndex).notifier)
+              .fetch)
     ]);
   }
 }
