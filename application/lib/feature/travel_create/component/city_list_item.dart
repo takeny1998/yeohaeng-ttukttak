@@ -1,8 +1,6 @@
 import 'package:application_new/feature/geography/model/city_model.dart';
 import 'package:application_new/feature/geography/model/region_model.dart';
-import 'package:application_new/feature/travel_create/provider/travel_create_state.dart';
 import 'package:application_new/shared/model/image_model.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -12,16 +10,16 @@ class CityListItem extends ConsumerWidget {
   final bool isSelected;
   final VoidCallback onSelect;
 
-  const CityListItem(
-      {super.key,
-      required this.region,
-      required this.city,
-      required this.isSelected,
-      required this.onSelect});
+  const CityListItem({
+    super.key,
+    required this.region,
+    required this.city,
+    required this.isSelected,
+    required this.onSelect,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
 
@@ -41,7 +39,7 @@ class CityListItem extends ConsumerWidget {
       contentPadding: const EdgeInsets.symmetric(horizontal: 24),
       title: Text(city.name, style: titleStyle),
       subtitle: Text(
-        '${region.name} · ${'korea'.tr()}',
+        region.name,
         style: textTheme.bodyMedium?.copyWith(color: colorScheme.secondary),
       ),
       value: isSelected,

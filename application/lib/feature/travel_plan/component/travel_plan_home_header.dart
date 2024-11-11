@@ -1,7 +1,5 @@
-import 'package:application_new/common/util/translation.dart';
 import 'package:application_new/common/util/translation_util.dart';
 import 'package:application_new/shared/model/travel/travel_model.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class TravelPlanHomeHeader extends StatelessWidget {

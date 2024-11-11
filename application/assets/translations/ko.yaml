@@ -83,7 +83,6 @@ message:
 
 next: 다음으로
 korea: 대한민국
-me: 본인
 
 null: ''
 
@@ -91,6 +90,7 @@ word:
   travel: 여행
   reset_camera: 카메라 초기화
   to_next: 다음으로
+  me: 본인
 
 enum:
   TravelCompanionType:

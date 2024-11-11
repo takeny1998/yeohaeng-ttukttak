@@ -1,7 +1,6 @@
 import 'package:application_new/common/util/translation_util.dart';
 import 'package:application_new/shared/component/travel_companion_item.dart';
 import 'package:application_new/shared/model/travel/travel_model.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class TravelHeader extends StatelessWidget {
@@ -14,11 +13,11 @@ class TravelHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
 
     final titleStyle =
         textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w600);
+
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -42,7 +41,7 @@ class TravelHeader extends StatelessWidget {
             id: _travel.id,
             gender: _travel.gender,
             ageGroup: _travel.ageGroup,
-            relationShip: 'me'.tr(),
+            relationShip: TranslationUtil.word('me'),
           ),
           for (final companion in _travel.companions)
             TravelerItem.companion(travelCompanion: companion),

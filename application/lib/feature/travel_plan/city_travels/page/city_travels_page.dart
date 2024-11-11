@@ -1,18 +1,13 @@
-import 'package:application_new/common/router/router_provider.dart';
 import 'package:application_new/common/util/iterable_utils.dart';
-import 'package:application_new/common/util/translation.dart';
 import 'package:application_new/common/util/translation_util.dart';
 import 'package:application_new/feature/geography/model/city_model.dart';
 import 'package:application_new/feature/travel_plan/city_travels/provider/city_travels_provider.dart';
 import 'package:application_new/feature/travel_plan/city_travels/provider/city_travels_state.dart';
 import 'package:application_new/feature/travel_plan/travel_plan_recommend/component/travel_item.dart';
-import 'package:application_new/shared/component/infinite_list_indicator.dart';
 import 'package:application_new/shared/component/show_modal_content_sheet.dart';
 import 'package:application_new/shared/component/sliver_infinite_list_indicator.dart';
 import 'package:application_new/shared/model/travel/travel_model.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/semantics.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CityTravelsPage extends ConsumerStatefulWidget {

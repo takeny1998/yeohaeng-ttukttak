@@ -1,11 +1,8 @@
 import 'package:application_new/common/util/string_extension.dart';
-import 'package:application_new/common/util/translation.dart';
 import 'package:application_new/common/util/translation_util.dart';
 import 'package:application_new/feature/travel_plan/city_place_pois/provider/city_place_pois_state.dart';
 import 'package:application_new/shared/component/outlined_icon_button.dart';
 import 'package:application_new/shared/component/small_chip.dart';
-import 'package:application_new/shared/util/constants.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:extended_wrap/extended_wrap.dart';
 import 'package:flutter/material.dart';
 

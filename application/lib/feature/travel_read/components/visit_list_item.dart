@@ -4,7 +4,6 @@ import 'package:application_new/feature/travel_read/components/visit_order_item.
 import 'package:application_new/feature/travel_read/model/travel_visit_model.dart';
 import 'package:application_new/shared/component/small_chip.dart';
 import 'package:application_new/shared/model/place_model.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

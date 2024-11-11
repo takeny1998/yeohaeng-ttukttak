@@ -1,3 +1,4 @@
+import 'package:application_new/common/util/translation_util.dart';
 import 'package:application_new/feature/geography/model/city_model.dart';
 import 'package:application_new/shared/model/member_model.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -41,7 +42,7 @@ class TravelModel with _$TravelModel {
   }
 
   String get formattedName {
-    return '${cities.map((city) => city.name).join(' · ')} ${'word.travel'.tr()}';
+    return '${cities.map((city) => city.name).join(' · ')} ${TranslationUtil.word('travel')}';
   }
 }
 

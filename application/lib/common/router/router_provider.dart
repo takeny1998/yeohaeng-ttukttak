@@ -9,7 +9,6 @@ import 'package:application_new/feature/travel_read/page/travel_read_page.dart';
 import 'package:application_new/feature/travel_list/page/travel_list_page.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_page.dart';
 import 'package:application_new/shared/provider/travel_detail_provider.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';

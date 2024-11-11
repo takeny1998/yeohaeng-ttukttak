@@ -78,7 +78,7 @@ final class CitySearchDelegate extends SearchDelegate<CityModel> {
               TextSpan(text: otherName)
             ])),
             subtitle: Text(
-              '${region.name} · ${'korea'.tr()}',
+              region.name,
               style:
                   textTheme.bodyMedium?.copyWith(color: colorScheme.secondary),
             ));
