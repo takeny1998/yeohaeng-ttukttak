@@ -10,18 +10,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'visit_rating_item.dart';
 
-class VisitItem extends ConsumerWidget {
+class VisitListItem extends ConsumerWidget {
   final List<PlaceModel> places;
   final TravelVisitModel visit;
 
-  const VisitItem({super.key, required this.places, required this.visit});
+  const VisitListItem({super.key, required this.places, required this.visit});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final colorScheme = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
+    final ThemeData(:colorScheme, :textTheme) = Theme.of(context);
 
-    final trKey = baseKey('travel.travel_detail');
+    final translator = TranslationUtil.widget(context);
+
     final place = places.firstWhere((e) => e.id == visit.placeId);
 
     final PlaceAddress(:road, :lotNumber) = place.address;
@@ -31,7 +31,7 @@ class VisitItem extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (visit.images.isNotEmpty)...[
+        if (visit.images.isNotEmpty) ...[
           SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 24.0),
               scrollDirection: Axis.horizontal,
@@ -82,7 +82,8 @@ class VisitItem extends ConsumerWidget {
                         spacing: 6.0,
                         children: [
                           for (final categoryType in place.categoryTypes)
-                            SmallChip(label: TranslationUtil.enumValue(categoryType))
+                            SmallChip(
+                                label: TranslationUtil.enumValue(categoryType))
                         ],
                       ),
                       Container(
@@ -95,7 +96,7 @@ class VisitItem extends ConsumerWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(trKey('ask_reason').tr(),
+                            Text(translator.key('ask_reason'),
                                 style: textTheme.labelMedium),
                             const SizedBox(height: 2.0),
                             Text(TranslationUtil.enumValue(visit.reasonType),

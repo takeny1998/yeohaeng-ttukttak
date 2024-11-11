@@ -48,33 +48,38 @@ widget:
     travels_of_city: '{city_name}의 여행기 목록'
     view_detail: View all of travels in {city_name}
 
-message:
-  travel_created: The travel has been created successfully.
-
-travel:
-  travel_detail:
+  VisitListItem:
     ask_reason: Why did you visit this place?
+
+  VisitRatingItem:
     ask_satisfaction: Were you satisfied with this visit?
     ask_revisit: Want to revisit this place?
     ask_recommend: Want to recommend others to visit?
 
-travel_plan_recommend:
-  label_place:
-    nature: "Heal in nature! A collection of recommended natural tourist spots."
-    tourism: "The essence of travel is in famous places—here's a list of popular tourist attractions."
-    culture: "Immerse yourself in cultural life. A collection of recommended cultural facilities."
-    commerce: "Travel is all about flexibility! A list of recommended commercial facilities."
-    transport: "For convenient travel! A list of transportation facilities."
-    dining: "What to eat today? A list of recommended restaurants/cafés."
-    lodging: "Need a comfortable place to rest? A list of recommended accommodations."
+    rating:
+      satisfaction:
+        1: It was an experience that fell far short of my expectations.
+        2: Overall, it was not satisfying.
+        3: It was an average experience that was neither bad nor good.
+        4: Overall, it was a good experience and I’m satisfied.
+        5: It was an excellent experience that exceeded my expectations!
 
-  label_travel: "How have others traveled? Explore travel stories with similar conditions."
+      revisit:
+        1: I have no intention of revisiting at all.
+        2: I’ll look for other places.
+        3: I need to think about it.
+        4: I’d like to come back.
+        5: I definitely want to revisit!
 
-  add_to_plan: Add to your plan
+      recommend:
+        1: I definitely wouldn't recommend it.
+        2: I would suggest other places.
+        3: If you have time, it's worth a visit.
+        4: I would recommend it.
+        5: I definitely want to recommend it!
 
-city_place_pois:
-  sort_by: Sort By
-  all: All
+message:
+  travel_created: The travel has been created successfully.
 
 next: Next
 korea: Republic of Korea
@@ -85,28 +90,6 @@ null: ''
 word:
   travel: Travel
   reset_camera: Reset camera
-
-rating:
-  satisfaction:
-    1: It was an experience that fell far short of my expectations.
-    2: Overall, it was not satisfying.
-    3: It was an average experience that was neither bad nor good.
-    4: Overall, it was a good experience and I’m satisfied.
-    5: It was an excellent experience that exceeded my expectations!
-
-  revisit:
-    1: I have no intention of revisiting at all.
-    2: I’ll look for other places.
-    3: I need to think about it.
-    4: I’d like to come back.
-    5: I definitely want to revisit!
-
-  recommend:
-    1: I definitely wouldn't recommend it.
-    2: I would suggest other places.
-    3: If you have time, it's worth a visit.
-    4: I would recommend it.
-    5: I definitely want to recommend it!
 
 enum:
   TravelCompanionType:

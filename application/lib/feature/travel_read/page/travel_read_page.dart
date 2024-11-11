@@ -1,4 +1,4 @@
-import 'package:application_new/feature/travel_read/components/visit_item.dart';
+import 'package:application_new/feature/travel_read/components/visit_list_item.dart';
 import 'package:application_new/feature/travel_read/components/visits_map_item.dart';
 import 'package:application_new/shared/model/travel/travel_detail_model.dart';
 import 'package:application_new/feature/travel_read/model/travel_visit_model.dart';
@@ -18,12 +18,12 @@ class TravelReadPage extends ConsumerStatefulWidget {
       : _travelId = travelId;
 
   @override
-  ConsumerState createState() => _TravelDetailPageState();
+  ConsumerState createState() => _TravelReadPageState();
 }
 
-class _TravelDetailPageState extends ConsumerState<TravelReadPage> {
+class _TravelReadPageState extends ConsumerState<TravelReadPage> {
+
   final ScrollController scrollController = ScrollController();
-  final List<double> itemOffsets = List.generate(100, (_) => 0);
 
   double initOffset = 0.0;
 
@@ -142,7 +142,7 @@ class _TravelDetailPageState extends ConsumerState<TravelReadPage> {
                     MetaData(
                         behavior: HitTestBehavior.translucent,
                         metaData: visit,
-                        child: VisitItem(places: places, visit: visit)),
+                        child: VisitListItem(places: places, visit: visit)),
                   const SizedBox(height: 24.0),
                 ])),
           ],

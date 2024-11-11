@@ -1,5 +1,4 @@
-import 'package:application_new/common/util/translation.dart';
-import 'package:easy_localization/easy_localization.dart';
+import 'package:application_new/common/util/translation_util.dart';
 import 'package:flutter/material.dart';
 
 class VisitRatingItem extends StatelessWidget {
@@ -34,7 +33,7 @@ class VisitRatingItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final trKey = baseKey('travel.travel_detail');
+    final translator = TranslationUtil.widget(context);
 
     final labelStyle =
         textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600);
@@ -42,17 +41,15 @@ class VisitRatingItem extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          trKey('ask_$_name'),
-          style: textTheme.labelMedium,
-        ).tr(),
+        Text(translator.key('ask_$_name'), style: textTheme.labelMedium),
         const SizedBox(height: 4.0),
         Row(
           children: [
             _buildIcon(),
             const SizedBox(width: 8.0),
             Flexible(
-                child: Text('rating.$_name.$_rating'.tr(), style: labelStyle)),
+                child: Text(translator.key('rating.$_name.$_rating'),
+                    style: labelStyle)),
           ],
         ),
       ],
