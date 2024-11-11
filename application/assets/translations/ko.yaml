@@ -1,22 +1,28 @@
-travel:
-  select_date:
-    ask_date: 언제 여행을 떠나시나요?
-    require_date: 여행 기간을 선택해 주세요.
-    display_select_date: '{start} - {end} ({nights}박 {days}일)'
-
-  select_detail:
-    ask_companion_types: 누구와 함께 여행할 예정인가요?
-    hint_companion_types: (최소 1개, 최대 3개 선택 가능)
-    ask_motivation_types: 여행 목적은 무엇인가요?
-    hint_motivation_types: (최소 1개, 최대 5개 선택 가능)
-    require_detail: 여행 상세 정보를 모두 선택해 주세요.
-
-  select_city:
+widget:
+  SelectTravelCityForm:
     ask_city: 어느 도시로 여행할 예정인가요?
-    require_select: 최소 1개의 도시를 선택해 주세요
-    display_select: "도시 {}개 선택됨"
+    show_selected_city:
+      zero: 최소 1개의 도시를 선택해 주세요
+      other: '도시 {}개 선택됨'
 
-  created: 여행이 성공적으로 생성되었습니다.
+  SelectTravelDateForm:
+    ask_date: 언제 여행을 떠나시나요?
+    require_select_date: 여행 기간을 선택해 주세요.
+    show_selected_date:
+      zero: '{start} (당일치기)'
+      other: '{start} - {end} ({}박 {days}일)'
+
+  SelectTravelDetailForm:
+    ask_companion_types: 누구와 함께 여행할 예정인가요?
+    hint_select_companion_types: (최소 1개, 최대 3개 선택 가능)
+    ask_motivation_types: 여행 목적은 무엇인가요?
+    hint_select_motivation_types: (최소 1개, 최대 5개 선택 가능)
+    require_select_detail: 여행 상세 정보를 모두 선택해 주세요.
+
+message:
+  travel_created: 여행이 성공적으로 생성되었습니다.
+
+travel:
 
   travel_detail:
     ask_reason: 이곳을 방문하게 된 이유는 무엇인가요?
@@ -53,6 +59,7 @@ null: ''
 word:
   travel: 여행
   reset_camera: 카메라 초기화
+  to_next: 다음으로
 
 rating:
   satisfaction:
