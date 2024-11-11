@@ -1,4 +1,3 @@
-import 'package:application_new/common/util/translation.dart';
 import 'package:application_new/common/util/translation_util.dart';
 import 'package:application_new/feature/travel_read/components/visit_order_item.dart';
 import 'package:application_new/feature/travel_read/model/travel_visit_model.dart';

@@ -42,5 +42,4 @@ final class WidgetTranslator {
     return 'widget.${context.widget.runtimeType}.$key'.plural(value, namedArgs: args);
   }
 
-
 }
