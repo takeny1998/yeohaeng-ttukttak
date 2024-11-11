@@ -1,11 +1,7 @@
-import 'dart:convert';
-
-import 'package:application_new/common/util/string_extension.dart';
-import 'package:application_new/common/util/translation.dart';
+import 'package:application_new/common/util/translation_util.dart';
 import 'package:application_new/feature/travel_plan/city_place_pois/component/place_metric_list_item.dart';
 import 'package:application_new/feature/travel_plan/city_place_pois/provider/city_place_pois_state.dart';
 import 'package:application_new/feature/travel_plan/travel_plan_recommend/model/place_recommend_model.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class CityRecommendPlaceView extends StatelessWidget {
@@ -22,10 +18,11 @@ class CityRecommendPlaceView extends StatelessWidget {
       return const SizedBox(height: 1.0);
     }
 
-    final trKey = baseKey('travel_plan_recommend');
+    final translator = TranslationUtil.widget(context);
 
     const labelStyle = TextStyle(fontSize: 21.0, fontWeight: FontWeight.w600);
-    final labelText = trKey('label_place.${categoryType.name}').tr();
+    final labelText =
+        translator.key('show_recommended_category_type.${categoryType.name}');
 
     return Column(
         mainAxisSize: MainAxisSize.min,

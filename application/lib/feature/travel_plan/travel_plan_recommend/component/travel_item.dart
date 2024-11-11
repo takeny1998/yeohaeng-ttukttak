@@ -1,9 +1,7 @@
-import 'package:application_new/common/util/translation.dart';
 import 'package:application_new/common/util/translation_util.dart';
 import 'package:application_new/shared/component/small_chip.dart';
 import 'package:application_new/shared/component/travel_companion_avatar_item.dart';
 import 'package:application_new/shared/model/travel/travel_model.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:extended_wrap/extended_wrap.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -23,7 +21,8 @@ class TravelItem extends StatelessWidget {
     final travelDateStyle =
         TextStyle(fontSize: 13.0, color: colorScheme.onSurfaceVariant);
 
-    final trKey = baseKey('travel_plan_recommend');
+    final translator = TranslationUtil.widget(context);
+
 
     return Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -89,8 +88,8 @@ class TravelItem extends StatelessWidget {
                         textStyle: const TextStyle(
                             fontSize: 12.0, fontWeight: FontWeight.w600),
                         backgroundColor: colorScheme.surface),
-                    child: Text(trKey('view_detail')).tr())),
-            const SizedBox(width: 16.0),
+                    child: Text(translator.key('view_detail')))),
+            const SizedBox(width: 8.0),
             Expanded(
               flex: 1,
               child: OutlinedButton.icon(
@@ -100,7 +99,7 @@ class TravelItem extends StatelessWidget {
                     backgroundColor: colorScheme.surface),
                 onPressed: () {},
                 icon: const Icon(Icons.bookmark_outline, size: 18.0),
-                label: Text(trKey('save').tr()),
+                label: Text(translator.key('save')),
               ),
             ),
           ]),

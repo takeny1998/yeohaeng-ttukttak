@@ -9,7 +9,6 @@ import 'package:application_new/feature/travel_plan/travel_plan_recommend/provid
 import 'package:application_new/shared/component/sliver_infinite_list_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:visibility_detector/visibility_detector.dart';
 
 class TravelPlanRecommendPage extends ConsumerStatefulWidget {
   final int _travelId;

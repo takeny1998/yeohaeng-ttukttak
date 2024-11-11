@@ -1,8 +1,7 @@
 import 'dart:math';
 
-import 'package:application_new/common/router/router_provider.dart';
+import 'package:application_new/common/util/translation_util.dart';
 import 'package:application_new/feature/geography/model/city_model.dart';
-import 'package:application_new/feature/travel_plan/city_travels/model/paged_travels_model.dart';
 import 'package:application_new/feature/travel_plan/city_travels/provider/city_travels_provider.dart';
 import 'package:application_new/feature/travel_plan/city_travels/provider/city_travels_state.dart';
 import 'package:application_new/feature/travel_plan/travel_plan_recommend/component/travel_item.dart';
@@ -36,11 +35,15 @@ class SliverCityTravelPreview extends ConsumerWidget {
 
     final itemExtent = min(Constants.maxItemWidth, deviceWidth);
 
+    final translator = TranslationUtil.widget(context);
+
     return SliverToBoxAdapter(
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24.0),
-        child: Text('${city.name} 여행기 모음', style: titleStyle),
+        child: Text(
+            translator.key('travels_of_city', args: {'city_name': city.name}),
+            style: titleStyle),
       ),
       const SizedBox(height: 24.0),
       SingleChildScrollView(

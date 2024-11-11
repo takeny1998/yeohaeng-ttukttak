@@ -19,11 +19,39 @@ widget:
     hint_select_motivation_types: (최소 1개, 최대 5개 선택 가능)
     require_select_detail: 여행 상세 정보를 모두 선택해 주세요.
 
+  CityPlacePoisPage:
+    require_select_sort_type: 정렬 조건을 선택하세요.
+    all_category_type: 전체
+
+  PlaceMetricItem:
+    add_to_plan: 일정에 추가
+
+  TravelItem:
+    view_detail: 여행기 살펴보기
+    save: 저장하기
+
+  CityRecommendPlaceView:
+    show_recommended_category_type:
+      nature: '자연 속에서 힐링하세요!\n추천하는 자연 관광지 모음'
+      tourism: '여행의 묘미는 핫플에서,\n추천 관광 명소 모음'
+      culture: '교양있는 당신을 위해,\n추천하는 문화시설 모음'
+      commerce: '여행은 역시 플렉스!\n추천하는 상업시설 모음'
+      transport: '편리한 이동을 위해!\n교통시설 목록'
+      dining: '오늘 뭐 먹지? 추천하는\n식당/카페 목록'
+      lodging: '편안한 휴식이 필요하신가요?\n추천 숙소 목록'
+
+  SliverCityPoiPreview:
+    pois_of_city: '{city_name}의 관광 명소 목록'
+    view_detail: 모든 관광 명소 보기
+
+  SliverCityTravelPreview:
+    travels_of_city: '{city_name}의 여행기 목록'
+    view_detail: 모든 여행기 보기
+
 message:
   travel_created: 여행이 성공적으로 생성되었습니다.
 
 travel:
-
   travel_detail:
     ask_reason: 이곳을 방문하게 된 이유는 무엇인가요?
     ask_satisfaction: 이번 방문에 만족하셨나요?
@@ -45,10 +73,6 @@ travel_plan_recommend:
   add_to_plan: 일정에 추가하기
   view_detail: 자세히 보기
   save: 저장
-
-city_place_pois:
-  sort_by: 정렬 조건을 선택하세요.
-  all: 전체
 
 next: 다음으로
 korea: 대한민국

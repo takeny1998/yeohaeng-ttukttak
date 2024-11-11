@@ -1,10 +1,8 @@
 import 'package:application_new/common/util/string_extension.dart';
-import 'package:application_new/common/util/translation.dart';
 import 'package:application_new/common/util/translation_util.dart';
 import 'package:application_new/feature/travel_plan/city_place_pois/provider/city_place_pois_state.dart';
 import 'package:application_new/shared/component/outlined_icon_button.dart';
 import 'package:application_new/shared/component/small_chip.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:extended_wrap/extended_wrap.dart';
 import 'package:flutter/material.dart';
 
@@ -19,13 +17,13 @@ class PlaceMetricItem extends StatelessWidget {
 
     final PlaceMetricModel(:place, :rating) = placeMetric;
 
+    final translator = TranslationUtil.widget(context);
+
     final nameStyle =
         textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w600);
 
     final addrStyle = textTheme.labelMedium?.copyWith(
         color: colorScheme.onSurfaceVariant, fontWeight: FontWeight.w600);
-
-    final trKey = baseKey('travel_plan_recommend');
 
     var buttonStyle = OutlinedButton.styleFrom(
         textStyle: const TextStyle(fontSize: 12.0, fontWeight: FontWeight.w600),
@@ -69,7 +67,7 @@ class PlaceMetricItem extends StatelessWidget {
               style: buttonStyle,
               icon: const Icon(Icons.add_location_alt_outlined,
                   size: 18.0),
-              label: const Text('일정에 추가')),
+              label: Text(translator.key('add_to_plan'))),
         ),
         const SizedBox(width: 8.0),
         const OutlinedIconButton(

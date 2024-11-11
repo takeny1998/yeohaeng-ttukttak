@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:application_new/common/util/translation.dart';
 import 'package:application_new/common/util/translation_util.dart';
 import 'package:application_new/feature/travel_plan/city_place_pois/component/place_metric_list_item.dart';
 import 'package:application_new/feature/travel_plan/city_place_pois/component/city_places_map.dart';
@@ -14,7 +13,6 @@ import 'package:application_new/shared/component/sliver_infinite_list_indicator.
 import 'package:application_new/shared/model/place_model.dart';
 import 'package:application_new/shared/util/constants.dart';
 import 'package:application_new/shared/util/snap_scroll_physics.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:visibility_detector/visibility_detector.dart';
@@ -39,8 +37,6 @@ class _CityPlaceListPageState extends ConsumerState<CityPlacePoisPage> {
   static const double scrollThreshold = 240.0;
 
   final Set<PlaceCategoryType> selectedTypes = {};
-
-  final trKey = baseKey('city_place_pois');
 
   @override
   void initState() {
@@ -67,6 +63,8 @@ class _CityPlaceListPageState extends ConsumerState<CityPlacePoisPage> {
   @override
   Widget build(BuildContext context) {
     final ThemeData(:textTheme, :colorScheme) = Theme.of(context);
+
+    final translator = TranslationUtil.widget(context);
 
     final cityId = widget.cityId;
 
@@ -222,12 +220,15 @@ class _CityPlaceListPageState extends ConsumerState<CityPlacePoisPage> {
   }
 
   SingleChildScrollView buildSelectTypeView() {
+
+    final translator = TranslationUtil.widget(context);
+    
     return SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(children: [
           const SizedBox(width: 24.0),
           FilterChip(
-              label: Text(trKey('all').tr()),
+              label: Text(translator.key('all_category_type')),
               selected: selectedTypes.isEmpty,
               onSelected: (isSelected) {
                 if (!isSelected) return;
@@ -311,7 +312,8 @@ class _CityPlaceListPageState extends ConsumerState<CityPlacePoisPage> {
 
   Future<PlaceSortType?> showSortTypeSelectSheet() async {
     final ThemeData(:textTheme, :colorScheme) = Theme.of(context);
-
+    final translator = TranslationUtil.widget(context);
+    
     return showModalBottomSheet<PlaceSortType>(
         context: context,
         isScrollControlled: true,
@@ -321,7 +323,7 @@ class _CityPlaceListPageState extends ConsumerState<CityPlacePoisPage> {
                 child: Column(mainAxisSize: MainAxisSize.min, children: [
                   Row(children: [
                     const SizedBox(width: 24.0),
-                    Text(trKey('sort_by').tr(),
+                    Text(translator.key('require_select_sort_type'),
                         style: const TextStyle(
                             fontSize: 21.0, fontWeight: FontWeight.w600))
                   ]),

@@ -1,10 +1,10 @@
 import 'dart:math';
 
+import 'package:application_new/common/util/translation_util.dart';
 import 'package:application_new/feature/geography/model/city_model.dart';
 import 'package:application_new/feature/travel_plan/city_place_pois/provider/city_place_pois_provider.dart';
 import 'package:application_new/feature/travel_plan/city_place_pois/provider/city_place_pois_state.dart';
 import 'package:application_new/feature/travel_plan/travel_plan_recommend/component/place_metric_item.dart';
-import 'package:application_new/shared/util/constants.dart';
 import 'package:application_new/shared/util/snap_scroll_physics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -30,11 +30,13 @@ class SliverCityPoiPreview extends ConsumerWidget {
     const itemWidth = 240.0;
     const paddingWidth = 24.0;
 
+    final translator = TranslationUtil.widget(context);
+
     return SliverToBoxAdapter(
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24.0),
-            child: Text('${city.name} 관광 명소 모음', style: titleStyle),
+            child: Text(translator.key('pois_of_city', args: { 'city_name': city.name}), style: titleStyle),
           ),
           const SizedBox(height: 16.0),
           SingleChildScrollView(
@@ -58,7 +60,7 @@ class SliverCityPoiPreview extends ConsumerWidget {
               child: FilledButton(
                   onPressed: () =>
                       context.push('/cities/${city.id}/places/pois'),
-                  child: const Text('자세히 보기'))),
+                  child: Text(translator.key('view_detail')))),
         ]),
     );
   }
