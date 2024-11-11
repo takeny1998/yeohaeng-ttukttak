@@ -1,7 +1,7 @@
+import 'package:application_new/common/util/date_util.dart';
 import 'package:application_new/common/util/translation_util.dart';
 import 'package:application_new/feature/geography/model/city_model.dart';
 import 'package:application_new/shared/model/member_model.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -29,17 +29,8 @@ class TravelModel with _$TravelModel {
   factory TravelModel.fromJson(Map<String, dynamic> json) =>
       _$TravelModelFromJson(json);
 
-  String get formattedDate {
-    String formatDate(DateTime date) => DateFormat.yMMMd().format(date);
-
-    if (DateUtils.isSameMonth(startedOn, endedOn)) {
-      return '${formatDate(startedOn)} ~ ${DateFormat.d().format(endedOn)}';
-    } else if (startedOn.year == endedOn.year) {
-      return '${formatDate(startedOn)} ~ ${DateFormat.MMMd().format(endedOn)}';
-    } else {
-      return '${formatDate(startedOn)} ~ ${formatDate(endedOn)}';
-    }
-  }
+  String get formattedDate =>
+      DateUtil.formatRange(DateTimeRange(start: startedOn, end: endedOn));
 
   String get formattedName {
     return '${cities.map((city) => city.name).join(' · ')} ${TranslationUtil.word('travel')}';

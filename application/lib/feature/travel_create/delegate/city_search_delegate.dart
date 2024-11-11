@@ -1,7 +1,6 @@
 import 'package:application_new/feature/geography/model/city_model.dart';
 import 'package:application_new/feature/geography/model/region_model.dart';
 import 'package:application_new/shared/model/image_model.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 final class CitySearchDelegate extends SearchDelegate<CityModel> {
