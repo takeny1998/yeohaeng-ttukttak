@@ -1,26 +1,25 @@
-import 'package:application_new/common/util/translation.dart';
+import 'package:application_new/common/util/translation_util.dart';
 import 'package:application_new/feature/travel_read/components/visit_order_item.dart';
 import 'package:application_new/feature/travel_read/model/travel_visit_model.dart';
 import 'package:application_new/shared/component/small_chip.dart';
 import 'package:application_new/shared/model/place_model.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'visit_rating_item.dart';
 
-class VisitItem extends ConsumerWidget {
+class VisitListItem extends ConsumerWidget {
   final List<PlaceModel> places;
   final TravelVisitModel visit;
 
-  const VisitItem({super.key, required this.places, required this.visit});
+  const VisitListItem({super.key, required this.places, required this.visit});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final colorScheme = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
+    final ThemeData(:colorScheme, :textTheme) = Theme.of(context);
 
-    final trKey = baseKey('travel.travel_detail');
+    final translator = TranslationUtil.widget(context);
+
     final place = places.firstWhere((e) => e.id == visit.placeId);
 
     final PlaceAddress(:road, :lotNumber) = place.address;
@@ -30,7 +29,7 @@ class VisitItem extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (visit.images.isNotEmpty)...[
+        if (visit.images.isNotEmpty) ...[
           SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 24.0),
               scrollDirection: Axis.horizontal,
@@ -80,8 +79,9 @@ class VisitItem extends ConsumerWidget {
                       Wrap(
                         spacing: 6.0,
                         children: [
-                          for (final category in place.categoryTypes)
-                            SmallChip(label: enumKey(category).tr())
+                          for (final categoryType in place.categoryTypes)
+                            SmallChip(
+                                label: TranslationUtil.enumValue(categoryType))
                         ],
                       ),
                       Container(
@@ -94,10 +94,10 @@ class VisitItem extends ConsumerWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(trKey('ask_reason').tr(),
+                            Text(translator.key('ask_reason'),
                                 style: textTheme.labelMedium),
                             const SizedBox(height: 2.0),
-                            Text(enumKey(visit.reasonType).tr(),
+                            Text(TranslationUtil.enumValue(visit.reasonType),
                                 style: textTheme.bodyMedium
                                     ?.copyWith(fontWeight: FontWeight.w600)),
                           ],

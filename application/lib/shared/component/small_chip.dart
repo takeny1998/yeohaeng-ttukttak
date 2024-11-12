@@ -5,6 +5,7 @@ class SmallChip extends StatelessWidget {
 
   final Widget? leading;
 
+  final Color? borderColor;
   final Color? backgroundColor;
   final Color? foregroundColor;
 
@@ -13,7 +14,8 @@ class SmallChip extends StatelessWidget {
       required this.label,
       this.leading,
       this.backgroundColor,
-      this.foregroundColor});
+      this.foregroundColor,
+      this.borderColor});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +27,8 @@ class SmallChip extends StatelessWidget {
         visualDensity: VisualDensity.compact,
         padding: const EdgeInsets.symmetric(horizontal: 6.0, vertical: 0.0),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.0)),
-        side: BorderSide.none,
+        side: BorderSide(
+            color: borderColor ?? backgroundColor ?? Colors.transparent),
         labelStyle: textTheme.labelMedium?.copyWith(
           color: foregroundColor ?? colorScheme.primary,
           fontWeight: FontWeight.w600,

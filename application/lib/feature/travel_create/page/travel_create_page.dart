@@ -1,9 +1,8 @@
 import 'package:application_new/common/event/event.dart';
-import 'package:application_new/feature/travel_create/provider/travel_create_state.dart';
+import 'package:application_new/common/util/translation_util.dart';
 import 'package:application_new/feature/travel_create/page/select_travel_city_form.dart';
 import 'package:application_new/feature/travel_create/page/select_travel_date_form.dart';
 import 'package:application_new/feature/travel_create/page/select_travel_detail_form.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -37,7 +36,7 @@ class _CreateTravelPageState extends ConsumerState<TravelCreatePage> {
   Widget build(BuildContext context) {
     ref.listen(travelCreateProvider, (prev, next) {
       if (next.isSubmitted) {
-        eventController.add(MessageEvent('travel.created'.tr()));
+        eventController.add(MessageEvent(TranslationUtil.message('travel_created')));
         context.pop();
       }
 

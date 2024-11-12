@@ -1,143 +1,175 @@
-travel:
-  select_date:
-    ask_date: When are you going to travel?
-    require_date: Please select a travel period
-    display_select_date: '{start} - {end} ({days} days)'
-
-  select_detail:
-    ask_companion_types: Who will you travel with?
-    hint_companion_types: (Select at least one, up to three)
-    ask_motivation_types: What's the purpose of your trip?
-    hint_motivation_types: (Select at least one, up to five)
-    require_detail: Please select all of your trip details.
-
-  select_city:
+widget:
+  SelectTravelCityForm:
     ask_city: Which cities are you traveling to?
-    require_select: Please select at least one city
-    display_select: "{} cities selected"
+    show_selected_city:
+      zero: Please select at least one city
+      other: '{} cities selected'
 
-  created: The travel has been created successfully.
+  SelectTravelDateForm:
+    ask_date: When are you going to travel?
+    require_select_date: Please select a travel period
+    show_selected_date:
+      zero: '{start} (day trip)'
+      other: '{start} - {end} ({days} days)'
 
-  travel_detail:
+  SelectTravelDetailForm:
+    ask_companion_types: Who will you travel with?
+    hint_select_companion_types: (Select at least one, up to three)
+    ask_motivation_types: What's the purpose of your trip?
+    hint_select_motivation_types: (Select at least one, up to five)
+    require_select_detail: Please select all of your trip details.
+
+  CityPlacePoisPage:
+    require_select_sort_type: Please select sorting criteria.
+    all_category_type: All
+
+  PlaceMetricItem:
+    add_to_plan: Add to your plan
+
+  TravelItem:
+    view_detail: Read travels
+    save: Save
+
+  CityRecommendPlaceView:
+    show_recommended_category_type:
+      nature: "Heal in nature! A collection of recommended natural tourist spots."
+      tourism: "The essence of travel is in famous places—here's a list of popular tourist attractions."
+      culture: "Immerse yourself in cultural life. A collection of recommended cultural facilities."
+      commerce: "Travel is all about flexibility! A list of recommended commercial facilities."
+      transport: "For convenient travel! A list of transportation facilities."
+      dining: "What to eat today? A list of recommended restaurants/cafés."
+      lodging: "Need a comfortable place to rest? A list of recommended accommodations."
+
+  SliverCityPoiPreview:
+    city_pois: Point of interests in {city_name}
+    view_detail: View all point of interest.
+
+  SliverCityTravelPreview:
+    travels_of_city: '{city_name}의 여행기 목록'
+    view_detail: View all of travels in {city_name}
+
+  VisitListItem:
     ask_reason: Why did you visit this place?
+
+  VisitRatingItem:
     ask_satisfaction: Were you satisfied with this visit?
     ask_revisit: Want to revisit this place?
     ask_recommend: Want to recommend others to visit?
 
-travel_plan_recommend:
-  label_place:
-    nature: "Heal in nature! A collection of recommended natural tourist spots."
-    tourism: "The essence of travel is in famous places—here's a list of popular tourist attractions."
-    culture: "Immerse yourself in cultural life. A collection of recommended cultural facilities."
-    commerce: "Travel is all about flexibility! A list of recommended commercial facilities."
-    transport: "For convenient travel! A list of transportation facilities."
-    dining: "What to eat today? A list of recommended restaurants/cafés."
-    lodging: "Need a comfortable place to rest? A list of recommended accommodations."
+    rating:
+      satisfaction:
+        1: It was an experience that fell far short of my expectations.
+        2: Overall, it was not satisfying.
+        3: It was an average experience that was neither bad nor good.
+        4: Overall, it was a good experience and I’m satisfied.
+        5: It was an excellent experience that exceeded my expectations!
 
-  label_travel: "How have others traveled? Explore travel stories with similar conditions."
+      revisit:
+        1: I have no intention of revisiting at all.
+        2: I’ll look for other places.
+        3: I need to think about it.
+        4: I’d like to come back.
+        5: I definitely want to revisit!
 
-  add_to_plan: Add to your plan
+      recommend:
+        1: I definitely wouldn't recommend it.
+        2: I would suggest other places.
+        3: If you have time, it's worth a visit.
+        4: I would recommend it.
+        5: I definitely want to recommend it!
 
-city_place_pois:
-  sort_by: Sort By
-  all: All
+message:
+  travel_created: The travel has been created successfully.
 
-next: Next
 korea: Republic of Korea
-me: Me
 
 null: ''
 
 word:
   travel: Travel
   reset_camera: Reset camera
-
-rating:
-  satisfaction:
-    1: It was an experience that fell far short of my expectations.
-    2: Overall, it was not satisfying.
-    3: It was an average experience that was neither bad nor good.
-    4: Overall, it was a good experience and I’m satisfied.
-    5: It was an excellent experience that exceeded my expectations!
-
-  revisit:
-    1: I have no intention of revisiting at all.
-    2: I’ll look for other places.
-    3: I need to think about it.
-    4: I’d like to come back.
-    5: I definitely want to revisit!
-
-  recommend:
-    1: I definitely wouldn't recommend it.
-    2: I would suggest other places.
-    3: If you have time, it's worth a visit.
-    4: I would recommend it.
-    5: I definitely want to recommend it!
+  me: Me
 
 enum:
   TravelCompanionType:
-    spouse: Spouse
-    children: Children
-    parents: Parents
-    grandparents: Grandparents
-    siblings: Siblings
-    relatives: Relatives
-    friends: Friends
-    lover: Lover
-    colleagues: Colleagues
-    members: Members
-    others: Others
+    name: Type of companion
+    values:
+      spouse: Spouse
+      children: Children
+      parents: Parents
+      grandparents: Grandparents
+      siblings: Siblings
+      relatives: Relatives
+      friends: Friends
+      lover: Lover
+      colleagues: Colleagues
+      members: Members
+      others: Others
 
   TravelMotivation:
-    adventure: Break out of routine
-    rest: Rest
-    friendship: Friendship
-    selfReflection: Self-reflection
-    socialNetwork: Social network
-    fitness: Fitness
-    newExperiences: Seek new experiences
-    education: Education
+    name: Motivation for travel
+    values:
+      adventure: Break out of routine
+      rest: Rest
+      friendship: Friendship
+      selfReflection: Self-reflection
+      socialNetwork: Social network
+      fitness: Fitness
+      newExperiences: Seek new experiences
+      education: Education
 
   AgeGroup:
-    underNine: Under 9 years old
-    teens: Teens
-    twenties: Twenties
-    thirties: Twenties
-    forties: Forties
-    fifties: Fifties
-    sixties: Sixties
-    seventiesPlus: Over 70 years old
+    name: Age Group
+    values:
+      underNine: Under 9 years old
+      teens: Teens
+      twenties: Twenties
+      thirties: Twenties
+      forties: Forties
+      fifties: Fifties
+      sixties: Sixties
+      seventiesPlus: Over 70 years old
 
   Gender:
-    male: Male
-    female: Female
+    name: Gender
+    values:
+      male: Male
+      female: Female
 
   TravelVisitReasonType:
-    landmark: Because it's a local landmark.
-    goodReviews: Because the online reviews were great.
-    media: Because the media had positive reviews.
-    goodExperience: Because I had a great experience in the past.
-    recommendation: Because my friend recommended to visit.
-    easyAccess: Because it’s convenient to get to.
-    goodAmenities: Because I liked its amenities or services.
-    goodValue: Because it was a good value
-    unexpectedFind: I visited by chance while passing by.
-    education: Because it was educational.
-    other: Other reason
+    name: Reasons for visiting
+    values:
+      landmark: Because it's a local landmark.
+      goodReviews: Because the online reviews were great.
+      media: Because the media had positive reviews.
+      goodExperience: Because I had a great experience in the past.
+      recommendation: Because my friend recommended to visit.
+      easyAccess: Because it’s convenient to get to.
+      goodAmenities: Because I liked its amenities or services.
+      goodValue: Because it was a good value
+      unexpectedFind: I visited by chance while passing by.
+      education: Because it was educational.
+      other: Other reason
 
   PlaceCategoryType:
-    nature: Natural
-    tourism: Tourism Attraction
-    culture: Cultural
-    commerce: Commercial
-    transport: Transportation
-    dining: Restaurant/Café
-    lodging: Lodging
+    name: Place type
+    values:
+      nature: Natural
+      tourism: Tourism Attraction
+      culture: Cultural
+      commerce: Commercial
+      transport: Transportation
+      dining: Restaurant/Café
+      lodging: Lodging
 
   PlaceSortType:
-    rating: Top Rated
-    popularity: Most Popular
+    name: Type of sorting place
+    values:
+      rating: Top Rated
+      popularity: Most Popular
 
   PlaceViewType:
-    map: Map
-    list: List
+    name: Type of view
+    values:
+      map: Map
+      list: List

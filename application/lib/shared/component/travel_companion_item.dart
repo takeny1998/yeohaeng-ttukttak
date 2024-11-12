@@ -1,47 +1,54 @@
+import 'package:application_new/common/util/translation_util.dart';
+import 'package:application_new/shared/component/travel_companion_avatar_item.dart';
 import 'package:application_new/shared/model/member_model.dart';
+import 'package:application_new/shared/model/travel/travel_model.dart';
 import 'package:flutter/material.dart';
 
-class TravelCompanionItem extends StatelessWidget {
-  final int _id;
-  final Gender? _gender;
-  final String _title;
-  final String _subTitle;
+class TravelerItem extends StatelessWidget {
 
-  const TravelCompanionItem(
-      {super.key,
-      required int id,
-      required Gender? gender,
-      required String title,
-      required String subTitle})
-      : _id = id,
-        _gender = gender,
-        _title = title,
-        _subTitle = subTitle;
+  final int id;
+  final String relationShip;
+
+  final Gender? gender;
+  final AgeGroup? ageGroup;
+
+  const TravelerItem({
+    super.key,
+    required this.id,
+    required this.gender,
+    required this.relationShip,
+    required this.ageGroup,
+  });
+
+  factory TravelerItem.companion(
+      {required TravelCompanionModel travelCompanion}) {
+    return TravelerItem(
+      id: travelCompanion.id,
+        relationShip: TranslationUtil.enumValue(travelCompanion.type),
+        gender: travelCompanion.gender,
+        ageGroup: travelCompanion.ageGroup);
+  }
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
 
-    final titleStyle = textTheme.titleMedium?.copyWith(
-      fontWeight: FontWeight.w600,
-    );
+    const titleStyle =
+        TextStyle(fontSize: 16.0, height: 1.4, fontWeight: FontWeight.w600);
 
-    final subTitleStyle = textTheme.labelMedium?.copyWith(
+    final subTitleStyle = TextStyle(
       fontWeight: FontWeight.w600,
+      fontSize: 12.0,
+      height: 1.2,
       color: colorScheme.secondary,
     );
 
     return Column(
       children: [
-        CircleAvatar(
-          radius: 24.0,
-          backgroundImage: NetworkImage(
-              'https://avatar.iran.liara.run/public/${_gender == Gender.male ? 'boy' : 'girl'}?username=$_id}'),
-        ),
-        const SizedBox(height: 6.0),
-        Text(_title, style: titleStyle),
-        Text(_subTitle, style: subTitleStyle),
+        TravelerAvatarItem(id: id, gender: gender, ageGroup: ageGroup),
+        const SizedBox(height: 12.0),
+        Text(relationShip, style: titleStyle),
+        Text(TranslationUtil.enumValue(ageGroup), style: subTitleStyle),
       ],
     );
   }

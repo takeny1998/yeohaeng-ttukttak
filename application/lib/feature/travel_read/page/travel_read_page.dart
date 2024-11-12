@@ -1,4 +1,5 @@
-import 'package:application_new/feature/travel_read/components/visit_item.dart';
+import 'package:application_new/common/util/date_util.dart';
+import 'package:application_new/feature/travel_read/components/visit_list_item.dart';
 import 'package:application_new/feature/travel_read/components/visits_map_item.dart';
 import 'package:application_new/shared/model/travel/travel_detail_model.dart';
 import 'package:application_new/feature/travel_read/model/travel_visit_model.dart';
@@ -6,7 +7,6 @@ import 'package:application_new/feature/travel_read/provider/travel_read_provide
 import 'package:application_new/shared/component/fixed_header_delegate.dart';
 import 'package:application_new/shared/component/filled_chip_theme.dart';
 import 'package:application_new/shared/component/travel_header.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,12 +18,11 @@ class TravelReadPage extends ConsumerStatefulWidget {
       : _travelId = travelId;
 
   @override
-  ConsumerState createState() => _TravelDetailPageState();
+  ConsumerState createState() => _TravelReadPageState();
 }
 
-class _TravelDetailPageState extends ConsumerState<TravelReadPage> {
+class _TravelReadPageState extends ConsumerState<TravelReadPage> {
   final ScrollController scrollController = ScrollController();
-  final List<double> itemOffsets = List.generate(100, (_) => 0);
 
   double initOffset = 0.0;
 
@@ -80,9 +79,8 @@ class _TravelDetailPageState extends ConsumerState<TravelReadPage> {
             SliverPadding(
               padding: const EdgeInsets.fromLTRB(24.0, 6.0, 24.0, 16.0),
               sliver: SliverList(
-                  delegate: SliverChildListDelegate([
-                TravelHeader(travel: travel)
-              ])),
+                  delegate:
+                      SliverChildListDelegate([TravelHeader(travel: travel)])),
             ),
             SliverLayoutBuilder(builder: (context, constraints) {
               initOffset = constraints.precedingScrollExtent;
@@ -121,7 +119,8 @@ class _TravelDetailPageState extends ConsumerState<TravelReadPage> {
                                               .notifier)
                                           .selectDate(day),
                                       selected: state.selectedDate == day,
-                                      label: Text(DateFormat.MMMEd().format(day)));
+                                      label: Text(DateUtil.formatter('MMMEd')
+                                          .date(day)));
                                 }),
                                 const SizedBox(width: 12.0)
                               ]
@@ -142,7 +141,7 @@ class _TravelDetailPageState extends ConsumerState<TravelReadPage> {
                     MetaData(
                         behavior: HitTestBehavior.translucent,
                         metaData: visit,
-                        child: VisitItem(places: places, visit: visit)),
+                        child: VisitListItem(places: places, visit: visit)),
                   const SizedBox(height: 24.0),
                 ])),
           ],

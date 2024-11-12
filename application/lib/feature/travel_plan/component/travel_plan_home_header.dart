@@ -1,6 +1,5 @@
-import 'package:application_new/common/util/translation.dart';
+import 'package:application_new/common/util/translation_util.dart';
 import 'package:application_new/shared/model/travel/travel_model.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class TravelPlanHomeHeader extends StatelessWidget {
@@ -29,8 +28,6 @@ class TravelPlanHomeHeader extends StatelessWidget {
     return SliverAppBar(
       scrolledUnderElevation: 0.0,
       pinned: true,
-      floating: true,
-      snap: true,
       expandedHeight: appBarHeight,
       actions: [
         IconButton(onPressed: () {}, icon: const Icon(Icons.share)),
@@ -40,6 +37,7 @@ class TravelPlanHomeHeader extends StatelessWidget {
         )
       ],
       backgroundColor: colorScheme.primaryContainer,
+      shape: Border.all(color: colorScheme.primaryContainer),
       flexibleSpace: LayoutBuilder(builder: (context, constraints) {
 
         final isCollapsed = topPadding == constraints.biggest.height;
@@ -59,17 +57,12 @@ class TravelPlanHomeHeader extends StatelessWidget {
                 Text('여행 설명이 없습니다.', style: dateStyle),
                 const SizedBox(height: 16.0),
                 Wrap(spacing: 8.0, children: [
-                  // for (final companion in travel.companions)
-                  //   Chip(
-                  //       backgroundColor: colorScheme.primary,
-                  //       labelStyle: TextStyle(color: colorScheme.onPrimary),
-                  //       label: Text(enumKey(companion.type).tr())),
                   for (final motivationType in travel.motivationTypes)
                     Chip(
                       labelPadding: EdgeInsets.zero,
                       visualDensity: VisualDensity.compact,
                         backgroundColor: colorScheme.primaryFixedDim,
-                        label: Text(enumKey(motivationType).tr())),
+                        label: Text(TranslationUtil.enumValue(motivationType))),
                 ]),
               ],
             ),

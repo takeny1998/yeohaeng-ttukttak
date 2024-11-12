@@ -304,7 +304,7 @@ class __$$PlaceMetricsModelImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$PlaceMetricsModelImpl implements _PlaceMetricsModel {
   const _$PlaceMetricsModelImpl(
-      {required this.place, required this.visitCount, this.rating});
+      {required this.place, this.visitCount = 0, this.rating});
 
   factory _$PlaceMetricsModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$PlaceMetricsModelImplFromJson(json);
@@ -312,6 +312,7 @@ class _$PlaceMetricsModelImpl implements _PlaceMetricsModel {
   @override
   final PlaceModel place;
   @override
+  @JsonKey()
   final int visitCount;
   @override
   final double? rating;
@@ -356,7 +357,7 @@ class _$PlaceMetricsModelImpl implements _PlaceMetricsModel {
 abstract class _PlaceMetricsModel implements PlaceMetricModel {
   const factory _PlaceMetricsModel(
       {required final PlaceModel place,
-      required final int visitCount,
+      final int visitCount,
       final double? rating}) = _$PlaceMetricsModelImpl;
 
   factory _PlaceMetricsModel.fromJson(Map<String, dynamic> json) =

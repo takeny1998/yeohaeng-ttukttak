@@ -1,8 +1,6 @@
-import 'package:application_new/common/event/event.dart';
 import 'package:application_new/common/loading/async_loading_provider.dart';
 
 import 'package:application_new/feature/authentication/page/login_provider.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -32,9 +30,6 @@ class HomePage extends ConsumerWidget {
                       await Future.delayed(const Duration(seconds: 3));
                     }),
                 child: const Text('로딩')),
-            TextButton(
-                onPressed: () => eventController.add(MessageEvent('travel.created'.tr())),
-                child: const Text('메세지')),
             TextButton(
                 onPressed: () => context.push('/travels/create'),
                 child: const Text('여행 생성')),

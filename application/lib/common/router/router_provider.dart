@@ -1,11 +1,14 @@
 import 'package:application_new/common/session/session_provider.dart';
 import 'package:application_new/feature/authentication/page/login_page.dart';
+import 'package:application_new/feature/geography/provider/geography_provider.dart';
 import 'package:application_new/feature/home/home_page.dart';
 import 'package:application_new/feature/travel_create/page/travel_create_page.dart';
 import 'package:application_new/feature/travel_plan/city_place_pois/page/city_place_pois_page.dart';
+import 'package:application_new/feature/travel_plan/city_travels/page/city_travels_page.dart';
 import 'package:application_new/feature/travel_read/page/travel_read_page.dart';
 import 'package:application_new/feature/travel_list/page/travel_list_page.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_page.dart';
+import 'package:application_new/shared/provider/travel_detail_provider.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -58,7 +61,23 @@ GoRouter router(RouterRef ref) {
             final {'id': cityId} = state.pathParameters;
 
             return CityPlacePoisPage(cityId: int.parse(cityId));
-          })
+          }),
+      GoRoute(
+          path: '/travels/:travelId/cities/:cityId/travels',
+          builder: (context, state) {
+            final {'travelId': travelId, 'cityId': cityId} =
+                state.pathParameters;
+
+            final travel =
+                ref.read(travelDetailProvider(int.parse(travelId))).travel;
+
+            final city = ref
+                .read(geographyProvider)
+                .cities
+                .firstWhere((city) => city.id == int.parse(cityId));
+
+            return CityTravelsPage(travel: travel, city: city);
+          }),
     ],
   );
 }

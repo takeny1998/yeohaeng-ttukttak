@@ -1,8 +1,6 @@
-import 'package:application_new/common/util/translation.dart';
-import 'package:application_new/feature/geography/model/city_model.dart';
+import 'package:application_new/common/util/translation_util.dart';
 import 'package:application_new/shared/component/travel_companion_item.dart';
 import 'package:application_new/shared/model/travel/travel_model.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class TravelHeader extends StatelessWidget {
@@ -15,11 +13,11 @@ class TravelHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
 
     final titleStyle =
         textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w600);
+
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -34,24 +32,19 @@ class TravelHeader extends StatelessWidget {
           subtitle: Text(_travel.formattedDate),
         ),
         Wrap(spacing: 8.0, children: [
-          for (final motivation in _travel.motivationTypes)
-            Chip(label: Text(enumKey(motivation).tr()))
+          for (final motivationType in _travel.motivationTypes)
+            Chip(label: Text(TranslationUtil.enumValue(motivationType)))
         ]),
         const SizedBox(height: 24.0),
         Wrap(spacing: 16.0, children: [
-          TravelCompanionItem(
+          TravelerItem(
             id: _travel.id,
             gender: _travel.gender,
-            title: 'me'.tr(),
-            subTitle: enumKey(_travel.ageGroup).tr(),
+            ageGroup: _travel.ageGroup,
+            relationShip: TranslationUtil.word('me'),
           ),
           for (final companion in _travel.companions)
-            TravelCompanionItem(
-              id: companion.id,
-              gender: companion.gender,
-              title: enumKey(companion.type).tr(),
-              subTitle: enumKey(companion.ageGroup).tr(),
-            ),
+            TravelerItem.companion(travelCompanion: companion),
         ]),
         const SizedBox(height: 12.0),
       ],

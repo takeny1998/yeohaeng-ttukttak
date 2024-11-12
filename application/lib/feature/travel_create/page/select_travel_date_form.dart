@@ -1,7 +1,7 @@
-import 'package:application_new/common/util/translation.dart';
+import 'package:application_new/common/util/date_util.dart';
+import 'package:application_new/common/util/translation_util.dart';
 import 'package:application_new/feature/travel_create/component/bottom_action_button.dart';
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -22,13 +22,14 @@ class SelectTravelDateForm extends ConsumerWidget {
     final areSelected = startedOn != null && endedOn != null;
 
     final textTheme = Theme.of(context).textTheme;
-    final rangeFormat = DateFormat('yy.M.d');
 
     final nights = areSelected
         ? DateTimeRange(start: startedOn, end: endedOn).duration.inDays
         : 0;
 
-    final trKey = baseKey('travel.select_date');
+    final translator = TranslationUtil.widget(context);
+
+    final dateFormatter = DateUtil.formatter('yy.m.d');
 
     final buttonTextStyle = textTheme.titleMedium?.copyWith(
       fontWeight: FontWeight.w600,
@@ -43,10 +44,9 @@ class SelectTravelDateForm extends ConsumerWidget {
           child: Container(
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.fromLTRB(24, 0, 24, 16),
-            child: Text(trKey('ask_date'),
-                    style: textTheme.titleLarge
-                        ?.copyWith(fontWeight: FontWeight.w600))
-                .tr(),
+            child: Text(translator.key('ask_date'),
+                style: textTheme.titleLarge
+                    ?.copyWith(fontWeight: FontWeight.w600)),
           ),
         ),
       ),
@@ -71,22 +71,21 @@ class SelectTravelDateForm extends ConsumerWidget {
       ),
       bottomNavigationBar: BottomActionButton(
           onPressed: areSelected
-              ? () => ref.read(travelCreateProvider.notifier).nextPage()
+              ? ref.read(travelCreateProvider.notifier).nextPage
               : null,
           child: areSelected
               ? Text(
-                  trKey('display_select_date'),
+                  translator.plural('show_selected_date', nights, args: {
+                    'start': dateFormatter.date(startedOn),
+                    'end': dateFormatter.date(endedOn),
+                    'days': '${nights + 1}'
+                  }),
                   style: buttonTextStyle,
-                ).tr(namedArgs: {
-                  'start': rangeFormat.format(startedOn),
-                  'end': rangeFormat.format(endedOn),
-                  'nights': '$nights',
-                  'days': '${nights + 1}',
-                })
+                )
               : Text(
-                  trKey('require_date'),
+                  translator.key('require_select_date'),
                   style: buttonTextStyle,
-                ).tr()),
+                )),
     );
   }
 }

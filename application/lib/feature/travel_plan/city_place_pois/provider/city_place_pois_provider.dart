@@ -10,17 +10,30 @@ class CityPlacePois extends _$CityPlacePois {
   late final PlaceSortType _sortType;
 
   int _pageNumber = 0;
-  final int _pageSize = 10;
+  final int _pageSize = 5;
 
   @override
   CityPlacePoisState build(int cityId, PlaceSortType sortType) {
     _cityId = cityId;
     _sortType = sortType;
 
+    fetch();
+
     return const CityPlacePoisState();
   }
 
   void fetch() async {
+    final (placeMetrics, hasNextPage) = await _fetch();
+
+    state = state.copyWith(
+      placeMetrics: [...state.placeMetrics, ...placeMetrics],
+      hasNextPage: hasNextPage,
+    );
+
+    _pageNumber++;
+  }
+
+  Future<(List<PlaceMetricModel>, bool)> _fetch() async {
     final httpService = ref.read(httpServiceProvider);
 
     final Map<String, dynamic> queryParams = {
@@ -37,11 +50,8 @@ class CityPlacePois extends _$CityPlacePois {
         .map((e) => PlaceMetricModel.fromJson(e))
         .toList();
 
-    state = state.copyWith(
-      placeMetrics: [...state.placeMetrics, ...placeMetrics],
-      hasNextPage: response['hasNextPage'],
-    );
+    final hasNextPage = response['hasNextPage'] as bool;
 
-    _pageNumber++;
+    return (placeMetrics, hasNextPage);
   }
 }

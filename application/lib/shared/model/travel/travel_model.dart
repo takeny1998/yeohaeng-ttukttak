@@ -1,6 +1,7 @@
+import 'package:application_new/common/util/date_util.dart';
+import 'package:application_new/common/util/translation_util.dart';
 import 'package:application_new/feature/geography/model/city_model.dart';
 import 'package:application_new/shared/model/member_model.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -17,7 +18,7 @@ class TravelModel with _$TravelModel {
     required DateTime endedOn,
     @Default(AgeGroup.none) AgeGroup ageGroup,
     @Default(Gender.none) Gender gender,
-    @Default([]) List<TravelCompanion> companions,
+    @Default([]) List<TravelCompanionModel> companions,
     @Default([]) List<TravelMotivationType> motivationTypes,
     @Default([]) List<CityModel> cities,
   }) = _TravelModel;
@@ -28,33 +29,25 @@ class TravelModel with _$TravelModel {
   factory TravelModel.fromJson(Map<String, dynamic> json) =>
       _$TravelModelFromJson(json);
 
-  String get formattedDate {
-    String formatDate(DateTime date) => DateFormat.yMMMd().format(date);
-
-    if (DateUtils.isSameMonth(startedOn, endedOn)) {
-      return '${formatDate(startedOn)} ~ ${DateFormat.d().format(endedOn)}';
-    } else if (startedOn.year == endedOn.year) {
-      return '${formatDate(startedOn)} ~ ${DateFormat.MMMd().format(endedOn)}';
-    } else {
-      return '${formatDate(startedOn)} ~ ${formatDate(endedOn)}';
-    }
-  }
+  String get formattedDate =>
+      DateUtil.formatRange(DateTimeRange(start: startedOn, end: endedOn));
 
   String get formattedName {
-    return '${cities.map((city) => city.name).join(' · ')} ${'word.travel'.tr()}';
+    return '${cities.map((city) => city.name).join(' · ')} ${TranslationUtil.word('travel')}';
   }
 }
 
 @freezed
-class TravelCompanion with _$TravelCompanion {
-  const factory TravelCompanion(
-      {required int id,
-      required TravelCompanionType type,
-      AgeGroup? ageGroup,
-       Gender? gender}) = _TravelCompanion;
+class TravelCompanionModel with _$TravelCompanionModel {
+  const factory TravelCompanionModel({
+    required int id,
+    required TravelCompanionType type,
+    AgeGroup? ageGroup,
+    Gender? gender,
+  }) = _TravelCompanion;
 
-  factory TravelCompanion.fromJson(Map<String, dynamic> json) =>
-      _$TravelCompanionFromJson(json);
+  factory TravelCompanionModel.fromJson(Map<String, dynamic> json) =>
+      _$TravelCompanionModelFromJson(json);
 }
 
 enum TravelMotivationType {
@@ -67,7 +60,19 @@ enum TravelMotivationType {
   newExperiences,
   education,
   special,
-  other
+  other;
+
+  static Iterable<TravelMotivationType> active() => [
+        adventure,
+        rest,
+        friendship,
+        selfReflection,
+        socialNetwork,
+        fitness,
+        newExperiences,
+        education,
+        special
+      ];
 }
 
 enum TravelCompanionType {
@@ -82,5 +87,19 @@ enum TravelCompanionType {
   colleagues,
   members,
   others,
-  none
+  none;
+
+  static Iterable<TravelCompanionType> active() => [
+        spouse,
+        children,
+        parents,
+        grandparents,
+        siblings,
+        relatives,
+        friends,
+        lover,
+        colleagues,
+        members,
+        others
+      ];
 }

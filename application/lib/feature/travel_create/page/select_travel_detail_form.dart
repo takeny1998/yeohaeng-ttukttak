@@ -1,9 +1,7 @@
-import 'package:application_new/common/util/translation.dart';
+import 'package:application_new/common/util/translation_util.dart';
 import 'package:application_new/feature/travel_create/component/bottom_action_button.dart';
-import 'package:application_new/feature/travel_create/provider/travel_create_state.dart';
 import 'package:application_new/shared/component/filled_chip_theme.dart';
 import 'package:application_new/shared/model/travel/travel_model.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -25,9 +23,10 @@ class SelectTravelDetailForm extends ConsumerWidget {
 
     final state = ref.watch(travelCreateProvider);
 
-    final trKey = baseKey('travel.select_detail');
+    final translator = TranslationUtil.widget(context);
 
-    final areSelected = state.companionTypes.isNotEmpty && state.motivationTypes.isNotEmpty;
+    final areSelected =
+        state.companionTypes.isNotEmpty && state.motivationTypes.isNotEmpty;
 
     final buttonTextStyle = textTheme.titleMedium?.copyWith(
       fontWeight: FontWeight.w600,
@@ -49,36 +48,42 @@ class SelectTravelDetailForm extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(trKey('ask_companion_types'), style: titleStyle).tr(),
-              Text(trKey('hint_companion_types'), style: subTitleStyle).tr(),
+              Text(translator.key('ask_companion_types'), style: titleStyle),
+              Text(translator.key('hint_select_companion_types'),
+                  style: subTitleStyle),
               const SizedBox(height: 16),
               Wrap(
                 spacing: 6,
                 children: [
-                  for (TravelCompanionType companionType in TravelCompanionType.values)
+                  for (TravelCompanionType companionType
+                      in TravelCompanionType.values)
                     FilterChip(
-                      label: Text(enumKey(companionType)).tr(),
+                      label: Text(TranslationUtil.enumValue(companionType)),
                       selected: state.companionTypes.contains(companionType),
                       onSelected: (isSelected) {
-                        final notifier = ref.read(travelCreateProvider.notifier);
+                        final notifier =
+                            ref.read(travelCreateProvider.notifier);
                         notifier.selectCompanionType(companionType);
                       },
                     ),
                 ],
               ),
               const SizedBox(height: 48),
-              Text(trKey('ask_motivation_types'), style: titleStyle).tr(),
-              Text(trKey('hint_motivation_types'), style: subTitleStyle).tr(),
+              Text(translator.key('ask_motivation_types'), style: titleStyle),
+              Text(translator.key('hint_select_motivation_types'),
+                  style: subTitleStyle),
               const SizedBox(height: 16),
               Wrap(
                 spacing: 6,
                 children: [
-                  for (TravelMotivationType motivationType in TravelMotivationType.values)
+                  for (TravelMotivationType motivationType
+                      in TravelMotivationType.values)
                     FilterChip(
-                      label: Text(enumKey(motivationType)).tr(),
+                      label: Text(TranslationUtil.enumValue(motivationType)),
                       selected: state.motivationTypes.contains(motivationType),
                       onSelected: (_) {
-                        final notifier = ref.read(travelCreateProvider.notifier);
+                        final notifier =
+                            ref.read(travelCreateProvider.notifier);
                         notifier.selectMotivationType(motivationType);
                       },
                     ),
@@ -88,12 +93,13 @@ class SelectTravelDetailForm extends ConsumerWidget {
           ),
         ),
         bottomNavigationBar: BottomActionButton(
-          onPressed:
-              areSelected ? () => ref.read(travelCreateProvider.notifier).nextPage() : null,
+          onPressed: areSelected
+              ? ref.read(travelCreateProvider.notifier).nextPage
+              : null,
           child: Text(
-            areSelected ? 'next' : trKey('require_detail'),
+            areSelected ? TranslationUtil.word('to_next') : translator.key('require_select_detail'),
             style: buttonTextStyle,
-          ).tr(),
+          ),
         ),
       ),
     );

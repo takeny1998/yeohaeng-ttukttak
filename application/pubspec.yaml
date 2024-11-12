@@ -58,6 +58,7 @@ dependencies:
   infinite_scroll_pagination: ^4.0.0
   flutter_staggered_grid_view: ^0.7.0
   vector_map_tiles: ^8.0.0
+  extended_wrap: ^0.1.5
 
 dev_dependencies:
   flutter_test:

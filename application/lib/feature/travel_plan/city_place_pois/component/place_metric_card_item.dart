@@ -1,9 +1,8 @@
 
 import 'package:application_new/common/util/string_extension.dart';
-import 'package:application_new/common/util/translation.dart';
+import 'package:application_new/common/util/translation_util.dart';
 import 'package:application_new/feature/travel_plan/city_place_pois/provider/city_place_pois_state.dart';
 import 'package:application_new/shared/component/small_chip.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class PlaceMetricCardItem extends StatelessWidget {
@@ -27,13 +26,12 @@ class PlaceMetricCardItem extends StatelessWidget {
             color: colorScheme.surface,
             border: Border.all(color: colorScheme.primaryFixedDim),
             borderRadius: BorderRadius.circular(8.0)),
-        margin: const EdgeInsets.symmetric(horizontal: 8.0),
         child: Row(children: [
           Expanded(
-              flex: 8,
+              flex: 6,
               child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8.0),
-                  child: Container(color: colorScheme.primaryContainer))),
+                  borderRadius: BorderRadius.circular(6.0),
+                  child: Container(color: colorScheme.surfaceContainer))),
           const Spacer(flex: 1),
           Expanded(
               flex: 12,
@@ -58,7 +56,7 @@ class PlaceMetricCardItem extends StatelessWidget {
                                 color: colorScheme.onPrimary),
                             label: rating.toStringAsFixed(2)),
                       for (final categoryType in place.categoryTypes.take(2))
-                        SmallChip(label: enumKey(categoryType).tr()),
+                        SmallChip(label: TranslationUtil.enumValue(categoryType)),
                     ]),
                     const SizedBox(height: 16.0),
                   ])),

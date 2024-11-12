@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:application_new/common/http/http_service_provider.dart';
-import 'package:application_new/common/util/list_utils.dart';
+import 'package:application_new/common/util/iterable_utils.dart';
 import 'package:application_new/feature/geography/model/city_model.dart';
 import 'package:application_new/feature/travel_plan/provider/travel_plan_provider.dart';
-import 'package:application_new/feature/travel_plan/travel_plan_recommend/model/recommend_model.dart';
+import 'package:application_new/feature/travel_plan/travel_plan_recommend/model/place_recommend_model.dart';
 import 'package:application_new/shared/model/place_model.dart';
 import 'package:application_new/shared/model/travel/travel_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -35,52 +35,48 @@ class TravelPlanRecommend extends _$TravelPlanRecommend {
 
   void _initTargets(TravelModel travel) {
     _motivationTypes = travel.motivationTypes;
-    _companionTypes = travel.companions.map((companion) => companion.type).toList();
+    _companionTypes =
+        travel.companions.map((companion) => companion.type).toList();
 
     _targets = {
       for (final categoryType in PlaceCategoryType.values)
-        PlaceRecommendTarget(categoryType: categoryType),
-      TravelRecommendTarget()
+        PlaceRecommendTarget(categoryType: categoryType)
     };
   }
 
   Future<void> fetch() async {
-    final target = ListUtils.random(_targets);
+    final target = IterableUtil.random(_targets);
     _targets.remove(target);
 
-    final recommend = await switch (target) {
+    final (curtItem, hasNextPage) = await switch (target) {
       (PlaceRecommendTarget target) => _fetchPlaces(target),
-      (TravelRecommendTarget target) => _fetchTravel(target),
     };
 
-    if (recommend.hasNextPage) {
+    if (hasNextPage) {
       _targets.add(target.nextPage());
     }
 
+    final placeRecommends = state.placeRecommends;
+    final prevItem = placeRecommends.lastOrNull;
+
+    if (prevItem != null && prevItem.categoryType == curtItem.categoryType) {
+      state = state.copyWith(placeRecommends: [
+        for (int i = 0; i < placeRecommends.length; i++)
+          if (i == placeRecommends.length - 1)
+            prevItem.copyWith(places: [...prevItem.places, ...curtItem.places])
+          else
+            placeRecommends[i]
+      ]);
+      return;
+    }
+
     state = state.copyWith(
-        recommendations: [...state.recommendations, recommend],
+        placeRecommends: [...placeRecommends, curtItem],
         hasNextPage: _targets.isNotEmpty);
   }
 
-  Future<RecommendModel> _fetchTravel(TravelRecommendTarget target) async {
-    final httpService = ref.read(httpServiceProvider);
-
-    final Map<String, dynamic> queryParams = {
-      'cityId': _city.id,
-      'pageNumber': target.pageNumber,
-      'pageSize': pageSize,
-      'motivationTypes': _motivationTypes.map((e) => e.name).join(','),
-      'companionTypes': _companionTypes.map((e) => e.name).join(','),
-    };
-
-    final response = await httpService.request(
-        'GET', '/api/v2/travels/recommendations',
-        queryParams: queryParams);
-
-    return RecommendTravelModel.fromJson(response);
-  }
-
-  Future<RecommendModel> _fetchPlaces(PlaceRecommendTarget target) async {
+  Future<(PlaceRecommendModel, bool)> _fetchPlaces(
+      PlaceRecommendTarget target) async {
     final httpService = ref.read(httpServiceProvider);
     final categoryType = target.categoryType;
 
@@ -97,6 +93,8 @@ class TravelPlanRecommend extends _$TravelPlanRecommend {
         'GET', '/api/v2/places/recommendations',
         queryParams: queryParams);
 
-    return RecommendPlaceModel.fromJson(categoryType, response);
+    final hasNext = response['hasNextPage'] as bool;
+
+    return (PlaceRecommendModel.fromJson(categoryType, response), hasNext);
   }
 }
