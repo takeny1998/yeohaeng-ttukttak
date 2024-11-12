@@ -12,12 +12,9 @@ class TravelDetailModel with _$TravelDetailModel {
 
   const factory TravelDetailModel(
       {required TravelModel travel,
-      @Default([]) List<TravelVisitModel> visits,
-      @Default([]) List<PlaceModel> places}) = _TravelDetailModel;
+      required List<TravelVisitModel> visits,
+      required List<PlaceModel> places}) = _TravelDetailModel;
 
   factory TravelDetailModel.fromJson(Map<String, dynamic> json) =>
       _$TravelDetailModelFromJson(json);
-
-  factory TravelDetailModel.empty() =>
-      TravelDetailModel(travel: TravelModel.empty());
 }

@@ -6,7 +6,7 @@ part of 'travel_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$travelHash() => r'd563e51af3f597bab97466973b6e59c97f42de79';
+String _$travelHash() => r'ecd68b8e8a016439414cbb48ca1225ac566d0826';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,10 +29,10 @@ class _SystemHash {
   }
 }
 
-abstract class _$Travel extends BuildlessAutoDisposeNotifier<TravelModel> {
+abstract class _$Travel extends BuildlessAutoDisposeNotifier<TravelModel?> {
   late final int id;
 
-  TravelModel build(
+  TravelModel? build(
     int id,
   );
 }
@@ -42,7 +42,7 @@ abstract class _$Travel extends BuildlessAutoDisposeNotifier<TravelModel> {
 const travelProvider = TravelFamily();
 
 /// See also [Travel].
-class TravelFamily extends Family<TravelModel> {
+class TravelFamily extends Family<TravelModel?> {
   /// See also [Travel].
   const TravelFamily();
 
@@ -81,7 +81,7 @@ class TravelFamily extends Family<TravelModel> {
 
 /// See also [Travel].
 class TravelProvider
-    extends AutoDisposeNotifierProviderImpl<Travel, TravelModel> {
+    extends AutoDisposeNotifierProviderImpl<Travel, TravelModel?> {
   /// See also [Travel].
   TravelProvider(
     int id,
@@ -111,7 +111,7 @@ class TravelProvider
   final int id;
 
   @override
-  TravelModel runNotifierBuild(
+  TravelModel? runNotifierBuild(
     covariant Travel notifier,
   ) {
     return notifier.build(
@@ -136,7 +136,7 @@ class TravelProvider
   }
 
   @override
-  AutoDisposeNotifierProviderElement<Travel, TravelModel> createElement() {
+  AutoDisposeNotifierProviderElement<Travel, TravelModel?> createElement() {
     return _TravelProviderElement(this);
   }
 
@@ -154,13 +154,13 @@ class TravelProvider
   }
 }
 
-mixin TravelRef on AutoDisposeNotifierProviderRef<TravelModel> {
+mixin TravelRef on AutoDisposeNotifierProviderRef<TravelModel?> {
   /// The parameter `id` of this provider.
   int get id;
 }
 
 class _TravelProviderElement
-    extends AutoDisposeNotifierProviderElement<Travel, TravelModel>
+    extends AutoDisposeNotifierProviderElement<Travel, TravelModel?>
     with TravelRef {
   _TravelProviderElement(super.provider);
 

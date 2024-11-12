@@ -12,7 +12,7 @@ class TravelListPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     
     final TravelListModel(:travels) = ref.watch(travelListProvider);
-    
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('여행 목록'),

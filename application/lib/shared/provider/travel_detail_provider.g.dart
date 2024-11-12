@@ -6,7 +6,7 @@ part of 'travel_detail_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$travelDetailHash() => r'9e829971128889a52f8e6e70c24d48600dbd0843';
+String _$travelDetailHash() => r'3ea7b5af53acb80a301ddfc49d47f18d0e18a46d';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -30,10 +30,10 @@ class _SystemHash {
 }
 
 abstract class _$TravelDetail
-    extends BuildlessAutoDisposeNotifier<TravelDetailModel> {
+    extends BuildlessAutoDisposeNotifier<TravelDetailModel?> {
   late final int id;
 
-  TravelDetailModel build(
+  TravelDetailModel? build(
     int id,
   );
 }
@@ -43,7 +43,7 @@ abstract class _$TravelDetail
 const travelDetailProvider = TravelDetailFamily();
 
 /// See also [TravelDetail].
-class TravelDetailFamily extends Family<TravelDetailModel> {
+class TravelDetailFamily extends Family<TravelDetailModel?> {
   /// See also [TravelDetail].
   const TravelDetailFamily();
 
@@ -82,7 +82,7 @@ class TravelDetailFamily extends Family<TravelDetailModel> {
 
 /// See also [TravelDetail].
 class TravelDetailProvider
-    extends AutoDisposeNotifierProviderImpl<TravelDetail, TravelDetailModel> {
+    extends AutoDisposeNotifierProviderImpl<TravelDetail, TravelDetailModel?> {
   /// See also [TravelDetail].
   TravelDetailProvider(
     int id,
@@ -113,7 +113,7 @@ class TravelDetailProvider
   final int id;
 
   @override
-  TravelDetailModel runNotifierBuild(
+  TravelDetailModel? runNotifierBuild(
     covariant TravelDetail notifier,
   ) {
     return notifier.build(
@@ -138,7 +138,7 @@ class TravelDetailProvider
   }
 
   @override
-  AutoDisposeNotifierProviderElement<TravelDetail, TravelDetailModel>
+  AutoDisposeNotifierProviderElement<TravelDetail, TravelDetailModel?>
       createElement() {
     return _TravelDetailProviderElement(this);
   }
@@ -157,13 +157,13 @@ class TravelDetailProvider
   }
 }
 
-mixin TravelDetailRef on AutoDisposeNotifierProviderRef<TravelDetailModel> {
+mixin TravelDetailRef on AutoDisposeNotifierProviderRef<TravelDetailModel?> {
   /// The parameter `id` of this provider.
   int get id;
 }
 
 class _TravelDetailProviderElement
-    extends AutoDisposeNotifierProviderElement<TravelDetail, TravelDetailModel>
+    extends AutoDisposeNotifierProviderElement<TravelDetail, TravelDetailModel?>
     with TravelDetailRef {
   _TravelDetailProviderElement(super.provider);
 

@@ -11,23 +11,17 @@ _$TravelModelImpl _$$TravelModelImplFromJson(Map<String, dynamic> json) =>
       id: (json['id'] as num).toInt(),
       startedOn: DateTime.parse(json['startedOn'] as String),
       endedOn: DateTime.parse(json['endedOn'] as String),
-      ageGroup: $enumDecodeNullable(_$AgeGroupEnumMap, json['ageGroup']) ??
-          AgeGroup.none,
-      gender:
-          $enumDecodeNullable(_$GenderEnumMap, json['gender']) ?? Gender.none,
-      companions: (json['companions'] as List<dynamic>?)
-              ?.map((e) =>
-                  TravelCompanionModel.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          const [],
-      motivationTypes: (json['motivationTypes'] as List<dynamic>?)
-              ?.map((e) => $enumDecode(_$TravelMotivationTypeEnumMap, e))
-              .toList() ??
-          const [],
-      cities: (json['cities'] as List<dynamic>?)
-              ?.map((e) => CityModel.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          const [],
+      ageGroup: $enumDecodeNullable(_$AgeGroupEnumMap, json['ageGroup']),
+      gender: $enumDecodeNullable(_$GenderEnumMap, json['gender']),
+      companions: (json['companions'] as List<dynamic>)
+          .map((e) => TravelCompanionModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      motivationTypes: (json['motivationTypes'] as List<dynamic>)
+          .map((e) => $enumDecode(_$TravelMotivationTypeEnumMap, e))
+          .toList(),
+      cities: (json['cities'] as List<dynamic>)
+          .map((e) => CityModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$$TravelModelImplToJson(_$TravelModelImpl instance) =>
@@ -35,8 +29,8 @@ Map<String, dynamic> _$$TravelModelImplToJson(_$TravelModelImpl instance) =>
       'id': instance.id,
       'startedOn': instance.startedOn.toIso8601String(),
       'endedOn': instance.endedOn.toIso8601String(),
-      'ageGroup': _$AgeGroupEnumMap[instance.ageGroup]!,
-      'gender': _$GenderEnumMap[instance.gender]!,
+      'ageGroup': _$AgeGroupEnumMap[instance.ageGroup],
+      'gender': _$GenderEnumMap[instance.gender],
       'companions': instance.companions,
       'motivationTypes': instance.motivationTypes
           .map((e) => _$TravelMotivationTypeEnumMap[e]!)
@@ -59,7 +53,6 @@ const _$AgeGroupEnumMap = {
 const _$GenderEnumMap = {
   Gender.male: 'male',
   Gender.female: 'female',
-  Gender.none: 'none',
 };
 
 const _$TravelMotivationTypeEnumMap = {

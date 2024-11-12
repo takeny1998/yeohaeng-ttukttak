@@ -150,8 +150,8 @@ class __$$TravelDetailModelImplCopyWithImpl<$Res>
 class _$TravelDetailModelImpl extends _TravelDetailModel {
   const _$TravelDetailModelImpl(
       {required this.travel,
-      final List<TravelVisitModel> visits = const [],
-      final List<PlaceModel> places = const []})
+      required final List<TravelVisitModel> visits,
+      required final List<PlaceModel> places})
       : _visits = visits,
         _places = places,
         super._();
@@ -163,7 +163,6 @@ class _$TravelDetailModelImpl extends _TravelDetailModel {
   final TravelModel travel;
   final List<TravelVisitModel> _visits;
   @override
-  @JsonKey()
   List<TravelVisitModel> get visits {
     if (_visits is EqualUnmodifiableListView) return _visits;
     // ignore: implicit_dynamic_type
@@ -172,7 +171,6 @@ class _$TravelDetailModelImpl extends _TravelDetailModel {
 
   final List<PlaceModel> _places;
   @override
-  @JsonKey()
   List<PlaceModel> get places {
     if (_places is EqualUnmodifiableListView) return _places;
     // ignore: implicit_dynamic_type
@@ -222,8 +220,8 @@ class _$TravelDetailModelImpl extends _TravelDetailModel {
 abstract class _TravelDetailModel extends TravelDetailModel {
   const factory _TravelDetailModel(
       {required final TravelModel travel,
-      final List<TravelVisitModel> visits,
-      final List<PlaceModel> places}) = _$TravelDetailModelImpl;
+      required final List<TravelVisitModel> visits,
+      required final List<PlaceModel> places}) = _$TravelDetailModelImpl;
   const _TravelDetailModel._() : super._();
 
   factory _TravelDetailModel.fromJson(Map<String, dynamic> json) =

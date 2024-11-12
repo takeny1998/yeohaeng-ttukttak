@@ -1,6 +1,8 @@
+import 'package:application_new/common/loading/loading_page.dart';
 import 'package:application_new/feature/travel_read/components/place_marker_item.dart';
 import 'package:application_new/feature/travel_read/provider/travel_read_provider.dart';
 import 'package:application_new/shared/model/place_model.dart';
+import 'package:application_new/shared/model/travel/travel_model.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -66,8 +68,10 @@ class _VisitsMapItemState extends ConsumerState<VisitsMapItem> {
 
     final state = ref.watch(travelReadProvider(widget.travelId));
 
+    if (state == null) return const LoadingPage();
+
     final visits = state.selectedVisits;
-    final places = state.detail.places;
+    final places = state.places;
 
     for (int i = 0; i < visits.length; i++) {
       final visit = visits[i];
@@ -94,9 +98,9 @@ class _VisitsMapItemState extends ConsumerState<VisitsMapItem> {
     }
 
     ref.listen(travelReadProvider(widget.travelId), (prev, next) {
-      if (prev?.selectedPlaceId == next.selectedPlaceId) return;
+      if (prev?.selectedPlaceId == next?.selectedPlaceId) return;
 
-      final place = next.selectedPlaceId > 0
+      final place = next!.selectedPlaceId > 0
           ? places.firstWhere((e) => e.id == next.selectedPlaceId)
           : places.firstOrNull;
 

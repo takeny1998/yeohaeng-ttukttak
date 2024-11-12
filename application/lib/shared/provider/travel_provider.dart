@@ -8,10 +8,10 @@ part 'travel_provider.g.dart';
 class Travel extends _$Travel {
 
   @override
-  TravelModel build(int id) {
+  TravelModel? build(int id) {
     ref.watch(travelRepositoryProvider).find(id)
         .then((travel) => state = travel);
 
-    return TravelModel.empty();
+    return null;
   }
 }

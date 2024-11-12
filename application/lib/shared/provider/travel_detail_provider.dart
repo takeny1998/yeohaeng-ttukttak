@@ -8,9 +8,9 @@ part 'travel_detail_provider.g.dart';
 class TravelDetail extends _$TravelDetail {
 
   @override
-  TravelDetailModel build(int id) {
+  TravelDetailModel? build(int id) {
     _init(id);
-    return TravelDetailModel.empty();
+    return null;
   }
 
   void _init (int id) async {

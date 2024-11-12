@@ -10,14 +10,12 @@ _$TravelDetailModelImpl _$$TravelDetailModelImplFromJson(
         Map<String, dynamic> json) =>
     _$TravelDetailModelImpl(
       travel: TravelModel.fromJson(json['travel'] as Map<String, dynamic>),
-      visits: (json['visits'] as List<dynamic>?)
-              ?.map((e) => TravelVisitModel.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          const [],
-      places: (json['places'] as List<dynamic>?)
-              ?.map((e) => PlaceModel.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          const [],
+      visits: (json['visits'] as List<dynamic>)
+          .map((e) => TravelVisitModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      places: (json['places'] as List<dynamic>)
+          .map((e) => PlaceModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$$TravelDetailModelImplToJson(

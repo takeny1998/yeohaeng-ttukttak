@@ -6,7 +6,6 @@ import 'package:application_new/feature/travel_plan/page/travel_plan_home_page.d
 import 'package:application_new/feature/travel_plan/page/travel_plan_manage_page.dart';
 import 'package:application_new/feature/travel_plan/travel_plan_recommend/page/travel_plan_recommend_page.dart';
 import 'package:application_new/feature/travel_plan/provider/travel_plan_provider.dart';
-import 'package:application_new/shared/model/travel/travel_model.dart';
 import 'package:application_new/shared/provider/travel_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -53,6 +52,10 @@ class _TravelPlanPageState extends ConsumerState<TravelPlanPage> {
   @override
   Widget build(BuildContext context) {
     final travel = ref.watch(travelProvider(widget.id));
+
+    if (travel == null) {
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
 
     final pageIndex = ref.watch(travelPlanProvider(travel)).pageIndex;
 

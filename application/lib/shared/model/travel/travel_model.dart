@@ -16,15 +16,12 @@ class TravelModel with _$TravelModel {
     required int id,
     required DateTime startedOn,
     required DateTime endedOn,
-    @Default(AgeGroup.none) AgeGroup ageGroup,
-    @Default(Gender.none) Gender gender,
-    @Default([]) List<TravelCompanionModel> companions,
-    @Default([]) List<TravelMotivationType> motivationTypes,
-    @Default([]) List<CityModel> cities,
+    AgeGroup? ageGroup,
+    Gender? gender,
+    required List<TravelCompanionModel> companions,
+    required List<TravelMotivationType> motivationTypes,
+    required List<CityModel> cities,
   }) = _TravelModel;
-
-  factory TravelModel.empty() =>
-      TravelModel(id: 0, startedOn: DateTime.now(), endedOn: DateTime.now());
 
   factory TravelModel.fromJson(Map<String, dynamic> json) =>
       _$TravelModelFromJson(json);

@@ -1,21 +1,23 @@
+import 'package:application_new/common/loading/loading_page.dart';
 import 'package:application_new/common/util/date_util.dart';
 import 'package:application_new/feature/travel_read/components/visit_list_item.dart';
 import 'package:application_new/feature/travel_read/components/visits_map_item.dart';
-import 'package:application_new/shared/model/travel/travel_detail_model.dart';
+import 'package:application_new/feature/travel_read/provider/travel_read_state.dart';
 import 'package:application_new/feature/travel_read/model/travel_visit_model.dart';
 import 'package:application_new/feature/travel_read/provider/travel_read_provider.dart';
 import 'package:application_new/shared/component/fixed_header_delegate.dart';
 import 'package:application_new/shared/component/filled_chip_theme.dart';
 import 'package:application_new/shared/component/travel_header.dart';
+import 'package:application_new/shared/provider/travel_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class TravelReadPage extends ConsumerStatefulWidget {
-  final int _travelId;
+  final int travelId;
 
-  const TravelReadPage({super.key, required int travelId})
-      : _travelId = travelId;
+  const TravelReadPage({super.key, required this.travelId});
+
 
   @override
   ConsumerState createState() => _TravelReadPageState();
@@ -38,7 +40,7 @@ class _TravelReadPageState extends ConsumerState<TravelReadPage> {
         if (result == null) return;
 
         ref
-            .read(travelReadProvider(widget._travelId).notifier)
+            .read(travelReadProvider(widget.travelId).notifier)
             .selectPlace(result.placeId);
       });
     });
@@ -53,9 +55,14 @@ class _TravelReadPageState extends ConsumerState<TravelReadPage> {
 
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(travelReadProvider(widget._travelId));
+    final travelId = widget.travelId;
 
-    final TravelDetailModel(:travel, :visits, :places) = state.detail;
+    final state = ref.watch(travelReadProvider(travelId));
+    final travel = ref.watch(travelProvider(travelId));
+
+    if (state == null || travel == null) return const LoadingPage();
+
+    final TravelReadState(:visits, :places) = state;
 
     final colorScheme = Theme.of(context).colorScheme;
 
@@ -64,8 +71,8 @@ class _TravelReadPageState extends ConsumerState<TravelReadPage> {
             .duration
             .inDays;
 
-    ref.listen(travelReadProvider(widget._travelId), (prev, next) {
-      if (prev?.selectedDate == next.selectedDate) return;
+    ref.listen(travelReadProvider(travelId), (prev, next) {
+      if (prev?.selectedDate == next?.selectedDate) return;
       scrollController.animateTo(initOffset,
           duration: const Duration(milliseconds: 500), curve: Curves.linear);
     });
@@ -91,7 +98,7 @@ class _TravelReadPageState extends ConsumerState<TravelReadPage> {
                   widget: Column(
                     children: [
                       Expanded(
-                        child: VisitsMapItem(travelId: widget._travelId),
+                        child: VisitsMapItem(travelId: travelId),
                       ),
                       Container(
                         width: double.maxFinite,
@@ -115,7 +122,7 @@ class _TravelReadPageState extends ConsumerState<TravelReadPage> {
                                   return ChoiceChip(
                                       onSelected: (_) => ref
                                           .read(travelReadProvider(
-                                                  widget._travelId)
+                                                  travelId)
                                               .notifier)
                                           .selectDate(day),
                                       selected: state.selectedDate == day,

@@ -1,5 +1,7 @@
+import 'package:application_new/common/loading/loading_page.dart';
 import 'package:application_new/common/util/iterable_utils.dart';
 import 'package:application_new/common/util/translation_util.dart';
+import 'package:application_new/feature/geography/model/city_model.dart';
 import 'package:application_new/feature/geography/provider/geography_provider.dart';
 import 'package:application_new/feature/travel_plan/city_travels/provider/city_travels_provider.dart';
 import 'package:application_new/feature/travel_plan/city_travels/provider/city_travels_state.dart';
@@ -37,8 +39,6 @@ class _CityTravelsPageState extends ConsumerState<CityTravelsPage> {
   @override
   Widget build(BuildContext context) {
 
-
-
     final travel =
         ref.read(travelProvider(widget.travelId));
 
@@ -46,6 +46,8 @@ class _CityTravelsPageState extends ConsumerState<CityTravelsPage> {
         .watch(geographyProvider)
         .cities
         .firstWhere((city) => city.id == widget.cityId);
+
+    if (travel == null) return const LoadingPage();
 
 
     final ThemeData(:textTheme, :colorScheme) = Theme.of(context);

@@ -13,7 +13,7 @@ final class TravelRepository {
   final AuthService authService;
   final HttpService httpService;
 
-  List<TravelModel> travels = [];
+  static List<TravelModel> travels = [];
 
   TravelRepository({required this.authService, required this.httpService});
 
