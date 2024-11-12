@@ -25,7 +25,8 @@ mixin _$TravelModel {
   DateTime get endedOn => throw _privateConstructorUsedError;
   AgeGroup get ageGroup => throw _privateConstructorUsedError;
   Gender get gender => throw _privateConstructorUsedError;
-  List<TravelCompanionModel> get companions => throw _privateConstructorUsedError;
+  List<TravelCompanionModel> get companions =>
+      throw _privateConstructorUsedError;
   List<TravelMotivationType> get motivationTypes =>
       throw _privateConstructorUsedError;
   List<CityModel> get cities => throw _privateConstructorUsedError;
@@ -348,48 +349,49 @@ abstract class _TravelModel extends TravelModel {
       throw _privateConstructorUsedError;
 }
 
-TravelCompanionModel _$TravelCompanionFromJson(Map<String, dynamic> json) {
+TravelCompanionModel _$TravelCompanionModelFromJson(Map<String, dynamic> json) {
   return _TravelCompanion.fromJson(json);
 }
 
 /// @nodoc
-mixin _$TravelCompanion {
+mixin _$TravelCompanionModel {
   int get id => throw _privateConstructorUsedError;
   TravelCompanionType get type => throw _privateConstructorUsedError;
   AgeGroup? get ageGroup => throw _privateConstructorUsedError;
   Gender? get gender => throw _privateConstructorUsedError;
 
-  /// Serializes this TravelCompanion to a JSON map.
+  /// Serializes this TravelCompanionModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
-  /// Create a copy of TravelCompanion
+  /// Create a copy of TravelCompanionModel
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $TravelCompanionCopyWith<TravelCompanionModel> get copyWith =>
+  $TravelCompanionModelCopyWith<TravelCompanionModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $TravelCompanionCopyWith<$Res> {
-  factory $TravelCompanionCopyWith(
-          TravelCompanionModel value, $Res Function(TravelCompanionModel) then) =
-      _$TravelCompanionCopyWithImpl<$Res, TravelCompanionModel>;
+abstract class $TravelCompanionModelCopyWith<$Res> {
+  factory $TravelCompanionModelCopyWith(TravelCompanionModel value,
+          $Res Function(TravelCompanionModel) then) =
+      _$TravelCompanionModelCopyWithImpl<$Res, TravelCompanionModel>;
   @useResult
   $Res call(
       {int id, TravelCompanionType type, AgeGroup? ageGroup, Gender? gender});
 }
 
 /// @nodoc
-class _$TravelCompanionCopyWithImpl<$Res, $Val extends TravelCompanionModel>
-    implements $TravelCompanionCopyWith<$Res> {
-  _$TravelCompanionCopyWithImpl(this._value, this._then);
+class _$TravelCompanionModelCopyWithImpl<$Res,
+        $Val extends TravelCompanionModel>
+    implements $TravelCompanionModelCopyWith<$Res> {
+  _$TravelCompanionModelCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of TravelCompanion
+  /// Create a copy of TravelCompanionModel
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -422,7 +424,7 @@ class _$TravelCompanionCopyWithImpl<$Res, $Val extends TravelCompanionModel>
 
 /// @nodoc
 abstract class _$$TravelCompanionImplCopyWith<$Res>
-    implements $TravelCompanionCopyWith<$Res> {
+    implements $TravelCompanionModelCopyWith<$Res> {
   factory _$$TravelCompanionImplCopyWith(_$TravelCompanionImpl value,
           $Res Function(_$TravelCompanionImpl) then) =
       __$$TravelCompanionImplCopyWithImpl<$Res>;
@@ -434,13 +436,13 @@ abstract class _$$TravelCompanionImplCopyWith<$Res>
 
 /// @nodoc
 class __$$TravelCompanionImplCopyWithImpl<$Res>
-    extends _$TravelCompanionCopyWithImpl<$Res, _$TravelCompanionImpl>
+    extends _$TravelCompanionModelCopyWithImpl<$Res, _$TravelCompanionImpl>
     implements _$$TravelCompanionImplCopyWith<$Res> {
   __$$TravelCompanionImplCopyWithImpl(
       _$TravelCompanionImpl _value, $Res Function(_$TravelCompanionImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of TravelCompanion
+  /// Create a copy of TravelCompanionModel
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -491,7 +493,7 @@ class _$TravelCompanionImpl implements _TravelCompanion {
 
   @override
   String toString() {
-    return 'TravelCompanion(id: $id, type: $type, ageGroup: $ageGroup, gender: $gender)';
+    return 'TravelCompanionModel(id: $id, type: $type, ageGroup: $ageGroup, gender: $gender)';
   }
 
   @override
@@ -510,7 +512,7 @@ class _$TravelCompanionImpl implements _TravelCompanion {
   @override
   int get hashCode => Object.hash(runtimeType, id, type, ageGroup, gender);
 
-  /// Create a copy of TravelCompanion
+  /// Create a copy of TravelCompanionModel
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
@@ -546,7 +548,7 @@ abstract class _TravelCompanion implements TravelCompanionModel {
   @override
   Gender? get gender;
 
-  /// Create a copy of TravelCompanion
+  /// Create a copy of TravelCompanionModel
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)

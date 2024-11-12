@@ -38,7 +38,7 @@ class TravelModel with _$TravelModel {
 }
 
 @freezed
-class TravelCompanionModel with _$TravelCompanion {
+class TravelCompanionModel with _$TravelCompanionModel {
   const factory TravelCompanionModel({
     required int id,
     required TravelCompanionType type,
@@ -47,7 +47,7 @@ class TravelCompanionModel with _$TravelCompanion {
   }) = _TravelCompanion;
 
   factory TravelCompanionModel.fromJson(Map<String, dynamic> json) =>
-      _$TravelCompanionFromJson(json);
+      _$TravelCompanionModelFromJson(json);
 }
 
 enum TravelMotivationType {

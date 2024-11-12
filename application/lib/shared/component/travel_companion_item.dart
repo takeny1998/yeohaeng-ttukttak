@@ -45,7 +45,7 @@ class TravelerItem extends StatelessWidget {
 
     return Column(
       children: [
-        TravelerAvatarItem(id: id, gender: gender),
+        TravelerAvatarItem(id: id, gender: gender, ageGroup: ageGroup),
         const SizedBox(height: 12.0),
         Text(relationShip, style: titleStyle),
         Text(TranslationUtil.enumValue(ageGroup), style: subTitleStyle),
