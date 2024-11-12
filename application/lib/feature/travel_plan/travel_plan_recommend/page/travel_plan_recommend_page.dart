@@ -7,14 +7,14 @@ import 'package:application_new/feature/travel_plan/travel_plan_recommend/page/s
 import 'package:application_new/feature/travel_plan/travel_plan_recommend/provider/travel_plan_recommend_provider.dart';
 import 'package:application_new/feature/travel_plan/travel_plan_recommend/provider/travel_plan_recommend_state.dart';
 import 'package:application_new/shared/component/sliver_infinite_list_indicator.dart';
+import 'package:application_new/shared/model/travel/travel_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class TravelPlanRecommendPage extends ConsumerStatefulWidget {
-  final int _travelId;
+  final TravelModel travel;
 
-  const TravelPlanRecommendPage({super.key, required int travelId})
-      : _travelId = travelId;
+  const TravelPlanRecommendPage({super.key, required this.travel});
 
   @override
   ConsumerState createState() => _TravelPlanRecommendPageState();
@@ -39,17 +39,16 @@ class _TravelPlanRecommendPageState
 
   @override
   Widget build(BuildContext context) {
-    final travelId = widget._travelId;
+    final travel = widget.travel;
 
-    final state = ref.watch(travelPlanProvider(travelId));
+    final state = ref.watch(travelPlanProvider(travel));
     final cityIndex = state.cityIndex;
 
     final ThemeData(:textTheme, :colorScheme) = Theme.of(context);
 
     final TravelPlanRecommendState(:placeRecommends, :hasNextPage) =
-        ref.watch(travelPlanRecommendProvider(travelId, cityIndex));
+        ref.watch(travelPlanRecommendProvider(travel, cityIndex));
 
-    final travel = state.detail.travel;
     final cities = travel.cities;
 
     return SliverMainAxisGroup(slivers: [
@@ -61,7 +60,7 @@ class _TravelPlanRecommendPageState
                 city: cities[i],
                 isSelected: cityIndex == i,
                 onSelected: () => ref
-                    .read(travelPlanProvider(travelId).notifier)
+                    .read(travelPlanProvider(travel).notifier)
                     .selectCity(i)),
         ])),
       ),
@@ -90,7 +89,7 @@ class _TravelPlanRecommendPageState
       SliverInfiniteListIndicator(
           hasNextPage: hasNextPage,
           onVisible: ref
-              .read(travelPlanRecommendProvider(travelId, cityIndex).notifier)
+              .read(travelPlanRecommendProvider(travel, cityIndex).notifier)
               .fetch)
     ]);
   }

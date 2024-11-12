@@ -7,7 +7,7 @@ part of 'travel_plan_recommend_provider.dart';
 // **************************************************************************
 
 String _$travelPlanRecommendHash() =>
-    r'0155562cc931c660a2f794e76a5cfb37b8a03e99';
+    r'6f97ab9a1c0ece8705686f769194f01249550e1e';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -32,11 +32,11 @@ class _SystemHash {
 
 abstract class _$TravelPlanRecommend
     extends BuildlessAutoDisposeNotifier<TravelPlanRecommendState> {
-  late final int travelId;
+  late final TravelModel travel;
   late final int cityIndex;
 
   TravelPlanRecommendState build(
-    int travelId,
+    TravelModel travel,
     int cityIndex,
   );
 }
@@ -52,11 +52,11 @@ class TravelPlanRecommendFamily extends Family<TravelPlanRecommendState> {
 
   /// See also [TravelPlanRecommend].
   TravelPlanRecommendProvider call(
-    int travelId,
+    TravelModel travel,
     int cityIndex,
   ) {
     return TravelPlanRecommendProvider(
-      travelId,
+      travel,
       cityIndex,
     );
   }
@@ -66,7 +66,7 @@ class TravelPlanRecommendFamily extends Family<TravelPlanRecommendState> {
     covariant TravelPlanRecommendProvider provider,
   ) {
     return call(
-      provider.travelId,
+      provider.travel,
       provider.cityIndex,
     );
   }
@@ -91,11 +91,11 @@ class TravelPlanRecommendProvider extends AutoDisposeNotifierProviderImpl<
     TravelPlanRecommend, TravelPlanRecommendState> {
   /// See also [TravelPlanRecommend].
   TravelPlanRecommendProvider(
-    int travelId,
+    TravelModel travel,
     int cityIndex,
   ) : this._internal(
           () => TravelPlanRecommend()
-            ..travelId = travelId
+            ..travel = travel
             ..cityIndex = cityIndex,
           from: travelPlanRecommendProvider,
           name: r'travelPlanRecommendProvider',
@@ -106,7 +106,7 @@ class TravelPlanRecommendProvider extends AutoDisposeNotifierProviderImpl<
           dependencies: TravelPlanRecommendFamily._dependencies,
           allTransitiveDependencies:
               TravelPlanRecommendFamily._allTransitiveDependencies,
-          travelId: travelId,
+          travel: travel,
           cityIndex: cityIndex,
         );
 
@@ -117,11 +117,11 @@ class TravelPlanRecommendProvider extends AutoDisposeNotifierProviderImpl<
     required super.allTransitiveDependencies,
     required super.debugGetCreateSourceHash,
     required super.from,
-    required this.travelId,
+    required this.travel,
     required this.cityIndex,
   }) : super.internal();
 
-  final int travelId;
+  final TravelModel travel;
   final int cityIndex;
 
   @override
@@ -129,7 +129,7 @@ class TravelPlanRecommendProvider extends AutoDisposeNotifierProviderImpl<
     covariant TravelPlanRecommend notifier,
   ) {
     return notifier.build(
-      travelId,
+      travel,
       cityIndex,
     );
   }
@@ -140,14 +140,14 @@ class TravelPlanRecommendProvider extends AutoDisposeNotifierProviderImpl<
       origin: this,
       override: TravelPlanRecommendProvider._internal(
         () => create()
-          ..travelId = travelId
+          ..travel = travel
           ..cityIndex = cityIndex,
         from: from,
         name: null,
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
-        travelId: travelId,
+        travel: travel,
         cityIndex: cityIndex,
       ),
     );
@@ -162,14 +162,14 @@ class TravelPlanRecommendProvider extends AutoDisposeNotifierProviderImpl<
   @override
   bool operator ==(Object other) {
     return other is TravelPlanRecommendProvider &&
-        other.travelId == travelId &&
+        other.travel == travel &&
         other.cityIndex == cityIndex;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, travelId.hashCode);
+    hash = _SystemHash.combine(hash, travel.hashCode);
     hash = _SystemHash.combine(hash, cityIndex.hashCode);
 
     return _SystemHash.finish(hash);
@@ -178,8 +178,8 @@ class TravelPlanRecommendProvider extends AutoDisposeNotifierProviderImpl<
 
 mixin TravelPlanRecommendRef
     on AutoDisposeNotifierProviderRef<TravelPlanRecommendState> {
-  /// The parameter `travelId` of this provider.
-  int get travelId;
+  /// The parameter `travel` of this provider.
+  TravelModel get travel;
 
   /// The parameter `cityIndex` of this provider.
   int get cityIndex;
@@ -191,7 +191,7 @@ class _TravelPlanRecommendProviderElement
   _TravelPlanRecommendProviderElement(super.provider);
 
   @override
-  int get travelId => (origin as TravelPlanRecommendProvider).travelId;
+  TravelModel get travel => (origin as TravelPlanRecommendProvider).travel;
   @override
   int get cityIndex => (origin as TravelPlanRecommendProvider).cityIndex;
 }

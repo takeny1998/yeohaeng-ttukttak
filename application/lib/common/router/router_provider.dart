@@ -53,7 +53,8 @@ GoRouter router(RouterRef ref) {
           path: '/travels/:id',
           builder: (context, state) {
             final {'id': travelId} = state.pathParameters;
-            return TravelPlanPage(travelId: int.parse(travelId));
+
+            return TravelPlanPage(id: int.parse(travelId));
           }),
       GoRoute(
           path: '/cities/:id/places/pois',
@@ -68,15 +69,8 @@ GoRouter router(RouterRef ref) {
             final {'travelId': travelId, 'cityId': cityId} =
                 state.pathParameters;
 
-            final travel =
-                ref.read(travelDetailProvider(int.parse(travelId))).travel;
-
-            final city = ref
-                .read(geographyProvider)
-                .cities
-                .firstWhere((city) => city.id == int.parse(cityId));
-
-            return CityTravelsPage(travel: travel, city: city);
+            return CityTravelsPage(
+                travelId: int.parse(travelId), cityId: int.parse(cityId));
           }),
     ],
   );

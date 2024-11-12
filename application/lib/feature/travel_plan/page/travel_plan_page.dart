@@ -6,16 +6,17 @@ import 'package:application_new/feature/travel_plan/page/travel_plan_home_page.d
 import 'package:application_new/feature/travel_plan/page/travel_plan_manage_page.dart';
 import 'package:application_new/feature/travel_plan/travel_plan_recommend/page/travel_plan_recommend_page.dart';
 import 'package:application_new/feature/travel_plan/provider/travel_plan_provider.dart';
+import 'package:application_new/shared/model/travel/travel_model.dart';
+import 'package:application_new/shared/provider/travel_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final GlobalKey<NestedScrollViewState> travelPlanPageKey = GlobalKey();
 
 class TravelPlanPage extends ConsumerStatefulWidget {
-  final int _travelId;
+  final int id;
 
-  const TravelPlanPage({super.key, required int travelId})
-      : _travelId = travelId;
+  const TravelPlanPage({super.key, required this.id});
 
   @override
   ConsumerState createState() => _TravelPlanPageState();
@@ -51,12 +52,11 @@ class _TravelPlanPageState extends ConsumerState<TravelPlanPage> {
 
   @override
   Widget build(BuildContext context) {
-    final travelId = widget._travelId;
+    final travel = ref.watch(travelProvider(widget.id));
 
-    final pageIndex = ref.watch(travelPlanProvider(travelId)).pageIndex;
-    final travel = ref.watch(travelPlanProvider(travelId)).detail.travel;
+    final pageIndex = ref.watch(travelPlanProvider(travel)).pageIndex;
 
-    ref.listen(travelPlanProvider(travelId), (prev, next) {
+    ref.listen(travelPlanProvider(travel), (prev, next) {
       final isHomePage = next.pageIndex == 0;
 
       final offset = isHomePage || (isHeaderSnapped && isHeaderScrolled)
@@ -69,10 +69,10 @@ class _TravelPlanPageState extends ConsumerState<TravelPlanPage> {
     });
 
     final List<Widget> pages = [
-      TravelPlanHomePage(travelId: travelId),
-      TravelPlanRecommendPage(travelId: travelId),
-      TravelPlanManagePage(travelId: travelId),
-      TravelPlanBookmarkPage(travelId: travelId),
+      TravelPlanHomePage(travel: travel),
+      TravelPlanRecommendPage(travel: travel),
+      TravelPlanManagePage(travelId: travel.id),
+      TravelPlanBookmarkPage(travelId: travel.id),
     ];
 
     return Scaffold(
@@ -125,7 +125,7 @@ class _TravelPlanPageState extends ConsumerState<TravelPlanPage> {
       bottomNavigationBar: NavigationBar(
         selectedIndex: pageIndex,
         onDestinationSelected: (index) =>
-            ref.read(travelPlanProvider(travelId).notifier).changePage(index),
+            ref.read(travelPlanProvider(travel).notifier).changePage(index),
         destinations: const [
           NavigationDestination(icon: Icon(Icons.home), label: '메인'),
           NavigationDestination(icon: Icon(Icons.place), label: '둘러보기'),

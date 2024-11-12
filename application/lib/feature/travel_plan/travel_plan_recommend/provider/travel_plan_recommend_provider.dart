@@ -25,11 +25,10 @@ class TravelPlanRecommend extends _$TravelPlanRecommend {
   static const pageSize = 3;
 
   @override
-  TravelPlanRecommendState build(int travelId, int cityIndex) {
-    final planState = ref.read(travelPlanProvider(travelId));
-    _city = planState.detail.travel.cities[cityIndex];
+  TravelPlanRecommendState build(TravelModel travel, int cityIndex) {
+    _city = travel.cities[cityIndex];
 
-    _initTargets(planState.detail.travel);
+    _initTargets(travel);
     return const TravelPlanRecommendState();
   }
 

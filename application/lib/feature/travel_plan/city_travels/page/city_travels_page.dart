@@ -1,20 +1,21 @@
 import 'package:application_new/common/util/iterable_utils.dart';
 import 'package:application_new/common/util/translation_util.dart';
-import 'package:application_new/feature/geography/model/city_model.dart';
+import 'package:application_new/feature/geography/provider/geography_provider.dart';
 import 'package:application_new/feature/travel_plan/city_travels/provider/city_travels_provider.dart';
 import 'package:application_new/feature/travel_plan/city_travels/provider/city_travels_state.dart';
 import 'package:application_new/feature/travel_plan/travel_plan_recommend/component/travel_item.dart';
 import 'package:application_new/shared/component/show_modal_content_sheet.dart';
 import 'package:application_new/shared/component/sliver_infinite_list_indicator.dart';
 import 'package:application_new/shared/model/travel/travel_model.dart';
+import 'package:application_new/shared/provider/travel_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CityTravelsPage extends ConsumerStatefulWidget {
-  final TravelModel travel;
-  final CityModel city;
+  final int travelId;
+  final int cityId;
 
-  const CityTravelsPage({super.key, required this.travel, required this.city});
+  const CityTravelsPage({super.key, required this.travelId, required this.cityId});
 
   @override
   ConsumerState createState() => _CityTravelsPageState();
@@ -35,9 +36,21 @@ class _CityTravelsPageState extends ConsumerState<CityTravelsPage> {
 
   @override
   Widget build(BuildContext context) {
+
+
+
+    final travel =
+        ref.read(travelProvider(widget.travelId));
+
+    final city = ref
+        .watch(geographyProvider)
+        .cities
+        .firstWhere((city) => city.id == widget.cityId);
+
+
     final ThemeData(:textTheme, :colorScheme) = Theme.of(context);
     final CityTravelsState(:travels, :hasNextPage) =
-        ref.watch(cityTravelsProvider(widget.travel, widget.city.id));
+        ref.watch(cityTravelsProvider(travel, city.id));
 
     final isMotivationTypeSelected = selectedMotivationTypes.isNotEmpty;
     final isCompanionTypeSelected = selectedCompanionTypes.isNotEmpty;
@@ -87,7 +100,7 @@ class _CityTravelsPageState extends ConsumerState<CityTravelsPage> {
         SliverInfiniteListIndicator(
             onVisible: ref
                 .read(
-                    cityTravelsProvider(widget.travel, widget.city.id).notifier)
+                    cityTravelsProvider(travel, city.id).notifier)
                 .fetch,
             hasNextPage: hasNextPage),
       ]),

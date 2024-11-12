@@ -15,7 +15,7 @@ class SliverInfiniteListIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (!hasNextPage) return const Placeholder();
+    if (!hasNextPage) return const SliverToBoxAdapter(child: SizedBox());
 
     return SliverFillRemaining(
         hasScrollBody: false,
