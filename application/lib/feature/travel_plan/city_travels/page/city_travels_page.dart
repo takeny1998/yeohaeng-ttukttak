@@ -1,7 +1,6 @@
 import 'package:application_new/common/loading/loading_page.dart';
 import 'package:application_new/common/util/iterable_util.dart';
 import 'package:application_new/common/util/translation_util.dart';
-import 'package:application_new/feature/geography/provider/geography_provider.dart';
 import 'package:application_new/feature/travel_plan/city_travels/provider/city_travels_provider.dart';
 import 'package:application_new/feature/travel_plan/city_travels/provider/city_travels_state.dart';
 import 'package:application_new/feature/travel_plan/travel_plan_recommend/component/travel_item.dart';
@@ -37,15 +36,10 @@ class _CityTravelsPageState extends ConsumerState<CityTravelsPage> {
   @override
   Widget build(BuildContext context) {
 
-    final city = ref
-        .watch(geographyProvider)
-        .cities
-        .firstWhere((city) => city.id == widget.cityId);
-
 
     final ThemeData(:textTheme, :colorScheme) = Theme.of(context);
     final state =
-        ref.watch(cityTravelsProvider(widget.travelId, city.id));
+        ref.watch(cityTravelsProvider(widget.travelId, widget.cityId));
 
     if (state == null) return const LoadingPage();
 
@@ -99,7 +93,7 @@ class _CityTravelsPageState extends ConsumerState<CityTravelsPage> {
         SliverInfiniteListIndicator(
             onVisible: ref
                 .read(
-                    cityTravelsProvider(widget.travelId, city.id).notifier)
+                    cityTravelsProvider(widget.travelId, widget.cityId).notifier)
                 .fetch,
             hasNextPage: hasNextPage),
       ]),

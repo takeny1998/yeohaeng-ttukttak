@@ -98,5 +98,4 @@ const _$TravelCompanionTypeEnumMap = {
   TravelCompanionType.colleagues: 'colleagues',
   TravelCompanionType.members: 'members',
   TravelCompanionType.others: 'others',
-  TravelCompanionType.none: 'none',
 };

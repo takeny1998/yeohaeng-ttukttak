@@ -1,8 +1,7 @@
 import 'package:application_new/common/http/http_service_provider.dart';
-import 'package:application_new/feature/geography/provider/geography_provider.dart';
+import 'package:application_new/domain/geography/geography_provider.dart';
 import 'package:application_new/feature/travel_plan/city_place_pois/provider/city_place_pois_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:collection/collection.dart';
 
 part 'city_place_pois_provider.g.dart';
 
@@ -15,11 +14,7 @@ class CityPlacePois extends _$CityPlacePois {
   @override
   CityPlacePoisState? build(int cityId, PlaceSortType sortType) {
 
-    final city = ref
-        .watch(geographyProvider)
-        .cities
-        .firstWhereOrNull((city) => city.id == cityId);
-
+    final city =  ref.watch(cityProvider(cityId));
     if (city == null) return null;
 
     fetch();

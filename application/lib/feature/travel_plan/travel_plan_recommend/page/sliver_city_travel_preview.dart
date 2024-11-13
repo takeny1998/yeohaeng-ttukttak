@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:application_new/common/util/translation_util.dart';
-import 'package:application_new/feature/geography/model/city_model.dart';
+import 'package:application_new/domain/geography/geography_model.dart';
 import 'package:application_new/feature/travel_plan/city_travels/provider/city_travels_provider.dart';
 import 'package:application_new/feature/travel_plan/city_travels/provider/city_travels_state.dart';
 import 'package:application_new/feature/travel_plan/travel_plan_recommend/component/travel_item.dart';

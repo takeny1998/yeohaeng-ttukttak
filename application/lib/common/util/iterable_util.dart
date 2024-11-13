@@ -2,6 +2,9 @@ import 'dart:math';
 import 'package:collection/collection.dart';
 
 final class IterableUtil {
+
+  IterableUtil._();
+
   static bool isIndexInRange(int index, {int start = 0, required int end}) {
     return start <= index && index <= end;
   }

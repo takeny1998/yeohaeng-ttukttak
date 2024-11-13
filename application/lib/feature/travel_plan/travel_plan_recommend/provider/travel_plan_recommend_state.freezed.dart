@@ -44,7 +44,6 @@ abstract class $TravelPlanRecommendStateCopyWith<$Res> {
       bool hasMoreTravel});
 
   $TravelModelCopyWith<$Res> get travel;
-  $CityModelCopyWith<$Res> get city;
 }
 
 /// @nodoc
@@ -64,7 +63,7 @@ class _$TravelPlanRecommendStateCopyWithImpl<$Res,
   @override
   $Res call({
     Object? travel = null,
-    Object? city = null,
+    Object? city = freezed,
     Object? placeRecommends = null,
     Object? hasNextPage = null,
     Object? hasMoreTravel = null,
@@ -74,7 +73,7 @@ class _$TravelPlanRecommendStateCopyWithImpl<$Res,
           ? _value.travel
           : travel // ignore: cast_nullable_to_non_nullable
               as TravelModel,
-      city: null == city
+      city: freezed == city
           ? _value.city
           : city // ignore: cast_nullable_to_non_nullable
               as CityModel,
@@ -102,16 +101,6 @@ class _$TravelPlanRecommendStateCopyWithImpl<$Res,
       return _then(_value.copyWith(travel: value) as $Val);
     });
   }
-
-  /// Create a copy of TravelPlanRecommendState
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $CityModelCopyWith<$Res> get city {
-    return $CityModelCopyWith<$Res>(_value.city, (value) {
-      return _then(_value.copyWith(city: value) as $Val);
-    });
-  }
 }
 
 /// @nodoc
@@ -132,8 +121,6 @@ abstract class _$$TravelPlanRecommendStateImplCopyWith<$Res>
 
   @override
   $TravelModelCopyWith<$Res> get travel;
-  @override
-  $CityModelCopyWith<$Res> get city;
 }
 
 /// @nodoc
@@ -152,7 +139,7 @@ class __$$TravelPlanRecommendStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? travel = null,
-    Object? city = null,
+    Object? city = freezed,
     Object? placeRecommends = null,
     Object? hasNextPage = null,
     Object? hasMoreTravel = null,
@@ -162,7 +149,7 @@ class __$$TravelPlanRecommendStateImplCopyWithImpl<$Res>
           ? _value.travel
           : travel // ignore: cast_nullable_to_non_nullable
               as TravelModel,
-      city: null == city
+      city: freezed == city
           ? _value.city
           : city // ignore: cast_nullable_to_non_nullable
               as CityModel,
@@ -222,7 +209,7 @@ class _$TravelPlanRecommendStateImpl extends _TravelPlanRecommendState {
         (other.runtimeType == runtimeType &&
             other is _$TravelPlanRecommendStateImpl &&
             (identical(other.travel, travel) || other.travel == travel) &&
-            (identical(other.city, city) || other.city == city) &&
+            const DeepCollectionEquality().equals(other.city, city) &&
             const DeepCollectionEquality()
                 .equals(other._placeRecommends, _placeRecommends) &&
             (identical(other.hasNextPage, hasNextPage) ||
@@ -235,7 +222,7 @@ class _$TravelPlanRecommendStateImpl extends _TravelPlanRecommendState {
   int get hashCode => Object.hash(
       runtimeType,
       travel,
-      city,
+      const DeepCollectionEquality().hash(city),
       const DeepCollectionEquality().hash(_placeRecommends),
       hasNextPage,
       hasMoreTravel);

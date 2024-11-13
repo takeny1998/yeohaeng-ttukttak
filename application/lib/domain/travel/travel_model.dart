@@ -1,6 +1,6 @@
 import 'package:application_new/common/util/date_util.dart';
 import 'package:application_new/common/util/translation_util.dart';
-import 'package:application_new/feature/geography/model/city_model.dart';
+import 'package:application_new/domain/geography/geography_model.dart';
 import 'package:application_new/feature/travel_create/provider/travel_create_state.dart';
 import 'package:application_new/shared/model/member_model.dart';
 import 'package:flutter/material.dart';
@@ -116,8 +116,7 @@ enum TravelCompanionType {
   lover,
   colleagues,
   members,
-  others,
-  none;
+  others;
 
   static Iterable<TravelCompanionType> active() => [
         spouse,

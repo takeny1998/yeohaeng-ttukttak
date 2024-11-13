@@ -1,4 +1,3 @@
-import 'package:application_new/feature/geography/model/region_model.dart';
 import 'package:application_new/shared/model/image_model.dart';
 import 'package:flutter/material.dart';
 

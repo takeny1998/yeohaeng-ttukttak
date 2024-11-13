@@ -1,4 +1,4 @@
-import 'package:application_new/feature/geography/model/city_model.dart';
+import 'package:application_new/domain/geography/geography_model.dart';
 import 'package:application_new/feature/travel_plan/travel_plan_recommend/model/place_recommend_model.dart';
 import 'package:application_new/domain/place/place_model.dart';
 import 'package:application_new/domain/travel/travel_model.dart';

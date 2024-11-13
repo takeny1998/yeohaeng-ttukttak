@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:application_new/common/http/http_service_provider.dart';
 import 'package:application_new/common/util/iterable_util.dart';
-import 'package:application_new/feature/geography/model/city_model.dart';
 import 'package:application_new/feature/travel_plan/provider/travel_plan_provider.dart';
 import 'package:application_new/feature/travel_plan/travel_plan_recommend/model/place_recommend_model.dart';
 import 'package:application_new/domain/place/place_model.dart';

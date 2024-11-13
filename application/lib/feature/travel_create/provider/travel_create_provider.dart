@@ -2,10 +2,8 @@ import 'package:application_new/common/http/http_service_provider.dart';
 import 'package:application_new/common/loading/async_loading_provider.dart';
 import 'package:application_new/domain/travel/travel_model.dart';
 import 'package:application_new/feature/authentication/service/auth_service_provider.dart';
-import 'package:application_new/feature/geography/model/city_model.dart';
-import 'package:application_new/feature/geography/model/region_model.dart';
+import 'package:application_new/domain/geography/geography_model.dart';
 import 'package:application_new/feature/travel_create/provider/travel_create_state.dart';
-import 'package:application_new/domain/travel/travel_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'travel_create_provider.g.dart';

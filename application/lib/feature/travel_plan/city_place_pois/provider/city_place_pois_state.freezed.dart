@@ -35,8 +35,6 @@ abstract class $CityPlacePoisStateCopyWith<$Res> {
   @useResult
   $Res call(
       {CityModel city, List<PlaceMetricModel> placeMetrics, bool hasNextPage});
-
-  $CityModelCopyWith<$Res> get city;
 }
 
 /// @nodoc
@@ -54,12 +52,12 @@ class _$CityPlacePoisStateCopyWithImpl<$Res, $Val extends CityPlacePoisState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? city = null,
+    Object? city = freezed,
     Object? placeMetrics = null,
     Object? hasNextPage = null,
   }) {
     return _then(_value.copyWith(
-      city: null == city
+      city: freezed == city
           ? _value.city
           : city // ignore: cast_nullable_to_non_nullable
               as CityModel,
@@ -73,16 +71,6 @@ class _$CityPlacePoisStateCopyWithImpl<$Res, $Val extends CityPlacePoisState>
               as bool,
     ) as $Val);
   }
-
-  /// Create a copy of CityPlacePoisState
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $CityModelCopyWith<$Res> get city {
-    return $CityModelCopyWith<$Res>(_value.city, (value) {
-      return _then(_value.copyWith(city: value) as $Val);
-    });
-  }
 }
 
 /// @nodoc
@@ -95,9 +83,6 @@ abstract class _$$CityPlacePoisStateImplCopyWith<$Res>
   @useResult
   $Res call(
       {CityModel city, List<PlaceMetricModel> placeMetrics, bool hasNextPage});
-
-  @override
-  $CityModelCopyWith<$Res> get city;
 }
 
 /// @nodoc
@@ -113,12 +98,12 @@ class __$$CityPlacePoisStateImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? city = null,
+    Object? city = freezed,
     Object? placeMetrics = null,
     Object? hasNextPage = null,
   }) {
     return _then(_$CityPlacePoisStateImpl(
-      city: null == city
+      city: freezed == city
           ? _value.city
           : city // ignore: cast_nullable_to_non_nullable
               as CityModel,
@@ -168,7 +153,7 @@ class _$CityPlacePoisStateImpl implements _CityPlacePoisState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$CityPlacePoisStateImpl &&
-            (identical(other.city, city) || other.city == city) &&
+            const DeepCollectionEquality().equals(other.city, city) &&
             const DeepCollectionEquality()
                 .equals(other._placeMetrics, _placeMetrics) &&
             (identical(other.hasNextPage, hasNextPage) ||
@@ -176,8 +161,11 @@ class _$CityPlacePoisStateImpl implements _CityPlacePoisState {
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, city,
-      const DeepCollectionEquality().hash(_placeMetrics), hasNextPage);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(city),
+      const DeepCollectionEquality().hash(_placeMetrics),
+      hasNextPage);
 
   /// Create a copy of CityPlacePoisState
   /// with the given fields replaced by the non-null parameter values.

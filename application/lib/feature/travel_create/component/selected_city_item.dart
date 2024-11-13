@@ -1,4 +1,4 @@
-import 'package:application_new/feature/geography/model/city_model.dart';
+import 'package:application_new/domain/geography/geography_model.dart';
 import 'package:application_new/shared/model/image_model.dart';
 import 'package:flutter/material.dart';
 

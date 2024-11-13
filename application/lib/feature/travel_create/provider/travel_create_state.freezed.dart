@@ -49,8 +49,6 @@ abstract class $TravelCreateStateCopyWith<$Res> {
       RegionModel? region,
       List<CityModel> cities,
       bool isSubmitted});
-
-  $RegionModelCopyWith<$Res>? get region;
 }
 
 /// @nodoc
@@ -112,20 +110,6 @@ class _$TravelCreateStateCopyWithImpl<$Res, $Val extends TravelCreateState>
               as bool,
     ) as $Val);
   }
-
-  /// Create a copy of TravelCreateState
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $RegionModelCopyWith<$Res>? get region {
-    if (_value.region == null) {
-      return null;
-    }
-
-    return $RegionModelCopyWith<$Res>(_value.region!, (value) {
-      return _then(_value.copyWith(region: value) as $Val);
-    });
-  }
 }
 
 /// @nodoc
@@ -145,9 +129,6 @@ abstract class _$$TravelCreateStateImplCopyWith<$Res>
       RegionModel? region,
       List<CityModel> cities,
       bool isSubmitted});
-
-  @override
-  $RegionModelCopyWith<$Res>? get region;
 }
 
 /// @nodoc
@@ -284,7 +265,7 @@ class _$TravelCreateStateImpl implements _TravelCreateState {
                 .equals(other._companionTypes, _companionTypes) &&
             const DeepCollectionEquality()
                 .equals(other._motivationTypes, _motivationTypes) &&
-            (identical(other.region, region) || other.region == region) &&
+            const DeepCollectionEquality().equals(other.region, region) &&
             const DeepCollectionEquality().equals(other._cities, _cities) &&
             (identical(other.isSubmitted, isSubmitted) ||
                 other.isSubmitted == isSubmitted));
@@ -298,7 +279,7 @@ class _$TravelCreateStateImpl implements _TravelCreateState {
       endedOn,
       const DeepCollectionEquality().hash(_companionTypes),
       const DeepCollectionEquality().hash(_motivationTypes),
-      region,
+      const DeepCollectionEquality().hash(region),
       const DeepCollectionEquality().hash(_cities),
       isSubmitted);
 

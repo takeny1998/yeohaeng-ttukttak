@@ -34,8 +34,6 @@ abstract class $CityTravelsStateCopyWith<$Res> {
       _$CityTravelsStateCopyWithImpl<$Res, CityTravelsState>;
   @useResult
   $Res call({CityModel city, List<TravelModel> travels, dynamic hasNextPage});
-
-  $CityModelCopyWith<$Res> get city;
 }
 
 /// @nodoc
@@ -53,12 +51,12 @@ class _$CityTravelsStateCopyWithImpl<$Res, $Val extends CityTravelsState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? city = null,
+    Object? city = freezed,
     Object? travels = null,
     Object? hasNextPage = freezed,
   }) {
     return _then(_value.copyWith(
-      city: null == city
+      city: freezed == city
           ? _value.city
           : city // ignore: cast_nullable_to_non_nullable
               as CityModel,
@@ -72,16 +70,6 @@ class _$CityTravelsStateCopyWithImpl<$Res, $Val extends CityTravelsState>
               as dynamic,
     ) as $Val);
   }
-
-  /// Create a copy of CityTravelsState
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $CityModelCopyWith<$Res> get city {
-    return $CityModelCopyWith<$Res>(_value.city, (value) {
-      return _then(_value.copyWith(city: value) as $Val);
-    });
-  }
 }
 
 /// @nodoc
@@ -93,9 +81,6 @@ abstract class _$$CityTravelsStateImplCopyWith<$Res>
   @override
   @useResult
   $Res call({CityModel city, List<TravelModel> travels, dynamic hasNextPage});
-
-  @override
-  $CityModelCopyWith<$Res> get city;
 }
 
 /// @nodoc
@@ -111,12 +96,12 @@ class __$$CityTravelsStateImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? city = null,
+    Object? city = freezed,
     Object? travels = null,
     Object? hasNextPage = freezed,
   }) {
     return _then(_$CityTravelsStateImpl(
-      city: null == city
+      city: freezed == city
           ? _value.city
           : city // ignore: cast_nullable_to_non_nullable
               as CityModel,
@@ -164,7 +149,7 @@ class _$CityTravelsStateImpl extends _CityTravelsState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$CityTravelsStateImpl &&
-            (identical(other.city, city) || other.city == city) &&
+            const DeepCollectionEquality().equals(other.city, city) &&
             const DeepCollectionEquality().equals(other._travels, _travels) &&
             const DeepCollectionEquality()
                 .equals(other.hasNextPage, hasNextPage));
@@ -173,7 +158,7 @@ class _$CityTravelsStateImpl extends _CityTravelsState {
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      city,
+      const DeepCollectionEquality().hash(city),
       const DeepCollectionEquality().hash(_travels),
       const DeepCollectionEquality().hash(hasNextPage));
 
