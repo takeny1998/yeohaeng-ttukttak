@@ -1,6 +1,6 @@
-import 'package:application_new/shared/model/place_model.dart';
-import 'package:application_new/feature/travel_read/model/travel_visit_model.dart';
-import 'package:application_new/shared/model/travel/travel_model.dart';
+import 'package:application_new/domain/place/place_model.dart';
+import 'package:application_new/domain/travel/travel_visit_model.dart';
+import 'package:application_new/domain/travel/travel_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'travel_read_state.freezed.dart';

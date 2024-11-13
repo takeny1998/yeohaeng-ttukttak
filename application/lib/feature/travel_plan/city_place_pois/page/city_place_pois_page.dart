@@ -11,7 +11,7 @@ import 'package:application_new/feature/travel_plan/city_place_pois/provider/cit
 import 'package:application_new/feature/travel_plan/city_place_pois/provider/city_place_pois_provider.dart';
 import 'package:application_new/feature/travel_plan/city_place_pois/provider/city_place_pois_state.dart';
 import 'package:application_new/shared/component/sliver_infinite_list_indicator.dart';
-import 'package:application_new/shared/model/place_model.dart';
+import 'package:application_new/domain/place/place_model.dart';
 import 'package:application_new/shared/util/constants.dart';
 import 'package:application_new/shared/util/snap_scroll_physics.dart';
 import 'package:flutter/material.dart';

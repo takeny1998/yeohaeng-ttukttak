@@ -3,8 +3,8 @@ import 'package:application_new/feature/geography/provider/geography_provider.da
 import 'package:application_new/feature/travel_plan/city_place_pois/component/city_places_map.dart';
 import 'package:application_new/feature/travel_plan/city_travels/model/paged_travels_model.dart';
 import 'package:application_new/feature/travel_plan/city_travels/provider/city_travels_state.dart';
-import 'package:application_new/shared/model/travel/travel_model.dart';
-import 'package:application_new/shared/provider/travel_provider.dart';
+import 'package:application_new/domain/travel/travel_model.dart';
+import 'package:application_new/domain/travel/travel_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:application_new/common/http/http_service_provider.dart';

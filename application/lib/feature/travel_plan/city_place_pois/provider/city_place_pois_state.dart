@@ -1,5 +1,5 @@
 import 'package:application_new/feature/geography/model/city_model.dart';
-import 'package:application_new/shared/model/place_model.dart';
+import 'package:application_new/domain/place/place_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';

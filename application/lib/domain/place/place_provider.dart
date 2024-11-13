@@ -1,6 +1,5 @@
 import 'package:application_new/common/http/http_service_provider.dart';
-import 'package:application_new/shared/model/place_model.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:application_new/domain/place/place_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'place_provider.g.dart';

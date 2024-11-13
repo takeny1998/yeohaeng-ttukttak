@@ -1,5 +1,5 @@
 import 'package:application_new/common/http/http_service_provider.dart';
-import 'package:application_new/shared/model/travel/travel_model.dart';
+import 'package:application_new/domain/travel/travel_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'travel_provider.g.dart';

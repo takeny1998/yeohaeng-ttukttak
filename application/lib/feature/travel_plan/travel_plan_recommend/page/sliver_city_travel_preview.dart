@@ -5,7 +5,7 @@ import 'package:application_new/feature/geography/model/city_model.dart';
 import 'package:application_new/feature/travel_plan/city_travels/provider/city_travels_provider.dart';
 import 'package:application_new/feature/travel_plan/city_travels/provider/city_travels_state.dart';
 import 'package:application_new/feature/travel_plan/travel_plan_recommend/component/travel_item.dart';
-import 'package:application_new/shared/model/travel/travel_model.dart';
+import 'package:application_new/domain/travel/travel_model.dart';
 import 'package:application_new/shared/util/constants.dart';
 import 'package:application_new/shared/util/snap_scroll_physics.dart';
 import 'package:flutter/material.dart';

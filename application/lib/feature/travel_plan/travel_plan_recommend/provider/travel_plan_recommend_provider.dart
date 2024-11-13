@@ -5,8 +5,8 @@ import 'package:application_new/common/util/iterable_util.dart';
 import 'package:application_new/feature/geography/model/city_model.dart';
 import 'package:application_new/feature/travel_plan/provider/travel_plan_provider.dart';
 import 'package:application_new/feature/travel_plan/travel_plan_recommend/model/place_recommend_model.dart';
-import 'package:application_new/shared/model/place_model.dart';
-import 'package:application_new/shared/model/travel/travel_model.dart';
+import 'package:application_new/domain/place/place_model.dart';
+import 'package:application_new/domain/travel/travel_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'travel_plan_recommend_state.dart';

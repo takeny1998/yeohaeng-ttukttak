@@ -1,8 +1,8 @@
 import 'package:application_new/common/http/http_service_provider.dart';
-import 'package:application_new/feature/travel_read/model/travel_visit_model.dart';
+import 'package:application_new/domain/travel/travel_visit_model.dart';
 import 'package:application_new/feature/travel_read/provider/travel_read_state.dart';
-import 'package:application_new/shared/model/travel/travel_model.dart';
-import 'package:application_new/shared/provider/travel_provider.dart';
+import 'package:application_new/domain/travel/travel_model.dart';
+import 'package:application_new/domain/travel/travel_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'travel_read_provider.g.dart';

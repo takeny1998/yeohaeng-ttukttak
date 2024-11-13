@@ -1,6 +1,6 @@
 import 'package:application_new/common/util/translation_util.dart';
 import 'package:application_new/shared/component/travel_companion_item.dart';
-import 'package:application_new/shared/model/travel/travel_model.dart';
+import 'package:application_new/domain/travel/travel_model.dart';
 import 'package:flutter/material.dart';
 
 class TravelHeader extends StatelessWidget {

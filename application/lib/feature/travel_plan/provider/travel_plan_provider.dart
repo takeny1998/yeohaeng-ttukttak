@@ -1,6 +1,6 @@
 import 'package:application_new/common/util/iterable_util.dart';
 import 'package:application_new/feature/travel_plan/provider/travel_plan_state.dart';
-import 'package:application_new/shared/provider/travel_provider.dart';
+import 'package:application_new/domain/travel/travel_provider.dart';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

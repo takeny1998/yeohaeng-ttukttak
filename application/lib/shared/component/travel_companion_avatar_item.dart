@@ -1,5 +1,5 @@
 import 'package:application_new/shared/model/member_model.dart';
-import 'package:application_new/shared/model/travel/travel_model.dart';
+import 'package:application_new/domain/travel/travel_model.dart';
 import 'package:application_new/shared/service/avatar_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

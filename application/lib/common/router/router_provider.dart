@@ -1,7 +1,6 @@
 import 'package:application_new/common/loading/loading_page.dart';
 import 'package:application_new/common/session/session_provider.dart';
 import 'package:application_new/feature/authentication/page/login_page.dart';
-import 'package:application_new/feature/geography/provider/geography_provider.dart';
 import 'package:application_new/feature/home/home_page.dart';
 import 'package:application_new/feature/travel_create/page/travel_create_page.dart';
 import 'package:application_new/feature/travel_plan/city_place_pois/page/city_place_pois_page.dart';
@@ -9,10 +8,7 @@ import 'package:application_new/feature/travel_plan/city_travels/page/city_trave
 import 'package:application_new/feature/travel_read/page/travel_read_page.dart';
 import 'package:application_new/feature/travel_list/page/travel_list_page.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_page.dart';
-import 'package:application_new/shared/provider/travel_detail_provider.dart';
-import 'package:application_new/shared/provider/travel_provider.dart';
 import 'package:go_router/go_router.dart';
-import 'package:path/path.dart';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

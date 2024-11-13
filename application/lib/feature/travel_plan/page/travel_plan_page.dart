@@ -8,7 +8,7 @@ import 'package:application_new/feature/travel_plan/page/travel_plan_manage_page
 import 'package:application_new/feature/travel_plan/provider/travel_plan_state.dart';
 import 'package:application_new/feature/travel_plan/travel_plan_recommend/page/travel_plan_recommend_page.dart';
 import 'package:application_new/feature/travel_plan/provider/travel_plan_provider.dart';
-import 'package:application_new/shared/provider/travel_provider.dart';
+import 'package:application_new/domain/travel/travel_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
