@@ -1,9 +1,8 @@
-import 'package:application_new/feature/geography/model/city_model.dart';
-import 'package:application_new/feature/geography/provider/geography_provider.dart';
+import 'package:application_new/domain/geography/geography_model.dart';
+import 'package:application_new/domain/geography/geography_provider.dart';
 import 'package:application_new/shared/model/image_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:collection/collection.dart';
 
 class TravelCityItem extends ConsumerWidget {
   final CityModel city;
@@ -28,10 +27,7 @@ class TravelCityItem extends ConsumerWidget {
     final regionStyle =
         textTheme.labelMedium?.copyWith(color: colorScheme.surfaceTint);
 
-    final region = ref
-        .watch(geographyProvider)
-        .regions
-        .firstWhereOrNull((region) => region.id == city.regionId);
+    final region = ref.watch(regionProvider(city.regionId));
 
     final backgroundColor =
         isSelected ? colorScheme.primaryContainer : colorScheme.surface;

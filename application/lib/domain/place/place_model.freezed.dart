@@ -187,14 +187,15 @@ class __$$PlaceModelImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$PlaceModelImpl implements _PlaceModel {
+class _$PlaceModelImpl extends _PlaceModel {
   const _$PlaceModelImpl(
       {required this.id,
       required this.name,
       required this.address,
       required this.coordinates,
       required final List<PlaceCategoryType> categoryTypes})
-      : _categoryTypes = categoryTypes;
+      : _categoryTypes = categoryTypes,
+        super._();
 
   factory _$PlaceModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$PlaceModelImplFromJson(json);
@@ -255,13 +256,14 @@ class _$PlaceModelImpl implements _PlaceModel {
   }
 }
 
-abstract class _PlaceModel implements PlaceModel {
+abstract class _PlaceModel extends PlaceModel {
   const factory _PlaceModel(
       {required final int id,
       required final String name,
       required final PlaceAddress address,
       required final PlaceCoordinates coordinates,
       required final List<PlaceCategoryType> categoryTypes}) = _$PlaceModelImpl;
+  const _PlaceModel._() : super._();
 
   factory _PlaceModel.fromJson(Map<String, dynamic> json) =
       _$PlaceModelImpl.fromJson;

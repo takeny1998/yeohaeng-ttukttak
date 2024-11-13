@@ -7,7 +7,7 @@ part of 'travel_plan_recommend_provider.dart';
 // **************************************************************************
 
 String _$travelPlanRecommendHash() =>
-    r'0155562cc931c660a2f794e76a5cfb37b8a03e99';
+    r'5a0c2d9f0c37d2ea269808b2d8a0178b3ae8a751';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -31,13 +31,13 @@ class _SystemHash {
 }
 
 abstract class _$TravelPlanRecommend
-    extends BuildlessAutoDisposeNotifier<TravelPlanRecommendState> {
+    extends BuildlessAutoDisposeNotifier<TravelPlanRecommendState?> {
   late final int travelId;
-  late final int cityIndex;
+  late final int cityId;
 
-  TravelPlanRecommendState build(
+  TravelPlanRecommendState? build(
     int travelId,
-    int cityIndex,
+    int cityId,
   );
 }
 
@@ -46,18 +46,18 @@ abstract class _$TravelPlanRecommend
 const travelPlanRecommendProvider = TravelPlanRecommendFamily();
 
 /// See also [TravelPlanRecommend].
-class TravelPlanRecommendFamily extends Family<TravelPlanRecommendState> {
+class TravelPlanRecommendFamily extends Family<TravelPlanRecommendState?> {
   /// See also [TravelPlanRecommend].
   const TravelPlanRecommendFamily();
 
   /// See also [TravelPlanRecommend].
   TravelPlanRecommendProvider call(
     int travelId,
-    int cityIndex,
+    int cityId,
   ) {
     return TravelPlanRecommendProvider(
       travelId,
-      cityIndex,
+      cityId,
     );
   }
 
@@ -67,7 +67,7 @@ class TravelPlanRecommendFamily extends Family<TravelPlanRecommendState> {
   ) {
     return call(
       provider.travelId,
-      provider.cityIndex,
+      provider.cityId,
     );
   }
 
@@ -88,15 +88,15 @@ class TravelPlanRecommendFamily extends Family<TravelPlanRecommendState> {
 
 /// See also [TravelPlanRecommend].
 class TravelPlanRecommendProvider extends AutoDisposeNotifierProviderImpl<
-    TravelPlanRecommend, TravelPlanRecommendState> {
+    TravelPlanRecommend, TravelPlanRecommendState?> {
   /// See also [TravelPlanRecommend].
   TravelPlanRecommendProvider(
     int travelId,
-    int cityIndex,
+    int cityId,
   ) : this._internal(
           () => TravelPlanRecommend()
             ..travelId = travelId
-            ..cityIndex = cityIndex,
+            ..cityId = cityId,
           from: travelPlanRecommendProvider,
           name: r'travelPlanRecommendProvider',
           debugGetCreateSourceHash:
@@ -107,7 +107,7 @@ class TravelPlanRecommendProvider extends AutoDisposeNotifierProviderImpl<
           allTransitiveDependencies:
               TravelPlanRecommendFamily._allTransitiveDependencies,
           travelId: travelId,
-          cityIndex: cityIndex,
+          cityId: cityId,
         );
 
   TravelPlanRecommendProvider._internal(
@@ -118,19 +118,19 @@ class TravelPlanRecommendProvider extends AutoDisposeNotifierProviderImpl<
     required super.debugGetCreateSourceHash,
     required super.from,
     required this.travelId,
-    required this.cityIndex,
+    required this.cityId,
   }) : super.internal();
 
   final int travelId;
-  final int cityIndex;
+  final int cityId;
 
   @override
-  TravelPlanRecommendState runNotifierBuild(
+  TravelPlanRecommendState? runNotifierBuild(
     covariant TravelPlanRecommend notifier,
   ) {
     return notifier.build(
       travelId,
-      cityIndex,
+      cityId,
     );
   }
 
@@ -141,21 +141,21 @@ class TravelPlanRecommendProvider extends AutoDisposeNotifierProviderImpl<
       override: TravelPlanRecommendProvider._internal(
         () => create()
           ..travelId = travelId
-          ..cityIndex = cityIndex,
+          ..cityId = cityId,
         from: from,
         name: null,
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
         travelId: travelId,
-        cityIndex: cityIndex,
+        cityId: cityId,
       ),
     );
   }
 
   @override
   AutoDisposeNotifierProviderElement<TravelPlanRecommend,
-      TravelPlanRecommendState> createElement() {
+      TravelPlanRecommendState?> createElement() {
     return _TravelPlanRecommendProviderElement(this);
   }
 
@@ -163,37 +163,37 @@ class TravelPlanRecommendProvider extends AutoDisposeNotifierProviderImpl<
   bool operator ==(Object other) {
     return other is TravelPlanRecommendProvider &&
         other.travelId == travelId &&
-        other.cityIndex == cityIndex;
+        other.cityId == cityId;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
     hash = _SystemHash.combine(hash, travelId.hashCode);
-    hash = _SystemHash.combine(hash, cityIndex.hashCode);
+    hash = _SystemHash.combine(hash, cityId.hashCode);
 
     return _SystemHash.finish(hash);
   }
 }
 
 mixin TravelPlanRecommendRef
-    on AutoDisposeNotifierProviderRef<TravelPlanRecommendState> {
+    on AutoDisposeNotifierProviderRef<TravelPlanRecommendState?> {
   /// The parameter `travelId` of this provider.
   int get travelId;
 
-  /// The parameter `cityIndex` of this provider.
-  int get cityIndex;
+  /// The parameter `cityId` of this provider.
+  int get cityId;
 }
 
 class _TravelPlanRecommendProviderElement
     extends AutoDisposeNotifierProviderElement<TravelPlanRecommend,
-        TravelPlanRecommendState> with TravelPlanRecommendRef {
+        TravelPlanRecommendState?> with TravelPlanRecommendRef {
   _TravelPlanRecommendProviderElement(super.provider);
 
   @override
   int get travelId => (origin as TravelPlanRecommendProvider).travelId;
   @override
-  int get cityIndex => (origin as TravelPlanRecommendProvider).cityIndex;
+  int get cityId => (origin as TravelPlanRecommendProvider).cityId;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

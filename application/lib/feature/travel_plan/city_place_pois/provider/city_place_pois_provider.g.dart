@@ -6,7 +6,7 @@ part of 'city_place_pois_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$cityPlacePoisHash() => r'f087d758ff56a690f569adda9e9e00e9bd56569b';
+String _$cityPlacePoisHash() => r'95ac2979db3ee0dbbc43a2c19283d2e7ee901b17';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -30,11 +30,11 @@ class _SystemHash {
 }
 
 abstract class _$CityPlacePois
-    extends BuildlessAutoDisposeNotifier<CityPlacePoisState> {
+    extends BuildlessAutoDisposeNotifier<CityPlacePoisState?> {
   late final int cityId;
   late final PlaceSortType sortType;
 
-  CityPlacePoisState build(
+  CityPlacePoisState? build(
     int cityId,
     PlaceSortType sortType,
   );
@@ -45,7 +45,7 @@ abstract class _$CityPlacePois
 const cityPlacePoisProvider = CityPlacePoisFamily();
 
 /// See also [CityPlacePois].
-class CityPlacePoisFamily extends Family<CityPlacePoisState> {
+class CityPlacePoisFamily extends Family<CityPlacePoisState?> {
   /// See also [CityPlacePois].
   const CityPlacePoisFamily();
 
@@ -86,8 +86,8 @@ class CityPlacePoisFamily extends Family<CityPlacePoisState> {
 }
 
 /// See also [CityPlacePois].
-class CityPlacePoisProvider
-    extends AutoDisposeNotifierProviderImpl<CityPlacePois, CityPlacePoisState> {
+class CityPlacePoisProvider extends AutoDisposeNotifierProviderImpl<
+    CityPlacePois, CityPlacePoisState?> {
   /// See also [CityPlacePois].
   CityPlacePoisProvider(
     int cityId,
@@ -124,7 +124,7 @@ class CityPlacePoisProvider
   final PlaceSortType sortType;
 
   @override
-  CityPlacePoisState runNotifierBuild(
+  CityPlacePoisState? runNotifierBuild(
     covariant CityPlacePois notifier,
   ) {
     return notifier.build(
@@ -153,7 +153,7 @@ class CityPlacePoisProvider
   }
 
   @override
-  AutoDisposeNotifierProviderElement<CityPlacePois, CityPlacePoisState>
+  AutoDisposeNotifierProviderElement<CityPlacePois, CityPlacePoisState?>
       createElement() {
     return _CityPlacePoisProviderElement(this);
   }
@@ -175,7 +175,7 @@ class CityPlacePoisProvider
   }
 }
 
-mixin CityPlacePoisRef on AutoDisposeNotifierProviderRef<CityPlacePoisState> {
+mixin CityPlacePoisRef on AutoDisposeNotifierProviderRef<CityPlacePoisState?> {
   /// The parameter `cityId` of this provider.
   int get cityId;
 
@@ -184,7 +184,7 @@ mixin CityPlacePoisRef on AutoDisposeNotifierProviderRef<CityPlacePoisState> {
 }
 
 class _CityPlacePoisProviderElement extends AutoDisposeNotifierProviderElement<
-    CityPlacePois, CityPlacePoisState> with CityPlacePoisRef {
+    CityPlacePois, CityPlacePoisState?> with CityPlacePoisRef {
   _CityPlacePoisProviderElement(super.provider);
 
   @override

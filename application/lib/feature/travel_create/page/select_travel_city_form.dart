@@ -1,5 +1,6 @@
+import 'package:application_new/common/loading/loading_page.dart';
 import 'package:application_new/common/util/translation_util.dart';
-import 'package:application_new/feature/geography/provider/geography_provider.dart';
+import 'package:application_new/domain/geography/geography_provider.dart';
 import 'package:application_new/feature/travel_create/component/bottom_action_button.dart';
 import 'package:application_new/feature/travel_create/component/city_list_item.dart';
 import 'package:application_new/feature/travel_create/component/selected_city_item.dart';
@@ -31,13 +32,19 @@ class _SelectTravelCityFormState extends ConsumerState<SelectTravelCityForm> {
   Widget build(BuildContext context) {
     final TravelCreateState(cities: selectedCities, region: selectedRegion) =
         ref.watch(travelCreateProvider);
-
-    final geographyState = ref.watch(geographyProvider);
+    
+    
+    final geography = ref.watch(geographyProvider).value;
+    
+    if (geography == null) return const LoadingPage();
+    
+    final (cities, regions) = geography;
+    
     final colorScheme = Theme.of(context).colorScheme;
 
     final translator = TranslationUtil.widget(context);
 
-    final filteredCities = geographyState.cities.where((city) {
+    final filteredCities = cities.where((city) {
       if (selectedRegion == null) return true;
       return city.regionId == selectedRegion.id;
     }).toList();
@@ -65,8 +72,8 @@ class _SelectTravelCityFormState extends ConsumerState<SelectTravelCityForm> {
                 final foundCity = await showSearch(
                     context: context,
                     delegate: CitySearchDelegate(
-                        cities: geographyState.cities,
-                        regions: geographyState.regions));
+                        cities: cities,
+                        regions: regions));
 
                 if (foundCity == null || selectedCities.contains(foundCity)) {
                   return;
@@ -100,7 +107,7 @@ class _SelectTravelCityFormState extends ConsumerState<SelectTravelCityForm> {
                           .read(travelCreateProvider.notifier)
                           .selectRegion(null)),
                   const SizedBox(width: 8.0),
-                  for (final region in geographyState.regions) ...[
+                  for (final region in regions) ...[
                     TravelRegionItem(
                         name: region.shortName,
                         insignia: region.insignia,
@@ -123,7 +130,7 @@ class _SelectTravelCityFormState extends ConsumerState<SelectTravelCityForm> {
               itemCount: filteredCities.length,
               itemBuilder: (context, index) {
                 final city = filteredCities[index];
-                final region = geographyState.regions
+                final region = regions
                     .firstWhere((region) => region.id == city.regionId);
 
                 return CityListItem(

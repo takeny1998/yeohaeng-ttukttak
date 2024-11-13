@@ -1,6 +1,9 @@
+import 'package:application_new/common/loading/loading_page.dart';
 import 'package:application_new/feature/travel_read/components/place_marker_item.dart';
 import 'package:application_new/feature/travel_read/provider/travel_read_provider.dart';
-import 'package:application_new/shared/model/place_model.dart';
+import 'package:application_new/domain/place/place_model.dart';
+import 'package:application_new/domain/travel/travel_model.dart';
+import 'package:application_new/domain/place/place_provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -66,12 +69,15 @@ class _VisitsMapItemState extends ConsumerState<VisitsMapItem> {
 
     final state = ref.watch(travelReadProvider(widget.travelId));
 
+    if (state == null) return const LoadingPage();
+
     final visits = state.selectedVisits;
-    final places = state.detail.places;
 
     for (int i = 0; i < visits.length; i++) {
       final visit = visits[i];
-      final place = places.firstWhere((e) => e.id == visit.placeId);
+      final place = ref.watch(placeProvider(visit.placeId)).value;
+
+      if (place == null) continue;
 
       final PlaceCoordinates(:longitude, :latitude) = place.coordinates;
 
@@ -94,11 +100,9 @@ class _VisitsMapItemState extends ConsumerState<VisitsMapItem> {
     }
 
     ref.listen(travelReadProvider(widget.travelId), (prev, next) {
-      if (prev?.selectedPlaceId == next.selectedPlaceId) return;
+      if (next == null || prev?.selectedPlaceId == next.selectedPlaceId) return;
 
-      final place = next.selectedPlaceId > 0
-          ? places.firstWhere((e) => e.id == next.selectedPlaceId)
-          : places.firstOrNull;
+      final place = ref.watch(placeProvider(next.selectedPlaceId)).value;
 
       moveToPlace(place);
     });
@@ -154,10 +158,7 @@ class _VisitsMapItemState extends ConsumerState<VisitsMapItem> {
             child: Align(
               alignment: Alignment.bottomCenter,
                 child: FilledButton.icon(
-                    onPressed: () => setState(() {
-                          moveToPlace(places
-                              .firstWhere((e) => e.id == state.selectedPlaceId));
-                        }),
+                    onPressed: () {},
                     icon: const Icon(Icons.refresh),
                     label: Text('word.reset_camera'.tr(),
                         style: const TextStyle(fontWeight: FontWeight.w600)))),

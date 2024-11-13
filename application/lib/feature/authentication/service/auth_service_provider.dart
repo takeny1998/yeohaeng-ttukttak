@@ -5,7 +5,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'auth_service_provider.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 AuthService authService(AuthServiceRef ref) {
   return AuthService(
     authRepository: ref.watch(authRepositoryProvider),

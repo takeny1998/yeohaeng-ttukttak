@@ -1,21 +1,23 @@
 import 'dart:async';
 
+import 'package:application_new/common/loading/loading_page.dart';
 import 'package:application_new/feature/travel_plan/component/travel_plan_home_header.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_bookmark_page.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_home_page.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_manage_page.dart';
+import 'package:application_new/feature/travel_plan/provider/travel_plan_state.dart';
 import 'package:application_new/feature/travel_plan/travel_plan_recommend/page/travel_plan_recommend_page.dart';
 import 'package:application_new/feature/travel_plan/provider/travel_plan_provider.dart';
+import 'package:application_new/domain/travel/travel_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final GlobalKey<NestedScrollViewState> travelPlanPageKey = GlobalKey();
 
 class TravelPlanPage extends ConsumerStatefulWidget {
-  final int _travelId;
+  final int travelId;
 
-  const TravelPlanPage({super.key, required int travelId})
-      : _travelId = travelId;
+  const TravelPlanPage({super.key, required this.travelId});
 
   @override
   ConsumerState createState() => _TravelPlanPageState();
@@ -51,13 +53,15 @@ class _TravelPlanPageState extends ConsumerState<TravelPlanPage> {
 
   @override
   Widget build(BuildContext context) {
-    final travelId = widget._travelId;
 
-    final pageIndex = ref.watch(travelPlanProvider(travelId)).pageIndex;
-    final travel = ref.watch(travelPlanProvider(travelId)).detail.travel;
+    final state = ref.watch(travelPlanProvider(widget.travelId));
 
-    ref.listen(travelPlanProvider(travelId), (prev, next) {
-      final isHomePage = next.pageIndex == 0;
+    if (state == null) return const LoadingPage();
+
+    final TravelPlanState(:travel, :pageIndex, :cityIndex) = state;
+
+    ref.listen(travelPlanProvider(widget.travelId), (prev, next) {
+      final isHomePage = next?.pageIndex == 0;
 
       final offset = isHomePage || (isHeaderSnapped && isHeaderScrolled)
           ? 0.0
@@ -68,11 +72,13 @@ class _TravelPlanPageState extends ConsumerState<TravelPlanPage> {
       animateTo(offset, duration: duration);
     });
 
+    final city = travel.cities[cityIndex];
+
     final List<Widget> pages = [
-      TravelPlanHomePage(travelId: travelId),
-      TravelPlanRecommendPage(travelId: travelId),
-      TravelPlanManagePage(travelId: travelId),
-      TravelPlanBookmarkPage(travelId: travelId),
+      const TravelPlanHomePage(),
+      TravelPlanRecommendPage(travelId: widget.travelId, cityId: city.id),
+      TravelPlanManagePage(travelId: widget.travelId),
+      TravelPlanBookmarkPage(travelId: widget.travelId),
     ];
 
     return Scaffold(
@@ -87,7 +93,7 @@ class _TravelPlanPageState extends ConsumerState<TravelPlanPage> {
                   handle:
                       NestedScrollView.sliverOverlapAbsorberHandleFor(context),
                   sliver: TravelPlanHomeHeader(
-                    travel: travel,
+                    travel: state.travel,
                     onScroll: (isCollapsed) {
                       isHeaderSnapped = !isCollapsed;
 
@@ -125,7 +131,7 @@ class _TravelPlanPageState extends ConsumerState<TravelPlanPage> {
       bottomNavigationBar: NavigationBar(
         selectedIndex: pageIndex,
         onDestinationSelected: (index) =>
-            ref.read(travelPlanProvider(travelId).notifier).changePage(index),
+            ref.read(travelPlanProvider(widget.travelId).notifier).changePage(index),
         destinations: const [
           NavigationDestination(icon: Icon(Icons.home), label: '메인'),
           NavigationDestination(icon: Icon(Icons.place), label: '둘러보기'),

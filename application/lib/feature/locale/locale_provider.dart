@@ -6,7 +6,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'locale_provider.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class LocaleState extends _$LocaleState {
 
   @override

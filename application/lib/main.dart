@@ -18,7 +18,6 @@ import 'package:logger/logger.dart';
 
 import 'common/exception/exception.dart';
 import 'common/router/router_provider.dart';
-import 'feature/geography/provider/geography_provider.dart';
 
 final messengerKey = GlobalKey<ScaffoldMessengerState>();
 
@@ -77,7 +76,6 @@ class _MyAppState extends ConsumerState<MyApp> {
   @override
   void initState() {
     Future.microtask(() {
-      ref.read(geographyProvider);
       autoLogin();
     });
 

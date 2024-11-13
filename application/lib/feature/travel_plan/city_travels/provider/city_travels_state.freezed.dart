@@ -16,6 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$CityTravelsState {
+  CityModel get city => throw _privateConstructorUsedError;
   List<TravelModel> get travels => throw _privateConstructorUsedError;
   dynamic get hasNextPage => throw _privateConstructorUsedError;
 
@@ -32,7 +33,7 @@ abstract class $CityTravelsStateCopyWith<$Res> {
           CityTravelsState value, $Res Function(CityTravelsState) then) =
       _$CityTravelsStateCopyWithImpl<$Res, CityTravelsState>;
   @useResult
-  $Res call({List<TravelModel> travels, dynamic hasNextPage});
+  $Res call({CityModel city, List<TravelModel> travels, dynamic hasNextPage});
 }
 
 /// @nodoc
@@ -50,10 +51,15 @@ class _$CityTravelsStateCopyWithImpl<$Res, $Val extends CityTravelsState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? city = freezed,
     Object? travels = null,
     Object? hasNextPage = freezed,
   }) {
     return _then(_value.copyWith(
+      city: freezed == city
+          ? _value.city
+          : city // ignore: cast_nullable_to_non_nullable
+              as CityModel,
       travels: null == travels
           ? _value.travels
           : travels // ignore: cast_nullable_to_non_nullable
@@ -74,7 +80,7 @@ abstract class _$$CityTravelsStateImplCopyWith<$Res>
       __$$CityTravelsStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<TravelModel> travels, dynamic hasNextPage});
+  $Res call({CityModel city, List<TravelModel> travels, dynamic hasNextPage});
 }
 
 /// @nodoc
@@ -90,10 +96,15 @@ class __$$CityTravelsStateImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? city = freezed,
     Object? travels = null,
     Object? hasNextPage = freezed,
   }) {
     return _then(_$CityTravelsStateImpl(
+      city: freezed == city
+          ? _value.city
+          : city // ignore: cast_nullable_to_non_nullable
+              as CityModel,
       travels: null == travels
           ? _value._travels
           : travels // ignore: cast_nullable_to_non_nullable
@@ -107,10 +118,14 @@ class __$$CityTravelsStateImplCopyWithImpl<$Res>
 
 class _$CityTravelsStateImpl extends _CityTravelsState {
   const _$CityTravelsStateImpl(
-      {final List<TravelModel> travels = const [], this.hasNextPage = false})
+      {required this.city,
+      final List<TravelModel> travels = const [],
+      this.hasNextPage = false})
       : _travels = travels,
         super._();
 
+  @override
+  final CityModel city;
   final List<TravelModel> _travels;
   @override
   @JsonKey()
@@ -126,7 +141,7 @@ class _$CityTravelsStateImpl extends _CityTravelsState {
 
   @override
   String toString() {
-    return 'CityTravelsState(travels: $travels, hasNextPage: $hasNextPage)';
+    return 'CityTravelsState(city: $city, travels: $travels, hasNextPage: $hasNextPage)';
   }
 
   @override
@@ -134,6 +149,7 @@ class _$CityTravelsStateImpl extends _CityTravelsState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$CityTravelsStateImpl &&
+            const DeepCollectionEquality().equals(other.city, city) &&
             const DeepCollectionEquality().equals(other._travels, _travels) &&
             const DeepCollectionEquality()
                 .equals(other.hasNextPage, hasNextPage));
@@ -142,6 +158,7 @@ class _$CityTravelsStateImpl extends _CityTravelsState {
   @override
   int get hashCode => Object.hash(
       runtimeType,
+      const DeepCollectionEquality().hash(city),
       const DeepCollectionEquality().hash(_travels),
       const DeepCollectionEquality().hash(hasNextPage));
 
@@ -157,10 +174,13 @@ class _$CityTravelsStateImpl extends _CityTravelsState {
 
 abstract class _CityTravelsState extends CityTravelsState {
   const factory _CityTravelsState(
-      {final List<TravelModel> travels,
+      {required final CityModel city,
+      final List<TravelModel> travels,
       final dynamic hasNextPage}) = _$CityTravelsStateImpl;
   const _CityTravelsState._() : super._();
 
+  @override
+  CityModel get city;
   @override
   List<TravelModel> get travels;
   @override

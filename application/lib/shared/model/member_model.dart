@@ -7,13 +7,12 @@ enum AgeGroup {
   fifties,
   sixties,
   seventiesPlus,
-  none,
+  none
 }
 
 enum Gender {
   male,
   female,
-  none,
 }
 
 enum LifePhaseGroup {

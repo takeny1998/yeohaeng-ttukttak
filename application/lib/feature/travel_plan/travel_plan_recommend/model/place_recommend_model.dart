@@ -1,4 +1,4 @@
-import 'package:application_new/shared/model/place_model.dart';
+import 'package:application_new/domain/place/place_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 part 'place_recommend_model.freezed.dart';
 

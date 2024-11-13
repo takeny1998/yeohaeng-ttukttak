@@ -1,17 +1,15 @@
 import 'package:application_new/common/http/http_service_provider.dart';
 import 'package:application_new/common/loading/async_loading_provider.dart';
+import 'package:application_new/domain/travel/travel_model.dart';
 import 'package:application_new/feature/authentication/service/auth_service_provider.dart';
-import 'package:application_new/feature/geography/model/city_model.dart';
-import 'package:application_new/feature/geography/model/region_model.dart';
+import 'package:application_new/domain/geography/geography_model.dart';
 import 'package:application_new/feature/travel_create/provider/travel_create_state.dart';
-import 'package:application_new/shared/model/travel/travel_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'travel_create_provider.g.dart';
 
 @riverpod
 class TravelCreate extends _$TravelCreate {
-
   @override
   TravelCreateState build() {
     return const TravelCreateState();
@@ -38,7 +36,8 @@ class TravelCreate extends _$TravelCreate {
       ]);
     } else {
       if (companionTypes.length >= 3) return;
-      state = state.copyWith(companionTypes: [...companionTypes, companionType]);
+      state =
+          state.copyWith(companionTypes: [...companionTypes, companionType]);
     }
   }
 
@@ -52,7 +51,8 @@ class TravelCreate extends _$TravelCreate {
       ]);
     } else {
       if (motivationTypes.length >= 5) return;
-      state = state.copyWith(motivationTypes: [...motivationTypes, motivationType]);
+      state =
+          state.copyWith(motivationTypes: [...motivationTypes, motivationType]);
     }
   }
 
@@ -61,7 +61,6 @@ class TravelCreate extends _$TravelCreate {
     final isExist = cities.contains(city);
 
     if (isExist) {
-      
       state = state.copyWith(cities: [
         for (final e in cities)
           if (e != city) e
@@ -90,26 +89,17 @@ class TravelCreate extends _$TravelCreate {
   }
 
   void submit() async {
-    final loadingNotifier = ref.read(asyncLoadingProvider.notifier);
+    final formModel = TravelFormModel.fromState(state);
 
-    await loadingNotifier.guard(() async {
-      final httpService = ref.read(httpServiceProvider);
-      final authService = ref.read(authServiceProvider);
+    final travel =
+        await ref.read(asyncLoadingProvider.notifier).guard(() async {
 
-      final authModel = await authService.find();
+      final authModel = await ref.read(authServiceProvider).find();
+      final response = await ref.read(httpServiceProvider).request(
+          'POST', '/api/v2/travels',
+          authorization: authModel.accessToken, data: formModel.toMap());
 
-      await httpService.request('POST', '/api/v2/travels',
-          authorization: authModel.accessToken,
-          data: {
-            'date': {
-              'startedOn': state.startedOn?.toIso8601String(),
-              'endedOn': state.endedOn?.toIso8601String(),
-            },
-            'companionTypes': state.companionTypes.map((e) => e.name).toList(),
-            'motivationTypes':
-                state.motivationTypes.map((e) => e.name).toList(),
-            'cities': state.cities,
-          });
+      return TravelModel.fromJson(response);
     });
 
     state = state.copyWith(isSubmitted: true);

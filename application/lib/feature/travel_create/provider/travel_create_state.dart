@@ -1,6 +1,5 @@
-import 'package:application_new/feature/geography/model/city_model.dart';
-import 'package:application_new/feature/geography/model/region_model.dart';
-import 'package:application_new/shared/model/travel/travel_model.dart';
+import 'package:application_new/domain/geography/geography_model.dart';
+import 'package:application_new/domain/travel/travel_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'travel_create_state.freezed.dart';

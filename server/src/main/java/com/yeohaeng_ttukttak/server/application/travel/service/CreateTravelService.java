@@ -5,6 +5,7 @@ import com.yeohaeng_ttukttak.server.common.dto.EntityReference;
 import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
 import com.yeohaeng_ttukttak.server.domain.member.service.MemberService;
 import com.yeohaeng_ttukttak.server.domain.geography.repository.GeographyRepository;
+import com.yeohaeng_ttukttak.server.domain.travel.dto.TravelDto;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.MemberTravel;
 import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,7 @@ public class CreateTravelService {
     private final GeographyRepository geographyRepository;
 
     @Transactional
-    public void call(CreateTravelCommand commend) {
+    public TravelDto call(CreateTravelCommand commend) {
 
         List<Long> ids = EntityReference.extractId(commend.cities());
 
@@ -43,6 +44,7 @@ public class CreateTravelService {
 
         travelRepository.save(travel);
 
+        return TravelDto.of(travel);
     }
 
 }

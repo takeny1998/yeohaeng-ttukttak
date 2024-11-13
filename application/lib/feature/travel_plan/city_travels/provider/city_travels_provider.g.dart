@@ -6,7 +6,7 @@ part of 'city_travels_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$cityTravelsHash() => r'3ca4ee0981c1e226680f9f0ce53e60882e9db343';
+String _$cityTravelsHash() => r'9537227481468dedd839ede8aefe4d4fe6c1c237';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -30,12 +30,12 @@ class _SystemHash {
 }
 
 abstract class _$CityTravels
-    extends BuildlessAutoDisposeNotifier<CityTravelsState> {
-  late final TravelModel travel;
+    extends BuildlessAutoDisposeNotifier<CityTravelsState?> {
+  late final int travelId;
   late final int cityId;
 
-  CityTravelsState build(
-    TravelModel travel,
+  CityTravelsState? build(
+    int travelId,
     int cityId,
   );
 }
@@ -45,17 +45,17 @@ abstract class _$CityTravels
 const cityTravelsProvider = CityTravelsFamily();
 
 /// See also [CityTravels].
-class CityTravelsFamily extends Family<CityTravelsState> {
+class CityTravelsFamily extends Family<CityTravelsState?> {
   /// See also [CityTravels].
   const CityTravelsFamily();
 
   /// See also [CityTravels].
   CityTravelsProvider call(
-    TravelModel travel,
+    int travelId,
     int cityId,
   ) {
     return CityTravelsProvider(
-      travel,
+      travelId,
       cityId,
     );
   }
@@ -65,7 +65,7 @@ class CityTravelsFamily extends Family<CityTravelsState> {
     covariant CityTravelsProvider provider,
   ) {
     return call(
-      provider.travel,
+      provider.travelId,
       provider.cityId,
     );
   }
@@ -87,14 +87,14 @@ class CityTravelsFamily extends Family<CityTravelsState> {
 
 /// See also [CityTravels].
 class CityTravelsProvider
-    extends AutoDisposeNotifierProviderImpl<CityTravels, CityTravelsState> {
+    extends AutoDisposeNotifierProviderImpl<CityTravels, CityTravelsState?> {
   /// See also [CityTravels].
   CityTravelsProvider(
-    TravelModel travel,
+    int travelId,
     int cityId,
   ) : this._internal(
           () => CityTravels()
-            ..travel = travel
+            ..travelId = travelId
             ..cityId = cityId,
           from: cityTravelsProvider,
           name: r'cityTravelsProvider',
@@ -105,7 +105,7 @@ class CityTravelsProvider
           dependencies: CityTravelsFamily._dependencies,
           allTransitiveDependencies:
               CityTravelsFamily._allTransitiveDependencies,
-          travel: travel,
+          travelId: travelId,
           cityId: cityId,
         );
 
@@ -116,19 +116,19 @@ class CityTravelsProvider
     required super.allTransitiveDependencies,
     required super.debugGetCreateSourceHash,
     required super.from,
-    required this.travel,
+    required this.travelId,
     required this.cityId,
   }) : super.internal();
 
-  final TravelModel travel;
+  final int travelId;
   final int cityId;
 
   @override
-  CityTravelsState runNotifierBuild(
+  CityTravelsState? runNotifierBuild(
     covariant CityTravels notifier,
   ) {
     return notifier.build(
-      travel,
+      travelId,
       cityId,
     );
   }
@@ -139,21 +139,21 @@ class CityTravelsProvider
       origin: this,
       override: CityTravelsProvider._internal(
         () => create()
-          ..travel = travel
+          ..travelId = travelId
           ..cityId = cityId,
         from: from,
         name: null,
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
-        travel: travel,
+        travelId: travelId,
         cityId: cityId,
       ),
     );
   }
 
   @override
-  AutoDisposeNotifierProviderElement<CityTravels, CityTravelsState>
+  AutoDisposeNotifierProviderElement<CityTravels, CityTravelsState?>
       createElement() {
     return _CityTravelsProviderElement(this);
   }
@@ -161,35 +161,35 @@ class CityTravelsProvider
   @override
   bool operator ==(Object other) {
     return other is CityTravelsProvider &&
-        other.travel == travel &&
+        other.travelId == travelId &&
         other.cityId == cityId;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, travel.hashCode);
+    hash = _SystemHash.combine(hash, travelId.hashCode);
     hash = _SystemHash.combine(hash, cityId.hashCode);
 
     return _SystemHash.finish(hash);
   }
 }
 
-mixin CityTravelsRef on AutoDisposeNotifierProviderRef<CityTravelsState> {
-  /// The parameter `travel` of this provider.
-  TravelModel get travel;
+mixin CityTravelsRef on AutoDisposeNotifierProviderRef<CityTravelsState?> {
+  /// The parameter `travelId` of this provider.
+  int get travelId;
 
   /// The parameter `cityId` of this provider.
   int get cityId;
 }
 
 class _CityTravelsProviderElement
-    extends AutoDisposeNotifierProviderElement<CityTravels, CityTravelsState>
+    extends AutoDisposeNotifierProviderElement<CityTravels, CityTravelsState?>
     with CityTravelsRef {
   _CityTravelsProviderElement(super.provider);
 
   @override
-  TravelModel get travel => (origin as CityTravelsProvider).travel;
+  int get travelId => (origin as CityTravelsProvider).travelId;
   @override
   int get cityId => (origin as CityTravelsProvider).cityId;
 }

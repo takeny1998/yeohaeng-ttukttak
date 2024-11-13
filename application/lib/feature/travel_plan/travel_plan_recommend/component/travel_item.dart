@@ -1,7 +1,7 @@
 import 'package:application_new/common/util/translation_util.dart';
 import 'package:application_new/shared/component/small_chip.dart';
 import 'package:application_new/shared/component/travel_companion_avatar_item.dart';
-import 'package:application_new/shared/model/travel/travel_model.dart';
+import 'package:application_new/domain/travel/travel_model.dart';
 import 'package:extended_wrap/extended_wrap.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';

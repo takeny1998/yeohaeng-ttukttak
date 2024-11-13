@@ -6,7 +6,7 @@ part of 'travel_read_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$travelReadHash() => r'1eaf61dc4100c4edd566af33d32576006a0e1f3d';
+String _$travelReadHash() => r'af36bdb489dad7d3659e5bf701a56018973b9539';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -30,10 +30,10 @@ class _SystemHash {
 }
 
 abstract class _$TravelRead
-    extends BuildlessAutoDisposeNotifier<TravelReadState> {
+    extends BuildlessAutoDisposeNotifier<TravelReadState?> {
   late final int travelId;
 
-  TravelReadState build(
+  TravelReadState? build(
     int travelId,
   );
 }
@@ -43,7 +43,7 @@ abstract class _$TravelRead
 const travelReadProvider = TravelReadFamily();
 
 /// See also [TravelRead].
-class TravelReadFamily extends Family<TravelReadState> {
+class TravelReadFamily extends Family<TravelReadState?> {
   /// See also [TravelRead].
   const TravelReadFamily();
 
@@ -82,7 +82,7 @@ class TravelReadFamily extends Family<TravelReadState> {
 
 /// See also [TravelRead].
 class TravelReadProvider
-    extends AutoDisposeNotifierProviderImpl<TravelRead, TravelReadState> {
+    extends AutoDisposeNotifierProviderImpl<TravelRead, TravelReadState?> {
   /// See also [TravelRead].
   TravelReadProvider(
     int travelId,
@@ -113,7 +113,7 @@ class TravelReadProvider
   final int travelId;
 
   @override
-  TravelReadState runNotifierBuild(
+  TravelReadState? runNotifierBuild(
     covariant TravelRead notifier,
   ) {
     return notifier.build(
@@ -138,7 +138,7 @@ class TravelReadProvider
   }
 
   @override
-  AutoDisposeNotifierProviderElement<TravelRead, TravelReadState>
+  AutoDisposeNotifierProviderElement<TravelRead, TravelReadState?>
       createElement() {
     return _TravelReadProviderElement(this);
   }
@@ -157,13 +157,13 @@ class TravelReadProvider
   }
 }
 
-mixin TravelReadRef on AutoDisposeNotifierProviderRef<TravelReadState> {
+mixin TravelReadRef on AutoDisposeNotifierProviderRef<TravelReadState?> {
   /// The parameter `travelId` of this provider.
   int get travelId;
 }
 
 class _TravelReadProviderElement
-    extends AutoDisposeNotifierProviderElement<TravelRead, TravelReadState>
+    extends AutoDisposeNotifierProviderElement<TravelRead, TravelReadState?>
     with TravelReadRef {
   _TravelReadProviderElement(super.provider);
 

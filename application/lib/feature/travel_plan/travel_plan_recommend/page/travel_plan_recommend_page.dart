@@ -1,3 +1,7 @@
+import 'package:application_new/common/loading/loading_page.dart';
+import 'package:application_new/feature/travel_plan/city_place_pois/component/city_places_map.dart';
+import 'package:application_new/feature/travel_plan/city_travels/provider/city_travels_provider.dart';
+import 'package:application_new/feature/travel_plan/city_travels/provider/city_travels_state.dart';
 import 'package:application_new/feature/travel_plan/component/travel_city_item.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_page.dart';
 import 'package:application_new/feature/travel_plan/provider/travel_plan_provider.dart';
@@ -9,12 +13,13 @@ import 'package:application_new/feature/travel_plan/travel_plan_recommend/provid
 import 'package:application_new/shared/component/sliver_infinite_list_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:collection/collection.dart';
 
 class TravelPlanRecommendPage extends ConsumerStatefulWidget {
-  final int _travelId;
+  final int travelId, cityId;
 
-  const TravelPlanRecommendPage({super.key, required int travelId})
-      : _travelId = travelId;
+  const TravelPlanRecommendPage(
+      {super.key, required this.travelId, required this.cityId});
 
   @override
   ConsumerState createState() => _TravelPlanRecommendPageState();
@@ -39,36 +44,41 @@ class _TravelPlanRecommendPageState
 
   @override
   Widget build(BuildContext context) {
-    final travelId = widget._travelId;
-
-    final state = ref.watch(travelPlanProvider(travelId));
-    final cityIndex = state.cityIndex;
-
     final ThemeData(:textTheme, :colorScheme) = Theme.of(context);
 
-    final TravelPlanRecommendState(:placeRecommends, :hasNextPage) =
-        ref.watch(travelPlanRecommendProvider(travelId, cityIndex));
+    final (travelId, cityId) = (widget.travelId, widget.cityId);
 
-    final travel = state.detail.travel;
+    final state =
+        ref.watch(travelPlanRecommendProvider(travelId, widget.cityId));
+
+    if (state == null) return const LoadingPage();
+
+    final TravelPlanRecommendState(
+      :placeRecommends,
+      :hasNextPage,
+      :travel,
+      :city
+    ) = state;
+
     final cities = travel.cities;
 
     return SliverMainAxisGroup(slivers: [
       SliverToBoxAdapter(
         child: SingleChildScrollView(
             child: Row(children: [
-          for (int i = 0; i < cities.length; i++)
+          for (int i = 0; i < travel.cities.length; i++)
             TravelCityItem(
                 city: cities[i],
-                isSelected: cityIndex == i,
+                isSelected: cities[i].id == widget.cityId,
                 onSelected: () => ref
                     .read(travelPlanProvider(travelId).notifier)
                     .selectCity(i)),
         ])),
       ),
       const SliverToBoxAdapter(child: SizedBox(height: 48.0)),
-      SliverCityPoiPreview(city: cities[cityIndex]),
+      SliverCityPoiPreview(cityId: cityId),
       const SliverToBoxAdapter(child: SizedBox(height: 72.0)),
-      SliverCityTravelPreview(travel: travel, city: cities[cityIndex]),
+      SliverCityTravelPreview(travelId: travelId, cityId: cityId),
       const SliverToBoxAdapter(child: SizedBox(height: 48.0)),
       SliverToBoxAdapter(
         child: Column(
@@ -90,7 +100,7 @@ class _TravelPlanRecommendPageState
       SliverInfiniteListIndicator(
           hasNextPage: hasNextPage,
           onVisible: ref
-              .read(travelPlanRecommendProvider(travelId, cityIndex).notifier)
+              .read(travelPlanRecommendProvider(travelId, cityId).notifier)
               .fetch)
     ]);
   }

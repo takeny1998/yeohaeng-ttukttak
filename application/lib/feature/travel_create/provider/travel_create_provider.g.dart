@@ -6,7 +6,7 @@ part of 'travel_create_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$travelCreateHash() => r'ff8965055a069793e7a4baff002d1c2fb1a1bd2b';
+String _$travelCreateHash() => r'807cda1615f5f2afe40e527778f220cfcf060582';
 
 /// See also [TravelCreate].
 @ProviderFor(TravelCreate)

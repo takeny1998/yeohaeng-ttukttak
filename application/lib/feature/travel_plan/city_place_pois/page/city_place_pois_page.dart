@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:application_new/common/loading/loading_page.dart';
 import 'package:application_new/common/util/translation_util.dart';
 import 'package:application_new/feature/travel_plan/city_place_pois/component/place_metric_list_item.dart';
 import 'package:application_new/feature/travel_plan/city_place_pois/component/city_places_map.dart';
@@ -10,7 +11,7 @@ import 'package:application_new/feature/travel_plan/city_place_pois/provider/cit
 import 'package:application_new/feature/travel_plan/city_place_pois/provider/city_place_pois_provider.dart';
 import 'package:application_new/feature/travel_plan/city_place_pois/provider/city_place_pois_state.dart';
 import 'package:application_new/shared/component/sliver_infinite_list_indicator.dart';
-import 'package:application_new/shared/model/place_model.dart';
+import 'package:application_new/domain/place/place_model.dart';
 import 'package:application_new/shared/util/constants.dart';
 import 'package:application_new/shared/util/snap_scroll_physics.dart';
 import 'package:flutter/material.dart';
@@ -68,8 +69,11 @@ class _CityPlaceListPageState extends ConsumerState<CityPlacePoisPage> {
 
     final cityId = widget.cityId;
 
-    final CityPlacePoisState(:placeMetrics, :hasNextPage) =
-        ref.watch(cityPlacePoisProvider(cityId, sortType));
+    final state = ref.watch(cityPlacePoisProvider(cityId, sortType));
+
+    if (state == null) return LoadingPage();
+
+    final CityPlacePoisState(:placeMetrics, :hasNextPage) = state;
 
     final data = selectedTypes.isNotEmpty
         ? placeMetrics
@@ -111,8 +115,10 @@ class _CityPlaceListPageState extends ConsumerState<CityPlacePoisPage> {
                 child: AnimatedSwitcher(
                     duration: const Duration(milliseconds: 300),
                     child: switch (viewType) {
-                      PlaceViewType.list => buildListView(data),
-                      PlaceViewType.map => buildMapView(data, bottomPadding)
+                      PlaceViewType.list =>
+                        buildListView(data, state.hasNextPage),
+                      PlaceViewType.map => buildMapView(data, bottomPadding,
+                          state.placeMetrics, state.hasNextPage)
                     })),
             Positioned(
                 left: 0,
@@ -123,10 +129,8 @@ class _CityPlaceListPageState extends ConsumerState<CityPlacePoisPage> {
         ));
   }
 
-  Stack buildMapView(List<PlaceMetricModel> data, double bottomPadding) {
-    final CityPlacePoisState(:placeMetrics, :hasNextPage) =
-        ref.watch(cityPlacePoisProvider(widget.cityId, sortType));
-
+  Stack buildMapView(List<PlaceMetricModel> data, double bottomPadding,
+      List<PlaceMetricModel> placeMetrics, bool hasNextPage) {
     final screenSize = MediaQuery.of(context).size.width;
 
     const cardHeight = 152.0;
@@ -171,13 +175,10 @@ class _CityPlaceListPageState extends ConsumerState<CityPlacePoisPage> {
     ]);
   }
 
-  Widget buildListView(List<PlaceMetricModel> data) {
+  Widget buildListView(List<PlaceMetricModel> data, bool hasNextPage) {
     final ThemeData(:textTheme, :colorScheme) = Theme.of(context);
 
     final cityId = widget.cityId;
-
-    final CityPlacePoisState(:hasNextPage) =
-        ref.watch(cityPlacePoisProvider(cityId, sortType));
 
     return Container(
       constraints: BoxConstraints(maxWidth: Constants.maxContentWidth),
@@ -220,9 +221,8 @@ class _CityPlaceListPageState extends ConsumerState<CityPlacePoisPage> {
   }
 
   SingleChildScrollView buildSelectTypeView() {
-
     final translator = TranslationUtil.widget(context);
-    
+
     return SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(children: [
@@ -313,7 +313,7 @@ class _CityPlaceListPageState extends ConsumerState<CityPlacePoisPage> {
   Future<PlaceSortType?> showSortTypeSelectSheet() async {
     final ThemeData(:textTheme, :colorScheme) = Theme.of(context);
     final translator = TranslationUtil.widget(context);
-    
+
     return showModalBottomSheet<PlaceSortType>(
         context: context,
         isScrollControlled: true,

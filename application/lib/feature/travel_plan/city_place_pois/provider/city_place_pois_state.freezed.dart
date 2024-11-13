@@ -16,6 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$CityPlacePoisState {
+  CityModel get city => throw _privateConstructorUsedError;
   List<PlaceMetricModel> get placeMetrics => throw _privateConstructorUsedError;
   bool get hasNextPage => throw _privateConstructorUsedError;
 
@@ -32,7 +33,8 @@ abstract class $CityPlacePoisStateCopyWith<$Res> {
           CityPlacePoisState value, $Res Function(CityPlacePoisState) then) =
       _$CityPlacePoisStateCopyWithImpl<$Res, CityPlacePoisState>;
   @useResult
-  $Res call({List<PlaceMetricModel> placeMetrics, bool hasNextPage});
+  $Res call(
+      {CityModel city, List<PlaceMetricModel> placeMetrics, bool hasNextPage});
 }
 
 /// @nodoc
@@ -50,10 +52,15 @@ class _$CityPlacePoisStateCopyWithImpl<$Res, $Val extends CityPlacePoisState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? city = freezed,
     Object? placeMetrics = null,
     Object? hasNextPage = null,
   }) {
     return _then(_value.copyWith(
+      city: freezed == city
+          ? _value.city
+          : city // ignore: cast_nullable_to_non_nullable
+              as CityModel,
       placeMetrics: null == placeMetrics
           ? _value.placeMetrics
           : placeMetrics // ignore: cast_nullable_to_non_nullable
@@ -74,7 +81,8 @@ abstract class _$$CityPlacePoisStateImplCopyWith<$Res>
       __$$CityPlacePoisStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<PlaceMetricModel> placeMetrics, bool hasNextPage});
+  $Res call(
+      {CityModel city, List<PlaceMetricModel> placeMetrics, bool hasNextPage});
 }
 
 /// @nodoc
@@ -90,10 +98,15 @@ class __$$CityPlacePoisStateImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? city = freezed,
     Object? placeMetrics = null,
     Object? hasNextPage = null,
   }) {
     return _then(_$CityPlacePoisStateImpl(
+      city: freezed == city
+          ? _value.city
+          : city // ignore: cast_nullable_to_non_nullable
+              as CityModel,
       placeMetrics: null == placeMetrics
           ? _value._placeMetrics
           : placeMetrics // ignore: cast_nullable_to_non_nullable
@@ -110,10 +123,13 @@ class __$$CityPlacePoisStateImplCopyWithImpl<$Res>
 
 class _$CityPlacePoisStateImpl implements _CityPlacePoisState {
   const _$CityPlacePoisStateImpl(
-      {final List<PlaceMetricModel> placeMetrics = const [],
+      {required this.city,
+      final List<PlaceMetricModel> placeMetrics = const [],
       this.hasNextPage = true})
       : _placeMetrics = placeMetrics;
 
+  @override
+  final CityModel city;
   final List<PlaceMetricModel> _placeMetrics;
   @override
   @JsonKey()
@@ -129,7 +145,7 @@ class _$CityPlacePoisStateImpl implements _CityPlacePoisState {
 
   @override
   String toString() {
-    return 'CityPlacePoisState(placeMetrics: $placeMetrics, hasNextPage: $hasNextPage)';
+    return 'CityPlacePoisState(city: $city, placeMetrics: $placeMetrics, hasNextPage: $hasNextPage)';
   }
 
   @override
@@ -137,6 +153,7 @@ class _$CityPlacePoisStateImpl implements _CityPlacePoisState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$CityPlacePoisStateImpl &&
+            const DeepCollectionEquality().equals(other.city, city) &&
             const DeepCollectionEquality()
                 .equals(other._placeMetrics, _placeMetrics) &&
             (identical(other.hasNextPage, hasNextPage) ||
@@ -144,8 +161,11 @@ class _$CityPlacePoisStateImpl implements _CityPlacePoisState {
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType,
-      const DeepCollectionEquality().hash(_placeMetrics), hasNextPage);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(city),
+      const DeepCollectionEquality().hash(_placeMetrics),
+      hasNextPage);
 
   /// Create a copy of CityPlacePoisState
   /// with the given fields replaced by the non-null parameter values.
@@ -159,9 +179,12 @@ class _$CityPlacePoisStateImpl implements _CityPlacePoisState {
 
 abstract class _CityPlacePoisState implements CityPlacePoisState {
   const factory _CityPlacePoisState(
-      {final List<PlaceMetricModel> placeMetrics,
+      {required final CityModel city,
+      final List<PlaceMetricModel> placeMetrics,
       final bool hasNextPage}) = _$CityPlacePoisStateImpl;
 
+  @override
+  CityModel get city;
   @override
   List<PlaceMetricModel> get placeMetrics;
   @override

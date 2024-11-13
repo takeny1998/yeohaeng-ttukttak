@@ -1,6 +1,7 @@
 import 'package:application_new/common/util/date_util.dart';
 import 'package:application_new/common/util/translation_util.dart';
-import 'package:application_new/feature/geography/model/city_model.dart';
+import 'package:application_new/domain/geography/geography_model.dart';
+import 'package:application_new/feature/travel_create/provider/travel_create_state.dart';
 import 'package:application_new/shared/model/member_model.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -16,15 +17,12 @@ class TravelModel with _$TravelModel {
     required int id,
     required DateTime startedOn,
     required DateTime endedOn,
-    @Default(AgeGroup.none) AgeGroup ageGroup,
-    @Default(Gender.none) Gender gender,
-    @Default([]) List<TravelCompanionModel> companions,
-    @Default([]) List<TravelMotivationType> motivationTypes,
-    @Default([]) List<CityModel> cities,
+    AgeGroup? ageGroup,
+    Gender? gender,
+    required List<TravelCompanionModel> companions,
+    required List<TravelMotivationType> motivationTypes,
+    required List<CityModel> cities,
   }) = _TravelModel;
-
-  factory TravelModel.empty() =>
-      TravelModel(id: 0, startedOn: DateTime.now(), endedOn: DateTime.now());
 
   factory TravelModel.fromJson(Map<String, dynamic> json) =>
       _$TravelModelFromJson(json);
@@ -35,6 +33,38 @@ class TravelModel with _$TravelModel {
   String get formattedName {
     return '${cities.map((city) => city.name).join(' · ')} ${TranslationUtil.word('travel')}';
   }
+}
+
+@freezed
+class TravelFormModel with _$TravelFormModel {
+
+  const TravelFormModel._();
+
+  const factory TravelFormModel({
+    required DateTime? startedOn,
+    required DateTime? endedOn,
+    required Iterable<TravelMotivationType> motivationTypes,
+    required Iterable<TravelCompanionType> companionTypes,
+    required Iterable<CityModel> cities,
+  }) = _TravelFormModel;
+
+  factory TravelFormModel.fromState(TravelCreateState state) => TravelFormModel(
+      startedOn: state.startedOn,
+      endedOn: state.endedOn,
+      motivationTypes: state.motivationTypes,
+      companionTypes: state.companionTypes,
+      cities: state.cities
+  );
+
+  Map<String, dynamic> toMap() => {
+    'date': {
+      'startedOn': startedOn?.toIso8601String(),
+      'endedOn': endedOn?.toIso8601String(),
+    },
+    'companionTypes': companionTypes.map((e) => e.name).toList(),
+    'motivationTypes': motivationTypes.map((e) => e.name).toList(),
+    'cities': cities,
+  };
 }
 
 @freezed
@@ -86,8 +116,7 @@ enum TravelCompanionType {
   lover,
   colleagues,
   members,
-  others,
-  none;
+  others;
 
   static Iterable<TravelCompanionType> active() => [
         spouse,

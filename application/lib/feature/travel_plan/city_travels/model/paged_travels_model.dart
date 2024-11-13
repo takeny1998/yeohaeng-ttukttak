@@ -1,4 +1,4 @@
-import 'package:application_new/shared/model/travel/travel_model.dart';
+import 'package:application_new/domain/travel/travel_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'paged_travels_model.freezed.dart';
