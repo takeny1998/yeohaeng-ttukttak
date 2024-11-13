@@ -1,3 +1,4 @@
+import 'package:application_new/feature/geography/model/city_model.dart';
 import 'package:application_new/shared/model/place_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ part 'city_place_pois_state.g.dart';
 @freezed
 class CityPlacePoisState with _$CityPlacePoisState {
   const factory CityPlacePoisState({
+    required CityModel city,
     @Default([]) List<PlaceMetricModel> placeMetrics,
     @Default(true) bool hasNextPage,
   }) = _CityPlacePoisState;

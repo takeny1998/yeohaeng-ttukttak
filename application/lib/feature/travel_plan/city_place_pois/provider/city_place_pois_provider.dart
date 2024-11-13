@@ -1,32 +1,37 @@
 import 'package:application_new/common/http/http_service_provider.dart';
+import 'package:application_new/feature/geography/provider/geography_provider.dart';
 import 'package:application_new/feature/travel_plan/city_place_pois/provider/city_place_pois_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:collection/collection.dart';
 
 part 'city_place_pois_provider.g.dart';
 
 @riverpod
 class CityPlacePois extends _$CityPlacePois {
-  late final int _cityId;
-  late final PlaceSortType _sortType;
 
   int _pageNumber = 0;
   final int _pageSize = 5;
 
   @override
-  CityPlacePoisState build(int cityId, PlaceSortType sortType) {
-    _cityId = cityId;
-    _sortType = sortType;
+  CityPlacePoisState? build(int cityId, PlaceSortType sortType) {
+
+    final city = ref
+        .watch(geographyProvider)
+        .cities
+        .firstWhereOrNull((city) => city.id == cityId);
+
+    if (city == null) return null;
 
     fetch();
 
-    return const CityPlacePoisState();
+    return CityPlacePoisState(city: city);
   }
 
   void fetch() async {
     final (placeMetrics, hasNextPage) = await _fetch();
 
-    state = state.copyWith(
-      placeMetrics: [...state.placeMetrics, ...placeMetrics],
+    state = state?.copyWith(
+      placeMetrics: [...?state?.placeMetrics, ...placeMetrics],
       hasNextPage: hasNextPage,
     );
 
@@ -37,10 +42,10 @@ class CityPlacePois extends _$CityPlacePois {
     final httpService = ref.read(httpServiceProvider);
 
     final Map<String, dynamic> queryParams = {
-      'cityId': _cityId,
+      'cityId': cityId,
       'pageNumber': _pageNumber,
       'pageSize': _pageSize,
-      'sortType': _sortType.name,
+      'sortType': sortType.name,
     };
 
     final response = await httpService.request('GET', '/api/v2/places/pois',

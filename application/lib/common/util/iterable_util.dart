@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:collection/collection.dart';
 
 final class IterableUtil {
   static bool isIndexInRange(int index, {int start = 0, required int end}) {
@@ -8,6 +9,10 @@ final class IterableUtil {
   static T random<T>(Iterable<T> list) {
     final index = Random().nextInt(list.length);
     return list.elementAt(index);
+  }
+
+  static T? firstWhereOrNull<T>(Iterable<T> list, bool Function(T e) predicate) {
+    return list.firstWhereOrNull(predicate);
   }
 
 

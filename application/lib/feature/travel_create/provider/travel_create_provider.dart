@@ -1,10 +1,11 @@
+import 'package:application_new/common/http/http_service_provider.dart';
 import 'package:application_new/common/loading/async_loading_provider.dart';
+import 'package:application_new/feature/authentication/service/auth_service_provider.dart';
 import 'package:application_new/feature/geography/model/city_model.dart';
 import 'package:application_new/feature/geography/model/region_model.dart';
 import 'package:application_new/feature/travel_create/provider/travel_create_state.dart';
 import 'package:application_new/shared/model/travel/travel_form_model.dart';
 import 'package:application_new/shared/model/travel/travel_model.dart';
-import 'package:application_new/shared/repository/travel_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'travel_create_provider.g.dart';
@@ -90,10 +91,17 @@ class TravelCreate extends _$TravelCreate {
   }
 
   void submit() async {
-    ref.read(asyncLoadingProvider.notifier).guard(() async {
-      await ref
-          .read(travelRepositoryProvider)
-          .submit(TravelFormModel.fromState(state));
+    final formModel = TravelFormModel.fromState(state);
+
+    final travel =
+        await ref.read(asyncLoadingProvider.notifier).guard(() async {
+
+      final authModel = await ref.read(authServiceProvider).find();
+      final response = await ref.read(httpServiceProvider).request(
+          'POST', '/api/v2/travels',
+          authorization: authModel.accessToken, data: formModel.toMap());
+
+      return TravelModel.fromJson(response);
     });
 
     state = state.copyWith(isSubmitted: true);

@@ -1,7 +1,5 @@
-import 'dart:math';
-
+import 'package:application_new/common/loading/loading_page.dart';
 import 'package:application_new/common/util/translation_util.dart';
-import 'package:application_new/feature/geography/model/city_model.dart';
 import 'package:application_new/feature/travel_plan/city_place_pois/provider/city_place_pois_provider.dart';
 import 'package:application_new/feature/travel_plan/city_place_pois/provider/city_place_pois_state.dart';
 import 'package:application_new/feature/travel_plan/travel_plan_recommend/component/place_metric_item.dart';
@@ -12,15 +10,24 @@ import 'package:go_router/go_router.dart';
 
 
 class SliverCityPoiPreview extends ConsumerWidget {
-  final CityModel city;
+  final int cityId;
 
-  const SliverCityPoiPreview({super.key, required this.city});
+  const SliverCityPoiPreview({super.key, required this.cityId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
 
-    final CityPlacePoisState(:placeMetrics) =
-    ref.watch(cityPlacePoisProvider(city.id, PlaceSortType.rating));
+    final state =
+    ref.watch(cityPlacePoisProvider(cityId, PlaceSortType.rating));
+
+    if (state == null) {
+      return const SliverToBoxAdapter(
+        child: SizedBox(
+            height: 240, child: Center(child: CircularProgressIndicator())),
+      );
+    }
+
+    final CityPlacePoisState(:placeMetrics) = state;
 
     final ThemeData(:textTheme, :colorScheme) = Theme.of(context);
 
@@ -36,7 +43,7 @@ class SliverCityPoiPreview extends ConsumerWidget {
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24.0),
-            child: Text(translator.key('pois_of_city', args: { 'city_name': city.name}), style: titleStyle),
+            child: Text(translator.key('pois_of_city', args: { 'city_name': state.city.name}), style: titleStyle),
           ),
           const SizedBox(height: 16.0),
           SingleChildScrollView(
@@ -59,7 +66,7 @@ class SliverCityPoiPreview extends ConsumerWidget {
               padding: const EdgeInsets.symmetric(horizontal: 24.0),
               child: FilledButton(
                   onPressed: () =>
-                      context.push('/cities/${city.id}/places/pois'),
+                      context.push('/cities/${state.city.id}/places/pois'),
                   child: Text(translator.key('view_detail')))),
         ]),
     );

@@ -11,9 +11,11 @@ class TravelPlanRecommendState with _$TravelPlanRecommendState {
   const TravelPlanRecommendState._();
 
   const factory TravelPlanRecommendState({
-    @Default([]) List<PlaceRecommendModel> placeRecommends,
-    @Default(true) bool hasNextPage,
-    @Default(true) bool hasMoreTravel,
+    required TravelModel travel,
+    required CityModel city,
+    required List<PlaceRecommendModel> placeRecommends,
+    required bool hasNextPage,
+    required bool hasMoreTravel,
   }) = _TravelPlanRecommendState;
 }
 

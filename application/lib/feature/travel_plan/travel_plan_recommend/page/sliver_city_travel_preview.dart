@@ -13,13 +13,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 class SliverCityTravelPreview extends ConsumerWidget {
-  final TravelModel travel;
-  final CityModel city;
+  final int cityId, travelId;
 
   final psy = const PageScrollPhysics();
 
   const SliverCityTravelPreview(
-      {super.key, required this.travel, required this.city});
+      {super.key, required this.cityId, required this.travelId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -28,9 +27,16 @@ class SliverCityTravelPreview extends ConsumerWidget {
     final titleStyle =
         textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w600);
 
-    final CityTravelsState(:travels) =
-        ref.watch(cityTravelsProvider(travel, city.id));
+    final state = ref.watch(cityTravelsProvider(travelId, cityId));
 
+    if (state == null) {
+      return const SliverToBoxAdapter(
+        child: SizedBox(
+            height: 240, child: Center(child: CircularProgressIndicator())),
+      );
+    }
+
+    final CityTravelsState(:travels) = state;
     final Size(width: deviceWidth) = MediaQuery.of(context).size;
 
     final itemExtent = min(Constants.maxItemWidth, deviceWidth);
@@ -42,7 +48,8 @@ class SliverCityTravelPreview extends ConsumerWidget {
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24.0),
         child: Text(
-            translator.key('travels_of_city', args: {'city_name': city.name}),
+            translator
+                .key('travels_of_city', args: {'city_name': state.city.name}),
             style: titleStyle),
       ),
       const SizedBox(height: 24.0),
@@ -61,8 +68,8 @@ class SliverCityTravelPreview extends ConsumerWidget {
           width: double.maxFinite,
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
           child: FilledButton(
-              onPressed: () => context
-                  .push('/travels/${travel.id}/cities/${city.id}/travels/'),
+              onPressed: () =>
+                  context.push('/travels/$travelId/cities/$cityId/travels/'),
               child: const Text('자세히 보기'))),
     ]));
   }

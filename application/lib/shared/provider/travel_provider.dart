@@ -1,17 +1,14 @@
+import 'package:application_new/common/http/http_service_provider.dart';
 import 'package:application_new/shared/model/travel/travel_model.dart';
-import 'package:application_new/shared/repository/travel_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'travel_provider.g.dart';
 
-@riverpod
-class Travel extends _$Travel {
+@Riverpod(keepAlive: true)
+Future<TravelModel> travel(TravelRef ref, int id) async {
+  final response = await ref
+      .watch(httpServiceProvider)
+      .request('GET', '/api/v2/travels/$id');
 
-  @override
-  TravelModel? build(int id) {
-    ref.watch(travelRepositoryProvider).find(id)
-        .then((travel) => state = travel);
-
-    return null;
-  }
+  return TravelModel.fromJson(response['travel']);
 }

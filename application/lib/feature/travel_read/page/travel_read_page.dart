@@ -58,7 +58,7 @@ class _TravelReadPageState extends ConsumerState<TravelReadPage> {
     final travelId = widget.travelId;
 
     final state = ref.watch(travelReadProvider(travelId));
-    final travel = ref.watch(travelProvider(travelId));
+    final travel = ref.watch(travelProvider(travelId)).valueOrNull;
 
     if (state == null || travel == null) return const LoadingPage();
 

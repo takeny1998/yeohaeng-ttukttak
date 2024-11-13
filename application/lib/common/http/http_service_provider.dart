@@ -5,7 +5,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'http_service_provider.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 HttpService httpService(HttpServiceRef ref) {
   final locale = ref.watch(localeStateProvider);
 

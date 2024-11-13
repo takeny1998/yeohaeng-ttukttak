@@ -58,7 +58,7 @@ GoRouter router(RouterRef ref) {
           builder: (context, state) {
             final {'id': travelId} = state.pathParameters;
 
-            return TravelPlanPage(id: int.parse(travelId));
+            return TravelPlanPage(travelId: int.parse(travelId));
           }),
       GoRoute(
           path: '/cities/:id/places/pois',

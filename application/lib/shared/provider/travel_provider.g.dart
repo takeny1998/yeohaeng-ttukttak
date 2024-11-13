@@ -6,7 +6,7 @@ part of 'travel_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$travelHash() => r'ecd68b8e8a016439414cbb48ca1225ac566d0826';
+String _$travelHash() => r'07ffb68a6fe62cdcfbb929712e0a31ac5e464f00';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,24 +29,16 @@ class _SystemHash {
   }
 }
 
-abstract class _$Travel extends BuildlessAutoDisposeNotifier<TravelModel?> {
-  late final int id;
-
-  TravelModel? build(
-    int id,
-  );
-}
-
-/// See also [Travel].
-@ProviderFor(Travel)
+/// See also [travel].
+@ProviderFor(travel)
 const travelProvider = TravelFamily();
 
-/// See also [Travel].
-class TravelFamily extends Family<TravelModel?> {
-  /// See also [Travel].
+/// See also [travel].
+class TravelFamily extends Family<AsyncValue<TravelModel>> {
+  /// See also [travel].
   const TravelFamily();
 
-  /// See also [Travel].
+  /// See also [travel].
   TravelProvider call(
     int id,
   ) {
@@ -79,14 +71,16 @@ class TravelFamily extends Family<TravelModel?> {
   String? get name => r'travelProvider';
 }
 
-/// See also [Travel].
-class TravelProvider
-    extends AutoDisposeNotifierProviderImpl<Travel, TravelModel?> {
-  /// See also [Travel].
+/// See also [travel].
+class TravelProvider extends FutureProvider<TravelModel> {
+  /// See also [travel].
   TravelProvider(
     int id,
   ) : this._internal(
-          () => Travel()..id = id,
+          (ref) => travel(
+            ref as TravelRef,
+            id,
+          ),
           from: travelProvider,
           name: r'travelProvider',
           debugGetCreateSourceHash:
@@ -111,20 +105,13 @@ class TravelProvider
   final int id;
 
   @override
-  TravelModel? runNotifierBuild(
-    covariant Travel notifier,
+  Override overrideWith(
+    FutureOr<TravelModel> Function(TravelRef provider) create,
   ) {
-    return notifier.build(
-      id,
-    );
-  }
-
-  @override
-  Override overrideWith(Travel Function() create) {
     return ProviderOverride(
       origin: this,
       override: TravelProvider._internal(
-        () => create()..id = id,
+        (ref) => create(ref as TravelRef),
         from: from,
         name: null,
         dependencies: null,
@@ -136,7 +123,7 @@ class TravelProvider
   }
 
   @override
-  AutoDisposeNotifierProviderElement<Travel, TravelModel?> createElement() {
+  FutureProviderElement<TravelModel> createElement() {
     return _TravelProviderElement(this);
   }
 
@@ -154,13 +141,12 @@ class TravelProvider
   }
 }
 
-mixin TravelRef on AutoDisposeNotifierProviderRef<TravelModel?> {
+mixin TravelRef on FutureProviderRef<TravelModel> {
   /// The parameter `id` of this provider.
   int get id;
 }
 
-class _TravelProviderElement
-    extends AutoDisposeNotifierProviderElement<Travel, TravelModel?>
+class _TravelProviderElement extends FutureProviderElement<TravelModel>
     with TravelRef {
   _TravelProviderElement(super.provider);
 

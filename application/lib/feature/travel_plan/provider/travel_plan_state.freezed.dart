@@ -16,6 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$TravelPlanState {
+  TravelModel get travel => throw _privateConstructorUsedError;
   int get pageIndex => throw _privateConstructorUsedError;
   int get cityIndex => throw _privateConstructorUsedError;
 
@@ -32,7 +33,9 @@ abstract class $TravelPlanStateCopyWith<$Res> {
           TravelPlanState value, $Res Function(TravelPlanState) then) =
       _$TravelPlanStateCopyWithImpl<$Res, TravelPlanState>;
   @useResult
-  $Res call({int pageIndex, int cityIndex});
+  $Res call({TravelModel travel, int pageIndex, int cityIndex});
+
+  $TravelModelCopyWith<$Res> get travel;
 }
 
 /// @nodoc
@@ -50,10 +53,15 @@ class _$TravelPlanStateCopyWithImpl<$Res, $Val extends TravelPlanState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? travel = null,
     Object? pageIndex = null,
     Object? cityIndex = null,
   }) {
     return _then(_value.copyWith(
+      travel: null == travel
+          ? _value.travel
+          : travel // ignore: cast_nullable_to_non_nullable
+              as TravelModel,
       pageIndex: null == pageIndex
           ? _value.pageIndex
           : pageIndex // ignore: cast_nullable_to_non_nullable
@@ -63,6 +71,16 @@ class _$TravelPlanStateCopyWithImpl<$Res, $Val extends TravelPlanState>
           : cityIndex // ignore: cast_nullable_to_non_nullable
               as int,
     ) as $Val);
+  }
+
+  /// Create a copy of TravelPlanState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $TravelModelCopyWith<$Res> get travel {
+    return $TravelModelCopyWith<$Res>(_value.travel, (value) {
+      return _then(_value.copyWith(travel: value) as $Val);
+    });
   }
 }
 
@@ -74,7 +92,10 @@ abstract class _$$TravelPlanStateImplCopyWith<$Res>
       __$$TravelPlanStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int pageIndex, int cityIndex});
+  $Res call({TravelModel travel, int pageIndex, int cityIndex});
+
+  @override
+  $TravelModelCopyWith<$Res> get travel;
 }
 
 /// @nodoc
@@ -90,10 +111,15 @@ class __$$TravelPlanStateImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? travel = null,
     Object? pageIndex = null,
     Object? cityIndex = null,
   }) {
     return _then(_$TravelPlanStateImpl(
+      travel: null == travel
+          ? _value.travel
+          : travel // ignore: cast_nullable_to_non_nullable
+              as TravelModel,
       pageIndex: null == pageIndex
           ? _value.pageIndex
           : pageIndex // ignore: cast_nullable_to_non_nullable
@@ -109,9 +135,12 @@ class __$$TravelPlanStateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$TravelPlanStateImpl extends _TravelPlanState {
-  const _$TravelPlanStateImpl({this.pageIndex = 0, this.cityIndex = 0})
+  const _$TravelPlanStateImpl(
+      {required this.travel, this.pageIndex = 0, this.cityIndex = 0})
       : super._();
 
+  @override
+  final TravelModel travel;
   @override
   @JsonKey()
   final int pageIndex;
@@ -121,7 +150,7 @@ class _$TravelPlanStateImpl extends _TravelPlanState {
 
   @override
   String toString() {
-    return 'TravelPlanState(pageIndex: $pageIndex, cityIndex: $cityIndex)';
+    return 'TravelPlanState(travel: $travel, pageIndex: $pageIndex, cityIndex: $cityIndex)';
   }
 
   @override
@@ -129,6 +158,7 @@ class _$TravelPlanStateImpl extends _TravelPlanState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$TravelPlanStateImpl &&
+            (identical(other.travel, travel) || other.travel == travel) &&
             (identical(other.pageIndex, pageIndex) ||
                 other.pageIndex == pageIndex) &&
             (identical(other.cityIndex, cityIndex) ||
@@ -136,7 +166,7 @@ class _$TravelPlanStateImpl extends _TravelPlanState {
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, pageIndex, cityIndex);
+  int get hashCode => Object.hash(runtimeType, travel, pageIndex, cityIndex);
 
   /// Create a copy of TravelPlanState
   /// with the given fields replaced by the non-null parameter values.
@@ -149,10 +179,14 @@ class _$TravelPlanStateImpl extends _TravelPlanState {
 }
 
 abstract class _TravelPlanState extends TravelPlanState {
-  const factory _TravelPlanState({final int pageIndex, final int cityIndex}) =
-      _$TravelPlanStateImpl;
+  const factory _TravelPlanState(
+      {required final TravelModel travel,
+      final int pageIndex,
+      final int cityIndex}) = _$TravelPlanStateImpl;
   const _TravelPlanState._() : super._();
 
+  @override
+  TravelModel get travel;
   @override
   int get pageIndex;
   @override

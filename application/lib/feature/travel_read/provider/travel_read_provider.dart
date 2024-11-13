@@ -11,7 +11,7 @@ part 'travel_read_provider.g.dart';
 class TravelRead extends _$TravelRead {
   @override
   TravelReadState? build(int travelId) {
-    final travel = ref.watch(travelProvider(travelId));
+    final travel = ref.watch(travelProvider(travelId)).valueOrNull;
 
     if (travel != null) {
       _init(travel.id, travel.startedOn);
@@ -21,18 +21,18 @@ class TravelRead extends _$TravelRead {
   }
 
   void _init(int travelId, DateTime selectedDate) async {
-    final httpService = ref.watch(httpServiceProvider);
-
-    final response =
-        await httpService.request('GET', '/api/v2/travels/$travelId/detail');
-
-    final detail = TravelDetailModel.fromJson(response);
-
-    state = TravelReadState(
-        selectedDate: selectedDate,
-        visits: detail.visits,
-        places: detail.places,
-        selectedVisits: _filterVisits(detail.visits, selectedDate));
+    // final httpService = ref.watch(httpServiceProvider);
+    //
+    // final response =
+    //     await httpService.request('GET', '/api/v2/travels/$travelId/detail');
+    //
+    // final detail = TravelDetailModel.fromJson(response);
+    //
+    // state = TravelReadState(
+    //     selectedDate: selectedDate,
+    //     visits: detail.visits,
+    //     places: detail.places,
+    //     selectedVisits: _filterVisits(detail.visits, selectedDate));
   }
 
   void selectDate(DateTime date) {
