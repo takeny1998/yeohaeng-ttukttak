@@ -1,7 +1,7 @@
 import 'package:application_new/common/http/http_service_provider.dart';
 import 'package:application_new/feature/travel_read/model/travel_visit_model.dart';
 import 'package:application_new/feature/travel_read/provider/travel_read_state.dart';
-import 'package:application_new/shared/model/travel/travel_detail_model.dart';
+import 'package:application_new/shared/model/travel/travel_model.dart';
 import 'package:application_new/shared/provider/travel_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -14,25 +14,28 @@ class TravelRead extends _$TravelRead {
     final travel = ref.watch(travelProvider(travelId)).valueOrNull;
 
     if (travel != null) {
-      _init(travel.id, travel.startedOn);
+      _init(travel, travel.startedOn);
     }
 
     return null;
   }
 
-  void _init(int travelId, DateTime selectedDate) async {
-    // final httpService = ref.watch(httpServiceProvider);
-    //
-    // final response =
-    //     await httpService.request('GET', '/api/v2/travels/$travelId/detail');
-    //
-    // final detail = TravelDetailModel.fromJson(response);
-    //
-    // state = TravelReadState(
-    //     selectedDate: selectedDate,
-    //     visits: detail.visits,
-    //     places: detail.places,
-    //     selectedVisits: _filterVisits(detail.visits, selectedDate));
+  void _init(TravelModel travel, DateTime selectedDate) async {
+    final httpService = ref.watch(httpServiceProvider);
+
+    final visitsRes =
+        await httpService.request('GET', '/api/v2/travels/$travelId/visits');
+
+    final visits = List.of(visitsRes['visits'])
+        .map((json) => TravelVisitModel.fromJson(json))
+        .toList();
+
+    state = TravelReadState(
+      travel: travel,
+      selectedDate: selectedDate,
+      visits: visits,
+      selectedVisits: _filterVisits(visits, selectedDate),
+    );
   }
 
   void selectDate(DateTime date) {

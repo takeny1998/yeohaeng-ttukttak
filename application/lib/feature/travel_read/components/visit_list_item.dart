@@ -3,16 +3,16 @@ import 'package:application_new/feature/travel_read/components/visit_order_item.
 import 'package:application_new/feature/travel_read/model/travel_visit_model.dart';
 import 'package:application_new/shared/component/small_chip.dart';
 import 'package:application_new/shared/model/place_model.dart';
+import 'package:application_new/shared/provider/place_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'visit_rating_item.dart';
 
 class VisitListItem extends ConsumerWidget {
-  final List<PlaceModel> places;
   final TravelVisitModel visit;
 
-  const VisitListItem({super.key, required this.places, required this.visit});
+  const VisitListItem({super.key, required this.visit});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -20,7 +20,14 @@ class VisitListItem extends ConsumerWidget {
 
     final translator = TranslationUtil.widget(context);
 
-    final place = places.firstWhere((e) => e.id == visit.placeId);
+    final place = ref.watch(placeProvider(visit.placeId)).value;
+
+    if (place == null) {
+      return const SizedBox(
+        height: 240.0,
+        child: CircularProgressIndicator(),
+      );
+    }
 
     final PlaceAddress(:road, :lotNumber) = place.address;
 

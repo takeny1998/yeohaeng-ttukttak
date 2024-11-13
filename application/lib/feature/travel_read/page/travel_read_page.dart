@@ -62,7 +62,7 @@ class _TravelReadPageState extends ConsumerState<TravelReadPage> {
 
     if (state == null || travel == null) return const LoadingPage();
 
-    final TravelReadState(:visits, :places) = state;
+    final TravelReadState(:visits) = state;
 
     final colorScheme = Theme.of(context).colorScheme;
 
@@ -148,7 +148,7 @@ class _TravelReadPageState extends ConsumerState<TravelReadPage> {
                     MetaData(
                         behavior: HitTestBehavior.translucent,
                         metaData: visit,
-                        child: VisitListItem(places: places, visit: visit)),
+                        child: VisitListItem(visit: visit)),
                   const SizedBox(height: 24.0),
                 ])),
           ],

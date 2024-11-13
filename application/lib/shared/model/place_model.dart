@@ -6,6 +6,9 @@ part 'place_model.g.dart';
 
 @freezed
 class PlaceModel with _$PlaceModel {
+
+  const PlaceModel._();
+
   const factory PlaceModel({
     required int id,
     required String name,
@@ -16,6 +19,10 @@ class PlaceModel with _$PlaceModel {
 
   factory PlaceModel.fromJson(Map<String, dynamic> json) =>
       _$PlaceModelFromJson(json);
+
+  static List<PlaceModel> listFromJson(Map<String, dynamic> json) =>
+      List.of(json['places']).map((json) => PlaceModel.fromJson(json)).toList();
+
 }
 
 @freezed

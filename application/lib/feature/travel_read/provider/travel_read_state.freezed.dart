@@ -19,7 +19,6 @@ mixin _$TravelReadState {
   DateTime get selectedDate => throw _privateConstructorUsedError;
   TravelModel get travel => throw _privateConstructorUsedError;
   List<TravelVisitModel> get visits => throw _privateConstructorUsedError;
-  List<PlaceModel> get places => throw _privateConstructorUsedError;
   int get selectedPlaceId => throw _privateConstructorUsedError;
   bool get isMapMoved => throw _privateConstructorUsedError;
   List<TravelVisitModel> get selectedVisits =>
@@ -42,7 +41,6 @@ abstract class $TravelReadStateCopyWith<$Res> {
       {DateTime selectedDate,
       TravelModel travel,
       List<TravelVisitModel> visits,
-      List<PlaceModel> places,
       int selectedPlaceId,
       bool isMapMoved,
       List<TravelVisitModel> selectedVisits});
@@ -68,7 +66,6 @@ class _$TravelReadStateCopyWithImpl<$Res, $Val extends TravelReadState>
     Object? selectedDate = null,
     Object? travel = null,
     Object? visits = null,
-    Object? places = null,
     Object? selectedPlaceId = null,
     Object? isMapMoved = null,
     Object? selectedVisits = null,
@@ -86,10 +83,6 @@ class _$TravelReadStateCopyWithImpl<$Res, $Val extends TravelReadState>
           ? _value.visits
           : visits // ignore: cast_nullable_to_non_nullable
               as List<TravelVisitModel>,
-      places: null == places
-          ? _value.places
-          : places // ignore: cast_nullable_to_non_nullable
-              as List<PlaceModel>,
       selectedPlaceId: null == selectedPlaceId
           ? _value.selectedPlaceId
           : selectedPlaceId // ignore: cast_nullable_to_non_nullable
@@ -128,7 +121,6 @@ abstract class _$$TravelReadStateImplCopyWith<$Res>
       {DateTime selectedDate,
       TravelModel travel,
       List<TravelVisitModel> visits,
-      List<PlaceModel> places,
       int selectedPlaceId,
       bool isMapMoved,
       List<TravelVisitModel> selectedVisits});
@@ -153,7 +145,6 @@ class __$$TravelReadStateImplCopyWithImpl<$Res>
     Object? selectedDate = null,
     Object? travel = null,
     Object? visits = null,
-    Object? places = null,
     Object? selectedPlaceId = null,
     Object? isMapMoved = null,
     Object? selectedVisits = null,
@@ -171,10 +162,6 @@ class __$$TravelReadStateImplCopyWithImpl<$Res>
           ? _value._visits
           : visits // ignore: cast_nullable_to_non_nullable
               as List<TravelVisitModel>,
-      places: null == places
-          ? _value._places
-          : places // ignore: cast_nullable_to_non_nullable
-              as List<PlaceModel>,
       selectedPlaceId: null == selectedPlaceId
           ? _value.selectedPlaceId
           : selectedPlaceId // ignore: cast_nullable_to_non_nullable
@@ -198,12 +185,10 @@ class _$TravelReadStateImpl implements _TravelReadState {
       {required this.selectedDate,
       required this.travel,
       final List<TravelVisitModel> visits = const [],
-      final List<PlaceModel> places = const [],
       this.selectedPlaceId = 0,
       this.isMapMoved = false,
       final List<TravelVisitModel> selectedVisits = const []})
       : _visits = visits,
-        _places = places,
         _selectedVisits = selectedVisits;
 
   @override
@@ -217,15 +202,6 @@ class _$TravelReadStateImpl implements _TravelReadState {
     if (_visits is EqualUnmodifiableListView) return _visits;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_visits);
-  }
-
-  final List<PlaceModel> _places;
-  @override
-  @JsonKey()
-  List<PlaceModel> get places {
-    if (_places is EqualUnmodifiableListView) return _places;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_places);
   }
 
   @override
@@ -245,7 +221,7 @@ class _$TravelReadStateImpl implements _TravelReadState {
 
   @override
   String toString() {
-    return 'TravelReadState(selectedDate: $selectedDate, travel: $travel, visits: $visits, places: $places, selectedPlaceId: $selectedPlaceId, isMapMoved: $isMapMoved, selectedVisits: $selectedVisits)';
+    return 'TravelReadState(selectedDate: $selectedDate, travel: $travel, visits: $visits, selectedPlaceId: $selectedPlaceId, isMapMoved: $isMapMoved, selectedVisits: $selectedVisits)';
   }
 
   @override
@@ -257,7 +233,6 @@ class _$TravelReadStateImpl implements _TravelReadState {
                 other.selectedDate == selectedDate) &&
             (identical(other.travel, travel) || other.travel == travel) &&
             const DeepCollectionEquality().equals(other._visits, _visits) &&
-            const DeepCollectionEquality().equals(other._places, _places) &&
             (identical(other.selectedPlaceId, selectedPlaceId) ||
                 other.selectedPlaceId == selectedPlaceId) &&
             (identical(other.isMapMoved, isMapMoved) ||
@@ -272,7 +247,6 @@ class _$TravelReadStateImpl implements _TravelReadState {
       selectedDate,
       travel,
       const DeepCollectionEquality().hash(_visits),
-      const DeepCollectionEquality().hash(_places),
       selectedPlaceId,
       isMapMoved,
       const DeepCollectionEquality().hash(_selectedVisits));
@@ -292,7 +266,6 @@ abstract class _TravelReadState implements TravelReadState {
       {required final DateTime selectedDate,
       required final TravelModel travel,
       final List<TravelVisitModel> visits,
-      final List<PlaceModel> places,
       final int selectedPlaceId,
       final bool isMapMoved,
       final List<TravelVisitModel> selectedVisits}) = _$TravelReadStateImpl;
@@ -303,8 +276,6 @@ abstract class _TravelReadState implements TravelReadState {
   TravelModel get travel;
   @override
   List<TravelVisitModel> get visits;
-  @override
-  List<PlaceModel> get places;
   @override
   int get selectedPlaceId;
   @override

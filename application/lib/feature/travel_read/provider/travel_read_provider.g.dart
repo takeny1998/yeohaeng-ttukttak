@@ -6,7 +6,7 @@ part of 'travel_read_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$travelReadHash() => r'26b03766f9f22c0af0c7467403bb3e54a52012f1';
+String _$travelReadHash() => r'af36bdb489dad7d3659e5bf701a56018973b9539';
 
 /// Copied from Dart SDK
 class _SystemHash {
