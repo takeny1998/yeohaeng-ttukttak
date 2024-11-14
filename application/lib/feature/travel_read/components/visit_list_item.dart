@@ -1,6 +1,6 @@
 import 'package:application_new/common/util/translation_util.dart';
 import 'package:application_new/feature/travel_read/components/visit_order_item.dart';
-import 'package:application_new/domain/travel/travel_visit_model.dart';
+import 'package:application_new/domain/travel_visit/travel_visit_model.dart';
 import 'package:application_new/shared/component/small_chip.dart';
 import 'package:application_new/domain/place/place_model.dart';
 import 'package:application_new/domain/place/place_provider.dart';
@@ -64,7 +64,7 @@ class VisitListItem extends ConsumerWidget {
                     child: Column(
                   mainAxisSize: MainAxisSize.max,
                   children: [
-                    VisitOrderItem(order: visit.seq),
+                    VisitOrderItem(order: visit.orderOfVisit ?? 0),
                     Expanded(
                         child: Container(
                             width: 2.0, color: colorScheme.secondaryContainer))
@@ -117,20 +117,25 @@ class VisitListItem extends ConsumerWidget {
                             color: colorScheme.primaryContainer,
                             borderRadius: BorderRadius.circular(4.0)),
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            VisitRatingItem(
-                                name: 'satisfaction',
-                                rating: visit.rating.satisfaction),
-                            const SizedBox(height: 16.0),
-                            VisitRatingItem(
-                                name: 'revisit', rating: visit.rating.revisit),
-                            const SizedBox(height: 16.0),
-                            VisitRatingItem(
-                                name: 'recommend',
-                                rating: visit.rating.recommend),
-                          ],
-                        ),
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              if (visit.rating.satisfaction != null) ...[
+                                VisitRatingItem(
+                                    name: 'satisfaction',
+                                    rating: visit.rating.satisfaction!),
+                                const SizedBox(height: 16.0),
+                              ],
+                              if (visit.rating.revisit != null) ...[
+                                VisitRatingItem(
+                                    name: 'revisit',
+                                    rating: visit.rating.revisit!),
+                                const SizedBox(height: 16.0),
+                              ],
+                              if (visit.rating.recommend != null)
+                                VisitRatingItem(
+                                    name: 'recommend',
+                                    rating: visit.rating.recommend!),
+                            ]),
                       ),
                       Row(
                         children: [

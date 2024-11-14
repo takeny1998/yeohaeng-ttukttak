@@ -5,9 +5,11 @@ import 'package:application_new/feature/travel_plan/travel_plan_recommend/model/
 import 'package:flutter/material.dart';
 
 class CityRecommendPlaceView extends StatelessWidget {
+
+  final int travelId;
   final PlaceRecommendModel placeRecommend;
 
-  const CityRecommendPlaceView({super.key, required this.placeRecommend});
+  const CityRecommendPlaceView({super.key, required this.travelId, required this.placeRecommend});
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +38,7 @@ class CityRecommendPlaceView extends StatelessWidget {
           SingleChildScrollView(
               child: Column(children: [
             for (final place in places) ...[
-              PlaceMetricListItem(placeMetric: PlaceMetricModel(place: place)),
+              PlaceMetricListItem(travelId: travelId, placeMetric: PlaceMetricModel(place: place)),
               const SizedBox(width: 24.0),
             ],
           ])),

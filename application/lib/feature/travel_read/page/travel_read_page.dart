@@ -3,7 +3,7 @@ import 'package:application_new/common/util/date_util.dart';
 import 'package:application_new/feature/travel_read/components/visit_list_item.dart';
 import 'package:application_new/feature/travel_read/components/visits_map_item.dart';
 import 'package:application_new/feature/travel_read/provider/travel_read_state.dart';
-import 'package:application_new/domain/travel/travel_visit_model.dart';
+import 'package:application_new/domain/travel_visit/travel_visit_model.dart';
 import 'package:application_new/feature/travel_read/provider/travel_read_provider.dart';
 import 'package:application_new/shared/component/fixed_header_delegate.dart';
 import 'package:application_new/shared/component/filled_chip_theme.dart';

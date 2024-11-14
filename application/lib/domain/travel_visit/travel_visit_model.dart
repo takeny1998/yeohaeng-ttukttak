@@ -8,12 +8,12 @@ part 'travel_visit_model.g.dart';
 class TravelVisitModel with _$TravelVisitModel {
   const factory TravelVisitModel({
     required int id,
-    required int seq,
     required int placeId,
-    required DateTime visitedOn,
     required TravelVisitRatingModel rating,
-    required TravelVisitReasonType reasonType,
     required List<ImageModel> images,
+    DateTime? visitedOn,
+    int? orderOfVisit,
+    TravelVisitReasonType? reasonType,
   }) = _TravelVisitModel;
 
   factory TravelVisitModel.fromJson(Map<String, dynamic> json) =>
@@ -23,13 +23,24 @@ class TravelVisitModel with _$TravelVisitModel {
 @freezed
 class TravelVisitRatingModel with _$TravelVisitRatingModel {
   const factory TravelVisitRatingModel({
-    required int satisfaction,
-    required int revisit,
-    required int recommend,
+    int? satisfaction,
+    int? revisit,
+    int? recommend,
   }) = _TravelVisitRatingModel;
 
   factory TravelVisitRatingModel.fromJson(Map<String, dynamic> json) =>
       _$TravelVisitRatingModelFromJson(json);
+}
+
+@freezed
+class TravelVisitForm with _$TravelVisitForm {
+
+  const factory TravelVisitForm({
+    required int placeId,
+  }) = _TravelVisitForm;
+
+  factory TravelVisitForm.fromJson(Map<String, dynamic> json) =>
+      _$TravelVisitFormFromJson(json);
 }
 
 enum TravelVisitReasonType {

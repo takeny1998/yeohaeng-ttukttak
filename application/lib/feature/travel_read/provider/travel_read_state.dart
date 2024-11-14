@@ -1,5 +1,5 @@
 import 'package:application_new/domain/place/place_model.dart';
-import 'package:application_new/domain/travel/travel_visit_model.dart';
+import 'package:application_new/domain/travel_visit/travel_visit_model.dart';
 import 'package:application_new/domain/travel/travel_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 

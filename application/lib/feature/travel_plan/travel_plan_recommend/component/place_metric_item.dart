@@ -5,14 +5,16 @@ import 'package:application_new/shared/component/outlined_icon_button.dart';
 import 'package:application_new/shared/component/small_chip.dart';
 import 'package:extended_wrap/extended_wrap.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class PlaceMetricItem extends StatelessWidget {
+class PlaceMetricItem extends ConsumerWidget {
+
   final PlaceMetricModel placeMetric;
 
   const PlaceMetricItem({super.key, required this.placeMetric});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final ThemeData(:textTheme, :colorScheme) = Theme.of(context);
 
     final PlaceMetricModel(:place, :rating) = placeMetric;

@@ -95,6 +95,7 @@ class _TravelPlanRecommendPageState
       SliverList(
           delegate: SliverChildBuilderDelegate(
               (context, index) => CityRecommendPlaceView(
+                travelId: travelId,
                   placeRecommend: placeRecommends[index]),
               childCount: placeRecommends.length)),
       SliverInfiniteListIndicator(

@@ -1,5 +1,5 @@
 import 'package:application_new/common/http/http_service_provider.dart';
-import 'package:application_new/domain/travel/travel_visit_model.dart';
+import 'package:application_new/domain/travel_visit/travel_visit_model.dart';
 import 'package:application_new/feature/travel_read/provider/travel_read_state.dart';
 import 'package:application_new/domain/travel/travel_model.dart';
 import 'package:application_new/domain/travel/travel_provider.dart';

@@ -1,18 +1,24 @@
+import 'package:application_new/common/event/event.dart';
 import 'package:application_new/common/util/string_extension.dart';
 import 'package:application_new/common/util/translation_util.dart';
+import 'package:application_new/domain/travel_visit/travel_visit_model.dart';
+import 'package:application_new/domain/travel_visit/travel_visit_repository.dart';
 import 'package:application_new/feature/travel_plan/city_place_pois/provider/city_place_pois_state.dart';
 import 'package:application_new/shared/component/outlined_icon_button.dart';
 import 'package:application_new/shared/component/small_chip.dart';
 import 'package:extended_wrap/extended_wrap.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class PlaceMetricListItem extends StatelessWidget {
+class PlaceMetricListItem extends ConsumerWidget {
+  final int travelId;
   final PlaceMetricModel placeMetric;
 
-  const PlaceMetricListItem({super.key, required this.placeMetric});
+  const PlaceMetricListItem(
+      {super.key, required this.placeMetric, required this.travelId});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final ThemeData(:textTheme, :colorScheme) = Theme.of(context);
     final PlaceMetricModel(:place, :rating) = placeMetric;
 
@@ -36,8 +42,7 @@ class PlaceMetricListItem extends StatelessWidget {
         ClipRRect(
             borderRadius: BorderRadius.circular(6.0),
             child: Container(
-                constraints: BoxConstraints(
-                    maxWidth: deviceWidth * 0.3),
+                constraints: BoxConstraints(maxWidth: deviceWidth * 0.3),
                 width: 156.0,
                 color: colorScheme.surfaceContainer)),
         const SizedBox(width: 16.0),
@@ -63,10 +68,19 @@ class PlaceMetricListItem extends StatelessWidget {
               const Expanded(child: SizedBox()),
               Row(children: [
                 OutlinedButton.icon(
-                    onPressed: () {},
+                    onPressed: () async {
+                      await ref
+                          .read(travelVisitRepositoryProvider)
+                          .create(travelId, TravelVisitForm(placeId: place.id));
+
+                      final message = TranslationUtil.message('visit_added',
+                          args: {'place_name': place.name},);
+
+                      eventController.add(MessageEvent(message));
+                    },
                     style: buttonStyle,
-                    icon: const Icon(Icons.add_location_alt_outlined,
-                        size: 18.0),
+                    icon:
+                        const Icon(Icons.add_location_alt_outlined, size: 18.0),
                     label: const Text('일정에 추가')),
                 const SizedBox(width: 8.0),
                 const OutlinedIconButton(icon: Icon(Icons.bookmark_outline)),

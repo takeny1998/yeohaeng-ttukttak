@@ -71,7 +71,7 @@ class _CityPlaceListPageState extends ConsumerState<CityPlacePoisPage> {
 
     final state = ref.watch(cityPlacePoisProvider(cityId, sortType));
 
-    if (state == null) return LoadingPage();
+    if (state == null) return const LoadingPage();
 
     final CityPlacePoisState(:placeMetrics, :hasNextPage) = state;
 
@@ -208,7 +208,7 @@ class _CityPlaceListPageState extends ConsumerState<CityPlacePoisPage> {
         SliverList(
             delegate: SliverChildBuilderDelegate(
                 (context, index) =>
-                    PlaceMetricListItem(placeMetric: data[index]),
+                    PlaceMetricListItem(travelId: 0, placeMetric: data[index]),
                 childCount: data.length)),
         SliverInfiniteListIndicator(
             hasNextPage: hasNextPage,
