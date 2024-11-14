@@ -25,7 +25,7 @@ public class PlaceController {
     public ServerResponse<FindPlaceResponse> find(@PathVariable Long id) {
 
         final Place place = placeRepository.findById(id)
-                .orElseThrow(EntityNotFoundException::new);
+                .orElseThrow(() -> new EntityNotFoundException(Place.class));
         
         return new ServerResponse<>(new FindPlaceResponse(PlaceDto.of(place)));
     }

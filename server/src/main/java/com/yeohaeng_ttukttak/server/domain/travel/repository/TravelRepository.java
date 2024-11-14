@@ -14,5 +14,4 @@ public interface TravelRepository extends JpaRepository<Travel, Long> {
             "WHERE tc.city.id = :cityId")
     List<Travel> findByCity(Long cityId);
 
-
 }

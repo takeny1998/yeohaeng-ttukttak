@@ -30,7 +30,6 @@ public class TravelController {
 
     private final CreateTravelService createTravelService;
     private final FindTravelsByCityService findTravelsByCityService;
-    private final FindTravelVisitsService findTravelVisitsService;
     private final FindMyAllTravelService findMyAllTravelService;
     private final TravelRepository travelRepository;
 
@@ -53,7 +52,7 @@ public class TravelController {
     @Transactional(readOnly = true)
     public ServerResponse<FindTravelResponse> find(@PathVariable Long id) {
         Travel foundTravel = travelRepository.findById(id)
-                .orElseThrow(EntityNotFoundException::new);
+                .orElseThrow(() -> new EntityNotFoundException(Travel.class));
 
         return new ServerResponse<>(
                 new FindTravelResponse(TravelDto.of(foundTravel)));
@@ -65,14 +64,6 @@ public class TravelController {
 
         return new ServerResponse<>(
                 new FindTravelsByCityResponse(dtos));
-    }
-
-    @GetMapping("/{id}/visits")
-    public ServerResponse<FindTravelVisitsResponse> findVisits(
-            @PathVariable Long id) {
-        List<TravelVisitDto> dtoList = findTravelVisitsService.call(id);
-
-        return new ServerResponse<>(new FindTravelVisitsResponse(dtoList));
     }
 
     @GetMapping("/members/me")

@@ -4,12 +4,14 @@ import com.yeohaeng_ttukttak.server.domain.member.entity.AgeGroup;
 import com.yeohaeng_ttukttak.server.domain.member.entity.Gender;
 import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.City;
+import com.yeohaeng_ttukttak.server.domain.place.entity.Place;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Entity
 @ToString
@@ -33,6 +35,10 @@ public final class MemberTravel extends Travel {
     @Override
     public Gender gender() {
         return member.gender();
+    }
+
+    public Member member() {
+        return member;
     }
 
     public void addCity(City city) {

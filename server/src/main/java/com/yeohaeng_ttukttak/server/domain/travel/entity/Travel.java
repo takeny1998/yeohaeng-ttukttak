@@ -41,6 +41,7 @@ public abstract class Travel {
     @OneToMany(mappedBy = "travel", cascade = CascadeType.PERSIST)
     private List<TravelMotivation> motivations = new ArrayList<>();
 
+    @OrderBy("orderOfVisit ASC")
     @OneToMany(mappedBy = "travel", cascade = CascadeType.PERSIST)
     private List<TravelVisit> visits = new ArrayList<>();
 

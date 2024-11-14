@@ -11,7 +11,7 @@ public interface TravelVisitRepository extends JpaRepository<TravelVisit, Long> 
 
     @Query("SELECT v FROM TravelVisit AS v " +
             "WHERE v.travel = :travel " +
-            "ORDER BY v.seq")
+            "ORDER BY v.orderOfVisit")
     List<TravelVisit> findAllByTravel(Travel travel);
 
 }

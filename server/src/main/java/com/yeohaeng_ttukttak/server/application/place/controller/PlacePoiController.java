@@ -33,7 +33,7 @@ public class PlacePoiController {
             PageCommand pageCommand) {
 
         final City city = geographyRepository.findCityById(cityId)
-                .orElseThrow(EntityNotFoundException::new);
+                .orElseThrow(() -> new EntityNotFoundException(City.class));
 
         PageResult<PlaceMetricRecord> pageResult = poiRepository.call(
                 city.codeStart(), city.codeEnd(), sortType, pageCommand);
