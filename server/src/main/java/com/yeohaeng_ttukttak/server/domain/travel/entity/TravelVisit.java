@@ -59,6 +59,16 @@ public class TravelVisit {
         this.place = place;
     }
 
+    public TravelVisit setDayOfTravel(Integer dayOfTravel) {
+        this.dayOfTravel = dayOfTravel;
+        return this;
+    }
+
+    public TravelVisit setOrderOfVisit(Integer orderOfVisit) {
+        this.orderOfVisit = orderOfVisit;
+        return this;
+    }
+
     public Long id() {
         return id;
     }

@@ -32,12 +32,11 @@ public record TravelVisitDto(
 
         log.debug("dayOfTravel = {}", visit.dayOfTravel());
 
-
-//        if ( visit.dayOfTravel() != null ) {
-//            visitedOn = visit.travel()
-//                    .startedOn()
-//                    .plusDays(visit.dayOfTravel());
-//        }
+        if (visit.dayOfTravel() != null ) {
+            visitedOn = visit.travel()
+                    .startedOn()
+                    .plusDays(visit.dayOfTravel());
+        }
 
         return new TravelVisitDto(
                 visit.id(),

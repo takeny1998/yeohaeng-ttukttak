@@ -9,10 +9,12 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDate;
 import java.util.Objects;
 
+@Slf4j
 @Entity
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -68,5 +70,10 @@ public final class MemberTravel extends Travel {
         companions().add(new TravelCompanion(this, travelCompanionType));
     }
 
+    public void removeVisit(Long visitId) {
+        boolean b = visits().removeIf(visit -> visit.id().equals(visitId));
+
+        log.debug("removed = {}", b);
+    }
 
 }
