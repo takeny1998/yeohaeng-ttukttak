@@ -1,8 +1,9 @@
 import 'package:application_new/common/util/translation_util.dart';
-import 'package:application_new/feature/travel_plan/city_place_pois/component/place_metric_list_item.dart';
-import 'package:application_new/feature/travel_plan/city_place_pois/provider/city_place_pois_state.dart';
-import 'package:application_new/feature/travel_plan/travel_plan_recommend/model/place_recommend_model.dart';
+import 'package:application_new/feature/travel_plan/page/travel_plan_recommend/model/place_recommend_model.dart';
 import 'package:flutter/material.dart';
+
+import 'city_place_pois/component/place_metric_list_item.dart';
+import 'city_place_pois/provider/city_place_pois_state.dart';
 
 class CityRecommendPlaceView extends StatelessWidget {
 

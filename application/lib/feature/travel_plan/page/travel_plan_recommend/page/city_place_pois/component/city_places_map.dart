@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'dart:ffi';
 
-import 'package:application_new/feature/travel_plan/city_place_pois/provider/city_place_map_provider.dart';
-import 'package:application_new/feature/travel_read/components/place_marker_item.dart';
 import 'package:application_new/domain/place/place_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -10,6 +8,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:vector_map_tiles/vector_map_tiles.dart';
 import 'package:collection/collection.dart';
+
+import '../provider/city_place_map_provider.dart';
 
 class CityPlacesMap extends ConsumerStatefulWidget {
   final List<PlaceModel> places;

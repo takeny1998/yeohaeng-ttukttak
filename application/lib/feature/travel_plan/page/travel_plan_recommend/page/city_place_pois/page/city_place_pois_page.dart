@@ -3,13 +3,6 @@ import 'dart:math';
 
 import 'package:application_new/common/loading/loading_page.dart';
 import 'package:application_new/common/util/translation_util.dart';
-import 'package:application_new/feature/travel_plan/city_place_pois/component/place_metric_list_item.dart';
-import 'package:application_new/feature/travel_plan/city_place_pois/component/city_places_map.dart';
-import 'package:application_new/feature/travel_plan/city_place_pois/component/place_metric_card_indicator.dart';
-import 'package:application_new/feature/travel_plan/city_place_pois/component/place_metric_card_item.dart';
-import 'package:application_new/feature/travel_plan/city_place_pois/provider/city_place_map_provider.dart';
-import 'package:application_new/feature/travel_plan/city_place_pois/provider/city_place_pois_provider.dart';
-import 'package:application_new/feature/travel_plan/city_place_pois/provider/city_place_pois_state.dart';
 import 'package:application_new/shared/component/sliver_infinite_list_indicator.dart';
 import 'package:application_new/domain/place/place_model.dart';
 import 'package:application_new/shared/util/constants.dart';
@@ -17,6 +10,14 @@ import 'package:application_new/shared/util/snap_scroll_physics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:visibility_detector/visibility_detector.dart';
+
+import '../component/city_places_map.dart';
+import '../component/place_metric_card_indicator.dart';
+import '../component/place_metric_card_item.dart';
+import '../component/place_metric_list_item.dart';
+import '../provider/city_place_map_provider.dart';
+import '../provider/city_place_pois_provider.dart';
+import '../provider/city_place_pois_state.dart';
 
 class CityPlacePoisPage extends ConsumerStatefulWidget {
   final int cityId;

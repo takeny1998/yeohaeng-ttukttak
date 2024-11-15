@@ -1,7 +1,8 @@
 import 'package:application_new/common/http/http_service_provider.dart';
 import 'package:application_new/domain/geography/geography_provider.dart';
-import 'package:application_new/feature/travel_plan/city_place_pois/provider/city_place_pois_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+import 'city_place_pois_state.dart';
 
 part 'city_place_pois_provider.g.dart';
 

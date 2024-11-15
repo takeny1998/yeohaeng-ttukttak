@@ -1,4 +1,3 @@
-import 'package:application_new/feature/travel_plan/city_place_pois/provider/city_place_map_state.dart';
 import 'package:application_new/feature/travel_read/components/place_marker_item.dart';
 import 'package:application_new/domain/place/place_model.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -6,6 +5,8 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:latlong2/latlong.dart';
 import 'package:collection/collection.dart';
+
+import 'city_place_map_state.dart';
 
 part 'city_place_map_provider.g.dart';
 

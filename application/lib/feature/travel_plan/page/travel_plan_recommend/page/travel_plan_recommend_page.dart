@@ -1,19 +1,15 @@
 import 'package:application_new/common/loading/loading_page.dart';
-import 'package:application_new/feature/travel_plan/city_place_pois/component/city_places_map.dart';
-import 'package:application_new/feature/travel_plan/city_travels/provider/city_travels_provider.dart';
-import 'package:application_new/feature/travel_plan/city_travels/provider/city_travels_state.dart';
 import 'package:application_new/feature/travel_plan/component/travel_city_item.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_page.dart';
 import 'package:application_new/feature/travel_plan/provider/travel_plan_provider.dart';
-import 'package:application_new/feature/travel_plan/travel_plan_recommend/page/sliver_city_poi_preview.dart';
-import 'package:application_new/feature/travel_plan/travel_plan_recommend/page/city_recommend_place_view.dart';
-import 'package:application_new/feature/travel_plan/travel_plan_recommend/page/sliver_city_travel_preview.dart';
-import 'package:application_new/feature/travel_plan/travel_plan_recommend/provider/travel_plan_recommend_provider.dart';
-import 'package:application_new/feature/travel_plan/travel_plan_recommend/provider/travel_plan_recommend_state.dart';
+import 'package:application_new/feature/travel_plan/page/travel_plan_recommend/page/sliver_city_poi_preview.dart';
+import 'package:application_new/feature/travel_plan/page/travel_plan_recommend/page/city_recommend_place_view.dart';
+import 'package:application_new/feature/travel_plan/page/travel_plan_recommend/page/sliver_city_travel_preview.dart';
+import 'package:application_new/feature/travel_plan/page/travel_plan_recommend/provider/travel_plan_recommend_provider.dart';
+import 'package:application_new/feature/travel_plan/page/travel_plan_recommend/provider/travel_plan_recommend_state.dart';
 import 'package:application_new/shared/component/sliver_infinite_list_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:collection/collection.dart';
 
 class TravelPlanRecommendPage extends ConsumerStatefulWidget {
   final int travelId, cityId;

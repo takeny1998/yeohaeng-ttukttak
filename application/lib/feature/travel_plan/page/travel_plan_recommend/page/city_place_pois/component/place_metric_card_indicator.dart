@@ -1,8 +1,9 @@
-import 'package:application_new/feature/travel_plan/city_place_pois/provider/city_place_pois_provider.dart';
-import 'package:application_new/feature/travel_plan/city_place_pois/provider/city_place_pois_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:visibility_detector/visibility_detector.dart';
+
+import '../provider/city_place_pois_provider.dart';
+import '../provider/city_place_pois_state.dart';
 
 class PlaceMetricCardIndicator extends ConsumerWidget {
 

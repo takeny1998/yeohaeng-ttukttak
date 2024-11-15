@@ -1,14 +1,14 @@
 import 'package:application_new/common/event/event.dart';
-import 'package:application_new/common/util/string_extension.dart';
 import 'package:application_new/common/util/translation_util.dart';
 import 'package:application_new/domain/travel_visit/travel_visit_model.dart';
 import 'package:application_new/domain/travel_visit/travel_visit_repository.dart';
-import 'package:application_new/feature/travel_plan/city_place_pois/provider/city_place_pois_state.dart';
 import 'package:application_new/shared/component/outlined_icon_button.dart';
 import 'package:application_new/shared/component/small_chip.dart';
 import 'package:extended_wrap/extended_wrap.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../provider/city_place_pois_state.dart';
 
 class PlaceMetricListItem extends ConsumerWidget {
   final int travelId;
@@ -51,7 +51,7 @@ class PlaceMetricListItem extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(place.name, style: titleStyle),
-              Text(place.address.value?.lineBreakByWord() ?? '',
+              Text(place.address.value ?? '',
                   style: subTitleStyle, overflow: TextOverflow.ellipsis),
               const SizedBox(height: 4.0),
               ExtendedWrap(maxLines: 1, spacing: 8.0, children: [

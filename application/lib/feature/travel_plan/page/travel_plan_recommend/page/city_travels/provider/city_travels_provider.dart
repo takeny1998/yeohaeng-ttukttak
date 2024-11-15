@@ -1,9 +1,8 @@
-import 'package:application_new/common/util/iterable_util.dart';
 import 'package:application_new/domain/geography/geography_provider.dart';
-import 'package:application_new/feature/travel_plan/city_travels/model/paged_travels_model.dart';
-import 'package:application_new/feature/travel_plan/city_travels/provider/city_travels_state.dart';
 import 'package:application_new/domain/travel/travel_model.dart';
 import 'package:application_new/domain/travel/travel_provider.dart';
+import 'package:application_new/feature/travel_plan/page/travel_plan_recommend/page/city_travels/model/paged_travels_model.dart';
+import 'package:application_new/feature/travel_plan/page/travel_plan_recommend/page/city_travels/provider/city_travels_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:application_new/common/http/http_service_provider.dart';
