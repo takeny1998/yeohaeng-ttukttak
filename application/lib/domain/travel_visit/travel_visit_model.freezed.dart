@@ -665,3 +665,195 @@ abstract class _TravelVisitForm implements TravelVisitForm {
   _$$TravelVisitFormImplCopyWith<_$TravelVisitFormImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
+
+TravelVisitEditModel _$TravelVisitEditModelFromJson(Map<String, dynamic> json) {
+  return _TravelVisitPlanModel.fromJson(json);
+}
+
+/// @nodoc
+mixin _$TravelVisitEditModel {
+  int get id => throw _privateConstructorUsedError;
+  int get orderOfVisit => throw _privateConstructorUsedError;
+  int get dayOfTravel => throw _privateConstructorUsedError;
+
+  /// Serializes this TravelVisitEditModel to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of TravelVisitEditModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $TravelVisitEditModelCopyWith<TravelVisitEditModel> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $TravelVisitEditModelCopyWith<$Res> {
+  factory $TravelVisitEditModelCopyWith(TravelVisitEditModel value,
+          $Res Function(TravelVisitEditModel) then) =
+      _$TravelVisitEditModelCopyWithImpl<$Res, TravelVisitEditModel>;
+  @useResult
+  $Res call({int id, int orderOfVisit, int dayOfTravel});
+}
+
+/// @nodoc
+class _$TravelVisitEditModelCopyWithImpl<$Res,
+        $Val extends TravelVisitEditModel>
+    implements $TravelVisitEditModelCopyWith<$Res> {
+  _$TravelVisitEditModelCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of TravelVisitEditModel
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? orderOfVisit = null,
+    Object? dayOfTravel = null,
+  }) {
+    return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      orderOfVisit: null == orderOfVisit
+          ? _value.orderOfVisit
+          : orderOfVisit // ignore: cast_nullable_to_non_nullable
+              as int,
+      dayOfTravel: null == dayOfTravel
+          ? _value.dayOfTravel
+          : dayOfTravel // ignore: cast_nullable_to_non_nullable
+              as int,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$TravelVisitPlanModelImplCopyWith<$Res>
+    implements $TravelVisitEditModelCopyWith<$Res> {
+  factory _$$TravelVisitPlanModelImplCopyWith(_$TravelVisitPlanModelImpl value,
+          $Res Function(_$TravelVisitPlanModelImpl) then) =
+      __$$TravelVisitPlanModelImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({int id, int orderOfVisit, int dayOfTravel});
+}
+
+/// @nodoc
+class __$$TravelVisitPlanModelImplCopyWithImpl<$Res>
+    extends _$TravelVisitEditModelCopyWithImpl<$Res, _$TravelVisitPlanModelImpl>
+    implements _$$TravelVisitPlanModelImplCopyWith<$Res> {
+  __$$TravelVisitPlanModelImplCopyWithImpl(_$TravelVisitPlanModelImpl _value,
+      $Res Function(_$TravelVisitPlanModelImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of TravelVisitEditModel
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? orderOfVisit = null,
+    Object? dayOfTravel = null,
+  }) {
+    return _then(_$TravelVisitPlanModelImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      orderOfVisit: null == orderOfVisit
+          ? _value.orderOfVisit
+          : orderOfVisit // ignore: cast_nullable_to_non_nullable
+              as int,
+      dayOfTravel: null == dayOfTravel
+          ? _value.dayOfTravel
+          : dayOfTravel // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$TravelVisitPlanModelImpl implements _TravelVisitPlanModel {
+  const _$TravelVisitPlanModelImpl(
+      {required this.id,
+      required this.orderOfVisit,
+      required this.dayOfTravel});
+
+  factory _$TravelVisitPlanModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$TravelVisitPlanModelImplFromJson(json);
+
+  @override
+  final int id;
+  @override
+  final int orderOfVisit;
+  @override
+  final int dayOfTravel;
+
+  @override
+  String toString() {
+    return 'TravelVisitEditModel(id: $id, orderOfVisit: $orderOfVisit, dayOfTravel: $dayOfTravel)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$TravelVisitPlanModelImpl &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.orderOfVisit, orderOfVisit) ||
+                other.orderOfVisit == orderOfVisit) &&
+            (identical(other.dayOfTravel, dayOfTravel) ||
+                other.dayOfTravel == dayOfTravel));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, id, orderOfVisit, dayOfTravel);
+
+  /// Create a copy of TravelVisitEditModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$TravelVisitPlanModelImplCopyWith<_$TravelVisitPlanModelImpl>
+      get copyWith =>
+          __$$TravelVisitPlanModelImplCopyWithImpl<_$TravelVisitPlanModelImpl>(
+              this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$TravelVisitPlanModelImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _TravelVisitPlanModel implements TravelVisitEditModel {
+  const factory _TravelVisitPlanModel(
+      {required final int id,
+      required final int orderOfVisit,
+      required final int dayOfTravel}) = _$TravelVisitPlanModelImpl;
+
+  factory _TravelVisitPlanModel.fromJson(Map<String, dynamic> json) =
+      _$TravelVisitPlanModelImpl.fromJson;
+
+  @override
+  int get id;
+  @override
+  int get orderOfVisit;
+  @override
+  int get dayOfTravel;
+
+  /// Create a copy of TravelVisitEditModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$TravelVisitPlanModelImplCopyWith<_$TravelVisitPlanModelImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}

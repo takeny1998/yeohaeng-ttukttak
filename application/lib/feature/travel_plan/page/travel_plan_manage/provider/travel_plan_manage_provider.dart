@@ -26,4 +26,14 @@ class TravelPlanManage extends _$TravelPlanManage {
       visits: TravelVisitModel.listFromJson(response),
     );
   }
+
+  Future<void> edit(Iterable<TravelVisitEditModel> visits) async {
+    final response = await ref
+        .read(httpServiceProvider)
+        .request('PUT', '/api/v2/travels/$travelId/visits', data: {
+          'visits': visits.map((visit) => visit.toJson()).toList()
+    });
+
+    state = state?.copyWith(visits: TravelVisitModel.listFromJson(response));
+  }
 }

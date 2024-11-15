@@ -82,6 +82,7 @@ message:
   travel_created: The travel has been created successfully.
   visit_added: "{place_name} has been added to plan successfully."
   travel_plan_item_removed: "{place_name} has been removed from plan successfully."
+  travel_plan_edited: The travel plan has been edited successfully.
 
 korea: Republic of Korea
 

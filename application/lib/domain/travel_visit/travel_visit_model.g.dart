@@ -77,3 +77,19 @@ Map<String, dynamic> _$$TravelVisitFormImplToJson(
     <String, dynamic>{
       'placeId': instance.placeId,
     };
+
+_$TravelVisitPlanModelImpl _$$TravelVisitPlanModelImplFromJson(
+        Map<String, dynamic> json) =>
+    _$TravelVisitPlanModelImpl(
+      id: (json['id'] as num).toInt(),
+      orderOfVisit: (json['orderOfVisit'] as num).toInt(),
+      dayOfTravel: (json['dayOfTravel'] as num).toInt(),
+    );
+
+Map<String, dynamic> _$$TravelVisitPlanModelImplToJson(
+        _$TravelVisitPlanModelImpl instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'orderOfVisit': instance.orderOfVisit,
+      'dayOfTravel': instance.dayOfTravel,
+    };

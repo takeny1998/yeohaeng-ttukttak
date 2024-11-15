@@ -47,6 +47,20 @@ class TravelVisitForm with _$TravelVisitForm {
       _$TravelVisitFormFromJson(json);
 }
 
+@freezed
+class TravelVisitEditModel with _$TravelVisitEditModel {
+
+  const factory TravelVisitEditModel({
+    required int id,
+    required int orderOfVisit,
+    required int dayOfTravel,
+  }) = _TravelVisitPlanModel;
+
+  factory TravelVisitEditModel.fromJson(Map<String, dynamic> json) =>
+      _$TravelVisitEditModelFromJson(json);
+
+}
+
 enum TravelVisitReasonType {
   landmark,
   goodReviews,
