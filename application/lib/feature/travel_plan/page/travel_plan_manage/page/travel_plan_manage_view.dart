@@ -1,4 +1,8 @@
+import 'package:application_new/common/event/event.dart';
 import 'package:application_new/common/util/iterable_util.dart';
+import 'package:application_new/common/util/translation_util.dart';
+import 'package:application_new/domain/place/place_provider.dart';
+import 'package:application_new/domain/travel/travel_provider.dart';
 import 'package:application_new/domain/travel_visit/travel_visit_model.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_manage/component/travel_plan_label_item.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_manage/component/travel_plan_edit_list_item.dart';
@@ -39,8 +43,9 @@ class _TravelPlanManageViewState extends ConsumerState<TravelPlanManageView> {
                 child: TravelPlanEditListItem(
                   order: itemIndex,
                   visit: visit,
-                  onDeleted: () =>
-                      setState(() => onItemDelete(groupIndex, visit.id)),
+                  onDeleted: () {
+                    setState(() => onItemDelete(groupIndex, visit.id));
+                  },
                 )))
             .toList(),
       );
@@ -102,7 +107,7 @@ class _TravelPlanManageViewState extends ConsumerState<TravelPlanManageView> {
     });
   }
 
-  void onItemDelete(int listIndex, int itemId) {
+  void onItemDelete(int listIndex, int itemId)  {
     final item = groups[listIndex]
         .children
         .where((item) => (item.key as ValueKey<int>).value == itemId)
@@ -110,6 +115,27 @@ class _TravelPlanManageViewState extends ConsumerState<TravelPlanManageView> {
 
     if (item == null) return;
 
+    final visit = (item.child as TravelPlanEditListItem).visit;
+
+    final prevGroup = DragAndDropList(
+      canDrag: groups[listIndex].canDrag,
+      header: groups[listIndex].header,
+      children: List.of(groups[listIndex].children),
+    );
+
     setState(() => groups[listIndex].children.remove(item));
+
+   ref.read(placeProvider(visit.placeId).future).then((place) {
+     eventController.add(MessageEvent(
+         TranslationUtil.message(
+           'travel_plan_item_removed',
+           args: {
+             'place_name': place.name,
+           },
+         ), onCancel: () {
+       setState(() => groups[listIndex] = prevGroup);
+     }));
+   });
+
   }
 }

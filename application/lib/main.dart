@@ -81,9 +81,16 @@ class _MyAppState extends ConsumerState<MyApp> {
 
     eventController.stream.listen((event) {
       switch (event) {
-        case MessageEvent(:final message):
-          messengerKey.currentState
-              ?.showSnackBar(SnackBar(content: Text(message)));
+        case MessageEvent(:final message, :final onCancel):
+
+          messengerKey.currentState?.hideCurrentSnackBar();
+          messengerKey.currentState?.showSnackBar(
+            SnackBar(
+                content: Text(message),
+                action: onCancel != null
+                    ? SnackBarAction(label: '취소', onPressed: onCancel)
+                    : null),
+          );
       }
     });
 
