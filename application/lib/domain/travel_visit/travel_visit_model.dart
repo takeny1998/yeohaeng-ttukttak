@@ -18,6 +18,11 @@ class TravelVisitModel with _$TravelVisitModel {
 
   factory TravelVisitModel.fromJson(Map<String, dynamic> json) =>
       _$TravelVisitModelFromJson(json);
+
+  static List<TravelVisitModel> listFromJson(Map<String, dynamic> json) =>
+      List.of(json['visits'])
+          .map((travel) => TravelVisitModel.fromJson(travel))
+          .toList();
 }
 
 @freezed
@@ -34,7 +39,6 @@ class TravelVisitRatingModel with _$TravelVisitRatingModel {
 
 @freezed
 class TravelVisitForm with _$TravelVisitForm {
-
   const factory TravelVisitForm({
     required int placeId,
   }) = _TravelVisitForm;
