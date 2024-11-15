@@ -18,6 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$TravelPlanManageState {
   TravelModel get travel => throw _privateConstructorUsedError;
   List<TravelVisitModel> get visits => throw _privateConstructorUsedError;
+  DateTime get selectedDate => throw _privateConstructorUsedError;
 
   /// Create a copy of TravelPlanManageState
   /// with the given fields replaced by the non-null parameter values.
@@ -32,7 +33,10 @@ abstract class $TravelPlanManageStateCopyWith<$Res> {
           $Res Function(TravelPlanManageState) then) =
       _$TravelPlanManageStateCopyWithImpl<$Res, TravelPlanManageState>;
   @useResult
-  $Res call({TravelModel travel, List<TravelVisitModel> visits});
+  $Res call(
+      {TravelModel travel,
+      List<TravelVisitModel> visits,
+      DateTime selectedDate});
 
   $TravelModelCopyWith<$Res> get travel;
 }
@@ -55,6 +59,7 @@ class _$TravelPlanManageStateCopyWithImpl<$Res,
   $Res call({
     Object? travel = null,
     Object? visits = null,
+    Object? selectedDate = null,
   }) {
     return _then(_value.copyWith(
       travel: null == travel
@@ -65,6 +70,10 @@ class _$TravelPlanManageStateCopyWithImpl<$Res,
           ? _value.visits
           : visits // ignore: cast_nullable_to_non_nullable
               as List<TravelVisitModel>,
+      selectedDate: null == selectedDate
+          ? _value.selectedDate
+          : selectedDate // ignore: cast_nullable_to_non_nullable
+              as DateTime,
     ) as $Val);
   }
 
@@ -88,7 +97,10 @@ abstract class _$$TravelPlanManageStateImplCopyWith<$Res>
       __$$TravelPlanManageStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({TravelModel travel, List<TravelVisitModel> visits});
+  $Res call(
+      {TravelModel travel,
+      List<TravelVisitModel> visits,
+      DateTime selectedDate});
 
   @override
   $TravelModelCopyWith<$Res> get travel;
@@ -110,6 +122,7 @@ class __$$TravelPlanManageStateImplCopyWithImpl<$Res>
   $Res call({
     Object? travel = null,
     Object? visits = null,
+    Object? selectedDate = null,
   }) {
     return _then(_$TravelPlanManageStateImpl(
       travel: null == travel
@@ -120,6 +133,10 @@ class __$$TravelPlanManageStateImplCopyWithImpl<$Res>
           ? _value._visits
           : visits // ignore: cast_nullable_to_non_nullable
               as List<TravelVisitModel>,
+      selectedDate: null == selectedDate
+          ? _value.selectedDate
+          : selectedDate // ignore: cast_nullable_to_non_nullable
+              as DateTime,
     ));
   }
 }
@@ -128,7 +145,9 @@ class __$$TravelPlanManageStateImplCopyWithImpl<$Res>
 
 class _$TravelPlanManageStateImpl implements _TravelPlanManageState {
   const _$TravelPlanManageStateImpl(
-      {required this.travel, required final List<TravelVisitModel> visits})
+      {required this.travel,
+      required final List<TravelVisitModel> visits,
+      required this.selectedDate})
       : _visits = visits;
 
   @override
@@ -142,8 +161,11 @@ class _$TravelPlanManageStateImpl implements _TravelPlanManageState {
   }
 
   @override
+  final DateTime selectedDate;
+
+  @override
   String toString() {
-    return 'TravelPlanManageState(travel: $travel, visits: $visits)';
+    return 'TravelPlanManageState(travel: $travel, visits: $visits, selectedDate: $selectedDate)';
   }
 
   @override
@@ -152,12 +174,14 @@ class _$TravelPlanManageStateImpl implements _TravelPlanManageState {
         (other.runtimeType == runtimeType &&
             other is _$TravelPlanManageStateImpl &&
             (identical(other.travel, travel) || other.travel == travel) &&
-            const DeepCollectionEquality().equals(other._visits, _visits));
+            const DeepCollectionEquality().equals(other._visits, _visits) &&
+            (identical(other.selectedDate, selectedDate) ||
+                other.selectedDate == selectedDate));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, travel, const DeepCollectionEquality().hash(_visits));
+  int get hashCode => Object.hash(runtimeType, travel,
+      const DeepCollectionEquality().hash(_visits), selectedDate);
 
   /// Create a copy of TravelPlanManageState
   /// with the given fields replaced by the non-null parameter values.
@@ -171,14 +195,16 @@ class _$TravelPlanManageStateImpl implements _TravelPlanManageState {
 
 abstract class _TravelPlanManageState implements TravelPlanManageState {
   const factory _TravelPlanManageState(
-          {required final TravelModel travel,
-          required final List<TravelVisitModel> visits}) =
-      _$TravelPlanManageStateImpl;
+      {required final TravelModel travel,
+      required final List<TravelVisitModel> visits,
+      required final DateTime selectedDate}) = _$TravelPlanManageStateImpl;
 
   @override
   TravelModel get travel;
   @override
   List<TravelVisitModel> get visits;
+  @override
+  DateTime get selectedDate;
 
   /// Create a copy of TravelPlanManageState
   /// with the given fields replaced by the non-null parameter values.

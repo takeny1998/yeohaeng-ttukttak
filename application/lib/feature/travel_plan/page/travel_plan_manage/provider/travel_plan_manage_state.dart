@@ -9,5 +9,6 @@ class TravelPlanManageState with _$TravelPlanManageState {
   const factory TravelPlanManageState({
     required TravelModel travel,
     required List<TravelVisitModel> visits,
+    required DateTime selectedDate,
   }) = _TravelPlanManageState;
 }

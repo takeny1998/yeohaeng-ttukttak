@@ -23,6 +23,7 @@ class TravelPlanManage extends _$TravelPlanManage {
 
     state = TravelPlanManageState(
       travel: travel,
+      selectedDate: travel.startedOn,
       visits: TravelVisitModel.listFromJson(response),
     );
   }
@@ -35,5 +36,10 @@ class TravelPlanManage extends _$TravelPlanManage {
     });
 
     state = state?.copyWith(visits: TravelVisitModel.listFromJson(response));
+  }
+
+  void selectDate(DateTime date) {
+    if (state?.selectedDate == date) return;
+    state = state?.copyWith(selectedDate: date);
   }
 }
