@@ -8,6 +8,7 @@ import com.yeohaeng_ttukttak.server.common.aop.annotation.Authorization;
 import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
 import com.yeohaeng_ttukttak.server.domain.auth.dto.AccessTokenDto;
 import com.yeohaeng_ttukttak.server.domain.travel.dto.TravelVisitDto;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,7 +48,7 @@ public class TravelVisitController {
     @Authorization
     public ServerResponse<UpdateAllTravelVisitResponse> updateAll(
             @PathVariable Long travelId,
-            @RequestBody UpdateAllTravelVisitRequest request) {
+            @Valid @RequestBody UpdateAllTravelVisitRequest request) {
 
         List<TravelVisitDto> dtoList = updateAllService.call(travelId, request.visits());
 
