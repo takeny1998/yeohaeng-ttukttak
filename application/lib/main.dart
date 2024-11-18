@@ -73,6 +73,8 @@ class MyApp extends ConsumerStatefulWidget {
 }
 
 class _MyAppState extends ConsumerState<MyApp> {
+  final GlobalKey themeKey = GlobalKey();
+
   @override
   void initState() {
     Future.microtask(() {
@@ -81,9 +83,21 @@ class _MyAppState extends ConsumerState<MyApp> {
 
     eventController.stream.listen((event) {
       switch (event) {
-        case MessageEvent(:final message):
-          messengerKey.currentState
-              ?.showSnackBar(SnackBar(content: Text(message)));
+        case MessageEvent(:final message, :final onCancel):
+          final ThemeData(:colorScheme) = Theme.of(themeKey.currentContext!);
+
+          messengerKey.currentState?.hideCurrentSnackBar();
+          messengerKey.currentState?.showSnackBar(
+            SnackBar(
+                backgroundColor: colorScheme.primaryContainer,
+                content: Text(message,
+                    style: TextStyle(
+                        color: colorScheme.primary,
+                        fontWeight: FontWeight.w600)),
+                action: onCancel != null
+                    ? SnackBarAction(label: '취소', onPressed: onCancel)
+                    : null),
+          );
       }
     });
 
@@ -121,6 +135,7 @@ class _MyAppState extends ConsumerState<MyApp> {
           child: MyAppBarTheme(
             child: MyButtonTheme(
               child: FilledChipTheme(
+                key: themeKey,
                 child: Stack(
                   children: [
                     widget!,

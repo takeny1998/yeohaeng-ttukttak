@@ -38,7 +38,7 @@ public class PlaceRecommendationsController {
             @RequestParam List<TravelCompanionType> companionTypes) {
 
         Geography geography = geographyRepository.findById(cityId)
-                .orElseThrow(EntityNotFoundException::new);
+                .orElseThrow(() -> new EntityNotFoundException(Geography.class));
 
         PageResult<Place> pageResult = placeRecommendationsRepository.call(
                 categoryType,

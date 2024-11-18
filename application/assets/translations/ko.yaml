@@ -80,6 +80,9 @@ widget:
 
 message:
   travel_created: 여행이 성공적으로 생성되었습니다.
+  visit_added: "{place_name}이(가) 일정에 추가되었습니다."
+  travel_plan_item_removed: "{place_name}이(가) 일정에서 제거되었습니다."
+  travel_plan_edited: 여행 계획이 성공적으로 수정되었습니다.
 
 next: 다음으로
 korea: 대한민국

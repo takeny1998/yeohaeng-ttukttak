@@ -41,7 +41,8 @@ public abstract class Travel {
     @OneToMany(mappedBy = "travel", cascade = CascadeType.PERSIST)
     private List<TravelMotivation> motivations = new ArrayList<>();
 
-    @OneToMany(mappedBy = "travel", cascade = CascadeType.PERSIST)
+    @OrderBy("dayOfTravel ASC nulls last, orderOfVisit ASC nulls last")
+    @OneToMany(mappedBy = "travel", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<TravelVisit> visits = new ArrayList<>();
 
     public Travel(LocalDate startedOn, LocalDate endedOn) {

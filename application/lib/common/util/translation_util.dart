@@ -23,8 +23,8 @@ final class TranslationUtil {
     return 'word.$key'.tr();
   }
 
-  static String message(String key) {
-    return 'message.$key'.tr();
+  static String message(String key, {Map<String, String>? args}) {
+    return 'message.$key'.tr(namedArgs: args);
   }
 }
 

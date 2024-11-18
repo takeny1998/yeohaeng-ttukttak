@@ -2,18 +2,10 @@ package com.yeohaeng_ttukttak.server.common.exception.exception.fail;
 
 import lombok.Getter;
 
-@Getter
 public class EntityNotFoundException extends FailException {
 
-    protected EntityNotFoundException(String code, Throwable cause) {
-        super(code, cause);
+    public <T> EntityNotFoundException(Class<T> clazz) {
+        super(String.format("%s_NOT_FOUND", clazz.getSimpleName().toUpperCase()));
     }
 
-    public EntityNotFoundException(Throwable cause) {
-        this("ENTITY_NOT_FOUND", cause);
-    }
-
-    public EntityNotFoundException() {
-        this(null);
-    }
 }

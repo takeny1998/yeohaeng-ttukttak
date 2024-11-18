@@ -30,6 +30,13 @@ final class DateUtil {
 
   }
 
+  static bool isInRange(DateTimeRange range, DateTime date) {
+    final DateTimeRange(:start, :end) = range;
+
+    return (start.isAtSameMomentAs(date) || date.isAfter(start)) &&
+        (end.isAtSameMomentAs(date) || date.isBefore(end));
+  }
+
 }
 
 final class DateFormatter {

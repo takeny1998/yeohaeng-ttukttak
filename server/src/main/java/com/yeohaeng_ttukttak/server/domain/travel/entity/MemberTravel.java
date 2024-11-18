@@ -4,13 +4,17 @@ import com.yeohaeng_ttukttak.server.domain.member.entity.AgeGroup;
 import com.yeohaeng_ttukttak.server.domain.member.entity.Gender;
 import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.City;
+import com.yeohaeng_ttukttak.server.domain.place.entity.Place;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
+@Slf4j
 @Entity
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -33,6 +37,10 @@ public final class MemberTravel extends Travel {
     @Override
     public Gender gender() {
         return member.gender();
+    }
+
+    public Member member() {
+        return member;
     }
 
     public void addCity(City city) {
@@ -62,5 +70,10 @@ public final class MemberTravel extends Travel {
         companions().add(new TravelCompanion(this, travelCompanionType));
     }
 
+    public void removeVisit(Long visitId) {
+        boolean b = visits().removeIf(visit -> visit.id().equals(visitId));
+
+        log.debug("removed = {}", b);
+    }
 
 }
