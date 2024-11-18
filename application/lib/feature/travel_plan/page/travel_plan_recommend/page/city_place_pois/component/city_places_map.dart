@@ -1,12 +1,10 @@
 import 'dart:async';
-import 'dart:ffi';
 
 import 'package:application_new/domain/place/place_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:vector_map_tiles/vector_map_tiles.dart';
 import 'package:collection/collection.dart';
 
 import '../provider/city_place_map_provider.dart';
@@ -25,8 +23,6 @@ class CityPlacesMap extends ConsumerStatefulWidget {
 class _CityPlacesMapState extends ConsumerState<CityPlacesMap> {
   final MapController mapController = MapController();
 
-  Style? mapStyle;
-
   final double markerRadius = 26.0;
   double zoom = 16.0;
 
@@ -36,19 +32,6 @@ class _CityPlacesMapState extends ConsumerState<CityPlacesMap> {
   void dispose() {
     mapController.dispose();
     super.dispose();
-  }
-
-  @override
-  void initState() {
-    fetchStyle().then((style) => setState(() => mapStyle = style));
-    super.initState();
-  }
-
-  Future<Style> fetchStyle() async {
-    return StyleReader(
-          uri: 'https://api.tomtom.com/style/2/custom/style/dG9tdG9tQEBAQU1MSkFRZ1QyNjU0NU9WODthMzc4MGJhYy00Y2FhLTQxZmMtYWZjOS1hN2I1ZTMxODJkZjU=/drafts/0.json?key={key}',
-          apiKey: const String.fromEnvironment('TOMTOM_API_KEY'))
-      .read();
   }
 
   Future<void> moveToPlace(PlaceModel? place) async {
@@ -88,11 +71,9 @@ class _CityPlacesMapState extends ConsumerState<CityPlacesMap> {
           options: MapOptions(
               onMapReady: () => moveToPlace(widget.places.first),
               maxZoom: 22.0,
-              initialZoom: mapStyle?.zoom ?? zoom),
+              initialZoom: zoom),
           children: [
-            if (mapStyle != null)
-              VectorTileLayer(
-                  tileProviders: mapStyle!.providers, theme: mapStyle!.theme),
+            TileLayer(urlTemplate: 'http://127.0.0.1:8081/tile/{z}/{x}/{y}.png'),
             MarkerLayer(markers: markers.reversed.toList()),
           ],
         ),
