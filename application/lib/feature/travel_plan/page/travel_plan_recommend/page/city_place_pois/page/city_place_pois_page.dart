@@ -206,11 +206,11 @@ class _CityPlaceListPageState extends ConsumerState<CityPlacePoisPage> {
                 ])),
           ]),
         )),
-        SliverList(
-            delegate: SliverChildBuilderDelegate(
-                (context, index) =>
-                    PlaceMetricListItem(travelId: 0, placeMetric: data[index]),
-                childCount: data.length)),
+        // SliverList(
+        //     delegate: SliverChildBuilderDelegate(
+        //         (context, index) =>
+        //             PlaceMetricListItem(travel: , placeMetric: data[index]),
+        //         childCount: data.length)),
         SliverInfiniteListIndicator(
             hasNextPage: hasNextPage,
             onVisible: ref

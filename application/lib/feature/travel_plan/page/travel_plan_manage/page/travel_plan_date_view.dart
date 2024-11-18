@@ -5,16 +5,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class TravelPlanDateView extends ConsumerWidget {
   final TravelModel travel;
-  final DateTime selectedDate;
+  final DateTime? selectedDate;
   final void Function(DateTime date) onChangeDate;
 
   const TravelPlanDateView({
     super.key,
     required this.travel,
-    required this.selectedDate,
     required this.onChangeDate,
+    this.selectedDate,
   });
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final travelDate =
@@ -27,19 +26,10 @@ class TravelPlanDateView extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 16.0),
-          child: TextButton(
-              onPressed: () {},
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(dateFormat.date(travel.startedOn),
-                      style: const TextStyle(fontSize: 18.0)),
-                  const Icon(Icons.arrow_drop_down),
-                ],
-              )),
+          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          child: Text(dateFormat.date(travel.startedOn), style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.w600)),
         ),
-        SizedBox(height: 6.0),
+        const SizedBox(height: 12.0),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(children: [

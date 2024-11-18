@@ -522,6 +522,7 @@ TravelVisitForm _$TravelVisitFormFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$TravelVisitForm {
   int get placeId => throw _privateConstructorUsedError;
+  int get dayOfTravel => throw _privateConstructorUsedError;
 
   /// Serializes this TravelVisitForm to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -539,7 +540,7 @@ abstract class $TravelVisitFormCopyWith<$Res> {
           TravelVisitForm value, $Res Function(TravelVisitForm) then) =
       _$TravelVisitFormCopyWithImpl<$Res, TravelVisitForm>;
   @useResult
-  $Res call({int placeId});
+  $Res call({int placeId, int dayOfTravel});
 }
 
 /// @nodoc
@@ -558,11 +559,16 @@ class _$TravelVisitFormCopyWithImpl<$Res, $Val extends TravelVisitForm>
   @override
   $Res call({
     Object? placeId = null,
+    Object? dayOfTravel = null,
   }) {
     return _then(_value.copyWith(
       placeId: null == placeId
           ? _value.placeId
           : placeId // ignore: cast_nullable_to_non_nullable
+              as int,
+      dayOfTravel: null == dayOfTravel
+          ? _value.dayOfTravel
+          : dayOfTravel // ignore: cast_nullable_to_non_nullable
               as int,
     ) as $Val);
   }
@@ -576,7 +582,7 @@ abstract class _$$TravelVisitFormImplCopyWith<$Res>
       __$$TravelVisitFormImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int placeId});
+  $Res call({int placeId, int dayOfTravel});
 }
 
 /// @nodoc
@@ -593,11 +599,16 @@ class __$$TravelVisitFormImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? placeId = null,
+    Object? dayOfTravel = null,
   }) {
     return _then(_$TravelVisitFormImpl(
       placeId: null == placeId
           ? _value.placeId
           : placeId // ignore: cast_nullable_to_non_nullable
+              as int,
+      dayOfTravel: null == dayOfTravel
+          ? _value.dayOfTravel
+          : dayOfTravel // ignore: cast_nullable_to_non_nullable
               as int,
     ));
   }
@@ -606,17 +617,20 @@ class __$$TravelVisitFormImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$TravelVisitFormImpl implements _TravelVisitForm {
-  const _$TravelVisitFormImpl({required this.placeId});
+  const _$TravelVisitFormImpl(
+      {required this.placeId, required this.dayOfTravel});
 
   factory _$TravelVisitFormImpl.fromJson(Map<String, dynamic> json) =>
       _$$TravelVisitFormImplFromJson(json);
 
   @override
   final int placeId;
+  @override
+  final int dayOfTravel;
 
   @override
   String toString() {
-    return 'TravelVisitForm(placeId: $placeId)';
+    return 'TravelVisitForm(placeId: $placeId, dayOfTravel: $dayOfTravel)';
   }
 
   @override
@@ -624,12 +638,14 @@ class _$TravelVisitFormImpl implements _TravelVisitForm {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$TravelVisitFormImpl &&
-            (identical(other.placeId, placeId) || other.placeId == placeId));
+            (identical(other.placeId, placeId) || other.placeId == placeId) &&
+            (identical(other.dayOfTravel, dayOfTravel) ||
+                other.dayOfTravel == dayOfTravel));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, placeId);
+  int get hashCode => Object.hash(runtimeType, placeId, dayOfTravel);
 
   /// Create a copy of TravelVisitForm
   /// with the given fields replaced by the non-null parameter values.
@@ -649,14 +665,17 @@ class _$TravelVisitFormImpl implements _TravelVisitForm {
 }
 
 abstract class _TravelVisitForm implements TravelVisitForm {
-  const factory _TravelVisitForm({required final int placeId}) =
-      _$TravelVisitFormImpl;
+  const factory _TravelVisitForm(
+      {required final int placeId,
+      required final int dayOfTravel}) = _$TravelVisitFormImpl;
 
   factory _TravelVisitForm.fromJson(Map<String, dynamic> json) =
       _$TravelVisitFormImpl.fromJson;
 
   @override
   int get placeId;
+  @override
+  int get dayOfTravel;
 
   /// Create a copy of TravelVisitForm
   /// with the given fields replaced by the non-null parameter values.

@@ -41,6 +41,7 @@ class TravelVisitRatingModel with _$TravelVisitRatingModel {
 class TravelVisitForm with _$TravelVisitForm {
   const factory TravelVisitForm({
     required int placeId,
+    required int dayOfTravel,
   }) = _TravelVisitForm;
 
   factory TravelVisitForm.fromJson(Map<String, dynamic> json) =>
