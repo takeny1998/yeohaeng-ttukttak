@@ -28,24 +28,6 @@ class TravelPlanManagePage extends ConsumerWidget {
 
     final TravelPlanManageState(:travel, :visits, :selectedDate) = state;
 
-    Future<void> editPlans() async {
-      final editedPlans =
-          await showModalBottomSheet<List<TravelVisitEditModel>>(
-              isScrollControlled: true,
-              useSafeArea: true,
-              enableDrag: false,
-              context: context,
-              builder: (context) => TravelPlanManageEditView(visits: visits));
-
-      if (editedPlans == null) return;
-
-      await ref
-          .read(travelPlanManageProvider(travelId).notifier)
-          .edit(editedPlans);
-
-      eventController
-          .add(MessageEvent(TranslationUtil.message('travel_plan_edited')));
-    }
 
     final selectedVisits = visits
         .where((visit) => DateUtils.isSameDay(visit.visitedOn, selectedDate))
@@ -53,7 +35,10 @@ class TravelPlanManagePage extends ConsumerWidget {
 
     return SliverMainAxisGroup(slivers: [
       SliverToBoxAdapter(
-          child: TextButton(onPressed: editPlans, child: const Text('수정'))),
+          child: TextButton(
+              onPressed: () => TravelPlanManageEditView.showSheet(context,
+                  travelId: travelId, visitPlaces: visitPlaces),
+              child: const Text('수정'))),
       SliverList(
           delegate: SliverChildListDelegate([
         TravelPlanDateView(
