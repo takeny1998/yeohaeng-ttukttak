@@ -31,6 +31,7 @@ class MyButtonTheme extends StatelessWidget {
         outlinedButtonTheme: OutlinedButtonThemeData(
           style: OutlinedButton.styleFrom(
             side: BorderSide(color: colorScheme.surfaceDim),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(6.0)),
             textStyle: buttonTextStyle,
