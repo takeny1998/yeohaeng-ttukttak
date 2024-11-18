@@ -25,12 +25,11 @@ import java.util.UUID;
 public class CreateTravelVisitService {
 
     private final MemberTravelRepository travelRepository;
-    private final TravelVisitRepository travelVisitRepository;
     private final MemberRepository memberRepository;
     private final PlaceRepository placeRepository;
 
     @Transactional
-    public TravelVisitDto call(Long travelId, String memberId, Long placeId) {
+    public void call(Long travelId, String memberId, Long placeId, Integer dayOfTravel) {
 
         final MemberTravel travel = travelRepository
                 .findById(travelId)
@@ -48,10 +47,7 @@ public class CreateTravelVisitService {
                 .findById(placeId)
                 .orElseThrow(() -> new EntityNotFoundException(Place.class));
 
-        TravelVisit visit = new TravelVisit(travel, place);
-        travelVisitRepository.save(visit);
-
-        return TravelVisitDto.of(visit);
+        travel.addVisit(place, dayOfTravel);
     }
 
 }

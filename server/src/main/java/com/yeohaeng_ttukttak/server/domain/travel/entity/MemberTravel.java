@@ -70,10 +70,22 @@ public final class MemberTravel extends Travel {
         companions().add(new TravelCompanion(this, travelCompanionType));
     }
 
-    public void removeVisit(Long visitId) {
-        boolean b = visits().removeIf(visit -> visit.id().equals(visitId));
+    public void addVisit(Place place, Integer dayOfTravel) {
+        int orderOfVisit = -1;
 
-        log.debug("removed = {}", b);
+        for (TravelVisit visit : visits()) {
+            if (Objects.equals(visit.dayOfTravel(), dayOfTravel)) {
+                orderOfVisit = Math.max(orderOfVisit, visit.orderOfVisit());
+            }
+        }
+
+        log.debug("{}", orderOfVisit);
+
+        visits().add(new TravelVisit(dayOfTravel, orderOfVisit + 1, place, this));
+    }
+
+    public void removeVisit(Long visitId) {
+        visits().removeIf(visit -> visit.id().equals(visitId));
     }
 
 }
