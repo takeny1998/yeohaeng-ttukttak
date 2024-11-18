@@ -58,11 +58,11 @@ GoRouter router(RouterRef ref) {
             return TravelPlanPage(travelId: int.parse(travelId));
           }),
       GoRoute(
-          path: '/cities/:id/places/pois',
+          path: '/travels/:travelId/cities/:cityId/places/pois',
           builder: (context, state) {
-            final {'id': cityId} = state.pathParameters;
+            final {'travelId': travelId, 'cityId': cityId} = state.pathParameters;
 
-            return CityPlacePoisPage(cityId: int.parse(cityId));
+            return CityPlacePoisPage(travelId: int.parse(travelId), cityId: int.parse(cityId));
           }),
       GoRoute(
           path: '/travels/:travelId/cities/:cityId/travels',

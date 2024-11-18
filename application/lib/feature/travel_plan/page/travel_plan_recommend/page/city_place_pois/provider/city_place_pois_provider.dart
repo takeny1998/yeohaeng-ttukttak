@@ -1,5 +1,6 @@
 import 'package:application_new/common/http/http_service_provider.dart';
 import 'package:application_new/domain/geography/geography_provider.dart';
+import 'package:application_new/domain/travel/travel_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'city_place_pois_state.dart';
@@ -13,14 +14,15 @@ class CityPlacePois extends _$CityPlacePois {
   final int _pageSize = 5;
 
   @override
-  CityPlacePoisState? build(int cityId, PlaceSortType sortType) {
+  CityPlacePoisState? build(int travelId, int cityId, PlaceSortType sortType) {
 
+    final travel = ref.watch(travelProvider(travelId)).value;
     final city =  ref.watch(cityProvider(cityId));
-    if (city == null) return null;
+    if (city == null || travel == null) return null;
 
     fetch();
 
-    return CityPlacePoisState(city: city);
+    return CityPlacePoisState(travel: travel, city: city);
   }
 
   void fetch() async {

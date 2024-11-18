@@ -7,10 +7,11 @@ import '../provider/city_place_pois_state.dart';
 
 class PlaceMetricCardIndicator extends ConsumerWidget {
 
+  final int travelId;
   final int cityId;
   final PlaceSortType sortType;
 
-  const PlaceMetricCardIndicator(this.cityId, this.sortType, {super.key});
+  const PlaceMetricCardIndicator(this.travelId, this.cityId, this.sortType, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -21,7 +22,7 @@ class PlaceMetricCardIndicator extends ConsumerWidget {
       onVisibilityChanged: (info) {
         final isVisible = info.visibleFraction == 1.0;
         if (!isVisible) return;
-        ref.read(cityPlacePoisProvider(cityId, sortType).notifier).fetch();
+        ref.read(cityPlacePoisProvider(travelId, cityId, sortType).notifier).fetch();
       },
       child: Container(
         decoration: BoxDecoration(
