@@ -1,17 +1,15 @@
 import 'package:application_new/common/util/translation_util.dart';
-import 'package:application_new/domain/place/place_provider.dart';
 import 'package:application_new/domain/travel_visit/travel_visit_model.dart';
-import 'package:application_new/shared/component/small_chip.dart';
-import 'package:extended_wrap/extended_wrap.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 class TravelPlanListItem extends ConsumerWidget {
   final int order;
-  final TravelVisitModel visit;
+  final TravelVisitWithPlaceModel visitPlace;
 
   const TravelPlanListItem(
-      {super.key, required this.order, required this.visit});
+      {super.key, required this.order, required this.visitPlace});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -21,10 +19,10 @@ class TravelPlanListItem extends ConsumerWidget {
         TextStyle(fontWeight: FontWeight.w600, fontSize: 16.0, height: 1.0);
     const subTitleStyle = TextStyle(fontSize: 12.0);
 
-    final place = ref.watch(placeProvider(visit.placeId)).value;
+    final place = visitPlace.place;
 
     final categoryName =
-        TranslationUtil.enumValue(place?.categoryTypes.firstOrNull);
+        TranslationUtil.enumValue(place.categoryTypes.firstOrNull);
 
     return IntrinsicHeight(
       child: Row(
@@ -51,14 +49,14 @@ class TravelPlanListItem extends ConsumerWidget {
               children: [
                 Row(
                   children: [
-                    Text(place?.name ?? '', style: titleStyle),
+                    Text(place.name, style: titleStyle),
                     const SizedBox(width: 6.0),
                     Text(categoryName, style: const TextStyle(fontSize: 12.0)),
                   ],
                 ),
                 const SizedBox(height: 4.0),
                 Text(
-                  place?.address.value ?? '',
+                  place.address.value ?? '',
                   style: subTitleStyle,
                   overflow: TextOverflow.ellipsis,
                 ),

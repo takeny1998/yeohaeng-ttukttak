@@ -1,0 +1,109 @@
+import 'dart:async';
+
+import 'package:application_new/domain/place/place_model.dart';
+import 'package:application_new/feature/travel_read/components/place_marker_item.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
+
+import 'package:latlong2/latlong.dart';
+import 'package:collection/collection.dart';
+
+class PlacesMap extends StatefulWidget {
+  final EdgeInsets? padding;
+  final List<PlaceModel> places;
+
+  const PlacesMap({super.key, required this.places, this.padding});
+
+  @override
+  State<PlacesMap> createState() => _PlacesMapState();
+}
+
+class _PlacesMapState extends State<PlacesMap> {
+  final MapController mapController = MapController();
+
+  static const double markerRadius = 26.0;
+
+  PlaceModel? selectedPlace;
+
+  List<Marker> markers = [];
+  double zoom = 16.0;
+
+  Completer<bool> mapReadyCompleter = Completer();
+
+  List<Marker> _buildMarkers(List<PlaceModel> places) {
+    return places.mapIndexed((index, place) {
+      final PlaceCoordinates(:longitude, :latitude) = place.coordinates;
+
+      final isSelected = place.id == selectedPlace?.id;
+
+      return Marker(
+          width: markerRadius,
+          height: markerRadius,
+          point: LatLng(latitude, longitude),
+          child: PlaceMarkerItem(place: place, isSelected: isSelected));
+    }).toList();
+  }
+
+  @override
+  void dispose() {
+    mapController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final padding = widget.padding;
+
+    final topPadding =
+        MediaQuery.of(context).padding.top + (padding?.top ?? 0.0);
+    markers = _buildMarkers(widget.places);
+    mapReadyCompleter.future.then((_) {
+      return mapController.fitCamera(CameraFit.coordinates(
+          maxZoom: 15.0,
+          padding: EdgeInsets.fromLTRB(
+            markerRadius + 24.0 + (padding?.left ?? 0),
+            topPadding,
+            markerRadius + 24.0 + (padding?.right ?? 0),
+            48.0 + (padding?.bottom ?? 0),
+          ),
+          coordinates: markers.map((marker) => marker.point).toList()));
+    });
+
+    return Stack(
+      children: [
+        FlutterMap(
+          mapController: mapController,
+          options: MapOptions(
+              onMapReady: () => mapReadyCompleter.complete(true),
+              maxZoom: 22.0,
+              initialZoom: zoom),
+          children: [
+            TileLayer(
+                urlTemplate: 'http://127.0.0.1:8081/tile/{z}/{x}/{y}.png'),
+            MarkerLayer(markers: markers.reversed.toList()),
+          ],
+        ),
+        Positioned(
+            bottom: widget.padding?.bottom ?? 0.0 + 24.0,
+            right: 16.0,
+            child: Wrap(
+              direction: Axis.vertical,
+              children: [
+                IconButton.filled(
+                    onPressed: () {
+                      final MapCamera(:center, :zoom) = mapController.camera;
+                      mapController.move(center, zoom + 1.0);
+                    },
+                    icon: const Icon(Icons.add)),
+                IconButton.filled(
+                    onPressed: () {
+                      final MapCamera(:center, :zoom) = mapController.camera;
+                      mapController.move(center, zoom - 1.0);
+                    },
+                    icon: const Icon(Icons.remove)),
+              ],
+            ))
+      ],
+    );
+  }
+}

@@ -15,8 +15,11 @@ class TravelPlanAddView extends ConsumerStatefulWidget {
 
   const TravelPlanAddView._({required this.travel, required this.place});
 
-  static Future<void> showSheet(BuildContext context,
-          {required TravelModel travel, required PlaceModel place}) async =>
+  static Future<void> showSheet(
+    BuildContext context, {
+    required TravelModel travel,
+    required PlaceModel place,
+  }) async =>
       showModalBottomSheet<List<TravelVisitEditModel>>(
           isScrollControlled: true,
           backgroundColor: Theme.of(context).colorScheme.surface,

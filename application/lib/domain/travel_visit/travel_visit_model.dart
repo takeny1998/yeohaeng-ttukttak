@@ -1,3 +1,4 @@
+import 'package:application_new/domain/place/place_model.dart';
 import 'package:application_new/shared/model/image_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -23,6 +24,17 @@ class TravelVisitModel with _$TravelVisitModel {
       List.of(json['visits'])
           .map((travel) => TravelVisitModel.fromJson(travel))
           .toList();
+}
+
+@freezed
+class TravelVisitWithPlaceModel with _$TravelVisitWithPlaceModel {
+
+  const factory TravelVisitWithPlaceModel({
+      required TravelVisitModel visit,
+      required PlaceModel place,
+  }) = _TravelVisitWithPlaceModel;
+
+
 }
 
 @freezed
