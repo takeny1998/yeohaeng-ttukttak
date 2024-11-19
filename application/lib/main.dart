@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:application_new/common/event/event.dart';
 import 'package:application_new/common/loading/async_loading_provider.dart';
 import 'package:application_new/common/session/session_provider.dart';
+import 'package:application_new/common/util/translation_util.dart';
 import 'package:application_new/feature/authentication/service/auth_service_provider.dart';
 import 'package:application_new/feature/locale/locale_provider.dart';
 import 'package:application_new/shared/component/filled_chip_theme.dart';
@@ -14,7 +15,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization_loader/easy_localization_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:logger/logger.dart';
+import 'package:uuid/uuid.dart';
+import 'package:uuid/v4.dart';
 
 import 'common/exception/exception.dart';
 import 'common/router/router_provider.dart';
@@ -29,16 +33,34 @@ void main() async {
   final providerContainer = ProviderContainer();
 
   PlatformDispatcher.instance.onError = (error, stack) {
-    logger.e('[PlatformDispatcher.instance.onError] exception = $error');
-    logger.e('[PlatformDispatcher.instance.onError] $stack');
+    final uuid =  const UuidV4().generate().substring(0, 6);
+
+    logger.e('[$uuid][Error]', stackTrace: stack, error: error);
+
+
+    if (error is NetworkException) {
+      logger.e('[$uuid][NetworkException] code = ${error.statusCode} message = ${error.statusMessage}');
+      providerContainer.read(sessionProvider.notifier).omitError(TranslationUtil.message('network_exception'));
+      return true;
+    }
+
+    if (error is ServerException) {
+      switch (error) {
+        case ServerErrorException(:final code, :final message):
+          logger.e('[$uuid][ServerErrorException] code = $code, message = $message');
+          eventController.add(MessageEvent(message));
+        case ServerFailException(:final data):
+          logger.e('[$uuid][ServerFailException] data = $data');
+          final message = data.values.join('\n');
+          eventController.add(MessageEvent(message));
+      }
+      return true;
+    }
+
 
     if (error is BusinessException) {
       switch (error) {
-        case ServerException(:final message):
-          eventController.add(MessageEvent(message));
-        case NetworkException(:final code, :final message):
-          logger.e('[HttpException] code = $code, message = $message');
-        case AuthenticatedException():
+        case AuthorizationException():
           final sessionNotifier =
               providerContainer.read(sessionProvider.notifier);
           sessionNotifier.update(isAuthenticated: false);
