@@ -1,15 +1,15 @@
 package com.yeohaeng_ttukttak.server.common.exception.exception.error;
 
+import org.springframework.http.HttpStatus;
+
 public final class ExternalApiErrorException extends ErrorException {
 
-    private static final String CODE = "EXTERNAL_API_ERROR";
-
-    public ExternalApiErrorException() {
-        super(CODE, null);
+    public ExternalApiErrorException(Throwable cause) {
+        super(HttpStatus.BAD_GATEWAY, "EXTERNAL_API_ERROR", cause);
     }
 
-    public ExternalApiErrorException(Throwable cause) {
-        super(CODE, cause);
+    public ExternalApiErrorException() {
+        this(null);
     }
 
 }
