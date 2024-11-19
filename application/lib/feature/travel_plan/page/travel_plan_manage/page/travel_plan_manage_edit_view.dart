@@ -1,6 +1,5 @@
 import 'package:application_new/common/event/event.dart';
 import 'package:application_new/common/util/translation_util.dart';
-import 'package:application_new/domain/place/place_provider.dart';
 import 'package:application_new/domain/travel_visit/travel_visit_model.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_manage/component/travel_plan_edit_header_item.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_manage/component/travel_plan_edit_list_item.dart';

@@ -7,19 +7,22 @@ import 'package:flutter_map/flutter_map.dart';
 
 import 'package:latlong2/latlong.dart';
 import 'package:collection/collection.dart';
+import 'package:vector_map_tiles/vector_map_tiles.dart';
 
-class PlacesMap extends StatefulWidget {
+class PlacesMapView extends StatefulWidget {
   final EdgeInsets? padding;
   final List<PlaceModel> places;
 
-  const PlacesMap({super.key, required this.places, this.padding});
+  const PlacesMapView({super.key, required this.places, this.padding});
 
   @override
-  State<PlacesMap> createState() => _PlacesMapState();
+  State<PlacesMapView> createState() => _PlacesMapViewState();
 }
 
-class _PlacesMapState extends State<PlacesMap> {
+class _PlacesMapViewState extends State<PlacesMapView> {
   final MapController mapController = MapController();
+
+  Style? style;
 
   static const double markerRadius = 26.0;
 
@@ -28,7 +31,17 @@ class _PlacesMapState extends State<PlacesMap> {
   List<Marker> markers = [];
   double zoom = 16.0;
 
+  Future<Style> _readStyle() => StyleReader(
+        uri: 'http://127.0.0.1:8081/styles/basic-preview/style.json',
+      ).read();
+
   Completer<bool> mapReadyCompleter = Completer();
+
+  @override
+  void initState() {
+    _readStyle().then((style) => setState(() => this.style = style));
+    super.initState();
+  }
 
   List<Marker> _buildMarkers(List<PlaceModel> places) {
     return places.mapIndexed((index, place) {
@@ -59,7 +72,7 @@ class _PlacesMapState extends State<PlacesMap> {
     markers = _buildMarkers(widget.places);
     mapReadyCompleter.future.then((_) {
       return mapController.fitCamera(CameraFit.coordinates(
-          maxZoom: 15.0,
+          maxZoom: 12.0,
           padding: EdgeInsets.fromLTRB(
             markerRadius + 24.0 + (padding?.left ?? 0),
             topPadding,
@@ -78,8 +91,9 @@ class _PlacesMapState extends State<PlacesMap> {
               maxZoom: 22.0,
               initialZoom: zoom),
           children: [
-            TileLayer(
-                urlTemplate: 'http://127.0.0.1:8081/tile/{z}/{x}/{y}.png'),
+            if (style != null)
+              VectorTileLayer(
+                  tileProviders: style!.providers, theme: style!.theme),
             MarkerLayer(markers: markers.reversed.toList()),
           ],
         ),

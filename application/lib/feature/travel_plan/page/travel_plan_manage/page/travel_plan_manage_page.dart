@@ -1,10 +1,5 @@
-import 'package:application_new/common/event/event.dart';
 import 'package:application_new/common/loading/loading_page.dart';
-import 'package:application_new/common/log/logger.dart';
-import 'package:application_new/common/util/translation_util.dart';
-import 'package:application_new/domain/travel_visit/travel_visit_model.dart';
-import 'package:application_new/feature/travel_plan/page/travel_plan_manage/component/places_map.dart';
-import 'package:application_new/feature/travel_plan/page/travel_plan_manage/component/travel_plan_edit_list_item.dart';
+import 'package:application_new/feature/travel_plan/page/travel_plan_manage/page/places_map.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_manage/component/travel_plan_list_item.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_manage/page/travel_plan_manage_edit_view.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_manage/provider/travel_plan_manage_provider.dart';
@@ -42,7 +37,7 @@ class TravelPlanManagePage extends ConsumerWidget {
       SliverPersistentHeader(
           pinned: true,
           delegate: FixedHeaderDelegate(widget:
-      PlacesMap(places: selectedPlaces), extent: 320.0)),
+      PlacesMapView(places: selectedPlaces), extent: 320.0)),
       SliverToBoxAdapter(
           child: TextButton(
               onPressed: () => TravelPlanManageEditView.showSheet(context,
