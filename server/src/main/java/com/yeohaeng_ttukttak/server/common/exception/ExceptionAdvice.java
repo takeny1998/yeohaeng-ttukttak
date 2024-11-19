@@ -5,18 +5,22 @@ import com.yeohaeng_ttukttak.server.common.dto.ServerFailResponse;
 import com.yeohaeng_ttukttak.server.common.exception.exception.BaseException;
 import com.yeohaeng_ttukttak.server.common.exception.exception.error.ErrorException;
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.FailException;
-import com.yeohaeng_ttukttak.server.common.exception.interfaces.TargetException;
+import com.yeohaeng_ttukttak.server.common.exception.interfaces.EntityTargetException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
+import org.springframework.validation.FieldError;
 import org.springframework.web.ErrorResponse;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestControllerAdvice
@@ -29,28 +33,30 @@ public class ExceptionAdvice {
     public ServerErrorResponse handleErrorException(
             ErrorException ex, Locale locale, HttpServletRequest request) {
         logError(ex, request);
-
-        final String targetName = getClassName(ex, locale);
-
-        final Object[] args = targetName != null
-                ? new Object[]{ targetName }
-                : null;
-
-        final String message = messageSource
-                .getMessage(ex.code(), args, locale);
+        final String message = getMessage(ex, locale);
 
         return new ServerErrorResponse(message, ex.getStatus().value());
     }
 
     @ExceptionHandler(FailException.class)
-    public ServerFailResponse handleTargetNotFoundException(
+    public ServerFailResponse handleFailException(
             FailException ex, Locale locale, HttpServletRequest request) {
         logError(ex, request);
+        final String message = getMessage(ex, locale);
 
-        final String message = messageSource
-                .getMessage(ex.getCode(), null, locale);
+        return new ServerFailResponse(Map.of(ex.getField(), message));
+    }
 
-        return new ServerFailResponse(message);
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ServerFailResponse handleValidationException(
+            MethodArgumentNotValidException ex, Locale locale, HttpServletRequest request) {
+        logError(ex, request);
+
+        final Map<String, String> data = ex.getFieldErrors()
+                .stream()
+                .collect(Collectors.toMap(FieldError::getField, fieldError -> messageSource.getMessage(fieldError, locale)));
+
+        return new ServerFailResponse(data);
     }
 
     @ExceptionHandler(Exception.class)
@@ -68,12 +74,23 @@ public class ExceptionAdvice {
         return new ServerErrorResponse(message, code);
     }
 
+    private String getMessage(BaseException ex, Locale locale) {
+        final String targetName = getClassName(ex, locale);
+
+        final Object[] args = targetName != null
+                ? new Object[]{ targetName }
+                : null;
+
+        return messageSource
+                .getMessage(ex.code(), args, locale);
+    }
+
     private String getClassName(BaseException ex, Locale locale) {
 
-        if (ex instanceof TargetException targetException) {
+        if (ex instanceof EntityTargetException entityTargetException) {
             final String targetKey = String.format(
                     "class.%s",
-                    targetException.target().getSimpleName()
+                    entityTargetException.target().getSimpleName()
             );
 
             return messageSource.getMessage(

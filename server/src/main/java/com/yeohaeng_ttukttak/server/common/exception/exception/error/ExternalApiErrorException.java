@@ -4,8 +4,11 @@ import org.springframework.http.HttpStatus;
 
 public final class ExternalApiErrorException extends ErrorException {
 
+    static final HttpStatus status = HttpStatus.BAD_GATEWAY;
+    static final String code = "EXTERNAL_API_ERROR";
+
     public ExternalApiErrorException(Throwable cause) {
-        super(HttpStatus.BAD_GATEWAY, "EXTERNAL_API_ERROR", cause);
+        super(status, code, cause);
     }
 
     public ExternalApiErrorException() {

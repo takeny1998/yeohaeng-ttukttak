@@ -1,19 +1,16 @@
 package com.yeohaeng_ttukttak.server.common.exception.exception.fail;
 
+import com.yeohaeng_ttukttak.server.common.exception.exception.BaseException;
 import lombok.Getter;
 
 @Getter
-public abstract class FailException extends RuntimeException {
+public abstract class FailException extends BaseException {
 
-    private final String code;
+    private final String field;
 
-    public FailException(String code, Throwable cause) {
-        super(cause);
-        this.code = code;
-    }
-
-    public FailException(String code) {
-        this(code, null);
+    protected FailException(String code, String field) {
+        super(code);
+        this.field = field;
     }
 
 }

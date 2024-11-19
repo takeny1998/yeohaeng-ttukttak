@@ -4,6 +4,7 @@ import com.yeohaeng_ttukttak.server.application.travel.service.dto.UpdateTravelV
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundException;
 import com.yeohaeng_ttukttak.server.domain.travel.dto.TravelVisitDto;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.MemberTravel;
+import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelVisit;
 import com.yeohaeng_ttukttak.server.domain.travel.repository.MemberTravelRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,10 +25,10 @@ public class UpdateAllTravelVisitService {
     public List<TravelVisitDto> call(Long travelId, List<UpdateTravelVisitCommand> commands) {
         // 여행 데이터를 가져오기
         MemberTravel travel = travelRepository.findById(travelId)
-                .orElseThrow(() -> new EntityNotFoundException(TravelVisit.class));
+                .orElseThrow(() -> new EntityNotFoundException(Travel.class));
 
         // 명령어 맵핑 (ID -> Command)
-        Map<Long, UpdateTravelVisitCommand> commandMap = mapCommandsById(commands);
+        final Map<Long, UpdateTravelVisitCommand> commandMap = mapCommandsById(commands);
 
         deleteVisitsNotInCommands(travel, commandMap);
         updateTravelVisits(travel, commandMap);

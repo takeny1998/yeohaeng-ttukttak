@@ -4,8 +4,11 @@ import org.springframework.http.HttpStatus;
 
 public final class AuthorizationErrorException extends ErrorException {
 
+    static final HttpStatus status = HttpStatus.UNAUTHORIZED;
+    static final String code = "AUTHORIZATION_ERROR";
+
     public AuthorizationErrorException(Throwable cause) {
-        super(HttpStatus.UNAUTHORIZED, "AUTHORIZATION_ERROR", cause);
+        super(status, code, cause);
     }
 
     public AuthorizationErrorException() {
