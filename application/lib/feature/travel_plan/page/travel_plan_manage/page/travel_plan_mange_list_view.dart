@@ -96,39 +96,29 @@ class _TravelPlanMangeListViewState
                         itemCount: visitPlaces.length,
                         itemBuilder: (context, index) {
                           final visitPlace = visitPlaces[index];
-                          final listItem =
-                              DragTarget<TravelVisitWithPlaceModel>(
-                                  onAcceptWithDetails: (detail) => ref
-                                      .read(travelPlanManageProvider(travel.id)
-                                          .notifier)
-                                      .move(detail.data,
-                                          visitPlace.visit.orderOfVisit),
-                                  builder:
-                                      (context, candidateData, rejectedData) {
-                                    return Column(
-                                      children: [
-                                        if (candidateData.isNotEmpty)
-                                          Opacity(
-                                              opacity: 0.5,
-                                              child: TravelPlanListItem(
-                                                  order: index,
-                                                  visitPlace:
-                                                      candidateData.first!)),
-                                        TravelPlanListItem(
-                                            order: index,
-                                            visitPlace: visitPlace),
-                                      ],
-                                    );
-                                  });
 
-                          return LongPressDraggable<TravelVisitWithPlaceModel>(
-                            data: visitPlace,
-                            feedback:
-                                TravelPlanListDragItem(visitPlace: visitPlace),
-                            dragAnchorStrategy: childDragAnchorStrategy,
-                            childWhenDragging: const SizedBox(),
-                            child: listItem,
-                          );
+                          return DragTarget<TravelVisitWithPlaceModel>(
+                              onAcceptWithDetails: (detail) => ref
+                                  .read(travelPlanManageProvider(travel.id)
+                                      .notifier)
+                                  .move(detail.data,
+                                      visitPlace.visit.orderOfVisit),
+                              builder:
+                                  (context, candidateData, rejectedData) {
+                                return Column(
+                                  children: [
+                                    if (candidateData.isNotEmpty)
+                                      Opacity(
+                                          opacity: 0.5,
+                                          child: TravelPlanListItem(
+                                              order: index,
+                                              visitPlace:
+                                                  candidateData.first!)),
+                                    TravelPlanListItem(
+                                        order: index, visitPlace: visitPlace),
+                                  ],
+                                );
+                              });
                         }),
                     SliverFillRemaining(
                       hasScrollBody: false,
