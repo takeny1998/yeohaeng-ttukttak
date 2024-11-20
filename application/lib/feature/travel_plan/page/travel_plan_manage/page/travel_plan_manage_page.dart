@@ -50,37 +50,14 @@ class TravelPlanManagePage extends ConsumerWidget {
           )
         ],
       ),
-      body: CustomScrollView(slivers: [
-        SliverPersistentHeader(
-            pinned: true,
-            delegate: FixedHeaderDelegate(
-                widget: Container(
-                  width: double.maxFinite,
-                  decoration: BoxDecoration(
-                    color: colorScheme.surface,
-                    border: Border(
-                        bottom: BorderSide(
-                            color: colorScheme.surfaceContainerHigh)),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 16.0),
-                      TravelPlanDateView(
-                        onChangeDate: (date) => ref
-                            .read(travelPlanManageProvider(travelId).notifier)
-                            .selectDate(date),
-                        travel: travel,
-                        selectedDate: selectedDate,
-                      ),
-                      const SizedBox(height: 8.0),
-                    ],
-                  ),
-                ),
-                extent: 85.0)),
-        SliverFillRemaining(
-          child: TravelPlanMangeListView(visitPlaces: selectedVisitPlaces))
-      ]),
+      body: TravelPlanMangeListView(
+        travel: travel,
+        visitPlaces: selectedVisitPlaces,
+        onChangeDate: (date) => ref
+            .read(travelPlanManageProvider(travelId).notifier)
+            .selectDate(date),
+        selectedDate: selectedDate,
+      ),
     );
   }
 }

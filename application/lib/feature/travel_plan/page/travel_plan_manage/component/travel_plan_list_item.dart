@@ -2,7 +2,6 @@ import 'package:application_new/common/util/translation_util.dart';
 import 'package:application_new/domain/travel_visit/travel_visit_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:visibility_detector/visibility_detector.dart';
 
 class TravelPlanListItem extends ConsumerWidget {
   final int order;
