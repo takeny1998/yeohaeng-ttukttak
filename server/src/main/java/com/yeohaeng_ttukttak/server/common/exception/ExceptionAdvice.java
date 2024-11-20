@@ -103,24 +103,45 @@ public class ExceptionAdvice {
 
     private void logError(Exception ex, HttpServletRequest request) {
 
-        final String uuid = UUID.randomUUID().toString();
+        final String uuid = UUID.randomUUID().toString().substring(0, 7);
 
-        log.error("[{}] >> {} {}",
-                uuid, request.getMethod(), request.getRequestURI());
+        log.error("[{}] -->> {} {}", uuid, request.getMethod(), request.getRequestURI());
 
-        log.error("[{}] << {}", uuid, ex.getClass().getName());
-
-        if (Objects.nonNull(ex.getStackTrace())) {
-            log.error("[{}] <<-- At: {}", uuid, ex.getStackTrace()[0]);
-        }
+        log.error("[{}] <<-- {}", uuid, ex.getClass().getName());
+        logStackTrace(ex, uuid, 0);
 
         if (Objects.nonNull(ex.getCause())) {
             Throwable cause = ex.getCause();
 
-            log.error("[{}] <<-- Caused By: {}", uuid, cause.getClass().getName());
-            log.error("[{}] <<---- Message: {}", uuid, cause.getMessage());
+            log.error("[{}]   <<-- Caused By: {}", uuid, cause.getClass().getName());
+            log.error("[{}]   <<-- Message: {}", uuid, cause.getMessage());
+
+            logStackTrace(cause, uuid, 2);
+
         }
 
+    }
+
+    private void logStackTrace(Throwable cause, String uuid, int depth) {
+        final StackTraceElement[] stackTrace = cause.getStackTrace();
+
+        if (stackTrace == null) return;
+
+        String padding = " ".repeat(depth);
+
+        log.error("[{}] {}<<-- At: {}", uuid, padding, stackTrace[0]);
+
+        for (int i = 1; i < stackTrace.length; i ++) {
+            String line = stackTrace[i].toString();
+
+            if (line.startsWith("org.apache")
+                    || line.startsWith("org.springframework")
+                    || line.startsWith("jakarta")
+                    || line.startsWith("java")) {
+                continue;
+            }
+            log.error("[{}] {}<<------ {}", uuid, padding, line);
+        }
     }
 
 }
