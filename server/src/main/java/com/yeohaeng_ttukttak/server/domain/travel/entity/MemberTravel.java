@@ -1,6 +1,6 @@
 package com.yeohaeng_ttukttak.server.domain.travel.entity;
 
-import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundException;
+import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundFailException;
 import com.yeohaeng_ttukttak.server.domain.member.entity.AgeGroup;
 import com.yeohaeng_ttukttak.server.domain.member.entity.Gender;
 import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
@@ -90,7 +90,7 @@ public final class MemberTravel extends Travel {
         final TravelVisit insertVisit = visits().stream()
                 .filter((visit -> Objects.equals(visit.id(), visitId)))
                 .findFirst()
-                .orElseThrow(() -> new EntityNotFoundException(TravelVisit.class));
+                .orElseThrow(() -> new EntityNotFoundFailException(TravelVisit.class));
 
         visits().remove(insertVisit);
 

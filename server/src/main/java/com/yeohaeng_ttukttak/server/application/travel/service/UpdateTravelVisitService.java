@@ -3,7 +3,7 @@ package com.yeohaeng_ttukttak.server.application.travel.service;
 import com.yeohaeng_ttukttak.server.application.travel.service.dto.UpdateTravelVisitCommand;
 import com.yeohaeng_ttukttak.server.common.exception.exception.error.ForbiddenErrorException;
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.ArgumentNotInRangeFailException;
-import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundException;
+import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundFailException;
 import com.yeohaeng_ttukttak.server.common.util.LocalDateUtil;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.MemberTravel;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
@@ -27,7 +27,7 @@ public class UpdateTravelVisitService {
     public void call(UpdateTravelVisitCommand command) {
 
         MemberTravel travel = travelRepository.findById(command.travelId())
-                .orElseThrow(() -> new EntityNotFoundException(Travel.class));
+                .orElseThrow(() -> new EntityNotFoundFailException(Travel.class));
 
         if (!Objects.equals(travel.member().id(), command.memberId())) {
             throw new ForbiddenErrorException(TravelVisit.class);
