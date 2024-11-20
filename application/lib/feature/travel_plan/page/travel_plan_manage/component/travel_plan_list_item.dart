@@ -18,11 +18,13 @@ class TravelPlanListItem extends ConsumerStatefulWidget {
 }
 
 class _TravelPlanListITemState extends ConsumerState<TravelPlanListItem> {
-  bool isDragging = false;
+
+  int? draggingId;
 
   @override
   Widget build(BuildContext context) {
-    if (isDragging) {
+
+    if (draggingId == widget.visitPlace.visit.id) {
       return const SizedBox();
     }
 
@@ -86,21 +88,22 @@ class _TravelPlanListITemState extends ConsumerState<TravelPlanListItem> {
                     ),
                     const SizedBox(width: 24.0),
                     Draggable<TravelVisitWithPlaceModel>(
+                      key: ValueKey<int>(visitPlace.visit.id),
                       data: visitPlace,
                       onDragStarted: () {
                         if (!mounted) return;
-                        setState(() => isDragging = true);
+                        setState(() => draggingId = visitPlace.visit.id);
                       },
                       onDragEnd: (_) {
                         if (!mounted) return;
-                        setState(() => isDragging = false);
+                        setState(() => draggingId = null);
                       },
                       onDragCompleted: () {
                         if (!mounted) return;
-                        setState(() => isDragging = false);
+                        setState(() => draggingId = null);
                       },
                       onDraggableCanceled: (_, __) =>
-                          setState(() => isDragging = false),
+                          setState(() => draggingId = null),
                       feedback: TravelPlanListDragItem(visitPlace: visitPlace),
                       child:  const Icon(Icons.drag_handle)
                     ),
