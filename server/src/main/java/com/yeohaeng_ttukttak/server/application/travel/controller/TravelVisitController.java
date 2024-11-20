@@ -4,6 +4,7 @@ import com.yeohaeng_ttukttak.server.application.travel.controller.dto.*;
 import com.yeohaeng_ttukttak.server.application.travel.service.CreateTravelVisitService;
 import com.yeohaeng_ttukttak.server.application.travel.service.FindTravelVisitsService;
 import com.yeohaeng_ttukttak.server.application.travel.service.UpdateAllTravelVisitService;
+import com.yeohaeng_ttukttak.server.application.travel.service.UpdateTravelVisitService;
 import com.yeohaeng_ttukttak.server.common.aop.annotation.Authorization;
 import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
 import com.yeohaeng_ttukttak.server.domain.auth.dto.AccessTokenDto;
@@ -22,6 +23,7 @@ public class TravelVisitController {
     private final CreateTravelVisitService createService;
     private final FindTravelVisitsService findService;
     private final UpdateAllTravelVisitService updateAllService;
+    private final UpdateTravelVisitService updateService;
 
     @PostMapping("/{travelId}/visits")
     @Authorization
@@ -53,6 +55,19 @@ public class TravelVisitController {
         List<TravelVisitDto> dtoList = updateAllService.call(travelId, request.visits());
 
         return new ServerResponse<>(new UpdateAllTravelVisitResponse(dtoList));
+    }
+
+    @PatchMapping("/{travelId}/visits/{visitId}")
+    @Authorization
+    public ServerResponse<Void> update(
+            @PathVariable Long travelId,
+            @PathVariable Long visitId,
+            @Valid @RequestBody UpdateTravelVisitRequest request,
+            AccessTokenDto accessToken) {
+
+        updateService.call(travelId, accessToken.memberId(), request.toCommand(visitId));
+
+        return new ServerResponse<>();
     }
 
 }

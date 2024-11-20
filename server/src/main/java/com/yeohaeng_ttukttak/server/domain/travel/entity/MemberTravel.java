@@ -1,5 +1,6 @@
 package com.yeohaeng_ttukttak.server.domain.travel.entity;
 
+import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundException;
 import com.yeohaeng_ttukttak.server.domain.member.entity.AgeGroup;
 import com.yeohaeng_ttukttak.server.domain.member.entity.Gender;
 import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
@@ -82,6 +83,29 @@ public final class MemberTravel extends Travel {
         log.debug("{}", orderOfVisit);
 
         visits().add(new TravelVisit(dayOfTravel, orderOfVisit + 1, place, this));
+    }
+
+    public void moveVisit(Long visitId, Integer dayOfTravel, Integer orderOfVisit) {
+
+        final TravelVisit insertVisit = visits().stream()
+                .filter((visit -> Objects.equals(visit.id(), visitId)))
+                .findFirst()
+                .orElseThrow(() -> new EntityNotFoundException(TravelVisit.class));
+
+        visits().remove(insertVisit);
+
+        for (TravelVisit visit : visits()) {
+            if (!Objects.equals(visit.dayOfTravel(), dayOfTravel)) continue;
+            if (visit.orderOfVisit() >= orderOfVisit) {
+                visit.setOrderOfVisit(visit.orderOfVisit() + 1);
+            }
+        }
+
+        insertVisit.setOrderOfVisit(orderOfVisit)
+                        .setDayOfTravel(dayOfTravel);
+
+        visits().add(insertVisit);
+
     }
 
     public void removeVisit(Long visitId) {

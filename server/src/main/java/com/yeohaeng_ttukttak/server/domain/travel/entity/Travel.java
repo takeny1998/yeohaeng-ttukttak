@@ -38,7 +38,7 @@ public abstract class Travel {
     @OneToMany(mappedBy = "travel", cascade = CascadeType.PERSIST)
     private List<TravelCompanion> companions = new ArrayList<>();
 
-    @OneToMany(mappedBy = "travel", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "travel", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<TravelMotivation> motivations = new ArrayList<>();
 
     @OrderBy("dayOfTravel ASC nulls last, orderOfVisit ASC nulls last")
