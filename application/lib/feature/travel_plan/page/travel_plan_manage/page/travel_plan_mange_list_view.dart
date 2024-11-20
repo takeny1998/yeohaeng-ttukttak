@@ -4,6 +4,7 @@ import 'package:application_new/feature/travel_plan/page/travel_plan_manage/comp
 import 'package:application_new/feature/travel_plan/page/travel_plan_manage/component/travel_plan_list_drag_item.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_manage/component/travel_plan_list_item.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_manage/page/travel_plan_date_view.dart';
+import 'package:application_new/feature/travel_plan/page/travel_plan_manage/provider/travel_plan_manage_provider.dart';
 import 'package:application_new/shared/component/fixed_header_delegate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -46,6 +47,11 @@ class _TravelPlanMangeListViewState
         .duration
         .inDays;
 
+    ref.listen(travelPlanManageProvider(widget.travel.id), (prev, next) {
+      if (prev?.selectedDate == next?.selectedDate) return;
+      scrollController.jumpTo(0.0);
+    });
+
     return Column(
       children: [
         Container(
@@ -85,20 +91,24 @@ class _TravelPlanMangeListViewState
                   itemBuilder: (context, index) {
                     final visitPlace = widget.visitPlaces[index];
                     final listItem = DragTarget<TravelVisitWithPlaceModel>(
+                        onAcceptWithDetails: (detail) => ref
+                            .read(travelPlanManageProvider(widget.travel.id)
+                                .notifier)
+                            .move(detail.data, visitPlace),
                         builder: (context, candidateData, rejectedData) {
-                      return Column(
-                        children: [
-                          if (candidateData.isNotEmpty)
-                            Opacity(
-                                opacity: 0.5,
-                                child: TravelPlanListItem(
-                                    order: index,
-                                    visitPlace: candidateData.first!)),
-                          TravelPlanListItem(
-                              order: index, visitPlace: visitPlace),
-                        ],
-                      );
-                    });
+                          return Column(
+                            children: [
+                              if (candidateData.isNotEmpty)
+                                Opacity(
+                                    opacity: 0.5,
+                                    child: TravelPlanListItem(
+                                        order: index,
+                                        visitPlace: candidateData.first!)),
+                              TravelPlanListItem(
+                                  order: index, visitPlace: visitPlace),
+                            ],
+                          );
+                        });
 
                     return LongPressDraggable<TravelVisitWithPlaceModel>(
                       data: visitPlace,

@@ -12,8 +12,8 @@ class TravelVisitModel with _$TravelVisitModel {
     required int placeId,
     required TravelVisitRatingModel rating,
     required List<ImageModel> images,
-    DateTime? visitedOn,
-    int? orderOfVisit,
+    required DateTime visitedOn,
+    required  int orderOfVisit,
     TravelVisitReasonType? reasonType,
   }) = _TravelVisitModel;
 
