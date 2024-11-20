@@ -150,10 +150,29 @@ class _TravelPlanMangeListViewState
                                     const BoxConstraints(minHeight: 128.0),
                                 child: Row(
                                   children: [
-                                    const SizedBox(width: 39.5),
-                                    Container(
-                                      width: 1.0,
-                                      color: colorScheme.primaryContainer,
+                                    const SizedBox(width: 24.0),
+                                    SizedBox(
+                                      width: 32.0,
+                                      child: Column(
+                                        children: [
+                                          if (visitPlaces.isEmpty)
+                                            CircleAvatar(
+                                              radius: 16.0,
+                                              child: Icon(
+                                                  Icons
+                                                      .add_location_alt_outlined,
+                                                  color: colorScheme.primary,
+                                                  size: 18.0),
+                                            ),
+                                          Expanded(
+                                            child: Container(
+                                              width: 1.0,
+                                              color:
+                                                  colorScheme.primaryContainer,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                     Expanded(
                                       child: Container(),
