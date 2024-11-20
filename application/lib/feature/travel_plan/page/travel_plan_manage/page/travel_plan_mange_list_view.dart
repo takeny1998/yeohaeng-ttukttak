@@ -103,8 +103,7 @@ class _TravelPlanMangeListViewState
                                       .notifier)
                                   .move(detail.data,
                                       visitPlace.visit.orderOfVisit),
-                              builder:
-                                  (context, candidateData, rejectedData) {
+                              builder: (context, candidateData, rejectedData) {
                                 return Column(
                                   children: [
                                     if (candidateData.isNotEmpty)
@@ -115,7 +114,13 @@ class _TravelPlanMangeListViewState
                                               visitPlace:
                                                   candidateData.first!)),
                                     TravelPlanListItem(
-                                        order: index, visitPlace: visitPlace),
+                                        onDelete: () => ref
+                                            .read(travelPlanManageProvider(
+                                                    travel.id)
+                                                .notifier)
+                                            .delete(visitPlace),
+                                        order: index,
+                                        visitPlace: visitPlace),
                                   ],
                                 );
                               });

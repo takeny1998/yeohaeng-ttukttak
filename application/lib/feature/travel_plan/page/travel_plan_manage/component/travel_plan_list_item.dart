@@ -8,9 +8,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class TravelPlanListItem extends ConsumerStatefulWidget {
   final int order;
   final TravelVisitWithPlaceModel visitPlace;
+  final VoidCallback? onDelete;
 
   const TravelPlanListItem(
-      {super.key, required this.order, required this.visitPlace});
+      {super.key, required this.order, required this.visitPlace, this.onDelete});
 
   @override
   ConsumerState createState() => _TravelPlanListITemState();
@@ -117,7 +118,7 @@ class _TravelPlanListITemState extends ConsumerState<TravelPlanListItem> {
                         onPressed: () {},
                         icon: const Icon(Icons.rate_review_outlined)),
                     OutlinedIconButton(
-                        onPressed: () {},
+                        onPressed: widget.onDelete,
                         foregroundColor: colorScheme.error,
                         icon: const Icon(Icons.delete_outline)),
                   ],

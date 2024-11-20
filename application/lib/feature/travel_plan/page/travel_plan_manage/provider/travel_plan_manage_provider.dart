@@ -67,6 +67,24 @@ class TravelPlanManage extends _$TravelPlanManage {
     state = state!.copyWith(visitPlaces: newVisitPlaces);
   }
 
+  Future<void> delete(TravelVisitWithPlaceModel visitPlace) async {
+
+    if (state == null) return;
+
+    await ref.read(asyncLoadingProvider.notifier).guard(() async {
+      final auth = await ref.read(authServiceProvider).find();
+
+      await ref.read(httpServiceProvider).request(
+            'DELETE',
+            '/api/v2/travels/$travelId/visits/${visitPlace.visit.id}',
+            authorization: auth.accessToken,
+          );
+    });
+
+    final newVisitPlaces = List.of(state!.visitPlaces)..remove(visitPlace);
+    state = state!.copyWith(visitPlaces: newVisitPlaces);
+  }
+
   Future<List<TravelVisitWithPlaceModel>> _fetchPlaces(
       List<TravelVisitModel> newVisits) async {
     return await Future.wait(newVisits.map((visit) async =>
