@@ -3,7 +3,6 @@ package com.yeohaeng_ttukttak.server.application.travel.controller;
 import com.yeohaeng_ttukttak.server.application.travel.controller.dto.*;
 import com.yeohaeng_ttukttak.server.application.travel.service.CreateTravelVisitService;
 import com.yeohaeng_ttukttak.server.application.travel.service.FindTravelVisitsService;
-import com.yeohaeng_ttukttak.server.application.travel.service.UpdateAllTravelVisitService;
 import com.yeohaeng_ttukttak.server.application.travel.service.UpdateTravelVisitService;
 import com.yeohaeng_ttukttak.server.common.aop.annotation.Authorization;
 import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
@@ -22,7 +21,6 @@ public class TravelVisitController {
 
     private final CreateTravelVisitService createService;
     private final FindTravelVisitsService findService;
-    private final UpdateAllTravelVisitService updateAllService;
     private final UpdateTravelVisitService updateService;
 
     @PostMapping("/{travelId}/visits")
@@ -46,28 +44,19 @@ public class TravelVisitController {
         return new ServerResponse<>(new FindTravelVisitsResponse(dtoList));
     }
 
-    @PutMapping("/{travelId}/visits")
-    @Authorization
-    public ServerResponse<UpdateAllTravelVisitResponse> updateAll(
-            @PathVariable Long travelId,
-            @Valid @RequestBody UpdateAllTravelVisitRequest request) {
-
-        List<TravelVisitDto> dtoList = updateAllService.call(travelId, request.visits());
-
-        return new ServerResponse<>(new UpdateAllTravelVisitResponse(dtoList));
-    }
-
     @PatchMapping("/{travelId}/visits/{visitId}")
     @Authorization
-    public ServerResponse<Void> update(
+    public ServerResponse<UpdateTravelVisitResponse> update(
             @PathVariable Long travelId,
             @PathVariable Long visitId,
             @Valid @RequestBody UpdateTravelVisitRequest request,
             AccessTokenDto accessToken) {
 
-        updateService.call(travelId, accessToken.memberId(), request.toCommand(visitId));
+        updateService.call(request.toCommand(visitId, travelId, accessToken.memberId()));
 
-        return new ServerResponse<>();
+        List<TravelVisitDto> dtoList = findService.call(travelId);
+
+        return new ServerResponse<>(new UpdateTravelVisitResponse(dtoList));
     }
 
 }

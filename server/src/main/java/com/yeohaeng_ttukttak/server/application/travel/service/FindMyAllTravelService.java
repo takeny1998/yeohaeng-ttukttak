@@ -5,6 +5,7 @@ import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
 import com.yeohaeng_ttukttak.server.domain.travel.repository.MemberTravelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -15,6 +16,7 @@ public class FindMyAllTravelService {
 
     private final MemberTravelRepository travelRepository;
 
+    @Transactional(readOnly = true)
     public List<TravelDto> call(String memberId) {
 
         List<Travel> travels = travelRepository

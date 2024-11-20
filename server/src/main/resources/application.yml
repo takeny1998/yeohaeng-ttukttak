@@ -19,6 +19,7 @@ spring:
         format_sql: true
         use_sql_comments: true
         default_batch_fetch_size: 500
+    open-in-view: false
 
 logging:
   level:

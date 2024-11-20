@@ -13,13 +13,13 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class FindTravelVisitsService {
 
     private final TravelRepository travelRepository;
 
-    public List<TravelVisitDto> call(Long id) {
-        final Travel travel = travelRepository.findById(id)
+    @Transactional(readOnly = true)
+    public List<TravelVisitDto> call(Long travelId) {
+        final Travel travel = travelRepository.findById(travelId)
                 .orElseThrow(() -> new EntityNotFoundException(Travel.class));
 
         return travel.visits().stream()

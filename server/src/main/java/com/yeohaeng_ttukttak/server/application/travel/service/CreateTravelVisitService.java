@@ -4,6 +4,7 @@ import com.yeohaeng_ttukttak.server.common.exception.exception.error.Authorizati
 import com.yeohaeng_ttukttak.server.common.exception.exception.error.ForbiddenErrorException;
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.ArgumentNotInRangeFailException;
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundException;
+import com.yeohaeng_ttukttak.server.common.util.LocalDateUtil;
 import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
 import com.yeohaeng_ttukttak.server.domain.member.repository.MemberRepository;
 import com.yeohaeng_ttukttak.server.domain.place.entity.Place;
@@ -35,9 +36,7 @@ public class CreateTravelVisitService {
                 .findById(travelId)
                 .orElseThrow(() -> new EntityNotFoundException(Travel.class));
 
-        final long totalDays = Duration
-                .between(travel.startedOn().atStartOfDay(), travel.endedOn().atStartOfDay())
-                .toDays();
+        final long totalDays = LocalDateUtil.getBetweenDays(travel.startedOn(), travel.endedOn());
 
         if (dayOfTravel < 0 || dayOfTravel >= totalDays) {
             throw new ArgumentNotInRangeFailException("dayOfTravel", 0, totalDays);

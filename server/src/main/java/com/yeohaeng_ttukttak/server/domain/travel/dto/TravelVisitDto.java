@@ -30,8 +30,6 @@ public record TravelVisitDto(
 
         LocalDate visitedOn = null;
 
-        log.debug("dayOfTravel = {}", visit.dayOfTravel());
-
         if (visit.dayOfTravel() != null ) {
             visitedOn = visit.travel()
                     .startedOn()
