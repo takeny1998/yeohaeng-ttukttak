@@ -36,11 +36,7 @@ class TravelInfoItem extends StatelessWidget {
                   spacing: -21.0,
                   children: [
                     for (final companion in travel.companions)
-                      CircleAvatar(
-                          radius: 24.0,
-                          backgroundColor: colorScheme.surfaceContainer,
-                          child:
-                              TravelerAvatarItem.companion(companion, radius: 24.0))
+                      TravelerAvatarItem.companion(companion, radius: 24.0)
                   ]),
             )
           ],
