@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:application_new/domain/travel/travel_model.dart';
 import 'package:application_new/domain/travel_visit/travel_visit_model.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_manage/component/travel_date_item.dart';
@@ -30,8 +32,6 @@ class _TravelPlanMangeListViewState
     extends ConsumerState<TravelPlanMangeListView> {
   final scrollController = ScrollController();
 
-  bool isDragging = false;
-
   @override
   void dispose() {
     scrollController.dispose();
@@ -42,12 +42,15 @@ class _TravelPlanMangeListViewState
   Widget build(BuildContext context) {
     final ThemeData(:textTheme, :colorScheme) = Theme.of(context);
 
-    final daysOfTravel = DateTimeRange(
-            start: widget.travel.startedOn, end: widget.travel.endedOn)
-        .duration
-        .inDays;
+    var travel = widget.travel;
+    var visitPlaces = widget.visitPlaces;
 
-    ref.listen(travelPlanManageProvider(widget.travel.id), (prev, next) {
+    final daysOfTravel = DateTimeRange(
+      start: travel.startedOn,
+      end: travel.endedOn,
+    ).duration.inDays;
+
+    ref.listen(travelPlanManageProvider(travel.id), (prev, next) {
       if (prev?.selectedDate == next?.selectedDate) return;
       scrollController.jumpTo(0.0);
     });
@@ -66,12 +69,12 @@ class _TravelPlanMangeListViewState
               const SizedBox(width: 16.0),
               for (int i = 0; i < daysOfTravel; i++) ...[
                 DragTarget(
-                    onMove: (detail) => widget.onChangeDate(
-                        widget.travel.startedOn.add(Duration(days: i))),
+                    onMove: (detail) => widget
+                        .onChangeDate(travel.startedOn.add(Duration(days: i))),
                     builder: (context, candidateData, rejectedData) =>
                         TravelDateItem(
                             dayOfTravel: i,
-                            travel: widget.travel,
+                            travel: travel,
                             selectedDate: widget.selectedDate,
                             onChangeDate: widget.onChangeDate)),
                 const SizedBox(width: 8.0),
@@ -84,43 +87,91 @@ class _TravelPlanMangeListViewState
           child: Stack(
             children: [
               Positioned.fill(
-                child: ListView.builder(
-                  physics: const ClampingScrollPhysics(),
-                  padding: const EdgeInsets.only(top: 24.0),
-                  controller: scrollController,
-                  itemBuilder: (context, index) {
-                    final visitPlace = widget.visitPlaces[index];
-                    final listItem = DragTarget<TravelVisitWithPlaceModel>(
-                        onAcceptWithDetails: (detail) => ref
-                            .read(travelPlanManageProvider(widget.travel.id)
-                                .notifier)
-                            .move(detail.data, visitPlace),
-                        builder: (context, candidateData, rejectedData) {
-                          return Column(
-                            children: [
-                              if (candidateData.isNotEmpty)
-                                Opacity(
-                                    opacity: 0.5,
-                                    child: TravelPlanListItem(
-                                        order: index,
-                                        visitPlace: candidateData.first!)),
-                              TravelPlanListItem(
-                                  order: index, visitPlace: visitPlace),
-                            ],
-                          );
-                        });
+                  child: CustomScrollView(
+                      physics: const ClampingScrollPhysics(),
+                      controller: scrollController,
+                      slivers: [
+                    const SliverToBoxAdapter(child: SizedBox(height: 48.0)),
+                    SliverList.builder(
+                        itemCount: visitPlaces.length,
+                        itemBuilder: (context, index) {
+                          final visitPlace = visitPlaces[index];
+                          final listItem =
+                              DragTarget<TravelVisitWithPlaceModel>(
+                                  onAcceptWithDetails: (detail) => ref
+                                      .read(travelPlanManageProvider(travel.id)
+                                          .notifier)
+                                      .move(detail.data,
+                                          visitPlace.visit.orderOfVisit),
+                                  builder:
+                                      (context, candidateData, rejectedData) {
+                                    return Column(
+                                      children: [
+                                        if (candidateData.isNotEmpty)
+                                          Opacity(
+                                              opacity: 0.5,
+                                              child: TravelPlanListItem(
+                                                  order: index,
+                                                  visitPlace:
+                                                      candidateData.first!)),
+                                        TravelPlanListItem(
+                                            order: index,
+                                            visitPlace: visitPlace),
+                                      ],
+                                    );
+                                  });
 
-                    return LongPressDraggable<TravelVisitWithPlaceModel>(
-                      data: visitPlace,
-                      feedback: TravelPlanListDragItem(visitPlace: visitPlace),
-                      dragAnchorStrategy: childDragAnchorStrategy,
-                      childWhenDragging: const SizedBox(),
-                      child: listItem,
-                    );
-                  },
-                  itemCount: widget.visitPlaces.length,
-                ),
-              ),
+                          return LongPressDraggable<TravelVisitWithPlaceModel>(
+                            data: visitPlace,
+                            feedback:
+                                TravelPlanListDragItem(visitPlace: visitPlace),
+                            dragAnchorStrategy: childDragAnchorStrategy,
+                            childWhenDragging: const SizedBox(),
+                            child: listItem,
+                          );
+                        }),
+                    SliverFillRemaining(
+                      hasScrollBody: false,
+                      child: DragTarget<TravelVisitWithPlaceModel>(
+                          onAcceptWithDetails: (detail) {
+                        var lastVisit = visitPlaces.lastOrNull?.visit;
+                        ref
+                            .read(travelPlanManageProvider(travel.id).notifier)
+                            .move(detail.data,
+                                (lastVisit?.orderOfVisit ?? -1) + 1);
+                      }, builder: (context, candidateData, rejectedData) {
+                        return Column(
+                          children: [
+                            if (candidateData.isNotEmpty)
+                              Opacity(
+                                  opacity: 0.5,
+                                  child: TravelPlanListItem(
+                                      order: 0,
+                                      visitPlace: candidateData.first!)),
+                            Expanded(
+                              child: Container(
+                                width: double.maxFinite,
+                                constraints:
+                                    const BoxConstraints(minHeight: 128.0),
+                                child: Row(
+                                  children: [
+                                    const SizedBox(width: 39.5),
+                                    Container(
+                                      width: 1.0,
+                                      color: colorScheme.primaryContainer,
+                                    ),
+                                    Expanded(
+                                      child: Container(),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )
+                          ],
+                        );
+                      }),
+                    )
+                  ])),
               Align(
                 alignment: Alignment.topCenter,
                 child: DragTarget<TravelVisitWithPlaceModel>(

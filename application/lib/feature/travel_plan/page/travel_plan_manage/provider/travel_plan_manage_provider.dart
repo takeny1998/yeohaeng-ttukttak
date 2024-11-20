@@ -41,22 +41,24 @@ class TravelPlanManage extends _$TravelPlanManage {
     state = state?.copyWith(selectedDate: date);
   }
 
-  Future<void> move(
-      TravelVisitWithPlaceModel from, TravelVisitWithPlaceModel to) async {
+  Future<void> move(TravelVisitWithPlaceModel from, int order) async {
     if (state == null) return;
 
     final newVisits =
         await ref.read(asyncLoadingProvider.notifier).guard(() async {
       final auth = await ref.read(authServiceProvider).find();
 
-      final data = {
-        'visitedOn': to.visit.visitedOn.toIso8601String(),
-        'orderOfVisit': to.visit.orderOfVisit,
-      };
+      final selectedDate = state!.selectedDate;
 
       final response = await ref.read(httpServiceProvider).request(
-          'PATCH', '/api/v2/travels/$travelId/visits/${from.visit.id}',
-          authorization: auth.accessToken, data: data);
+        'PATCH',
+        '/api/v2/travels/$travelId/visits/${from.visit.id}',
+        authorization: auth.accessToken,
+        data: {
+          'visitedOn': selectedDate.toIso8601String(),
+          'orderOfVisit': order,
+        },
+      );
 
       return TravelVisitModel.listFromJson(response);
     });
