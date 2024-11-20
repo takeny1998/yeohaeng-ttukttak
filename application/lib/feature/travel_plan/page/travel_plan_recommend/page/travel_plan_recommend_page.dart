@@ -58,47 +58,54 @@ class _TravelPlanRecommendPageState
 
     final cities = travel.cities;
 
-    return SliverMainAxisGroup(slivers: [
-      SliverToBoxAdapter(
-        child: SingleChildScrollView(
-            child: Row(children: [
-          for (int i = 0; i < travel.cities.length; i++)
-            TravelCityItem(
-                city: cities[i],
-                isSelected: cities[i].id == widget.cityId,
-                onSelected: () => ref
-                    .read(travelPlanProvider(travelId).notifier)
-                    .selectCity(i)),
-        ])),
+    return Scaffold(
+      appBar: AppBar(),
+      body: CustomScrollView(
+        slivers: [
+          SliverMainAxisGroup(slivers: [
+            SliverToBoxAdapter(
+              child: SingleChildScrollView(
+                  child: Row(children: [
+                for (int i = 0; i < travel.cities.length; i++)
+                  TravelCityItem(
+                      city: cities[i],
+                      isSelected: cities[i].id == widget.cityId,
+                      onSelected: () => ref
+                          .read(travelPlanProvider(travelId).notifier)
+                          .selectCity(i)),
+              ])),
+            ),
+            const SliverToBoxAdapter(child: SizedBox(height: 48.0)),
+            SliverCityPoiPreview(travelId: travelId, cityId: cityId),
+            const SliverToBoxAdapter(child: SizedBox(height: 72.0)),
+            SliverCityTravelPreview(travelId: travelId, cityId: cityId),
+            const SliverToBoxAdapter(child: SizedBox(height: 48.0)),
+            SliverToBoxAdapter(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                      width: double.maxFinite,
+                      height: 16.0,
+                      color: colorScheme.surfaceContainerLow),
+                  const SizedBox(height: 48.0),
+                ],
+              ),
+            ),
+            SliverList(
+                delegate: SliverChildBuilderDelegate(
+                    (context, index) => CityRecommendPlaceView(
+                        travel: travel, placeRecommend: placeRecommends[index]),
+                    childCount: placeRecommends.length)),
+            SliverInfiniteListIndicator(
+                hasNextPage: hasNextPage,
+                onVisible: ref
+                    .read(
+                        travelPlanRecommendProvider(travelId, cityId).notifier)
+                    .fetch)
+          ]),
+        ],
       ),
-      const SliverToBoxAdapter(child: SizedBox(height: 48.0)),
-      SliverCityPoiPreview(travelId: travelId, cityId: cityId),
-      const SliverToBoxAdapter(child: SizedBox(height: 72.0)),
-      SliverCityTravelPreview(travelId: travelId, cityId: cityId),
-      const SliverToBoxAdapter(child: SizedBox(height: 48.0)),
-      SliverToBoxAdapter(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-                width: double.maxFinite,
-                height: 16.0,
-                color: colorScheme.surfaceContainerLow),
-            const SizedBox(height: 48.0),
-          ],
-        ),
-      ),
-      SliverList(
-          delegate: SliverChildBuilderDelegate(
-              (context, index) => CityRecommendPlaceView(
-                travel: travel,
-                  placeRecommend: placeRecommends[index]),
-              childCount: placeRecommends.length)),
-      SliverInfiniteListIndicator(
-          hasNextPage: hasNextPage,
-          onVisible: ref
-              .read(travelPlanRecommendProvider(travelId, cityId).notifier)
-              .fetch)
-    ]);
+    );
   }
 }
