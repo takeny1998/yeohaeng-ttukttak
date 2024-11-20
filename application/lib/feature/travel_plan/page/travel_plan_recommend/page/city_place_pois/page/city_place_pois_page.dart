@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:application_new/common/loading/loading_page.dart';
 import 'package:application_new/common/util/translation_util.dart';
+import 'package:application_new/domain/travel/travel_model.dart';
 import 'package:application_new/shared/component/sliver_infinite_list_indicator.dart';
 import 'package:application_new/domain/place/place_model.dart';
 import 'package:application_new/shared/util/constants.dart';
@@ -20,9 +21,10 @@ import '../provider/city_place_pois_provider.dart';
 import '../provider/city_place_pois_state.dart';
 
 class CityPlacePoisPage extends ConsumerStatefulWidget {
+  final int travelId;
   final int cityId;
 
-  const CityPlacePoisPage({super.key, required this.cityId});
+  const CityPlacePoisPage({super.key, required this.travelId, required this.cityId});
 
   @override
   ConsumerState createState() => _CityPlaceListPageState();
@@ -68,9 +70,9 @@ class _CityPlaceListPageState extends ConsumerState<CityPlacePoisPage> {
 
     final translator = TranslationUtil.widget(context);
 
-    final cityId = widget.cityId;
+    final (travelId, cityId)= (widget.travelId, widget.cityId);
 
-    final state = ref.watch(cityPlacePoisProvider(cityId, sortType));
+    final state = ref.watch(cityPlacePoisProvider(travelId, cityId, sortType));
 
     if (state == null) return const LoadingPage();
 
@@ -117,7 +119,7 @@ class _CityPlaceListPageState extends ConsumerState<CityPlacePoisPage> {
                     duration: const Duration(milliseconds: 300),
                     child: switch (viewType) {
                       PlaceViewType.list =>
-                        buildListView(data, state.hasNextPage),
+                        buildListView(state.travel, data, state.hasNextPage),
                       PlaceViewType.map => buildMapView(data, bottomPadding,
                           state.placeMetrics, state.hasNextPage)
                     })),
@@ -155,7 +157,7 @@ class _CityPlaceListPageState extends ConsumerState<CityPlacePoisPage> {
             itemCount: hasNextPage ? data.length + 1 : data.length,
             itemBuilder: (context, index) {
               if (index == data.length && hasNextPage) {
-                return PlaceMetricCardIndicator(widget.cityId, sortType);
+                return PlaceMetricCardIndicator(widget.travelId, widget.cityId, sortType);
               }
               return VisibilityDetector(
                 key: ValueKey<int>(data[index].place.id),
@@ -176,7 +178,7 @@ class _CityPlaceListPageState extends ConsumerState<CityPlacePoisPage> {
     ]);
   }
 
-  Widget buildListView(List<PlaceMetricModel> data, bool hasNextPage) {
+  Widget buildListView(TravelModel travel, List<PlaceMetricModel> data, bool hasNextPage) {
     final ThemeData(:textTheme, :colorScheme) = Theme.of(context);
 
     final cityId = widget.cityId;
@@ -209,12 +211,12 @@ class _CityPlaceListPageState extends ConsumerState<CityPlacePoisPage> {
         SliverList(
             delegate: SliverChildBuilderDelegate(
                 (context, index) =>
-                    PlaceMetricListItem(travelId: 0, placeMetric: data[index]),
+                    PlaceMetricListItem(travel: travel, placeMetric: data[index]),
                 childCount: data.length)),
         SliverInfiniteListIndicator(
             hasNextPage: hasNextPage,
             onVisible: ref
-                .read(cityPlacePoisProvider(cityId, sortType).notifier)
+                .read(cityPlacePoisProvider(widget.travelId, cityId, sortType).notifier)
                 .fetch),
         const SliverToBoxAdapter(child: SizedBox(height: 48.0)),
       ]),

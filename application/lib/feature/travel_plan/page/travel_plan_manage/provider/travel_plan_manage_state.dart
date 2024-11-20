@@ -8,7 +8,7 @@ part 'travel_plan_manage_state.freezed.dart';
 class TravelPlanManageState with _$TravelPlanManageState {
   const factory TravelPlanManageState({
     required TravelModel travel,
-    required List<TravelVisitModel> visits,
+    required List<TravelVisitWithPlaceModel> visitPlaces,
     required DateTime selectedDate,
   }) = _TravelPlanManageState;
 }

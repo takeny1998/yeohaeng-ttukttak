@@ -25,8 +25,9 @@ _$ServerFailResponseImpl _$$ServerFailResponseImplFromJson(
     _$ServerFailResponseImpl(
       message: json['message'] as String,
       data: (json['data'] as Map<String, dynamic>?)?.map(
-        (k, e) => MapEntry(k, e as String),
-      ),
+            (k, e) => MapEntry(k, e as String),
+          ) ??
+          const {},
       $type: json['status'] as String?,
     );
 

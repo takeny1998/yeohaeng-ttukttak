@@ -13,17 +13,15 @@ class TravelVisitRepository {
 
   TravelVisitRepository(this.authService, this.httpService);
 
-  Future<TravelVisitModel> create(int travelId, TravelVisitForm form) async {
+  Future<void> create(int travelId, TravelVisitForm form) async {
     final auth = await authService.find();
 
-    final response = await httpService.request(
+    await httpService.request(
       'POST',
       '/api/v2/travels/$travelId/visits',
       authorization: auth.accessToken,
       data: form.toJson(),
     );
-
-    return TravelVisitModel.fromJson(response['visit']);
   }
 }
 

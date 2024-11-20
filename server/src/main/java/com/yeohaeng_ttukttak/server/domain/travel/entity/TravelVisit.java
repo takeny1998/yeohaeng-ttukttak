@@ -29,8 +29,10 @@ public class TravelVisit {
     )
     private Long id;
 
+    @NotNull
     private Integer dayOfTravel;
 
+    @NotNull
     private Integer orderOfVisit;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -54,9 +56,11 @@ public class TravelVisit {
 
     private Integer recommend;
 
-    public TravelVisit(Travel travel, Place place) {
-        this.travel = travel;
+    public TravelVisit(Integer dayOfTravel, Integer orderOfVisit, Place place, Travel travel) {
+        this.dayOfTravel = dayOfTravel;
+        this.orderOfVisit = orderOfVisit;
         this.place = place;
+        this.travel = travel;
     }
 
     public TravelVisit setDayOfTravel(Integer dayOfTravel) {

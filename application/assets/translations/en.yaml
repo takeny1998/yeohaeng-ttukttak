@@ -83,6 +83,8 @@ message:
   visit_added: "{place_name} has been added to plan successfully."
   travel_plan_item_removed: "{place_name} has been removed from plan successfully."
   travel_plan_edited: The travel plan has been edited successfully.
+  network_exception: A network error occurred. Please try again later.
+  unchecked_exception: An unknown error has occurred. Please try again later.
 
 korea: Republic of Korea
 

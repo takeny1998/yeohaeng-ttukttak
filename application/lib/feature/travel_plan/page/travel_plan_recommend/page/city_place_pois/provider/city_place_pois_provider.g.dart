@@ -6,7 +6,7 @@ part of 'city_place_pois_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$cityPlacePoisHash() => r'95ac2979db3ee0dbbc43a2c19283d2e7ee901b17';
+String _$cityPlacePoisHash() => r'86023e58dbcd1dc91c73b48680d30629f9464451';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -31,10 +31,12 @@ class _SystemHash {
 
 abstract class _$CityPlacePois
     extends BuildlessAutoDisposeNotifier<CityPlacePoisState?> {
+  late final int travelId;
   late final int cityId;
   late final PlaceSortType sortType;
 
   CityPlacePoisState? build(
+    int travelId,
     int cityId,
     PlaceSortType sortType,
   );
@@ -51,10 +53,12 @@ class CityPlacePoisFamily extends Family<CityPlacePoisState?> {
 
   /// See also [CityPlacePois].
   CityPlacePoisProvider call(
+    int travelId,
     int cityId,
     PlaceSortType sortType,
   ) {
     return CityPlacePoisProvider(
+      travelId,
       cityId,
       sortType,
     );
@@ -65,6 +69,7 @@ class CityPlacePoisFamily extends Family<CityPlacePoisState?> {
     covariant CityPlacePoisProvider provider,
   ) {
     return call(
+      provider.travelId,
       provider.cityId,
       provider.sortType,
     );
@@ -90,10 +95,12 @@ class CityPlacePoisProvider extends AutoDisposeNotifierProviderImpl<
     CityPlacePois, CityPlacePoisState?> {
   /// See also [CityPlacePois].
   CityPlacePoisProvider(
+    int travelId,
     int cityId,
     PlaceSortType sortType,
   ) : this._internal(
           () => CityPlacePois()
+            ..travelId = travelId
             ..cityId = cityId
             ..sortType = sortType,
           from: cityPlacePoisProvider,
@@ -105,6 +112,7 @@ class CityPlacePoisProvider extends AutoDisposeNotifierProviderImpl<
           dependencies: CityPlacePoisFamily._dependencies,
           allTransitiveDependencies:
               CityPlacePoisFamily._allTransitiveDependencies,
+          travelId: travelId,
           cityId: cityId,
           sortType: sortType,
         );
@@ -116,10 +124,12 @@ class CityPlacePoisProvider extends AutoDisposeNotifierProviderImpl<
     required super.allTransitiveDependencies,
     required super.debugGetCreateSourceHash,
     required super.from,
+    required this.travelId,
     required this.cityId,
     required this.sortType,
   }) : super.internal();
 
+  final int travelId;
   final int cityId;
   final PlaceSortType sortType;
 
@@ -128,6 +138,7 @@ class CityPlacePoisProvider extends AutoDisposeNotifierProviderImpl<
     covariant CityPlacePois notifier,
   ) {
     return notifier.build(
+      travelId,
       cityId,
       sortType,
     );
@@ -139,6 +150,7 @@ class CityPlacePoisProvider extends AutoDisposeNotifierProviderImpl<
       origin: this,
       override: CityPlacePoisProvider._internal(
         () => create()
+          ..travelId = travelId
           ..cityId = cityId
           ..sortType = sortType,
         from: from,
@@ -146,6 +158,7 @@ class CityPlacePoisProvider extends AutoDisposeNotifierProviderImpl<
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
+        travelId: travelId,
         cityId: cityId,
         sortType: sortType,
       ),
@@ -161,6 +174,7 @@ class CityPlacePoisProvider extends AutoDisposeNotifierProviderImpl<
   @override
   bool operator ==(Object other) {
     return other is CityPlacePoisProvider &&
+        other.travelId == travelId &&
         other.cityId == cityId &&
         other.sortType == sortType;
   }
@@ -168,6 +182,7 @@ class CityPlacePoisProvider extends AutoDisposeNotifierProviderImpl<
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, travelId.hashCode);
     hash = _SystemHash.combine(hash, cityId.hashCode);
     hash = _SystemHash.combine(hash, sortType.hashCode);
 
@@ -176,6 +191,9 @@ class CityPlacePoisProvider extends AutoDisposeNotifierProviderImpl<
 }
 
 mixin CityPlacePoisRef on AutoDisposeNotifierProviderRef<CityPlacePoisState?> {
+  /// The parameter `travelId` of this provider.
+  int get travelId;
+
   /// The parameter `cityId` of this provider.
   int get cityId;
 
@@ -187,6 +205,8 @@ class _CityPlacePoisProviderElement extends AutoDisposeNotifierProviderElement<
     CityPlacePois, CityPlacePoisState?> with CityPlacePoisRef {
   _CityPlacePoisProviderElement(super.provider);
 
+  @override
+  int get travelId => (origin as CityPlacePoisProvider).travelId;
   @override
   int get cityId => (origin as CityPlacePoisProvider).cityId;
   @override

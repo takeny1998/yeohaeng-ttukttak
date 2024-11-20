@@ -1,6 +1,6 @@
 package com.yeohaeng_ttukttak.server.domain.member.service;
 
-import com.yeohaeng_ttukttak.server.common.exception.exception.fail.InvalidAuthorizationException;
+import com.yeohaeng_ttukttak.server.common.exception.exception.error.AuthorizationErrorException;
 import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
 import com.yeohaeng_ttukttak.server.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,7 @@ public class MemberService {
     public Member find(String memberId) {
         return repository
                 .findById(UUID.fromString(memberId))
-                .orElseThrow(InvalidAuthorizationException::new);
+                .orElseThrow(AuthorizationErrorException::new);
     }
 
 

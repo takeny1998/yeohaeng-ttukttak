@@ -72,7 +72,7 @@ class _TravelPlanRecommendPageState
         ])),
       ),
       const SliverToBoxAdapter(child: SizedBox(height: 48.0)),
-      SliverCityPoiPreview(cityId: cityId),
+      SliverCityPoiPreview(travelId: travelId, cityId: cityId),
       const SliverToBoxAdapter(child: SizedBox(height: 72.0)),
       SliverCityTravelPreview(travelId: travelId, cityId: cityId),
       const SliverToBoxAdapter(child: SizedBox(height: 48.0)),
@@ -91,7 +91,7 @@ class _TravelPlanRecommendPageState
       SliverList(
           delegate: SliverChildBuilderDelegate(
               (context, index) => CityRecommendPlaceView(
-                travelId: travelId,
+                travel: travel,
                   placeRecommend: placeRecommends[index]),
               childCount: placeRecommends.length)),
       SliverInfiniteListIndicator(

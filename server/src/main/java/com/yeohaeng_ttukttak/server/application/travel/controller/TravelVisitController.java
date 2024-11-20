@@ -25,15 +25,15 @@ public class TravelVisitController {
 
     @PostMapping("/{travelId}/visits")
     @Authorization
-    public ServerResponse<CreateTravelVisitResponse> create(
+    public ServerResponse<Void> create(
             @PathVariable Long travelId,
             @RequestBody CreateTravelVisitRequest request,
             AccessTokenDto accessToken) {
 
-        TravelVisitDto dto = createService.call(
-                travelId, accessToken.memberId(), request.placeId());
+        createService.call(
+                travelId, accessToken.memberId(), request.placeId(), request.dayOfTravel());
 
-        return new ServerResponse<>(new CreateTravelVisitResponse(dto));
+        return new ServerResponse<>();
     }
 
     @GetMapping("/{travelId}/visits")

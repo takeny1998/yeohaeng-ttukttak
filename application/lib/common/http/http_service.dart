@@ -43,30 +43,33 @@ final class HttpService {
         ),
       );
 
-      if (response.data == null) {
-        throw NetworkException(
-          code: response.statusCode,
-          message: response.statusMessage,
-        );
-      }
 
       final serverResponse = ServerResponse.fromJson(response.data);
 
       return serverResponse.when(
           success: (data) => data,
           fail: (message, data) {
-            throw ServerException(message: message);
+            throw ServerFailException(data: data);
           },
           error: (message, statusCode) {
-            throw NetworkException(code: statusCode, message: message);
+            if (statusCode == 401) {
+              throw AuthorizationException(message: message);
+            }
+
+            throw ServerErrorException(message: message, code: statusCode);
           });
     } on DioException catch (e) {
-      final res = e.response;
-
+      final response = e.response;
       logger.e('[HttpService.request] exception = $e');
 
-      throw NetworkException(
-          code: res?.statusCode, message: res?.statusMessage);
+      if (response == null) {
+
+        throw NetworkException(
+            statusMessage: e.message,
+            requestUri: e.requestOptions.uri, requestMethod: e.requestOptions.method);
+      }
+
+      throw NetworkException.fromResponse(response);
     }
   }
 }

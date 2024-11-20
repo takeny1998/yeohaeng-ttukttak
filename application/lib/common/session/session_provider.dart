@@ -19,4 +19,12 @@ class Session extends _$Session {
       isAuthenticated: isAuthenticated,
     );
   }
+
+  void omitError(String message) {
+    state = state.copyWith(errorMessage: message);
+  }
+
+  void consumeError(Error error) {
+    state = state.copyWith(errorMessage: null);
+  }
 }

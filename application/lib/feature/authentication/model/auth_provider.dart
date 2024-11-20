@@ -15,7 +15,7 @@ final class AppleProvider extends AuthProvider {
       scopes: [
         AppleIDAuthorizationScopes.email,
       ],
-    ).catchError((error) => throw AuthenticatedException());
+    ).catchError((error) => throw AuthorizationException());
 
     return credential.authorizationCode;
   }
@@ -33,12 +33,12 @@ final class GoogleProvider extends AuthProvider {
       'https://www.googleapis.com/auth/userinfo.profile',
       'https://www.googleapis.com/auth/user.gender.read',
       'https://www.googleapis.com/auth/user.birthday.read'
-    ]).signIn().catchError((error) => throw AuthenticatedException());
+    ]).signIn().catchError((error) => throw AuthorizationException());
 
     final authorizationCode = credential?.serverAuthCode;
 
     if (authorizationCode == null) {
-      throw AuthenticatedException();
+      throw AuthorizationException();
     }
     return authorizationCode;
   }

@@ -7,29 +7,29 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class TravelPlanEditListItem extends ConsumerWidget {
 
   final int order;
-  final TravelVisitModel visit;
+  final TravelVisitWithPlaceModel visitPlace;
   final VoidCallback onDeleted;
 
-  const TravelPlanEditListItem({super.key, required this.onDeleted, required this.order, required this.visit});
+  const TravelPlanEditListItem({super.key, required this.onDeleted, required this.order, required this.visitPlace});
 
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final ThemeData(:colorScheme) = Theme.of(context);
 
-    final place = ref.watch(placeProvider(visit.placeId)).value;
+    final place = visitPlace.place;
 
     const titleStyle = TextStyle(fontWeight: FontWeight.w600, fontSize: 16.0);
     const subTitleStyle = TextStyle(fontSize: 13.0);
 
     var categoryName =
-        TranslationUtil.enumValue(place?.categoryTypes.firstOrNull);
+        TranslationUtil.enumValue(place.categoryTypes.firstOrNull);
     return ListTile(
       contentPadding:
           const EdgeInsets.symmetric(horizontal: 16.0, vertical: 0.0),
       title: Row(
         children: [
-          Text(place?.name ?? '', style: titleStyle),
+          Text(place.name ?? '', style: titleStyle),
           const SizedBox(width: 6.0),
           Text(categoryName, style: const TextStyle(fontSize: 12.0))
         ],
@@ -38,7 +38,7 @@ class TravelPlanEditListItem extends ConsumerWidget {
       subtitle: Padding(
         padding: const EdgeInsets.only(top: 2.0),
         child: Text(
-          place?.address.value ?? '',
+          place.address.value ?? '',
           style: subTitleStyle,
           overflow: TextOverflow.ellipsis,
         ),

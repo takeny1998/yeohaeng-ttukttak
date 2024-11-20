@@ -10,15 +10,16 @@ import 'city_place_pois/provider/city_place_pois_state.dart';
 
 
 class SliverCityPoiPreview extends ConsumerWidget {
+  final int travelId;
   final int cityId;
 
-  const SliverCityPoiPreview({super.key, required this.cityId});
+  const SliverCityPoiPreview({super.key, required this.travelId, required this.cityId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
 
     final state =
-    ref.watch(cityPlacePoisProvider(cityId, PlaceSortType.rating));
+    ref.watch(cityPlacePoisProvider(travelId, cityId, PlaceSortType.rating));
 
     if (state == null) {
       return const SliverToBoxAdapter(
@@ -66,7 +67,7 @@ class SliverCityPoiPreview extends ConsumerWidget {
               padding: const EdgeInsets.symmetric(horizontal: 24.0),
               child: FilledButton(
                   onPressed: () =>
-                      context.push('/cities/${state.city.id}/places/pois'),
+                      context.push('/travels/$travelId/cities/${state.city.id}/places/pois'),
                   child: Text(translator.key('view_detail')))),
         ]),
     );

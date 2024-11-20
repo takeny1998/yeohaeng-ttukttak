@@ -1,4 +1,5 @@
 import 'package:application_new/common/http/http_service_provider.dart';
+import 'package:application_new/domain/place/place_provider.dart';
 import 'package:application_new/domain/travel/travel_provider.dart';
 import 'package:application_new/domain/travel_visit/travel_visit_model.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_manage/provider/travel_plan_manage_state.dart';
@@ -20,22 +21,33 @@ class TravelPlanManage extends _$TravelPlanManage {
         .request('GET', '/api/v2/travels/$travelId/visits');
 
     final travel = await ref.watch(travelProvider(travelId).future);
+    final visits = TravelVisitModel.listFromJson(response);
+
+    final visitPlaces = await Future.wait(visits.map((visit) async =>
+        TravelVisitWithPlaceModel(
+            visit: visit,
+            place: await ref.watch(placeProvider(visit.placeId).future))));
 
     state = TravelPlanManageState(
       travel: travel,
       selectedDate: travel.startedOn,
-      visits: TravelVisitModel.listFromJson(response),
+      visitPlaces: visitPlaces,
     );
   }
 
   Future<void> edit(Iterable<TravelVisitEditModel> visits) async {
-    final response = await ref
-        .read(httpServiceProvider)
-        .request('PUT', '/api/v2/travels/$travelId/visits', data: {
-          'visits': visits.map((visit) => visit.toJson()).toList()
-    });
+    final response = await ref.read(httpServiceProvider).request(
+        'PUT', '/api/v2/travels/$travelId/visits',
+        data: {'visits': visits.map((visit) => visit.toJson()).toList()});
 
-    state = state?.copyWith(visits: TravelVisitModel.listFromJson(response));
+    final newVisits = TravelVisitModel.listFromJson(response);
+
+    final visitPlaces = await Future.wait(newVisits.map((visit) async =>
+        TravelVisitWithPlaceModel(
+            visit: visit,
+            place: await ref.watch(placeProvider(visit.placeId).future))));
+
+    state = state?.copyWith(visitPlaces: visitPlaces);
   }
 
   void selectDate(DateTime date) {

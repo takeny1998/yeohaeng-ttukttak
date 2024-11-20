@@ -27,37 +27,20 @@ public class TravelRecommendRepository {
 
     public PageResult<Travel> call(Long cityId, List<TravelMotivationType> motivationTypes, List<TravelCompanionType> companionTypes, PageCommand pageCommand) {
 
-        final boolean isMotivationsExists = motivationTypes != null && !motivationTypes.isEmpty();
-        final boolean isCompanionTypesExists = companionTypes != null && !companionTypes.isEmpty();
-
-        JPAQuery<Travel> query = queryFactory
+        final JPAQuery<Travel> query = queryFactory
                 .select(travel)
                 .from(travel)
+                .join(travel.motivations, travelMotivation)
+                .join(travel.companions, travelCompanion)
                 .where(isMatchedTravel(cityId),
-                        travelMotivation.type.in(motivationTypes))
-                .groupBy(travel);
+                        travelMotivation.type.in(motivationTypes),
+                        travelCompanion.type.in(companionTypes))
+                .groupBy(travel)
+                .orderBy(travelMotivation.count().desc(),
+                        travelCompanion.count().desc(),
+                        travel.id.asc());
 
-        if (isMotivationsExists) {
-            query.join(travel.motivations, travelMotivation)
-                    .where(travelMotivation.type.in(motivationTypes))
-                    .orderBy(travelMotivation.type.countDistinct().desc());
-        }
-
-        if (isCompanionTypesExists) {
-            query.join(travel.companions, travelCompanion)
-                    .where(travelCompanion.type.in(companionTypes))
-                    .orderBy(travelCompanion.type.countDistinct().desc());
-        }
-
-        if (isMotivationsExists) {
-            query.orderBy(travelMotivation.count().desc());
-        }
-
-        if (isCompanionTypesExists) {
-            query.orderBy(travelCompanion.count().desc());
-        }
-
-        return PageUtil.pageBy(query.orderBy(travel.id.asc()), pageCommand);
+        return PageUtil.pageBy(query, pageCommand);
 
     }
 

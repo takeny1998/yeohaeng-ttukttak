@@ -13,14 +13,8 @@ public final class ServerFailResponse {
 
     private final String status = "fail";
     private final Map<String, String> data;
-    private final String message;
 
-    public ServerFailResponse(String message) {
-        this(null, message);
-    }
-
-    public ServerFailResponse(Map<String, String> data, String message) {
+    public ServerFailResponse(Map<String, String> data) {
         this.data = data;
-        this.message = message;
     }
 }

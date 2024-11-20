@@ -11,7 +11,7 @@ sealed class ServerResponse with _$ServerResponse {
 
   const factory ServerResponse.fail({
     required String message,
-    Map<String, String>? data,
+    @Default({}) Map<String, String> data,
   }) = ServerFailResponse;
 
   const factory ServerResponse.error({

@@ -1,5 +1,6 @@
 package com.yeohaeng_ttukttak.server.common.aop;
 
+import com.yeohaeng_ttukttak.server.common.exception.exception.error.AuthorizationErrorException;
 import com.yeohaeng_ttukttak.server.domain.auth.dto.AccessTokenDto;
 import com.yeohaeng_ttukttak.server.domain.auth.service.AccessTokenService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,8 +27,9 @@ public class AuthorizationAspect {
     public Object call(ProceedingJoinPoint joinPoint) throws Throwable {
 
         final String header = httpServletRequest.getHeader("Authorization");
+
         if (Objects.isNull(header) || !header.startsWith(TOKEN_PREFIX)) {
-            return joinPoint.proceed();
+            throw new AuthorizationErrorException();
         }
 
         final String encodedToken = header.substring(TOKEN_PREFIX.length());

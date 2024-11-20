@@ -17,8 +17,9 @@ class MyButtonTheme extends StatelessWidget {
         textButtonTheme: TextButtonThemeData(
           style: TextButton.styleFrom(
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(24.0)
+              borderRadius: BorderRadius.circular(4.0)
             ),
+            padding: EdgeInsets.zero,
             foregroundColor: colorScheme.onSurface,
             textStyle: textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w600)
           )),
@@ -31,6 +32,7 @@ class MyButtonTheme extends StatelessWidget {
         outlinedButtonTheme: OutlinedButtonThemeData(
           style: OutlinedButton.styleFrom(
             side: BorderSide(color: colorScheme.surfaceDim),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(6.0)),
             textStyle: buttonTextStyle,

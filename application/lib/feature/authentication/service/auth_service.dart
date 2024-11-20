@@ -1,4 +1,5 @@
 import 'package:application_new/common/exception/exception.dart';
+import 'package:application_new/common/http/dto/server_response.dart';
 import 'package:application_new/common/http/http_service.dart';
 import 'package:application_new/feature/authentication/model/auth_model.dart';
 import 'package:application_new/feature/authentication/repository/auth_repository.dart';
@@ -17,7 +18,7 @@ final class AuthService {
     final authModel = await _authRepository.find();
 
     if (authModel == null) {
-      throw AuthenticatedException();
+      throw AuthorizationException();
     }
 
     final isExpired = authModel.expiresAt.isBefore(DateTime.now());
@@ -37,9 +38,9 @@ final class AuthService {
         "refreshToken": authModel.refreshToken,
       },
     ).catchError((error) {
-      if (error is ServerException) {
+      if (error is ServerErrorResponse && error.code == 401) {
         _authRepository.delete();
-        throw AuthenticatedException();
+        throw AuthorizationException();
       }
       throw error;
     });

@@ -1,31 +1,50 @@
 import 'package:application_new/common/event/event.dart';
 import 'package:application_new/common/util/translation_util.dart';
-import 'package:application_new/domain/place/place_provider.dart';
 import 'package:application_new/domain/travel_visit/travel_visit_model.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_manage/component/travel_plan_edit_header_item.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_manage/component/travel_plan_edit_list_item.dart';
+import 'package:application_new/feature/travel_plan/page/travel_plan_manage/provider/travel_plan_manage_provider.dart';
 import 'package:drag_and_drop_lists/drag_and_drop_lists.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:collection/collection.dart';
 
 class TravelPlanManageEditView extends ConsumerStatefulWidget {
-  final List<TravelVisitModel> visits;
+  final int travelId;
+  final List<TravelVisitWithPlaceModel> visitPlaces;
 
-  const TravelPlanManageEditView({super.key, required this.visits});
+  const TravelPlanManageEditView._({required this.travelId, required this.visitPlaces});
+
+
+  static Future<void> showSheet(
+      BuildContext context, {
+        required int travelId,
+        required List<TravelVisitWithPlaceModel> visitPlaces
+      }) async =>
+      showModalBottomSheet<List<TravelVisitEditModel>>(
+          isScrollControlled: true,
+          backgroundColor: Theme.of(context).colorScheme.surface,
+          useSafeArea: true,
+          enableDrag: false,
+          context: context,
+          builder: (context) => TravelPlanManageEditView._(travelId: travelId, visitPlaces: visitPlaces));
+
+
 
   @override
   ConsumerState createState() => _TravelPlanManageViewState();
 }
 
-class _TravelPlanManageViewState extends ConsumerState<TravelPlanManageEditView> {
+class _TravelPlanManageViewState
+    extends ConsumerState<TravelPlanManageEditView> {
   late List<DragAndDropList> groups;
 
   @override
   void initState() {
     super.initState();
 
-    final groupedVisit = widget.visits.groupListsBy((visit) => visit.visitedOn);
+    final groupedVisit = widget.visitPlaces.groupListsBy((visitPlace) =>
+    visitPlace.visit.visitedOn);
 
     groups =
         groupedVisit.entries.mapIndexed<DragAndDropList>((groupIndex, entry) {
@@ -33,16 +52,16 @@ class _TravelPlanManageViewState extends ConsumerState<TravelPlanManageEditView>
 
       return DragAndDropList(
         canDrag: false,
-        header:
-            TravelPlanEditHeaderItem(date: groupedVisit.keys.elementAt(groupIndex)),
+        header: TravelPlanEditHeaderItem(
+            date: groupedVisit.keys.elementAt(groupIndex)),
         children: visits
             .mapIndexed((itemIndex, visit) => DragAndDropItem(
-                key: ValueKey<int>(visit.id),
+                key: ValueKey<int>(visit.visit.id),
                 child: TravelPlanEditListItem(
                   order: itemIndex,
-                  visit: visit,
+                  visitPlace: visit,
                   onDeleted: () {
-                    setState(() => onItemDelete(groupIndex, visit.id));
+                    setState(() => onItemDelete(groupIndex, visit.visit.id));
                   },
                 )))
             .toList(),
@@ -79,27 +98,32 @@ class _TravelPlanManageViewState extends ConsumerState<TravelPlanManageEditView>
             border: Border(
                 top: BorderSide(color: colorScheme.surfaceContainerHigh)),
           ),
-          child: FilledButton(
-              onPressed: () {
-                final visits = groups
-                    .mapIndexed((dayOfTravel, group) => group.children
-                        .mapIndexed((orderOfVisit, child) =>
-                            TravelVisitEditModel(
-                                id: (child.child as TravelPlanEditListItem)
-                                    .visit
-                                    .id,
-                                orderOfVisit: orderOfVisit,
-                                dayOfTravel: dayOfTravel))
-                        .toList())
-                    .expand((e) => e)
-                    .toList();
-
-                return Navigator.of(context).pop(visits);
-              },
-              child: const Text('완료')),
+          child: FilledButton(onPressed: onSubmit, child: const Text('완료')),
         ),
       ),
     );
+  }
+
+  void onSubmit() async {
+    final navigator = Navigator.of(context);
+    final visits = groups
+        .mapIndexed((dayOfTravel, group) => group.children
+            .mapIndexed((orderOfVisit, child) => TravelVisitEditModel(
+                id: (child.child as TravelPlanEditListItem).visitPlace.visit.id,
+                orderOfVisit: orderOfVisit,
+                dayOfTravel: dayOfTravel))
+            .toList())
+        .expand((e) => e)
+        .toList();
+
+    await ref
+        .read(travelPlanManageProvider(widget.travelId).notifier)
+        .edit(visits);
+
+    eventController
+        .add(MessageEvent(TranslationUtil.message('travel_plan_edited')));
+
+    return navigator.pop(visits);
   }
 
   void onItemReorder(
@@ -118,7 +142,7 @@ class _TravelPlanManageViewState extends ConsumerState<TravelPlanManageEditView>
 
     if (item == null) return;
 
-    final visit = (item.child as TravelPlanEditListItem).visit;
+    final visitPlace = (item.child as TravelPlanEditListItem).visitPlace;
 
     final prevGroup = DragAndDropList(
       canDrag: groups[listIndex].canDrag,
@@ -127,17 +151,14 @@ class _TravelPlanManageViewState extends ConsumerState<TravelPlanManageEditView>
     );
 
     setState(() => groups[listIndex].children.remove(item));
-
-    ref.read(placeProvider(visit.placeId).future).then((place) {
-      eventController.add(MessageEvent(
-          TranslationUtil.message(
-            'travel_plan_item_removed',
-            args: {
-              'place_name': place.name,
-            },
-          ), onCancel: () {
-        setState(() => groups[listIndex] = prevGroup);
-      }));
-    });
+    eventController.add(MessageEvent(
+        TranslationUtil.message(
+          'travel_plan_item_removed',
+          args: {
+            'place_name': visitPlace.place.name,
+          },
+        ), onCancel: () {
+      setState(() => groups[listIndex] = prevGroup);
+    }));
   }
 }

@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:vector_map_tiles/vector_map_tiles.dart';
 
 class VisitsMapItem extends ConsumerStatefulWidget {
   final int travelId;
@@ -27,14 +26,6 @@ class _VisitsMapItemState extends ConsumerState<VisitsMapItem> {
   double zoom = 15.0;
 
   bool isPositionChanged = false;
-
-  Style? mapStyle;
-
-  @override
-  void initState() {
-    fetchStyle().then((style) => setState(() => mapStyle = style));
-    super.initState();
-  }
 
   @override
   void dispose() {
@@ -55,10 +46,6 @@ class _VisitsMapItemState extends ConsumerState<VisitsMapItem> {
 
     notifier.setIsMapMoved(false);
   }
-  
-  Future<Style> fetchStyle() =>
-      StyleReader(uri: 'https://api.tomtom.com/style/2/custom/style/dG9tdG9tQEBAQU1MSkFRZ1QyNjU0NU9WODs0OWFjMTBhMi0yODM5LTQ4NjItYjczMi01NGEwN2JiYTI0Y2I=/drafts/0.json?key={key}',
-      apiKey: const String.fromEnvironment('TOMTOM_API_KEY')).read();
 
   @override
   Widget build(BuildContext context) {
@@ -120,8 +107,7 @@ class _VisitsMapItemState extends ConsumerState<VisitsMapItem> {
             notifier.setIsMapMoved(true);
           }),
           children: [
-            if (mapStyle != null)
-              VectorTileLayer(tileProviders: mapStyle!.providers, theme: mapStyle!.theme),
+            TileLayer(urlTemplate: 'http://127.0.0.1:8081/tile/{z}/{x}/{y}.png'),
             PolylineLayer(polylines: [
               Polyline(
                   points: points,

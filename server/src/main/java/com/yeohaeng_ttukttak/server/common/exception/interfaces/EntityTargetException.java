@@ -1,7 +1,7 @@
 package com.yeohaeng_ttukttak.server.common.exception.interfaces;
 
-public interface TargetException {
+public interface EntityTargetException {
 
-    String getTarget();
+    Class<?> target();
 
 }

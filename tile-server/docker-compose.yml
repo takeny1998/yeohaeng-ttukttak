@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  tileserver:
+    image: maptiler/tileserver-gl
+    container_name: tileserver-gl
+    ports:
+      - "8081:8080"
+    volumes:
+      - ${TILE_DATA_PATH}:/data
+    command: ["--file", "/data/tiles.mbtiles", "--public_url", "http://127.0.0.1:8081"]
+    restart: unless-stopped
