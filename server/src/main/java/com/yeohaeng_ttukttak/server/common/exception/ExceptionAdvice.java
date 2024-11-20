@@ -5,6 +5,7 @@ import com.yeohaeng_ttukttak.server.common.dto.ServerFailResponse;
 import com.yeohaeng_ttukttak.server.common.exception.exception.BaseException;
 import com.yeohaeng_ttukttak.server.common.exception.exception.error.ErrorException;
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.FailException;
+import com.yeohaeng_ttukttak.server.common.exception.interfaces.ArgumentException;
 import com.yeohaeng_ttukttak.server.common.exception.interfaces.EntityTargetException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -16,10 +17,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.Locale;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -76,13 +74,27 @@ public class ExceptionAdvice {
 
     private String getMessage(BaseException ex, Locale locale) {
         final String targetName = getClassName(ex, locale);
+        final Object[] args = getArgs(ex);
 
-        final Object[] args = targetName != null
-                ? new Object[]{ targetName }
-                : null;
+        final List<Object> arguments = new ArrayList<>();
 
-        return messageSource
-                .getMessage(ex.code(), args, locale);
+        if (targetName != null) {
+            arguments.add(targetName);
+        }
+
+        if (args != null) {
+            arguments.addAll(Arrays.stream(args).toList());
+        }
+
+        return messageSource.getMessage(
+                ex.code(), !arguments.isEmpty() ? arguments.toArray() : null, locale);
+    }
+
+    private Object[] getArgs(BaseException ex) {
+        if (ex instanceof ArgumentException argumentException) {
+            return argumentException.args();
+        }
+        return null;
     }
 
     private String getClassName(BaseException ex, Locale locale) {

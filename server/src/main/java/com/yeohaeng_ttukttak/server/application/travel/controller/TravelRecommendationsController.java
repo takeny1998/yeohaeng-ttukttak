@@ -28,8 +28,8 @@ public class TravelRecommendationsController {
     @GetMapping
     public ServerResponse<RecommendTravelResponse> recommend(
             @RequestParam Long cityId,
-            List<TravelMotivationType> motivationTypes,
-            List<TravelCompanionType> companionTypes,
+            @RequestParam List<TravelMotivationType> motivationTypes,
+            @RequestParam List<TravelCompanionType> companionTypes,
             @RequestParam int pageSize,
             @RequestParam int pageNumber
     ) {

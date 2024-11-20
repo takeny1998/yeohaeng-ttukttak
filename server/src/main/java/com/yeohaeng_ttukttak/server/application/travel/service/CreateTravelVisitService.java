@@ -2,6 +2,7 @@ package com.yeohaeng_ttukttak.server.application.travel.service;
 
 import com.yeohaeng_ttukttak.server.common.exception.exception.error.AuthorizationErrorException;
 import com.yeohaeng_ttukttak.server.common.exception.exception.error.ForbiddenErrorException;
+import com.yeohaeng_ttukttak.server.common.exception.exception.fail.ArgumentNotInRangeFailException;
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundException;
 import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
 import com.yeohaeng_ttukttak.server.domain.member.repository.MemberRepository;
@@ -13,6 +14,7 @@ import com.yeohaeng_ttukttak.server.domain.travel.repository.MemberTravelReposit
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.time.Duration;
 import java.util.Objects;
@@ -34,8 +36,12 @@ public class CreateTravelVisitService {
                 .orElseThrow(() -> new EntityNotFoundException(Travel.class));
 
         final long totalDays = Duration
-                .between(travel.startedOn(), travel.endedOn())
+                .between(travel.startedOn().atStartOfDay(), travel.endedOn().atStartOfDay())
                 .toDays();
+
+        if (dayOfTravel < 0 || dayOfTravel >= totalDays) {
+            throw new ArgumentNotInRangeFailException("dayOfTravel", 0, totalDays);
+        }
 
         final Member member = memberRepository
                 .findById(UUID.fromString(memberId))
