@@ -52,14 +52,14 @@ class PlaceMetricItem extends ConsumerWidget {
       ExtendedWrap(spacing: 8.0, maxLines: 1, children: [
         if (rating != null)
           SmallChip(
-              backgroundColor: colorScheme.primary,
-              foregroundColor: colorScheme.onPrimary,
+            borderColor: colorScheme.primaryFixedDim,
+              backgroundColor: colorScheme.primaryContainer,
+              foregroundColor: colorScheme.primary,
               leading:
-                  Icon(Icons.star_rate_rounded, color: colorScheme.onPrimary),
+                  Icon(Icons.star_rate_rounded, color: colorScheme.primary),
               label: rating.toStringAsFixed(2)),
         for (int i = 0; i < place.categoryTypes.length; i++)
           SmallChip(
-              borderColor: i == 0 ? colorScheme.primaryFixedDim : null,
               label: TranslationUtil.enumValue(place.categoryTypes[i])),
       ]),
       const SizedBox(height: 12.0),

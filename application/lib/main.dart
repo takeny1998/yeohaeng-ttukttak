@@ -7,7 +7,7 @@ import 'package:application_new/common/session/session_provider.dart';
 import 'package:application_new/common/util/translation_util.dart';
 import 'package:application_new/feature/authentication/service/auth_service_provider.dart';
 import 'package:application_new/feature/locale/locale_provider.dart';
-import 'package:application_new/shared/component/filled_chip_theme.dart';
+import 'package:application_new/shared/theme/my_chip_theme.dart';
 import 'package:application_new/shared/theme/my_app_bar_theme.dart';
 import 'package:application_new/shared/theme/my_button_theme.dart';
 import 'package:application_new/shared/theme/my_fab_theme.dart';
@@ -156,7 +156,7 @@ class _MyAppState extends ConsumerState<MyApp> {
         return MyFabTheme(
           child: MyAppBarTheme(
             child: MyButtonTheme(
-              child: FilledChipTheme(
+              child: MyChipTheme(
                 key: themeKey,
                 child: Stack(
                   children: [

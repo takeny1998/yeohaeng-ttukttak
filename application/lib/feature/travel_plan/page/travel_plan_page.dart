@@ -41,14 +41,14 @@ class _TravelPlanPageState extends ConsumerState<TravelPlanPage> {
 
     final TravelPlanState(:travel, :pageIndex, :cityIndex) = state;
 
-    final city = travel.cities[cityIndex];
+    final cityId = travel.cities[cityIndex].id;
 
     return Scaffold(
       body: IndexedStack(
         index: pageIndex,
         children: [
           const TravelPlanHomePage(),
-          TravelPlanRecommendPage(travelId: widget.travelId, cityId: city.id),
+          TravelPlanRecommendPage(travelId: widget.travelId, cityId: cityId),
           TravelPlanManagePage(travelId: widget.travelId),
           TravelPlanBookmarkPage(travelId: widget.travelId),
         ],

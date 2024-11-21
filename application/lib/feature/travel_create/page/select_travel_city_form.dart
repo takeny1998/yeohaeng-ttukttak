@@ -7,7 +7,7 @@ import 'package:application_new/feature/travel_create/component/selected_city_it
 import 'package:application_new/feature/travel_create/component/travel_region_item.dart';
 import 'package:application_new/feature/travel_create/delegate/city_search_delegate.dart';
 import 'package:application_new/feature/travel_create/provider/travel_create_state.dart';
-import 'package:application_new/shared/component/filled_chip_theme.dart';
+import 'package:application_new/shared/theme/my_chip_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -58,7 +58,7 @@ class _SelectTravelCityFormState extends ConsumerState<SelectTravelCityForm> {
 
     final isSelected = selectedCities.isNotEmpty;
 
-    return FilledChipTheme(
+    return MyChipTheme(
         child: Scaffold(
       appBar: AppBar(
           titleSpacing: 0.0,
