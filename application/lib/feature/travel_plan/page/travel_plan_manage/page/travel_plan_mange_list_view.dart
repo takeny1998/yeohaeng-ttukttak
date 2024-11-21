@@ -5,7 +5,7 @@ import 'package:application_new/domain/travel_visit/travel_visit_model.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_manage/component/travel_date_item.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_manage/component/travel_plan_list_drag_item.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_manage/component/travel_plan_list_item.dart';
-import 'package:application_new/feature/travel_plan/page/travel_plan_manage/page/travel_plan_date_view.dart';
+import 'package:application_new/feature/travel_plan/page/travel_plan_manage/page/travel_plan_date_range_view.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_manage/provider/travel_plan_manage_provider.dart';
 import 'package:application_new/shared/component/fixed_header_delegate.dart';
 import 'package:flutter/material.dart';
@@ -63,25 +63,16 @@ class _TravelPlanMangeListViewState
           decoration: BoxDecoration(
               border: Border(
                   bottom: BorderSide(color: colorScheme.surfaceContainerHigh))),
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-              const SizedBox(width: 16.0),
-              for (int i = 0; i < daysOfTravel; i++) ...[
-                DragTarget(
-                    onMove: (detail) => widget
-                        .onChangeDate(travel.startedOn.add(Duration(days: i))),
-                    builder: (context, candidateData, rejectedData) =>
-                        TravelDateItem(
-                            dayOfTravel: i,
-                            travel: travel,
-                            selectedDate: widget.selectedDate,
-                            onChangeDate: widget.onChangeDate)),
-                const SizedBox(width: 8.0),
-              ],
-              const SizedBox(width: 16.0),
-            ]),
-          ),
+          child: TravelDateRangeView(
+              travel: travel,
+              onChangeDate: widget.onChangeDate,
+              selectedDate: widget.selectedDate,
+              builder: (item, index) {
+                return DragTarget(
+                    onMove: (detail) => widget.onChangeDate(
+                        travel.startedOn.add(Duration(days: index))),
+                    builder: (context, candidateData, rejectedData) => item);
+              }),
         ),
         Expanded(
           child: Stack(
