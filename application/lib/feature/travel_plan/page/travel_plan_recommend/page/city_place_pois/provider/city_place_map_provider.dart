@@ -30,7 +30,7 @@ class CityPlaceMap extends _$CityPlaceMap {
           width: markerRadius,
           height: markerRadius,
           point: LatLng(latitude, longitude),
-          child: PlaceMarkerItem(place: place, isSelected: isSelected));
+          child: PlaceWithCategoryMarkerItem(place: place, isSelected: isSelected));
     }).toList();
   }
 

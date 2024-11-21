@@ -58,6 +58,7 @@ class TravelPlanManagePage extends ConsumerWidget {
               height: (bodyHeight - dragHandleHeight - 81.0) *
                   TravelPlanManage.mapHeightRatios[mapHeightLevel],
               child: PlacesMapView(
+                usePolyline: true,
                 places: selectedVisitPlaces.map((e) => e.place).toList(),
               ),
             ),

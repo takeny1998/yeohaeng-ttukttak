@@ -13,8 +13,12 @@ import 'package:vector_map_tiles/vector_map_tiles.dart';
 class PlacesMapView extends StatefulWidget {
   final EdgeInsets? padding;
   final List<PlaceModel> places;
+  final bool usePolyline;
 
-  const PlacesMapView({super.key, required this.places, this.padding});
+  final Widget Function(PlaceModel place, int index)? markerBuilder;
+
+  const PlacesMapView(
+      {super.key, required this.places, this.padding, this.markerBuilder, this.usePolyline = false});
 
   @override
   State<PlacesMapView> createState() => _PlacesMapViewState();
@@ -38,7 +42,6 @@ class _PlacesMapViewState extends State<PlacesMapView> {
 
   Completer<bool> mapReadyCompleter = Completer();
 
-
   bool isMoving = false;
 
   @override
@@ -53,13 +56,15 @@ class _PlacesMapViewState extends State<PlacesMapView> {
 
       final isSelected = place.id == selectedPlace?.id;
 
+      final markerBuilder = widget.markerBuilder ??
+          (_, __) => PlaceWithCategoryMarkerItem(
+              radius: markerRadius, place: place, isSelected: isSelected);
+
       return Marker(
           width: markerRadius,
           height: markerRadius,
           point: LatLng(latitude, longitude),
-          child: PlaceMarkerItem(
-              radius: markerRadius,
-              place: place, isSelected: isSelected));
+          child: markerBuilder(place, index));
     }).toList();
   }
 
@@ -74,13 +79,13 @@ class _PlacesMapViewState extends State<PlacesMapView> {
     final padding = widget.padding;
     final ThemeData(:textTheme, :colorScheme) = Theme.of(context);
 
-    final topPadding =
-        MediaQuery.of(context).padding.top + (padding?.top ?? 0.0) + markerRadius;
+    final topPadding = MediaQuery.of(context).padding.top +
+        (padding?.top ?? 0.0) +
+        markerRadius;
 
     markers = _buildMarkers(widget.places);
 
     mapReadyCompleter.future.then((_) async {
-
       mapController.fitCamera(CameraFit.coordinates(
           maxZoom: 12.0,
           padding: EdgeInsets.fromLTRB(
@@ -104,6 +109,16 @@ class _PlacesMapViewState extends State<PlacesMapView> {
             if (style != null)
               VectorTileLayer(
                   tileProviders: style!.providers, theme: style!.theme),
+            if (widget.usePolyline)
+              PolylineLayer(polylines: [
+                Polyline(
+                  pattern: const StrokePattern.dotted(),
+                  strokeWidth: 3.0,
+                  borderStrokeWidth: 3.0,
+                    color: colorScheme.primary,
+                    borderColor: colorScheme.onPrimary,
+                    points: markers.map((e) => e.point).toList())
+              ]),
             MarkerLayer(markers: markers.reversed.toList()),
           ],
         ),

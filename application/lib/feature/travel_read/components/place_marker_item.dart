@@ -2,12 +2,12 @@ import 'package:application_new/domain/place/place_model.dart';
 import 'package:bordered_text/bordered_text.dart';
 import 'package:flutter/material.dart';
 
-class PlaceMarkerItem extends StatelessWidget {
+class PlaceWithCategoryMarkerItem extends StatelessWidget {
   final bool isSelected;
   final PlaceModel place;
   final double radius;
 
-  const PlaceMarkerItem({
+  const PlaceWithCategoryMarkerItem({
     super.key,
     required this.place,
     required this.isSelected,
@@ -16,7 +16,6 @@ class PlaceMarkerItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
 
     final labelStyle = TextStyle(
@@ -41,7 +40,9 @@ class PlaceMarkerItem extends StatelessWidget {
               decoration: BoxDecoration(
                   color: backgroundColor,
                   shape: BoxShape.circle,
-                  border: Border.all(color: colorScheme.primaryFixedDim)),
+                  border: Border.all(
+                      width: 1.5,
+                      color: colorScheme.primaryFixedDim)),
               child: Icon(
                 place.categoryTypes.first.iconData,
                 color: foregroundColor,

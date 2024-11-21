@@ -77,7 +77,7 @@ class _VisitsMapItemState extends ConsumerState<VisitsMapItem> {
           width: markerRadius,
           height: markerRadius,
           point: point,
-          child: PlaceMarkerItem(place: place, isSelected: isSelected));
+          child: PlaceWithCategoryMarkerItem(place: place, isSelected: isSelected));
 
       if (isSelected) {
         markers.insert(0, marker);
