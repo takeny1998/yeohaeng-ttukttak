@@ -13,7 +13,7 @@ import 'package:path/path.dart';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../feature/travel_plan/page/travel_plan_recommend/page/city_place_pois/page/city_place_pois_page.dart';
+import '../../feature/travel_plan/page/travel_plan_recommend/page/city_place_pois/page/travel_city_pois_page.dart';
 
 part 'router_provider.g.dart';
 
@@ -75,7 +75,7 @@ GoRouter router(RouterRef ref) {
           builder: (context, state) {
             final {'travelId': travelId, 'cityId': cityId} = state.pathParameters;
 
-            return CityPlacePoisPage(travelId: int.parse(travelId), cityId: int.parse(cityId));
+            return TravelCityPoisPage(travelId: int.parse(travelId), cityId: int.parse(cityId));
           }),
       GoRoute(
           path: '/travels/:travelId/cities/:cityId/travels',

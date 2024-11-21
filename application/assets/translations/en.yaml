@@ -19,8 +19,10 @@ widget:
     hint_select_motivation_types: (Select at least one, up to five)
     require_select_detail: Please select all of your trip details.
 
-  CityPlacePoisPage:
+  TravelCityPoisFilterView:
     require_select_sort_type: Please select sorting criteria.
+
+  TravelCityPoisSortTypeSelectView:
     all_category_type: All
 
   PlaceMetricItem:

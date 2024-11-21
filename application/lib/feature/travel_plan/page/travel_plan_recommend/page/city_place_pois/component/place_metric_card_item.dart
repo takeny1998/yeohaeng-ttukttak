@@ -26,12 +26,12 @@ class PlaceMetricCardItem extends StatelessWidget {
         decoration: BoxDecoration(
             color: colorScheme.surface,
             border: Border.all(color: colorScheme.primaryFixedDim),
-            borderRadius: BorderRadius.circular(8.0)),
+            borderRadius: BorderRadius.circular(16.0)),
         child: Row(children: [
           Expanded(
               flex: 6,
               child: ClipRRect(
-                  borderRadius: BorderRadius.circular(6.0),
+                  borderRadius: BorderRadius.circular(16.0),
                   child: Container(color: colorScheme.surfaceContainer))),
           const Spacer(flex: 1),
           Expanded(
@@ -45,21 +45,21 @@ class PlaceMetricCardItem extends StatelessWidget {
                     const SizedBox(height: 4.0),
                     Text(place.address.value?.lineBreakByWord() ?? '',
                         style: subTitleStyle,
-                        maxLines: 2,
                         overflow: TextOverflow.ellipsis),
                     const Expanded(child: SizedBox()),
                     Wrap(spacing: 8.0, children: [
                       if (rating != null)
                         SmallChip(
-                            backgroundColor: colorScheme.primary,
-                            foregroundColor: colorScheme.onPrimary,
+                            backgroundColor: colorScheme.primaryContainer,
+                            foregroundColor: colorScheme.primary,
+                            borderColor: colorScheme.primaryFixedDim,
                             leading: Icon(Icons.star_rate_rounded,
-                                color: colorScheme.onPrimary),
+                                color: colorScheme.primary),
                             label: rating.toStringAsFixed(2)),
                       for (final categoryType in place.categoryTypes.take(2))
                         SmallChip(label: TranslationUtil.enumValue(categoryType)),
                     ]),
-                    const SizedBox(height: 16.0),
+                    const SizedBox(height: 8.0),
                   ])),
           const Spacer(flex: 1),
         ]));
