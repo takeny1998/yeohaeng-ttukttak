@@ -5,6 +5,7 @@ import 'package:application_new/domain/travel/travel_model.dart';
 import 'package:application_new/domain/travel_visit/travel_visit_model.dart';
 import 'package:application_new/domain/travel_visit/travel_visit_repository.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_manage/page/travel_plan_date_view.dart';
+import 'package:application_new/feature/travel_plan/page/travel_plan_manage/provider/travel_plan_manage_provider.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_recommend/component/travel_info_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -88,6 +89,8 @@ class _TravelPlanAddViewState extends ConsumerState<TravelPlanAddView> {
                       travel.id,
                       TravelVisitForm(
                           placeId: place.id, dayOfTravel: dayOfTravel));
+
+                  ref.invalidate(travelPlanManageProvider(travel.id));
 
                   final message = TranslationUtil.message(
                     'visit_added',

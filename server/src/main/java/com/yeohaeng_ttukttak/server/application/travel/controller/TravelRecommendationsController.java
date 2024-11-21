@@ -10,6 +10,7 @@ import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
 import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelRecommendRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,6 +27,7 @@ public class TravelRecommendationsController {
     private final TravelRecommendRepository repository;
 
     @GetMapping
+    @Transactional(readOnly = true)
     public ServerResponse<RecommendTravelResponse> recommend(
             @RequestParam Long cityId,
             @RequestParam List<TravelMotivationType> motivationTypes,

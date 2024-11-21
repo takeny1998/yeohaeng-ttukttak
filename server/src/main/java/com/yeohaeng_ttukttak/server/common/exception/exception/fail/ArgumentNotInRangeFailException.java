@@ -6,9 +6,9 @@ public final class ArgumentNotInRangeFailException extends InvalidArgumentFailEx
 
     private static final String code = "ARGUMENT_NOT_IN_RANGE_FAIL";
 
-    private final Number start, end;
+    private final Object start, end;
 
-    public ArgumentNotInRangeFailException(String field, Number start, Number end) {
+    public ArgumentNotInRangeFailException(String field, Object start, Object end) {
         super(code, field);
         this.start = start;
         this.end = end;

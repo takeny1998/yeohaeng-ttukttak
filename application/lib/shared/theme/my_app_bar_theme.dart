@@ -16,7 +16,7 @@ class MyAppBarTheme extends StatelessWidget {
             backgroundColor: colorScheme.surface,
             shape: Border(bottom: BorderSide(color: colorScheme.surfaceContainerHigh)),
             titleTextStyle: TextStyle(
-                fontSize: 20.0,
+                fontSize: 18.0,
                 color: colorScheme.onSurface,
                 fontWeight: FontWeight.w600)));
 

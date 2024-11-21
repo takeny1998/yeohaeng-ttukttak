@@ -16,10 +16,8 @@ _$TravelVisitModelImpl _$$TravelVisitModelImplFromJson(
       images: (json['images'] as List<dynamic>)
           .map((e) => ImageModel.fromJson(e as Map<String, dynamic>))
           .toList(),
-      visitedOn: json['visitedOn'] == null
-          ? null
-          : DateTime.parse(json['visitedOn'] as String),
-      orderOfVisit: (json['orderOfVisit'] as num?)?.toInt(),
+      visitedOn: DateTime.parse(json['visitedOn'] as String),
+      orderOfVisit: (json['orderOfVisit'] as num).toInt(),
       reasonType: $enumDecodeNullable(
           _$TravelVisitReasonTypeEnumMap, json['reasonType']),
     );
@@ -31,7 +29,7 @@ Map<String, dynamic> _$$TravelVisitModelImplToJson(
       'placeId': instance.placeId,
       'rating': instance.rating,
       'images': instance.images,
-      'visitedOn': instance.visitedOn?.toIso8601String(),
+      'visitedOn': instance.visitedOn.toIso8601String(),
       'orderOfVisit': instance.orderOfVisit,
       'reasonType': _$TravelVisitReasonTypeEnumMap[instance.reasonType],
     };

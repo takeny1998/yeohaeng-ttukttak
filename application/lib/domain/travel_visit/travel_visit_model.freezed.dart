@@ -24,8 +24,8 @@ mixin _$TravelVisitModel {
   int get placeId => throw _privateConstructorUsedError;
   TravelVisitRatingModel get rating => throw _privateConstructorUsedError;
   List<ImageModel> get images => throw _privateConstructorUsedError;
-  DateTime? get visitedOn => throw _privateConstructorUsedError;
-  int? get orderOfVisit => throw _privateConstructorUsedError;
+  DateTime get visitedOn => throw _privateConstructorUsedError;
+  int get orderOfVisit => throw _privateConstructorUsedError;
   TravelVisitReasonType? get reasonType => throw _privateConstructorUsedError;
 
   /// Serializes this TravelVisitModel to a JSON map.
@@ -49,8 +49,8 @@ abstract class $TravelVisitModelCopyWith<$Res> {
       int placeId,
       TravelVisitRatingModel rating,
       List<ImageModel> images,
-      DateTime? visitedOn,
-      int? orderOfVisit,
+      DateTime visitedOn,
+      int orderOfVisit,
       TravelVisitReasonType? reasonType});
 
   $TravelVisitRatingModelCopyWith<$Res> get rating;
@@ -75,8 +75,8 @@ class _$TravelVisitModelCopyWithImpl<$Res, $Val extends TravelVisitModel>
     Object? placeId = null,
     Object? rating = null,
     Object? images = null,
-    Object? visitedOn = freezed,
-    Object? orderOfVisit = freezed,
+    Object? visitedOn = null,
+    Object? orderOfVisit = null,
     Object? reasonType = freezed,
   }) {
     return _then(_value.copyWith(
@@ -96,14 +96,14 @@ class _$TravelVisitModelCopyWithImpl<$Res, $Val extends TravelVisitModel>
           ? _value.images
           : images // ignore: cast_nullable_to_non_nullable
               as List<ImageModel>,
-      visitedOn: freezed == visitedOn
+      visitedOn: null == visitedOn
           ? _value.visitedOn
           : visitedOn // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      orderOfVisit: freezed == orderOfVisit
+              as DateTime,
+      orderOfVisit: null == orderOfVisit
           ? _value.orderOfVisit
           : orderOfVisit // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as int,
       reasonType: freezed == reasonType
           ? _value.reasonType
           : reasonType // ignore: cast_nullable_to_non_nullable
@@ -135,8 +135,8 @@ abstract class _$$TravelVisitModelImplCopyWith<$Res>
       int placeId,
       TravelVisitRatingModel rating,
       List<ImageModel> images,
-      DateTime? visitedOn,
-      int? orderOfVisit,
+      DateTime visitedOn,
+      int orderOfVisit,
       TravelVisitReasonType? reasonType});
 
   @override
@@ -160,8 +160,8 @@ class __$$TravelVisitModelImplCopyWithImpl<$Res>
     Object? placeId = null,
     Object? rating = null,
     Object? images = null,
-    Object? visitedOn = freezed,
-    Object? orderOfVisit = freezed,
+    Object? visitedOn = null,
+    Object? orderOfVisit = null,
     Object? reasonType = freezed,
   }) {
     return _then(_$TravelVisitModelImpl(
@@ -181,14 +181,14 @@ class __$$TravelVisitModelImplCopyWithImpl<$Res>
           ? _value._images
           : images // ignore: cast_nullable_to_non_nullable
               as List<ImageModel>,
-      visitedOn: freezed == visitedOn
+      visitedOn: null == visitedOn
           ? _value.visitedOn
           : visitedOn // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      orderOfVisit: freezed == orderOfVisit
+              as DateTime,
+      orderOfVisit: null == orderOfVisit
           ? _value.orderOfVisit
           : orderOfVisit // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as int,
       reasonType: freezed == reasonType
           ? _value.reasonType
           : reasonType // ignore: cast_nullable_to_non_nullable
@@ -205,8 +205,8 @@ class _$TravelVisitModelImpl implements _TravelVisitModel {
       required this.placeId,
       required this.rating,
       required final List<ImageModel> images,
-      this.visitedOn,
-      this.orderOfVisit,
+      required this.visitedOn,
+      required this.orderOfVisit,
       this.reasonType})
       : _images = images;
 
@@ -228,9 +228,9 @@ class _$TravelVisitModelImpl implements _TravelVisitModel {
   }
 
   @override
-  final DateTime? visitedOn;
+  final DateTime visitedOn;
   @override
-  final int? orderOfVisit;
+  final int orderOfVisit;
   @override
   final TravelVisitReasonType? reasonType;
 
@@ -291,8 +291,8 @@ abstract class _TravelVisitModel implements TravelVisitModel {
       required final int placeId,
       required final TravelVisitRatingModel rating,
       required final List<ImageModel> images,
-      final DateTime? visitedOn,
-      final int? orderOfVisit,
+      required final DateTime visitedOn,
+      required final int orderOfVisit,
       final TravelVisitReasonType? reasonType}) = _$TravelVisitModelImpl;
 
   factory _TravelVisitModel.fromJson(Map<String, dynamic> json) =
@@ -307,9 +307,9 @@ abstract class _TravelVisitModel implements TravelVisitModel {
   @override
   List<ImageModel> get images;
   @override
-  DateTime? get visitedOn;
+  DateTime get visitedOn;
   @override
-  int? get orderOfVisit;
+  int get orderOfVisit;
   @override
   TravelVisitReasonType? get reasonType;
 

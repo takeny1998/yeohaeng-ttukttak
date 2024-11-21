@@ -26,27 +26,9 @@ class _TravelPlanPageState extends ConsumerState<TravelPlanPage> {
   final scrollController = ScrollController();
   final pageController = PageController();
 
-  bool isHeaderSnapped = false;
-  bool isHeaderScrolled = false;
-
-  int animatingCount = 0;
-
-  static const headerOffset = 180.0;
-
-  FutureOr<void> animateTo(double offset, {required Duration duration}) {
-    animatingCount++;
-
-    scrollController.animateTo(offset,
-        duration: duration, curve: Curves.linear);
-
-    Future.delayed(Duration(milliseconds: duration.inMilliseconds),
-        () => animatingCount--);
-  }
-
   @override
   void dispose() {
     pageController.dispose();
-    scrollController.dispose();
     super.dispose();
   }
 
@@ -59,74 +41,18 @@ class _TravelPlanPageState extends ConsumerState<TravelPlanPage> {
 
     final TravelPlanState(:travel, :pageIndex, :cityIndex) = state;
 
-    ref.listen(travelPlanProvider(widget.travelId), (prev, next) {
-      final isHomePage = next?.pageIndex == 0;
-
-      final offset = isHomePage || (isHeaderSnapped && isHeaderScrolled)
-          ? 0.0
-          : headerOffset;
-
-      const duration = Duration(milliseconds: 200);
-
-      animateTo(offset, duration: duration);
-    });
-
     final city = travel.cities[cityIndex];
 
-    final List<Widget> pages = [
-      const TravelPlanHomePage(),
-      TravelPlanRecommendPage(travelId: widget.travelId, cityId: city.id),
-      TravelPlanManagePage(travelId: widget.travelId),
-      TravelPlanBookmarkPage(travelId: widget.travelId),
-    ];
-
     return Scaffold(
-      body: NestedScrollView(
-          key: travelPlanPageKey,
-          controller: scrollController,
-          headerSliverBuilder: (context, innerBoxIsScrolled) {
-            isHeaderScrolled = innerBoxIsScrolled;
-
-            return [
-              SliverOverlapAbsorber(
-                  handle:
-                      NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-                  sliver: TravelPlanHomeHeader(
-                    travel: state.travel,
-                    onScroll: (isCollapsed) {
-                      isHeaderSnapped = !isCollapsed;
-
-                      if (isHeaderSnapped &&
-                          isHeaderScrolled &&
-                          animatingCount == 0) {
-                        final bodyController =
-                            travelPlanPageKey.currentState?.innerController;
-
-                        if (bodyController == null) return;
-
-                        if (bodyController.offset > 120.0) return;
-
-                        isHeaderSnapped = false;
-                        animateTo(0.0,
-                            duration: const Duration(milliseconds: 300));
-                      }
-                    },
-                  ))
-            ];
-          },
-          body: Builder(builder: (context) {
-            return CustomScrollView(
-              physics: const ClampingScrollPhysics(),
-              slivers: [
-                SliverLayoutBuilder(builder: (context, constraints) {
-                  return SliverOverlapInjector(
-                      handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
-                          context));
-                }),
-                pages[pageIndex],
-              ],
-            );
-          })),
+      body: IndexedStack(
+        index: pageIndex,
+        children: [
+          const TravelPlanHomePage(),
+          TravelPlanRecommendPage(travelId: widget.travelId, cityId: city.id),
+          TravelPlanManagePage(travelId: widget.travelId),
+          TravelPlanBookmarkPage(travelId: widget.travelId),
+        ],
+      ),
       bottomNavigationBar: NavigationBar(
         selectedIndex: pageIndex,
         onDestinationSelected: (index) =>

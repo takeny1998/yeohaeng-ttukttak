@@ -2,7 +2,7 @@ package com.yeohaeng_ttukttak.server.application.place.controller;
 
 import com.yeohaeng_ttukttak.server.application.place.controller.dto.PlaceRecommendationResponse;
 import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
-import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundException;
+import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundFailException;
 import com.yeohaeng_ttukttak.server.common.util.dto.PageCommand;
 import com.yeohaeng_ttukttak.server.common.util.dto.PageResult;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.Geography;
@@ -38,7 +38,7 @@ public class PlaceRecommendationsController {
             @RequestParam List<TravelCompanionType> companionTypes) {
 
         Geography geography = geographyRepository.findById(cityId)
-                .orElseThrow(() -> new EntityNotFoundException(Geography.class));
+                .orElseThrow(() -> new EntityNotFoundFailException(Geography.class));
 
         PageResult<Place> pageResult = placeRecommendationsRepository.call(
                 categoryType,

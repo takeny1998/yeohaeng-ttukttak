@@ -66,6 +66,7 @@ class _PlacesMapViewState extends State<PlacesMapView> {
   @override
   Widget build(BuildContext context) {
     final padding = widget.padding;
+    final ThemeData(:textTheme, :colorScheme) = Theme.of(context);
 
     final topPadding =
         MediaQuery.of(context).padding.top + (padding?.top ?? 0.0);
@@ -103,18 +104,18 @@ class _PlacesMapViewState extends State<PlacesMapView> {
             child: Wrap(
               direction: Axis.vertical,
               children: [
-                IconButton.filled(
+                IconButton.filledTonal(
                     onPressed: () {
                       final MapCamera(:center, :zoom) = mapController.camera;
                       mapController.move(center, zoom + 1.0);
                     },
-                    icon: const Icon(Icons.add)),
-                IconButton.filled(
+                    icon: Icon(Icons.add, color: colorScheme.primary)),
+                IconButton.filledTonal(
                     onPressed: () {
                       final MapCamera(:center, :zoom) = mapController.camera;
                       mapController.move(center, zoom - 1.0);
                     },
-                    icon: const Icon(Icons.remove)),
+                    icon: Icon(Icons.remove, color: colorScheme.primary,)),
               ],
             ))
       ],

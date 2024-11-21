@@ -4,7 +4,7 @@ import com.yeohaeng_ttukttak.server.application.place.controller.dto.FindPlacePo
 import com.yeohaeng_ttukttak.server.common.util.dto.PageCommand;
 import com.yeohaeng_ttukttak.server.common.util.dto.PageResult;
 import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
-import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundException;
+import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundFailException;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.City;
 import com.yeohaeng_ttukttak.server.domain.geography.repository.GeographyRepository;
 import com.yeohaeng_ttukttak.server.domain.place.dto.PlaceMetricRecord;
@@ -33,7 +33,7 @@ public class PlacePoiController {
             PageCommand pageCommand) {
 
         final City city = geographyRepository.findCityById(cityId)
-                .orElseThrow(() -> new EntityNotFoundException(City.class));
+                .orElseThrow(() -> new EntityNotFoundFailException(City.class));
 
         PageResult<PlaceMetricRecord> pageResult = poiRepository.call(
                 city.codeStart(), city.codeEnd(), sortType, pageCommand);

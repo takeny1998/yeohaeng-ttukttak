@@ -2,8 +2,9 @@ package com.yeohaeng_ttukttak.server.application.travel.controller;
 
 import com.yeohaeng_ttukttak.server.application.travel.controller.dto.*;
 import com.yeohaeng_ttukttak.server.application.travel.service.CreateTravelVisitService;
+import com.yeohaeng_ttukttak.server.application.travel.service.DeleteTravelVisitService;
 import com.yeohaeng_ttukttak.server.application.travel.service.FindTravelVisitsService;
-import com.yeohaeng_ttukttak.server.application.travel.service.UpdateAllTravelVisitService;
+import com.yeohaeng_ttukttak.server.application.travel.service.UpdateTravelVisitService;
 import com.yeohaeng_ttukttak.server.common.aop.annotation.Authorization;
 import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
 import com.yeohaeng_ttukttak.server.domain.auth.dto.AccessTokenDto;
@@ -21,7 +22,8 @@ public class TravelVisitController {
 
     private final CreateTravelVisitService createService;
     private final FindTravelVisitsService findService;
-    private final UpdateAllTravelVisitService updateAllService;
+    private final UpdateTravelVisitService updateService;
+    private final DeleteTravelVisitService deleteService;
 
     @PostMapping("/{travelId}/visits")
     @Authorization
@@ -44,15 +46,30 @@ public class TravelVisitController {
         return new ServerResponse<>(new FindTravelVisitsResponse(dtoList));
     }
 
-    @PutMapping("/{travelId}/visits")
+    @PatchMapping("/{travelId}/visits/{visitId}")
     @Authorization
-    public ServerResponse<UpdateAllTravelVisitResponse> updateAll(
+    public ServerResponse<UpdateTravelVisitResponse> update(
             @PathVariable Long travelId,
-            @Valid @RequestBody UpdateAllTravelVisitRequest request) {
+            @PathVariable Long visitId,
+            @Valid @RequestBody UpdateTravelVisitRequest request,
+            AccessTokenDto accessToken) {
 
-        List<TravelVisitDto> dtoList = updateAllService.call(travelId, request.visits());
+        updateService.call(request.toCommand(visitId, travelId, accessToken.memberId()));
 
-        return new ServerResponse<>(new UpdateAllTravelVisitResponse(dtoList));
+        List<TravelVisitDto> dtoList = findService.call(travelId);
+
+        return new ServerResponse<>(new UpdateTravelVisitResponse(dtoList));
+    }
+
+    @DeleteMapping("/{travelId}/visits/{visitId}")
+    @Authorization
+    public ServerResponse<Void> delete(
+            @PathVariable Long travelId,
+            @PathVariable Long visitId,
+            AccessTokenDto accessToken) {
+
+        deleteService.call(travelId, visitId, accessToken.memberId());
+        return new ServerResponse<>();
     }
 
 }

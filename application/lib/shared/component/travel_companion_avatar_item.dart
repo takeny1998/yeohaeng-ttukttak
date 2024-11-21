@@ -34,7 +34,7 @@ class TravelerAvatarItem extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     if (ageGroup == null || gender == null) {
-      return CircleAvatar(radius: radius ?? 24.0);
+      return Container(color: Colors.transparent);
     }
 
     final path = ref

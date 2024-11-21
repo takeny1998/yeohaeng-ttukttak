@@ -2,7 +2,7 @@ package com.yeohaeng_ttukttak.server.application.place.controller;
 
 import com.yeohaeng_ttukttak.server.application.place.controller.dto.FindPlaceResponse;
 import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
-import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundException;
+import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundFailException;
 import com.yeohaeng_ttukttak.server.domain.place.dto.PlaceDto;
 import com.yeohaeng_ttukttak.server.domain.place.entity.Place;
 import com.yeohaeng_ttukttak.server.domain.place.repository.PlaceRepository;
@@ -25,7 +25,7 @@ public class PlaceController {
     public ServerResponse<FindPlaceResponse> find(@PathVariable Long id) {
 
         final Place place = placeRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(Place.class));
+                .orElseThrow(() -> new EntityNotFoundFailException(Place.class));
         
         return new ServerResponse<>(new FindPlaceResponse(PlaceDto.of(place)));
     }

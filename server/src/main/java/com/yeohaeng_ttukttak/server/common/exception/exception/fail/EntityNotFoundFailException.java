@@ -5,13 +5,13 @@ import com.yeohaeng_ttukttak.server.common.exception.interfaces.EntityTargetExce
 import static java.lang.String.format;
 import static org.springframework.util.StringUtils.uncapitalize;
 
-public class EntityNotFoundException extends FailException implements EntityTargetException {
+public class EntityNotFoundFailException extends FailException implements EntityTargetException {
 
     static final String code = "ENTITY_NOT_FOUND_FAIL";
 
     private final Class<?> target;
 
-    public EntityNotFoundException(Class<?> target) {
+    public EntityNotFoundFailException(Class<?> target) {
         super(code, format("%sId", uncapitalize(target.getSimpleName())));
         this.target = target;
     }

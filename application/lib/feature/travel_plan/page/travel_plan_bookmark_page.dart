@@ -11,6 +11,10 @@ class TravelPlanBookmarkPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return SliverList(delegate: SliverChildListDelegate([]));
+    return CustomScrollView(
+      slivers: [
+        SliverList(delegate: SliverChildListDelegate([])),
+      ],
+    );
   }
 }

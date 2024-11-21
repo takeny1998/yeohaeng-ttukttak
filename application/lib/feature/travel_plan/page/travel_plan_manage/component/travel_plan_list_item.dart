@@ -1,19 +1,36 @@
 import 'package:application_new/common/util/translation_util.dart';
 import 'package:application_new/domain/travel_visit/travel_visit_model.dart';
+import 'package:application_new/feature/travel_plan/page/travel_plan_manage/component/travel_plan_list_drag_item.dart';
+import 'package:application_new/shared/component/outlined_icon_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:visibility_detector/visibility_detector.dart';
 
-class TravelPlanListItem extends ConsumerWidget {
+class TravelPlanListItem extends ConsumerStatefulWidget {
   final int order;
   final TravelVisitWithPlaceModel visitPlace;
+  final VoidCallback? onDelete;
 
   const TravelPlanListItem(
-      {super.key, required this.order, required this.visitPlace});
+      {super.key, required this.order, required this.visitPlace, this.onDelete});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState createState() => _TravelPlanListITemState();
+}
+
+class _TravelPlanListITemState extends ConsumerState<TravelPlanListItem> {
+
+  int? draggingId;
+
+  @override
+  Widget build(BuildContext context) {
+
+    if (draggingId == widget.visitPlace.visit.id) {
+      return const SizedBox();
+    }
+
     final ThemeData(:colorScheme) = Theme.of(context);
+
+    final (order, visitPlace) = (widget.order, widget.visitPlace);
 
     const titleStyle =
         TextStyle(fontWeight: FontWeight.w600, fontSize: 16.0, height: 1.0);
@@ -26,6 +43,7 @@ class TravelPlanListItem extends ConsumerWidget {
 
     return IntrinsicHeight(
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const SizedBox(width: 24.0),
           Column(
@@ -49,32 +67,65 @@ class TravelPlanListItem extends ConsumerWidget {
               children: [
                 Row(
                   children: [
-                    Text(place.name, style: titleStyle),
-                    const SizedBox(width: 6.0),
-                    Text(categoryName, style: const TextStyle(fontSize: 12.0)),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Text(place.name, style: titleStyle),
+                              const SizedBox(width: 6.0),
+                              Text(categoryName,
+                                  style: const TextStyle(fontSize: 12.0)),
+                            ],
+                          ),
+                          const SizedBox(height: 4.0),
+                          Text(place.address.value ?? '',
+                              style: subTitleStyle,
+                              overflow: TextOverflow.ellipsis),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 24.0),
+                    Draggable<TravelVisitWithPlaceModel>(
+                      key: ValueKey<int>(visitPlace.visit.id),
+                      data: visitPlace,
+                      onDragStarted: () {
+                        if (!mounted) return;
+                        setState(() => draggingId = visitPlace.visit.id);
+                      },
+                      onDragEnd: (_) {
+                        if (!mounted) return;
+                        setState(() => draggingId = null);
+                      },
+                      onDragCompleted: () {
+                        if (!mounted) return;
+                        setState(() => draggingId = null);
+                      },
+                      onDraggableCanceled: (_, __) =>
+                          setState(() => draggingId = null),
+                      feedback: TravelPlanListDragItem(visitPlace: visitPlace),
+                      child:  const Icon(Icons.drag_handle)
+                    ),
+                    const SizedBox(width: 16.0),
                   ],
                 ),
-                const SizedBox(height: 4.0),
-                Text(
-                  place.address.value ?? '',
-                  style: subTitleStyle,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 12.0),
+                const SizedBox(height: 8.0),
                 Wrap(
-                  spacing: 8.0,
+                  spacing: 6.0,
                   children: [
-                    OutlinedButton.icon(
+                    OutlinedIconButton(
                         onPressed: () {},
-                        icon: const Icon(Icons.comment_outlined, size: 14.0),
-                        label: const Text('댓글 추가', style: TextStyle(fontSize: 13.0))),
-                    OutlinedButton.icon(
+                        icon: const Icon(Icons.comment_outlined)),
+                    OutlinedIconButton(
                         onPressed: () {},
-                        icon: const Icon(Icons.star_rate_outlined, size: 16.0),
-                        label: const Text('리뷰 쓰기', style: TextStyle(fontSize: 13.0))),
+                        icon: const Icon(Icons.rate_review_outlined)),
+                    OutlinedIconButton(
+                        onPressed: widget.onDelete,
+                        foregroundColor: colorScheme.error,
+                        icon: const Icon(Icons.delete_outline)),
                   ],
                 ),
-
                 const SizedBox(height: 48.0),
               ],
             ),
