@@ -1,6 +1,7 @@
 import 'package:application_new/domain/geography/geography_model.dart';
 import 'package:application_new/domain/place/place_model.dart';
 import 'package:application_new/domain/travel/travel_model.dart';
+import 'package:application_new/shared/interfaces/IconDataProvidable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -32,10 +33,11 @@ class PlaceMetricModel with _$PlaceMetricModel {
 
 enum PlaceSortType { rating, popularity }
 
-enum PlaceViewType {
+enum ViewType implements IconDataEnum {
   list(Icons.view_list), map(Icons.map);
 
+  @override
   final IconData iconData;
 
-  const PlaceViewType(this.iconData);
+  const ViewType(this.iconData);
 }

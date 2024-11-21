@@ -10,5 +10,7 @@ class TravelPlanManageState with _$TravelPlanManageState {
     required TravelModel travel,
     required List<TravelVisitWithPlaceModel> visitPlaces,
     required DateTime selectedDate,
+    @Default(1) int mapHeightLevel,
+    @Default(false) bool isAnimating,
   }) = _TravelPlanManageState;
 }

@@ -36,7 +36,7 @@ class _CityPlaceListPageState extends ConsumerState<CityPlacePoisPage> {
 
   bool hasScrollDown = false;
   PlaceSortType sortType = PlaceSortType.rating;
-  PlaceViewType viewType = PlaceViewType.list;
+  ViewType viewType = ViewType.list;
 
   static const double scrollThreshold = 240.0;
 
@@ -118,9 +118,9 @@ class _CityPlaceListPageState extends ConsumerState<CityPlacePoisPage> {
                 child: AnimatedSwitcher(
                     duration: const Duration(milliseconds: 300),
                     child: switch (viewType) {
-                      PlaceViewType.list =>
+                      ViewType.list =>
                         buildListView(state.travel, data, state.hasNextPage),
-                      PlaceViewType.map => buildMapView(data, bottomPadding,
+                      ViewType.map => buildMapView(data, bottomPadding,
                           state.placeMetrics, state.hasNextPage)
                     })),
             Positioned(
@@ -249,39 +249,34 @@ class _CityPlaceListPageState extends ConsumerState<CityPlacePoisPage> {
   Widget buildToggleViewButton() {
     final ThemeData(:textTheme, :colorScheme) = Theme.of(context);
 
-    return Container(
-        decoration: BoxDecoration(
-          color: colorScheme.surface,
-          borderRadius: BorderRadius.circular(12.0),
-        ),
-        child: ToggleButtons(
-            fillColor: colorScheme.primaryContainer,
-            borderColor: colorScheme.surfaceContainerHighest,
-            selectedBorderColor: colorScheme.primaryFixedDim,
-            borderRadius: BorderRadius.circular(12.0),
-            textStyle: const TextStyle(fontWeight: FontWeight.w600),
-            onPressed: (index) {
-              final viewType = PlaceViewType.values[index];
-              if (this.viewType == viewType) return;
+    return ToggleButtons(
+        fillColor: colorScheme.primaryContainer,
+        borderColor: colorScheme.surfaceContainerHighest,
+        selectedBorderColor: colorScheme.primaryFixedDim,
+        borderRadius: BorderRadius.circular(12.0),
+        textStyle: const TextStyle(fontWeight: FontWeight.w600),
+        onPressed: (index) {
+          final viewType = ViewType.values[index];
+          if (this.viewType == viewType) return;
 
-              hasScrollDown = false;
-              setState(() => this.viewType = viewType);
-            },
-            isSelected: PlaceViewType.values
-                .map((viewType) => viewType == this.viewType)
-                .toList(),
-            children: [
-              for (final viewType in PlaceViewType.values)
-                Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(viewType.iconData, size: 18.0),
-                          const SizedBox(width: 8.0),
-                          Text(TranslationUtil.enumValue(viewType)),
-                        ])),
-            ]));
+          hasScrollDown = false;
+          setState(() => this.viewType = viewType);
+        },
+        isSelected: ViewType.values
+            .map((viewType) => viewType == this.viewType)
+            .toList(),
+        children: [
+          for (final viewType in ViewType.values)
+            Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(viewType.iconData, size: 18.0),
+                      const SizedBox(width: 8.0),
+                      Text(TranslationUtil.enumValue(viewType)),
+                    ])),
+        ]);
   }
 
   FilterChip buildFilterChip(PlaceCategoryType categoryType) {

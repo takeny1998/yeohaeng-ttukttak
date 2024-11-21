@@ -179,7 +179,7 @@ enum:
       rating: 평점 높은 순
       popularity: 많이 방문한 순
 
-  PlaceViewType:
+  ViewType:
     name: 보기 유형
     values:
       map: 지도

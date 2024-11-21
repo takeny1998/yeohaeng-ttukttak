@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:application_new/domain/place/place_model.dart';
 import 'package:application_new/feature/travel_read/components/place_marker_item.dart';
+import 'package:application_new/shared/component/tonal_filled_icon_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 
@@ -24,7 +25,7 @@ class _PlacesMapViewState extends State<PlacesMapView> {
 
   Style? style;
 
-  static const double markerRadius = 26.0;
+  static const double markerRadius = 32.0;
 
   PlaceModel? selectedPlace;
 
@@ -36,6 +37,9 @@ class _PlacesMapViewState extends State<PlacesMapView> {
       ).read();
 
   Completer<bool> mapReadyCompleter = Completer();
+
+
+  bool isMoving = false;
 
   @override
   void initState() {
@@ -53,7 +57,9 @@ class _PlacesMapViewState extends State<PlacesMapView> {
           width: markerRadius,
           height: markerRadius,
           point: LatLng(latitude, longitude),
-          child: PlaceMarkerItem(place: place, isSelected: isSelected));
+          child: PlaceMarkerItem(
+              radius: markerRadius,
+              place: place, isSelected: isSelected));
     }).toList();
   }
 
@@ -69,10 +75,13 @@ class _PlacesMapViewState extends State<PlacesMapView> {
     final ThemeData(:textTheme, :colorScheme) = Theme.of(context);
 
     final topPadding =
-        MediaQuery.of(context).padding.top + (padding?.top ?? 0.0);
+        MediaQuery.of(context).padding.top + (padding?.top ?? 0.0) + markerRadius;
+
     markers = _buildMarkers(widget.places);
-    mapReadyCompleter.future.then((_) {
-      return mapController.fitCamera(CameraFit.coordinates(
+
+    mapReadyCompleter.future.then((_) async {
+
+      mapController.fitCamera(CameraFit.coordinates(
           maxZoom: 12.0,
           padding: EdgeInsets.fromLTRB(
             markerRadius + 24.0 + (padding?.left ?? 0),
@@ -104,18 +113,23 @@ class _PlacesMapViewState extends State<PlacesMapView> {
             child: Wrap(
               direction: Axis.vertical,
               children: [
-                IconButton.filledTonal(
+                TonalFilledIconButton(
+                    iconSize: 21.0,
                     onPressed: () {
                       final MapCamera(:center, :zoom) = mapController.camera;
                       mapController.move(center, zoom + 1.0);
                     },
                     icon: Icon(Icons.add, color: colorScheme.primary)),
-                IconButton.filledTonal(
+                TonalFilledIconButton(
+                    iconSize: 21.0,
                     onPressed: () {
                       final MapCamera(:center, :zoom) = mapController.camera;
                       mapController.move(center, zoom - 1.0);
                     },
-                    icon: Icon(Icons.remove, color: colorScheme.primary,)),
+                    icon: Icon(
+                      Icons.remove,
+                      color: colorScheme.primary,
+                    )),
               ],
             ))
       ],

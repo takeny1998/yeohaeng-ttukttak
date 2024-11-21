@@ -1,3 +1,4 @@
+import 'package:application_new/shared/interfaces/IconDataProvidable.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -52,7 +53,7 @@ class PlaceAddress with _$PlaceAddress {
   }
 }
 
-enum PlaceCategoryType {
+enum PlaceCategoryType implements IconDataEnum {
   nature(Icons.nature_people),
   tourism(Icons.tour),
   culture(Icons.theater_comedy),
@@ -61,6 +62,7 @@ enum PlaceCategoryType {
   dining(Icons.dining),
   lodging(Icons.hotel);
 
+  @override
   final IconData iconData;
 
   const PlaceCategoryType(this.iconData);

@@ -13,6 +13,9 @@ part 'travel_plan_manage_provider.g.dart';
 
 @riverpod
 class TravelPlanManage extends _$TravelPlanManage {
+
+  static const List<double> mapHeightRatios = [0.0, 0.4, 1.0];
+
   @override
   TravelPlanManageState? build(int travelId) {
     _init();
@@ -39,6 +42,36 @@ class TravelPlanManage extends _$TravelPlanManage {
   void selectDate(DateTime date) {
     if (state?.selectedDate == date) return;
     state = state?.copyWith(selectedDate: date);
+  }
+
+  void endAnimating() {
+    if (state == null || !state!.isAnimating) return;
+
+    state = state!.copyWith(isAnimating: false);
+  }
+
+  void updateMapHeight(double dy) {
+
+    if (state == null || state!.isAnimating) return;
+
+    final isScrollingDown = dy > 0.0;
+    final mapHeightLevel = state!.mapHeightLevel;
+
+    if (isScrollingDown) {
+      if (mapHeightLevel + 1 == mapHeightRatios.length) return;
+
+      state = state!.copyWith(
+        isAnimating: true,
+        mapHeightLevel: mapHeightLevel + 1
+      );
+    } else {
+      if (mapHeightLevel == 0) return;
+
+      state = state!.copyWith(
+          isAnimating: true,
+          mapHeightLevel: mapHeightLevel - 1
+      );
+    }
   }
 
   Future<void> move(TravelVisitWithPlaceModel from, int order) async {
@@ -92,4 +125,7 @@ class TravelPlanManage extends _$TravelPlanManage {
             visit: visit,
             place: await ref.watch(placeProvider(visit.placeId).future))));
   }
+
+
+
 }

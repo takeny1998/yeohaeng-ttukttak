@@ -112,7 +112,7 @@ class _TravelPlanListITemState extends ConsumerState<TravelPlanListItem> {
                 ),
                 const SizedBox(height: 8.0),
                 Wrap(
-                  spacing: 6.0,
+                  spacing: 4.0,
                   children: [
                     OutlinedIconButton(
                         onPressed: () {},

@@ -3,7 +3,8 @@ import 'package:application_new/feature/travel_plan/page/travel_plan_manage/comp
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class TravelDateRangeView extends ConsumerStatefulWidget {
+
+class TravelDateRangeView extends ConsumerWidget {
   final TravelModel travel;
   final DateTime? selectedDate;
   final void Function(DateTime date) onChangeDate;
@@ -18,36 +19,38 @@ class TravelDateRangeView extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState createState() => _TravelPlanDateViewState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
 
-class _TravelPlanDateViewState extends ConsumerState<TravelDateRangeView> {
-
-  @override
-  Widget build(BuildContext context) {
-    final travel = widget.travel;
+    final ThemeData(:textTheme, :colorScheme) = Theme.of(context);
 
     final daysOfTravel =
         DateTimeRange(start: travel.startedOn, end: travel.endedOn)
             .duration
             .inDays;
 
-    final builder = widget.builder ?? (TravelDateItem item, int index) => item;
+    final builder = this.builder ?? (TravelDateItem item, int index) => item;
 
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-        const SizedBox(width: 16.0),
-        for (int i = 0; i < daysOfTravel; i++) ...[
-          builder(TravelDateItem(
-              dayOfTravel: i,
-              travel: travel,
-              selectedDate: widget.selectedDate,
-              onChangeDate: widget.onChangeDate), i),
-          const SizedBox(width: 8.0),
-        ],
-        const SizedBox(width: 16.0),
-      ]),
+    return Container(
+      width: double.maxFinite,
+      padding: const EdgeInsets.only(top: 16.0, bottom: 4.0),
+      decoration: BoxDecoration(
+          border: Border(
+              bottom: BorderSide(color: colorScheme.surfaceContainerHigh))),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+          const SizedBox(width: 16.0),
+          for (int i = 0; i < daysOfTravel; i++) ...[
+            builder(TravelDateItem(
+                dayOfTravel: i,
+                travel: travel,
+                selectedDate: selectedDate,
+                onChangeDate: onChangeDate), i),
+            const SizedBox(width: 8.0),
+          ],
+          const SizedBox(width: 16.0),
+        ]),
+      ),
     );
   }
 }
