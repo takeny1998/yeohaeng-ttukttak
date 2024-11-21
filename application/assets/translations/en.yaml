@@ -173,7 +173,7 @@ enum:
       rating: Top Rated
       popularity: Most Popular
 
-  PlaceViewType:
+  ViewType:
     name: Type of view
     values:
       map: Map

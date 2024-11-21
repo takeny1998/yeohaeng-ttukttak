@@ -6,7 +6,7 @@ part of 'city_place_map_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$cityPlaceMapHash() => r'32f4968d625a95e1946ec8b5a0311e114599c9d2';
+String _$cityPlaceMapHash() => r'86eec6a860103d9b779db91f6ba8ed81e190b74e';
 
 /// Copied from Dart SDK
 class _SystemHash {

@@ -5,7 +5,7 @@ import 'package:application_new/domain/travel_visit/travel_visit_model.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_manage/component/travel_date_item.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_manage/component/travel_plan_list_drag_item.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_manage/component/travel_plan_list_item.dart';
-import 'package:application_new/feature/travel_plan/page/travel_plan_manage/page/travel_plan_date_view.dart';
+import 'package:application_new/feature/travel_plan/page/travel_plan_manage/page/travel_plan_date_range_view.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_manage/provider/travel_plan_manage_provider.dart';
 import 'package:application_new/shared/component/fixed_header_delegate.dart';
 import 'package:flutter/material.dart';
@@ -55,162 +55,130 @@ class _TravelPlanMangeListViewState
       scrollController.jumpTo(0.0);
     });
 
-    return Column(
+    return Stack(
       children: [
-        Container(
-          width: double.maxFinite,
-          padding: const EdgeInsets.only(top: 16.0, bottom: 4.0),
-          decoration: BoxDecoration(
-              border: Border(
-                  bottom: BorderSide(color: colorScheme.surfaceContainerHigh))),
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-              const SizedBox(width: 16.0),
-              for (int i = 0; i < daysOfTravel; i++) ...[
-                DragTarget(
-                    onMove: (detail) => widget
-                        .onChangeDate(travel.startedOn.add(Duration(days: i))),
-                    builder: (context, candidateData, rejectedData) =>
-                        TravelDateItem(
-                            dayOfTravel: i,
-                            travel: travel,
-                            selectedDate: widget.selectedDate,
-                            onChangeDate: widget.onChangeDate)),
-                const SizedBox(width: 8.0),
-              ],
-              const SizedBox(width: 16.0),
-            ]),
-          ),
-        ),
-        Expanded(
-          child: Stack(
-            children: [
-              Positioned.fill(
-                  child: CustomScrollView(
-                      physics: const ClampingScrollPhysics(),
-                      controller: scrollController,
-                      slivers: [
-                    const SliverToBoxAdapter(child: SizedBox(height: 48.0)),
-                    SliverList.builder(
-                        itemCount: visitPlaces.length,
-                        itemBuilder: (context, index) {
-                          final visitPlace = visitPlaces[index];
+        Positioned.fill(
+            child: CustomScrollView(
+                physics: const ClampingScrollPhysics(),
+                controller: scrollController,
+                slivers: [
+              const SliverToBoxAdapter(child: SizedBox(height: 48.0)),
+              SliverList.builder(
+                  itemCount: visitPlaces.length,
+                  itemBuilder: (context, index) {
+                    final visitPlace = visitPlaces[index];
 
-                          return DragTarget<TravelVisitWithPlaceModel>(
-                              onAcceptWithDetails: (detail) => ref
-                                  .read(travelPlanManageProvider(travel.id)
-                                      .notifier)
-                                  .move(detail.data,
-                                      visitPlace.visit.orderOfVisit),
-                              builder: (context, candidateData, rejectedData) {
-                                return Column(
-                                  children: [
-                                    if (candidateData.isNotEmpty)
-                                      Opacity(
-                                          opacity: 0.5,
-                                          child: TravelPlanListItem(
-                                              order: index,
-                                              visitPlace:
-                                                  candidateData.first!)),
-                                    TravelPlanListItem(
-                                        onDelete: () => ref
-                                            .read(travelPlanManageProvider(
-                                                    travel.id)
-                                                .notifier)
-                                            .delete(visitPlace),
-                                        order: index,
-                                        visitPlace: visitPlace),
-                                  ],
-                                );
-                              });
-                        }),
-                    SliverFillRemaining(
-                      hasScrollBody: false,
-                      child: DragTarget<TravelVisitWithPlaceModel>(
-                          onAcceptWithDetails: (detail) {
-                        var lastVisit = visitPlaces.lastOrNull?.visit;
-                        ref
-                            .read(travelPlanManageProvider(travel.id).notifier)
+                    return DragTarget<TravelVisitWithPlaceModel>(
+                        onAcceptWithDetails: (detail) => ref
+                            .read(travelPlanManageProvider(travel.id)
+                                .notifier)
                             .move(detail.data,
-                                (lastVisit?.orderOfVisit ?? -1) + 1);
-                      }, builder: (context, candidateData, rejectedData) {
-                        return Column(
-                          children: [
-                            if (candidateData.isNotEmpty)
-                              Opacity(
-                                  opacity: 0.5,
-                                  child: TravelPlanListItem(
-                                      order: 0,
-                                      visitPlace: candidateData.first!)),
-                            Expanded(
-                              child: Container(
-                                width: double.maxFinite,
-                                constraints:
-                                    const BoxConstraints(minHeight: 128.0),
-                                child: Row(
+                                visitPlace.visit.orderOfVisit),
+                        builder: (context, candidateData, rejectedData) {
+                          return Column(
+                            children: [
+                              if (candidateData.isNotEmpty)
+                                Opacity(
+                                    opacity: 0.5,
+                                    child: TravelPlanListItem(
+                                        order: index,
+                                        visitPlace:
+                                            candidateData.first!)),
+                              TravelPlanListItem(
+                                  onDelete: () => ref
+                                      .read(travelPlanManageProvider(
+                                              travel.id)
+                                          .notifier)
+                                      .delete(visitPlace),
+                                  order: index,
+                                  visitPlace: visitPlace),
+                            ],
+                          );
+                        });
+                  }),
+              SliverFillRemaining(
+                hasScrollBody: false,
+                child: DragTarget<TravelVisitWithPlaceModel>(
+                    onAcceptWithDetails: (detail) {
+                  var lastVisit = visitPlaces.lastOrNull?.visit;
+                  ref
+                      .read(travelPlanManageProvider(travel.id).notifier)
+                      .move(detail.data,
+                          (lastVisit?.orderOfVisit ?? -1) + 1);
+                }, builder: (context, candidateData, rejectedData) {
+                  return Column(
+                    children: [
+                      if (candidateData.isNotEmpty)
+                        Opacity(
+                            opacity: 0.5,
+                            child: TravelPlanListItem(
+                                order: 0,
+                                visitPlace: candidateData.first!)),
+                      Expanded(
+                        child: Container(
+                          width: double.maxFinite,
+                          constraints:
+                              const BoxConstraints(minHeight: 128.0),
+                          child: Row(
+                            children: [
+                              const SizedBox(width: 24.0),
+                              SizedBox(
+                                width: 32.0,
+                                child: Column(
                                   children: [
-                                    const SizedBox(width: 24.0),
-                                    SizedBox(
-                                      width: 32.0,
-                                      child: Column(
-                                        children: [
-                                          if (visitPlaces.isEmpty)
-                                            CircleAvatar(
-                                              radius: 16.0,
-                                              child: Icon(
-                                                  Icons
-                                                      .add_location_alt_outlined,
-                                                  color: colorScheme.primary,
-                                                  size: 18.0),
-                                            ),
-                                          Expanded(
-                                            child: Container(
-                                              width: 1.0,
-                                              color:
-                                                  colorScheme.primaryContainer,
-                                            ),
-                                          ),
-                                        ],
+                                    if (visitPlaces.isEmpty)
+                                      CircleAvatar(
+                                        radius: 16.0,
+                                        child: Icon(
+                                            Icons
+                                                .add_location_alt_outlined,
+                                            color: colorScheme.primary,
+                                            size: 18.0),
                                       ),
-                                    ),
                                     Expanded(
-                                      child: Container(),
+                                      child: Container(
+                                        width: 1.0,
+                                        color:
+                                            colorScheme.primaryContainer,
+                                      ),
                                     ),
                                   ],
                                 ),
                               ),
-                            )
-                          ],
-                        );
-                      }),
-                    )
-                  ])),
-              Align(
-                alignment: Alignment.topCenter,
-                child: DragTarget<TravelVisitWithPlaceModel>(
-                  builder: (context, accepted, rejected) => Container(
-                    height: 40,
-                    width: double.infinity,
-                    color: Colors.transparent,
-                  ),
-                  onMove: (detail) => scrollUp(),
-                ),
-              ),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: DragTarget<TravelVisitWithPlaceModel>(
-                  builder: (context, accepted, rejected) => Container(
-                    height: 40,
-                    width: double.infinity,
-                    color: Colors.transparent,
-                  ),
-                  onMove: (detail) => scrollDown(),
-                ),
+                              Expanded(
+                                child: Container(),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  );
+                }),
               )
-            ],
+            ])),
+        Align(
+          alignment: Alignment.topCenter,
+          child: DragTarget<TravelVisitWithPlaceModel>(
+            builder: (context, accepted, rejected) => Container(
+              height: 40,
+              width: double.infinity,
+              color: Colors.transparent,
+            ),
+            onMove: (detail) => scrollUp(),
           ),
         ),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: DragTarget<TravelVisitWithPlaceModel>(
+            builder: (context, accepted, rejected) => Container(
+              height: 40,
+              width: double.infinity,
+              color: Colors.transparent,
+            ),
+            onMove: (detail) => scrollDown(),
+          ),
+        )
       ],
     );
   }
