@@ -53,16 +53,29 @@ class _TravelPlanPageState extends ConsumerState<TravelPlanPage> {
           TravelPlanBookmarkPage(travelId: widget.travelId),
         ],
       ),
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: pageIndex,
-        onDestinationSelected: (index) =>
-            ref.read(travelPlanProvider(widget.travelId).notifier).changePage(index),
-        destinations: const [
-          NavigationDestination(icon: Icon(Icons.home), label: '메인'),
-          NavigationDestination(icon: Icon(Icons.place), label: '둘러보기'),
-          NavigationDestination(icon: Icon(Icons.map), label: '일정'),
-          NavigationDestination(icon: Icon(Icons.bookmark), label: '저장'),
-        ],
+      bottomNavigationBar:
+      Container(
+        decoration: BoxDecoration(
+          border: Border(top: BorderSide(color: Theme.of(context).colorScheme.surfaceContainerHigh))
+        ),
+        child: NavigationBar(
+          selectedIndex: pageIndex,
+          onDestinationSelected: (index) =>
+              ref.read(travelPlanProvider(widget.travelId).notifier).changePage(index),
+          destinations:  const [
+            NavigationDestination(
+
+                selectedIcon: Icon(Icons.home),
+                icon: Icon(Icons.home_outlined), label: '메인'),
+            NavigationDestination(
+                selectedIcon: Icon(Icons.place),
+                icon: Icon(Icons.place_outlined), label: '둘러보기'),
+            NavigationDestination(
+                selectedIcon: Icon(Icons.map),icon: Icon(Icons.map_outlined), label: '일정'),
+            NavigationDestination(
+                selectedIcon: Icon(Icons.bookmark),icon: Icon(Icons.bookmark_outline), label: '저장'),
+          ],
+        ),
       ),
     );
   }
