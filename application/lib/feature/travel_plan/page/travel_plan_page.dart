@@ -45,7 +45,6 @@ class _TravelPlanPageState extends ConsumerState<TravelPlanPage> {
 
     return Scaffold(
       body: PageTransitionSwitcher(
-        duration: Duration(milliseconds: 500),
         transitionBuilder: (child, primaryAnimation, secondaryAnimation) =>
             SharedAxisTransition(
                 animation: primaryAnimation,
@@ -56,7 +55,7 @@ class _TravelPlanPageState extends ConsumerState<TravelPlanPage> {
           index: pageIndex,
           key: ValueKey<int>(pageIndex),
           children: [
-            const TravelPlanHomePage(),
+             TravelPlanHomePage(provider: travelPlanProvider(widget.travelId), state: state),
             TravelPlanRecommendPage(travelId: widget.travelId, cityId: cityId),
             TravelPlanManagePage(travelId: widget.travelId),
             TravelPlanBookmarkPage(travelId: widget.travelId),

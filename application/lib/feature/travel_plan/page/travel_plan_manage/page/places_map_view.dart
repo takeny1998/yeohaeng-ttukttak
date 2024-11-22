@@ -86,6 +86,9 @@ class _PlacesMapViewState extends State<PlacesMapView> {
     markers = _buildMarkers(widget.places);
 
     mapReadyCompleter.future.then((_) async {
+      final points = markers.map((marker) => marker.point);
+      if (points.isEmpty) return;
+
       mapController.fitCamera(CameraFit.coordinates(
           maxZoom: 12.0,
           padding: EdgeInsets.fromLTRB(
@@ -94,7 +97,7 @@ class _PlacesMapViewState extends State<PlacesMapView> {
             markerRadius + 24.0 + (padding?.right ?? 0),
             48.0 + (padding?.bottom ?? 0),
           ),
-          coordinates: markers.map((marker) => marker.point).toList()));
+          coordinates: points.toList()));
     });
 
     return Stack(

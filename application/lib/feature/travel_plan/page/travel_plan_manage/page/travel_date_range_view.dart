@@ -30,27 +30,20 @@ class TravelDateRangeView extends ConsumerWidget {
 
     final builder = this.builder ?? (TravelDateItem item, int index) => item;
 
-    return Container(
-      width: double.maxFinite,
-      padding: const EdgeInsets.only(top: 16.0, bottom: 4.0),
-      decoration: BoxDecoration(
-          border: Border(
-              bottom: BorderSide(color: colorScheme.surfaceContainerHigh))),
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-          const SizedBox(width: 16.0),
-          for (int i = 0; i < daysOfTravel; i++) ...[
-            builder(TravelDateItem(
-                dayOfTravel: i,
-                travel: travel,
-                selectedDate: selectedDate,
-                onChangeDate: onChangeDate), i),
-            const SizedBox(width: 8.0),
-          ],
-          const SizedBox(width: 16.0),
-        ]),
-      ),
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+        const SizedBox(width: 24.0),
+        for (int i = 0; i < daysOfTravel; i++) ...[
+          builder(TravelDateItem(
+              dayOfTravel: i,
+              travel: travel,
+              selectedDate: selectedDate,
+              onChangeDate: onChangeDate), i),
+          const SizedBox(width: 12.0),
+        ],
+        const SizedBox(width: 16.0),
+      ]),
     );
   }
 }

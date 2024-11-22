@@ -80,16 +80,23 @@ class TravelPlanManagePage extends ConsumerWidget {
                             borderRadius: BorderRadius.circular(16.0)),
                       ))),
             ),
-            TravelDateRangeView(
-                travel: travel,
-                onChangeDate: onChangeDate,
-                selectedDate: selectedDate,
-                builder: (item, index) {
-                  return DragTarget(
-                      onMove: (detail) => onChangeDate(
-                          travel.startedOn.add(Duration(days: index))),
-                      builder: (context, candidateData, rejectedData) => item);
-                }),
+            Container(
+              width: double.maxFinite,
+              padding: const EdgeInsets.only(top: 16.0, bottom: 4.0),
+              decoration: BoxDecoration(
+                  border: Border(
+                      bottom: BorderSide(color: colorScheme.surfaceContainerHigh))),
+              child: TravelDateRangeView(
+                  travel: travel,
+                  onChangeDate: onChangeDate,
+                  selectedDate: selectedDate,
+                  builder: (item, index) {
+                    return DragTarget(
+                        onMove: (detail) => onChangeDate(
+                            travel.startedOn.add(Duration(days: index))),
+                        builder: (context, candidateData, rejectedData) => item);
+                  }),
+            ),
             Expanded(
               child: TravelPlanMangeListView(
                   travel: travel,

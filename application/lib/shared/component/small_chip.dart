@@ -19,13 +19,13 @@ class SmallChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
 
     return Chip(
         backgroundColor: backgroundColor,
-        padding: const EdgeInsets.symmetric(horizontal: 6.0, vertical: 4.0),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6.0)),
+        visualDensity: VisualDensity.compact,
+        padding: const EdgeInsets.symmetric(horizontal: 2.0),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
         side: borderColor != null ? BorderSide(color: borderColor!) : null,
         labelStyle: TextStyle(
           fontSize: 13.0,

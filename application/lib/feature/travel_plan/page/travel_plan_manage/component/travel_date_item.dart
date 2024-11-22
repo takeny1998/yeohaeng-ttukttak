@@ -33,12 +33,12 @@ class TravelDateItem extends StatelessWidget {
     final isSelected = DateUtils.isSameDay(selectedDate, date);
 
     final weekDayLabelStyle = TextStyle(
-        fontSize: 11.5,
+        fontSize: 12.0,
         height: 1.0,
         color: isInTravelDate ? color : colorScheme.surfaceDim);
 
     final dateLabelStyle = TextStyle(
-        fontSize: 14.0,
+        fontSize: 15.0,
         fontWeight: FontWeight.w600,
         color: isInTravelDate
             ? (isSelected ? colorScheme.primary : colorScheme.onSurface)
@@ -59,10 +59,6 @@ class TravelDateItem extends StatelessWidget {
           onPressed: isInTravelDate ? () => onChangeDate(date) : null,
           icon: Text(DateUtil.formatter('MMMd').date(date),
               style: dateLabelStyle),
-        ),
-        CircleAvatar(
-          radius: 3.0,
-          backgroundColor: isToday ? colorScheme.primary : Colors.transparent,
         )
       ],
     );
