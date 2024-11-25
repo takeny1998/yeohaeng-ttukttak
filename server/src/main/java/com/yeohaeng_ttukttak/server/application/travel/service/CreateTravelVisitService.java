@@ -24,7 +24,6 @@ import java.util.UUID;
 public class CreateTravelVisitService {
 
     private final MemberTravelRepository travelRepository;
-    private final MemberRepository memberRepository;
     private final PlaceRepository placeRepository;
 
     @Transactional
@@ -40,13 +39,7 @@ public class CreateTravelVisitService {
             throw new ArgumentNotInRangeFailException("dayOfTravel", 0, totalDays);
         }
 
-        final Member member = memberRepository
-                .findById(UUID.fromString(memberId))
-                .orElseThrow(AuthorizationErrorException::new);
-
-        if (!Objects.equals(travel.member(), member)) {
-            throw new ForbiddenErrorException(Travel.class);
-        }
+        travel.verifyWriteGrant(memberId);
 
         final Place place = placeRepository
                 .findById(placeId)

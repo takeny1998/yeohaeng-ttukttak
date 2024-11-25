@@ -26,12 +26,10 @@ public class UpdateTravelVisitService {
     @Transactional
     public void call(UpdateTravelVisitCommand command) {
 
-        MemberTravel travel = travelRepository.findById(command.travelId())
+        final MemberTravel travel = travelRepository.findById(command.travelId())
                 .orElseThrow(() -> new EntityNotFoundFailException(Travel.class));
 
-        if (!Objects.equals(travel.member().id(), command.memberId())) {
-            throw new ForbiddenErrorException(TravelVisit.class);
-        }
+        travel.verifyWriteGrant(command.memberId());
 
         boolean inRange = LocalDateUtil
                 .isInRange(command.visitedOn(), travel.startedOn(), travel.endedOn());
