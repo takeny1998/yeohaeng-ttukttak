@@ -107,8 +107,12 @@ public final class MemberTravel extends Travel {
         companions().add(new TravelCompanion(this, travelCompanionType));
     }
 
+    /**
+     * 지정된 사용자를 해당 여행에 참여자로 추가한다.
+     * @param member 초대할 사용자 객체
+     * @throws AlreadyJoinedTravelErrorException 이미 참여한 사용자일 때 발생한다.
+     */
     public void addParticipant(Member member) {
-
         final boolean isAlreadyExist = participants.stream()
                 .anyMatch(participant -> participant.member().equals(member));
 
@@ -117,7 +121,6 @@ public final class MemberTravel extends Travel {
         }
 
         participants.add(new TravelParticipant(this, member));
-
     }
 
     public void addVisit(Place place, Integer dayOfTravel) {
