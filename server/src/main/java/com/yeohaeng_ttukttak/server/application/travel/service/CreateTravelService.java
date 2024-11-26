@@ -31,8 +31,6 @@ public class CreateTravelService {
 
         final Member member = memberService.find(commend.memberId());
 
-        log.debug("commend={}", commend);
-
         final MemberTravel travel = new MemberTravel(
                 member, commend.startedOn(), commend.endedOn());
 
