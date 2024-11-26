@@ -30,7 +30,7 @@ class TravelInvitationPage extends ConsumerWidget {
               'joined_travel_successfully',
               args: {'travel_name': travel.formattedName})));
 
-          goRouter.replace('/travels/:$travelId');
+          goRouter.replace('/travels/$travelId');
         },
         error: (error, stack) {
           if (context.canPop()) {
