@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:application_new/common/log/logger.dart';
 import 'package:application_new/feature/authentication/model/auth_provider.dart';
 import 'package:application_new/feature/authentication/page/login_provider.dart';
 import 'package:flutter/material.dart';
@@ -24,9 +27,11 @@ class LoginPage extends ConsumerWidget {
                     .login(provider: AppleProvider()),
                 child: const Text('Apple 로그인')),
             TextButton(
-                onPressed: () => ref
+                onPressed: () {
+                  ref
                     .read(loginProvider.notifier)
-                    .login(provider: GoogleProvider()),
+                    .login(provider: GoogleProvider());
+                },
                 child: const Text('Google 로그인')),
           ],
         ),

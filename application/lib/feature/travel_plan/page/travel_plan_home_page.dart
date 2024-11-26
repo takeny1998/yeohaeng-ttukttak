@@ -29,8 +29,7 @@ class TravelPlanHomePage extends ConsumerWidget {
           SliverAppBar(
             expandedHeight: 268.0,
             collapsedHeight: kToolbarHeight,
-            backgroundColor: colorScheme.primaryContainer,
-            shape: const Border(),
+            backgroundColor: colorScheme.surfaceContainer,
             pinned: true,
             actions: [
               IconButton(

@@ -46,7 +46,10 @@ class _PlacesMapViewState extends State<PlacesMapView> {
 
   @override
   void initState() {
-    _readStyle().then((style) => setState(() => this.style = style));
+    _readStyle().then((style) {
+      if (!mounted) return;
+      setState(() => this.style = style);
+    });
     super.initState();
   }
 

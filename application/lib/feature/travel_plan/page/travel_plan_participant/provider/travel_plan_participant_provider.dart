@@ -10,6 +10,9 @@ part 'travel_plan_participant_provider.g.dart';
 
 @riverpod
 class TravelPlanParticipant extends _$TravelPlanParticipant {
+
+  static const String domain = String.fromEnvironment('DOMAIN');
+
   @override
   TravelPlanParticipantState? build(int travelId) {
     return null;
@@ -29,7 +32,8 @@ class TravelPlanParticipant extends _$TravelPlanParticipant {
       return TravelInvitationModel.fromJson(response['invitation']);
     });
 
-    Share.share('/travels/${invitation.travelId}/invitations/${invitation.id}',
-        subject: '초대 링크 공유하기');
+    final uri = Uri(scheme: 'https', host: domain, path: '/travels/${invitation.travelId}/invitations/${invitation.id}');
+
+    Share.share(uri.toString(), subject: '초대 링크 공유하기');
   }
 }

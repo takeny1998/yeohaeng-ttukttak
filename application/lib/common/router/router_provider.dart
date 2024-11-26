@@ -4,12 +4,12 @@ import 'package:application_new/feature/authentication/page/login_page.dart';
 import 'package:application_new/feature/error/error_page.dart';
 import 'package:application_new/feature/home/home_page.dart';
 import 'package:application_new/feature/travel_create/page/travel_create_page.dart';
+import 'package:application_new/feature/travel_invitation/page/travel_invitation_page.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_recommend/page/city_travels/page/city_travels_page.dart';
 import 'package:application_new/feature/travel_read/page/travel_read_page.dart';
 import 'package:application_new/feature/travel_list/page/travel_list_page.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_page.dart';
 import 'package:go_router/go_router.dart';
-import 'package:path/path.dart';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -37,10 +37,13 @@ GoRouter router(RouterRef ref) {
       return ErrorPage(message: state.error?.message);
     },
     routes: [
-      GoRoute(path: '/error', builder: (context, state) {
-        return ErrorPage(message: session.errorMessage);
-      }),
-      GoRoute(path: '/loading', builder: (context, state) => const LoadingPage()),
+      GoRoute(
+          path: '/error',
+          builder: (context, state) {
+            return ErrorPage(message: session.errorMessage);
+          }),
+      GoRoute(
+          path: '/loading', builder: (context, state) => const LoadingPage()),
       GoRoute(
         path: '/',
         builder: (context, state) => const HomePage(),
@@ -73,19 +76,36 @@ GoRouter router(RouterRef ref) {
       GoRoute(
           path: '/travels/:travelId/cities/:cityId/places/pois',
           builder: (context, state) {
-            final {'travelId': travelId, 'cityId': cityId} = state.pathParameters;
+            final {
+              'travelId': travelId,
+              'cityId': cityId,
+            } = state.pathParameters;
 
-            return TravelCityPoisPage(travelId: int.parse(travelId), cityId: int.parse(cityId));
+            return TravelCityPoisPage(
+                travelId: int.parse(travelId), cityId: int.parse(cityId));
           }),
       GoRoute(
           path: '/travels/:travelId/cities/:cityId/travels',
           builder: (context, state) {
-            final {'travelId': travelId, 'cityId': cityId} =
-                state.pathParameters;
+            final {
+              'travelId': travelId,
+              'cityId': cityId,
+            } = state.pathParameters;
 
             return CityTravelsPage(
                 travelId: int.parse(travelId), cityId: int.parse(cityId));
           }),
+      GoRoute(
+          path: '/travels/:travelId/invitations/:invitationId',
+          builder: (context, state) {
+            final {
+              'travelId': travelId,
+              'invitationId': invitationId,
+            } = state.pathParameters;
+
+            return TravelInvitationPage(
+                travelId: int.parse(travelId), invitationId: invitationId);
+          })
     ],
   );
 }

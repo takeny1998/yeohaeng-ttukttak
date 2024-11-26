@@ -26,7 +26,12 @@ widget:
     all_category_type: All
 
   TravelPlanParticipantPage:
-    share_link_to_invite: "Share your invite link\nto invite new members!"
+    invite_participant: Invite Participant
+    share_link_to_invite: • You can invite participants by sharing this link.
+    share_link_expires_in_30_min: • The invitation link is valid for up to 30 minutes.
+    can_plan_with_participants: • You can plan the trip with participants.
+    share_invitation_link: Share Invitation Link
+
 
   PlaceMetricItem:
     add_to_plan: Add to your plan
@@ -116,7 +121,7 @@ enum:
       members: Members
       others: Others
 
-  TravelMotivation:
+  TravelMotivationType:
     name: Motivation for travel
     values:
       adventure: Break out of routine
