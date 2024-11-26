@@ -34,21 +34,21 @@ mixin _$ServerResponse {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(Map<String, dynamic> data) success,
-    required TResult Function(String message, Map<String, String> data) fail,
+    required TResult Function(Map<String, String> data) fail,
     required TResult Function(String message, int code) error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(Map<String, dynamic> data)? success,
-    TResult? Function(String message, Map<String, String> data)? fail,
+    TResult? Function(Map<String, String> data)? fail,
     TResult? Function(String message, int code)? error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(Map<String, dynamic> data)? success,
-    TResult Function(String message, Map<String, String> data)? fail,
+    TResult Function(Map<String, String> data)? fail,
     TResult Function(String message, int code)? error,
     required TResult orElse(),
   }) =>
@@ -189,7 +189,7 @@ class _$ServerSuccessResponseImpl implements ServerSuccessResponse {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(Map<String, dynamic> data) success,
-    required TResult Function(String message, Map<String, String> data) fail,
+    required TResult Function(Map<String, String> data) fail,
     required TResult Function(String message, int code) error,
   }) {
     return success(data);
@@ -199,7 +199,7 @@ class _$ServerSuccessResponseImpl implements ServerSuccessResponse {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(Map<String, dynamic> data)? success,
-    TResult? Function(String message, Map<String, String> data)? fail,
+    TResult? Function(Map<String, String> data)? fail,
     TResult? Function(String message, int code)? error,
   }) {
     return success?.call(data);
@@ -209,7 +209,7 @@ class _$ServerSuccessResponseImpl implements ServerSuccessResponse {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(Map<String, dynamic> data)? success,
-    TResult Function(String message, Map<String, String> data)? fail,
+    TResult Function(Map<String, String> data)? fail,
     TResult Function(String message, int code)? error,
     required TResult orElse(),
   }) {
@@ -283,7 +283,7 @@ abstract class _$$ServerFailResponseImplCopyWith<$Res> {
           $Res Function(_$ServerFailResponseImpl) then) =
       __$$ServerFailResponseImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({String message, Map<String, String> data});
+  $Res call({Map<String, String> data});
 }
 
 /// @nodoc
@@ -299,14 +299,9 @@ class __$$ServerFailResponseImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? message = null,
     Object? data = null,
   }) {
     return _then(_$ServerFailResponseImpl(
-      message: null == message
-          ? _value.message
-          : message // ignore: cast_nullable_to_non_nullable
-              as String,
       data: null == data
           ? _value._data
           : data // ignore: cast_nullable_to_non_nullable
@@ -319,17 +314,13 @@ class __$$ServerFailResponseImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$ServerFailResponseImpl implements ServerFailResponse {
   const _$ServerFailResponseImpl(
-      {required this.message,
-      final Map<String, String> data = const {},
-      final String? $type})
+      {final Map<String, String> data = const {}, final String? $type})
       : _data = data,
         $type = $type ?? 'fail';
 
   factory _$ServerFailResponseImpl.fromJson(Map<String, dynamic> json) =>
       _$$ServerFailResponseImplFromJson(json);
 
-  @override
-  final String message;
   final Map<String, String> _data;
   @override
   @JsonKey()
@@ -344,7 +335,7 @@ class _$ServerFailResponseImpl implements ServerFailResponse {
 
   @override
   String toString() {
-    return 'ServerResponse.fail(message: $message, data: $data)';
+    return 'ServerResponse.fail(data: $data)';
   }
 
   @override
@@ -352,14 +343,13 @@ class _$ServerFailResponseImpl implements ServerFailResponse {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ServerFailResponseImpl &&
-            (identical(other.message, message) || other.message == message) &&
             const DeepCollectionEquality().equals(other._data, _data));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, message, const DeepCollectionEquality().hash(_data));
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_data));
 
   /// Create a copy of ServerResponse
   /// with the given fields replaced by the non-null parameter values.
@@ -374,32 +364,32 @@ class _$ServerFailResponseImpl implements ServerFailResponse {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(Map<String, dynamic> data) success,
-    required TResult Function(String message, Map<String, String> data) fail,
+    required TResult Function(Map<String, String> data) fail,
     required TResult Function(String message, int code) error,
   }) {
-    return fail(message, data);
+    return fail(data);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(Map<String, dynamic> data)? success,
-    TResult? Function(String message, Map<String, String> data)? fail,
+    TResult? Function(Map<String, String> data)? fail,
     TResult? Function(String message, int code)? error,
   }) {
-    return fail?.call(message, data);
+    return fail?.call(data);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(Map<String, dynamic> data)? success,
-    TResult Function(String message, Map<String, String> data)? fail,
+    TResult Function(Map<String, String> data)? fail,
     TResult Function(String message, int code)? error,
     required TResult orElse(),
   }) {
     if (fail != null) {
-      return fail(message, data);
+      return fail(data);
     }
     return orElse();
   }
@@ -447,14 +437,12 @@ class _$ServerFailResponseImpl implements ServerFailResponse {
 }
 
 abstract class ServerFailResponse implements ServerResponse {
-  const factory ServerFailResponse(
-      {required final String message,
-      final Map<String, String> data}) = _$ServerFailResponseImpl;
+  const factory ServerFailResponse({final Map<String, String> data}) =
+      _$ServerFailResponseImpl;
 
   factory ServerFailResponse.fromJson(Map<String, dynamic> json) =
       _$ServerFailResponseImpl.fromJson;
 
-  String get message;
   Map<String, String> get data;
 
   /// Create a copy of ServerResponse
@@ -551,7 +539,7 @@ class _$ServerErrorResponseImpl implements ServerErrorResponse {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(Map<String, dynamic> data) success,
-    required TResult Function(String message, Map<String, String> data) fail,
+    required TResult Function(Map<String, String> data) fail,
     required TResult Function(String message, int code) error,
   }) {
     return error(message, code);
@@ -561,7 +549,7 @@ class _$ServerErrorResponseImpl implements ServerErrorResponse {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(Map<String, dynamic> data)? success,
-    TResult? Function(String message, Map<String, String> data)? fail,
+    TResult? Function(Map<String, String> data)? fail,
     TResult? Function(String message, int code)? error,
   }) {
     return error?.call(message, code);
@@ -571,7 +559,7 @@ class _$ServerErrorResponseImpl implements ServerErrorResponse {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(Map<String, dynamic> data)? success,
-    TResult Function(String message, Map<String, String> data)? fail,
+    TResult Function(Map<String, String> data)? fail,
     TResult Function(String message, int code)? error,
     required TResult orElse(),
   }) {

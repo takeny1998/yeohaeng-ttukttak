@@ -15,9 +15,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization_loader/easy_localization_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:logger/logger.dart';
-import 'package:uuid/uuid.dart';
 import 'package:uuid/v4.dart';
 
 import 'common/exception/exception.dart';
@@ -36,7 +34,6 @@ void main() async {
     final uuid =  const UuidV4().generate().substring(0, 6);
 
     logger.e('[$uuid][Error]', stackTrace: stack, error: error);
-
 
     if (error is NetworkException) {
       logger.e('[$uuid][NetworkException] code = ${error.statusCode} message = ${error.statusMessage}');

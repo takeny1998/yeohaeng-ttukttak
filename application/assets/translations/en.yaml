@@ -96,6 +96,8 @@ message:
   network_exception: A network error occurred. Please try again later.
   unchecked_exception: An unknown error has occurred. Please try again later.
 
+  joined_travel_successfully: "You've joined in {travel_name}"
+
 korea: Republic of Korea
 
 null: ''

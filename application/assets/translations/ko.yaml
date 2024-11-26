@@ -94,6 +94,7 @@ message:
   travel_plan_edited: 여행 계획이 성공적으로 수정되었습니다.
   network_exception: 네트워크 연결에 문제가 발생했습니다. 잠시 후 다시 시도해주세요.
   unchecked_exception: 알 수 없는 오류가 발생했습니다. 잠시 후 다시 시도해주세요.
+  joined_travel_successfully: "성공적으로 {travel_name}에 참여했습니다."
 
 next: 다음으로
 korea: 대한민국

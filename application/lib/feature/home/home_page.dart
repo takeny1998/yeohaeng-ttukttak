@@ -37,12 +37,23 @@ class HomePage extends ConsumerWidget {
                 onPressed: () => context.push('/travels'),
                 child: const Text('여행 목록')),
             TextField(
+              decoration: const InputDecoration(hintText: '여행 상세 조회'),
               onSubmitted: (text) {
                 final id = int.tryParse(text);
                 if (id == null) return;
                 context.push('/travels/$id/detail');
-              },
-            )
+              }),
+            TextField(
+                decoration: const InputDecoration(hintText: '여행 초대 페이지'),
+                onSubmitted: (text) {
+                  final words = text.split(',');
+
+                  final travelId = int.tryParse(words[0]);
+                  final invitationId = words[1];
+
+                  if (travelId == null) return;
+                  context.push('/travels/$travelId/invitations/$invitationId');
+                }),
           ],
         ),
       ),

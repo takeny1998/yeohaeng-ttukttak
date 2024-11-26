@@ -1,6 +1,4 @@
-import 'dart:developer';
 
-import 'package:application_new/common/log/logger.dart';
 import 'package:application_new/feature/authentication/model/auth_provider.dart';
 import 'package:application_new/feature/authentication/page/login_provider.dart';
 import 'package:flutter/material.dart';
