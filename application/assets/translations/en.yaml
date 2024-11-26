@@ -25,6 +25,9 @@ widget:
   TravelCityPoisSortTypeSelectView:
     all_category_type: All
 
+  TravelPlanParticipantPage:
+    share_link_to_invite: "Share your invite link\nto invite new members!"
+
   PlaceMetricItem:
     add_to_plan: Add to your plan
 

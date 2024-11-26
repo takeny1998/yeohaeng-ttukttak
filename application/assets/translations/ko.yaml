@@ -25,6 +25,13 @@ widget:
   TravelCityPoisSortTypeSelectView:
     require_select_sort_type: 정렬 조건을 선택하세요.
 
+  TravelPlanParticipantPage:
+    invite_participant: 일행 초대하기
+    share_link_to_invite: • 초대 링크를 공유해 일행을 초대할 수 있어요.
+    share_link_expires_in_30_min: • 초대 링크는 최대 30분간 유효해요.
+    can_plan_with_participants: • 일행과 함께 여행 계획을 짤 수 있어요.
+    share_invitation_link: 초대 링크 공유하기
+
   PlaceMetricItem:
     add_to_plan: 일정에 추가
 

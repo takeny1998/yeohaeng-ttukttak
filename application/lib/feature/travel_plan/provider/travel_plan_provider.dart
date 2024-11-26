@@ -20,7 +20,7 @@ class TravelPlan extends _$TravelPlan {
   }
 
   void changePage(int pageIndex) {
-    if (state == null || !IterableUtil.isIndexInRange(pageIndex, end: 3)) {
+    if (state == null || !IterableUtil.isIndexInRange(pageIndex, end: 4)) {
       return;
     }
 

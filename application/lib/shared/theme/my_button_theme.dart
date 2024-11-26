@@ -27,7 +27,7 @@ class MyButtonTheme extends StatelessWidget {
           shape:
               RoundedRectangleBorder(
                   side: BorderSide(color: colorScheme.primaryFixedDim),
-                  borderRadius: BorderRadius.circular(12.0)),
+                  borderRadius: BorderRadius.circular(8.0)),
           textStyle: buttonTextStyle,
           backgroundColor: colorScheme.primaryContainer,
           foregroundColor: colorScheme.primary,
@@ -37,7 +37,7 @@ class MyButtonTheme extends StatelessWidget {
             side: BorderSide(color: colorScheme.surfaceDim),
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12.0)),
+                borderRadius: BorderRadius.circular(8.0)),
             textStyle: buttonTextStyle,
           ),
         ),

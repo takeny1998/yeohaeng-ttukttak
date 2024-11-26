@@ -4,6 +4,7 @@ import 'package:animations/animations.dart';
 import 'package:application_new/common/loading/loading_page.dart';
 import 'package:application_new/feature/travel_plan/component/travel_plan_home_header.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_bookmark_page.dart';
+import 'package:application_new/feature/travel_plan/page/travel_plan_participant/page/travel_plan_participant_page.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_home_page.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_manage/page/travel_plan_manage_page.dart';
 import 'package:application_new/feature/travel_plan/provider/travel_plan_state.dart';
@@ -46,17 +47,16 @@ class _TravelPlanPageState extends ConsumerState<TravelPlanPage> {
     return Scaffold(
       body: PageTransitionSwitcher(
         transitionBuilder: (child, primaryAnimation, secondaryAnimation) =>
-            SharedAxisTransition(
-                animation: primaryAnimation,
-                secondaryAnimation: secondaryAnimation,
-                transitionType: SharedAxisTransitionType.horizontal,
+            FadeTransition(
+                opacity:primaryAnimation,
                 child: child),
         child: IndexedStack(
           index: pageIndex,
           key: ValueKey<int>(pageIndex),
           children: [
-             TravelPlanHomePage(provider: travelPlanProvider(widget.travelId), state: state),
+            TravelPlanHomePage(provider: travelPlanProvider(widget.travelId), state: state),
             TravelPlanRecommendPage(travelId: widget.travelId, cityId: cityId),
+            TravelPlanParticipantPage(provider:travelPlanProvider(widget.travelId), state: state),
             TravelPlanManagePage(travelId: widget.travelId),
             TravelPlanBookmarkPage(travelId: widget.travelId),
           ],
@@ -82,6 +82,10 @@ class _TravelPlanPageState extends ConsumerState<TravelPlanPage> {
                 selectedIcon: Icon(Icons.place),
                 icon: Icon(Icons.place_outlined),
                 label: '둘러보기'),
+            NavigationDestination(
+                selectedIcon: Icon(Icons.person),
+                icon: Icon(Icons.person_outline),
+                label: '팀원'),
             NavigationDestination(
                 selectedIcon: Icon(Icons.map),
                 icon: Icon(Icons.map_outlined),

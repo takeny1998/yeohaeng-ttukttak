@@ -1,12 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'travel_plan_provider.dart';
+part of 'travel_plan_participant_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$travelPlanHash() => r'8ff30041ec151213d114512d215bd796c8b60043';
+String _$travelPlanParticipantHash() =>
+    r'15afe05c1fc51b2f5e9e8dffa1d40cdb4a219769';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,36 +30,36 @@ class _SystemHash {
   }
 }
 
-abstract class _$TravelPlan
-    extends BuildlessAutoDisposeNotifier<TravelPlanState?> {
+abstract class _$TravelPlanParticipant
+    extends BuildlessAutoDisposeNotifier<TravelPlanParticipantState?> {
   late final int travelId;
 
-  TravelPlanState? build(
+  TravelPlanParticipantState? build(
     int travelId,
   );
 }
 
-/// See also [TravelPlan].
-@ProviderFor(TravelPlan)
-const travelPlanProvider = TravelPlanFamily();
+/// See also [TravelPlanParticipant].
+@ProviderFor(TravelPlanParticipant)
+const travelPlanParticipantProvider = TravelPlanParticipantFamily();
 
-/// See also [TravelPlan].
-class TravelPlanFamily extends Family<TravelPlanState?> {
-  /// See also [TravelPlan].
-  const TravelPlanFamily();
+/// See also [TravelPlanParticipant].
+class TravelPlanParticipantFamily extends Family<TravelPlanParticipantState?> {
+  /// See also [TravelPlanParticipant].
+  const TravelPlanParticipantFamily();
 
-  /// See also [TravelPlan].
-  TravelPlanProvider call(
+  /// See also [TravelPlanParticipant].
+  TravelPlanParticipantProvider call(
     int travelId,
   ) {
-    return TravelPlanProvider(
+    return TravelPlanParticipantProvider(
       travelId,
     );
   }
 
   @override
-  TravelPlanProvider getProviderOverride(
-    covariant TravelPlanProvider provider,
+  TravelPlanParticipantProvider getProviderOverride(
+    covariant TravelPlanParticipantProvider provider,
   ) {
     return call(
       provider.travelId,
@@ -77,30 +78,30 @@ class TravelPlanFamily extends Family<TravelPlanState?> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'travelPlanProvider';
+  String? get name => r'travelPlanParticipantProvider';
 }
 
-/// See also [TravelPlan].
-class TravelPlanProvider
-    extends AutoDisposeNotifierProviderImpl<TravelPlan, TravelPlanState?> {
-  /// See also [TravelPlan].
-  TravelPlanProvider(
+/// See also [TravelPlanParticipant].
+class TravelPlanParticipantProvider extends AutoDisposeNotifierProviderImpl<
+    TravelPlanParticipant, TravelPlanParticipantState?> {
+  /// See also [TravelPlanParticipant].
+  TravelPlanParticipantProvider(
     int travelId,
   ) : this._internal(
-          () => TravelPlan()..travelId = travelId,
-          from: travelPlanProvider,
-          name: r'travelPlanProvider',
+          () => TravelPlanParticipant()..travelId = travelId,
+          from: travelPlanParticipantProvider,
+          name: r'travelPlanParticipantProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$travelPlanHash,
-          dependencies: TravelPlanFamily._dependencies,
+                  : _$travelPlanParticipantHash,
+          dependencies: TravelPlanParticipantFamily._dependencies,
           allTransitiveDependencies:
-              TravelPlanFamily._allTransitiveDependencies,
+              TravelPlanParticipantFamily._allTransitiveDependencies,
           travelId: travelId,
         );
 
-  TravelPlanProvider._internal(
+  TravelPlanParticipantProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -113,8 +114,8 @@ class TravelPlanProvider
   final int travelId;
 
   @override
-  TravelPlanState? runNotifierBuild(
-    covariant TravelPlan notifier,
+  TravelPlanParticipantState? runNotifierBuild(
+    covariant TravelPlanParticipant notifier,
   ) {
     return notifier.build(
       travelId,
@@ -122,10 +123,10 @@ class TravelPlanProvider
   }
 
   @override
-  Override overrideWith(TravelPlan Function() create) {
+  Override overrideWith(TravelPlanParticipant Function() create) {
     return ProviderOverride(
       origin: this,
-      override: TravelPlanProvider._internal(
+      override: TravelPlanParticipantProvider._internal(
         () => create()..travelId = travelId,
         from: from,
         name: null,
@@ -138,14 +139,14 @@ class TravelPlanProvider
   }
 
   @override
-  AutoDisposeNotifierProviderElement<TravelPlan, TravelPlanState?>
-      createElement() {
-    return _TravelPlanProviderElement(this);
+  AutoDisposeNotifierProviderElement<TravelPlanParticipant,
+      TravelPlanParticipantState?> createElement() {
+    return _TravelPlanParticipantProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is TravelPlanProvider && other.travelId == travelId;
+    return other is TravelPlanParticipantProvider && other.travelId == travelId;
   }
 
   @override
@@ -157,18 +158,19 @@ class TravelPlanProvider
   }
 }
 
-mixin TravelPlanRef on AutoDisposeNotifierProviderRef<TravelPlanState?> {
+mixin TravelPlanParticipantRef
+    on AutoDisposeNotifierProviderRef<TravelPlanParticipantState?> {
   /// The parameter `travelId` of this provider.
   int get travelId;
 }
 
-class _TravelPlanProviderElement
-    extends AutoDisposeNotifierProviderElement<TravelPlan, TravelPlanState?>
-    with TravelPlanRef {
-  _TravelPlanProviderElement(super.provider);
+class _TravelPlanParticipantProviderElement
+    extends AutoDisposeNotifierProviderElement<TravelPlanParticipant,
+        TravelPlanParticipantState?> with TravelPlanParticipantRef {
+  _TravelPlanParticipantProviderElement(super.provider);
 
   @override
-  int get travelId => (origin as TravelPlanProvider).travelId;
+  int get travelId => (origin as TravelPlanParticipantProvider).travelId;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

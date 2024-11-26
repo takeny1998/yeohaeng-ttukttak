@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-final class TonalFilledIconButton extends StatelessWidget {
-  final Icon icon;
+final class FilledTonalIconButton extends StatelessWidget {
+  final Widget icon;
   final VoidCallback? onPressed;
   final double? iconSize;
   final Color? foregroundColor;
 
-  const TonalFilledIconButton(
+  const FilledTonalIconButton(
       {super.key,
       required this.icon,
       this.onPressed,
@@ -17,14 +17,15 @@ final class TonalFilledIconButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData(:textTheme, :colorScheme) = Theme.of(context);
 
+    var iconSize = this.iconSize ?? 18.0;
     return IconButton.filledTonal(
       style: IconButton.styleFrom(
-          iconSize: iconSize ?? 18.0,
+          iconSize: iconSize,
           padding: EdgeInsets.zero,
           shape:
               RoundedRectangleBorder(
                   side: BorderSide(color: colorScheme.primaryFixedDim),
-                  borderRadius: BorderRadius.circular(12.0))),
+                  borderRadius: BorderRadius.circular(8.0))),
       onPressed: onPressed ?? () {},
       icon: icon,
     );

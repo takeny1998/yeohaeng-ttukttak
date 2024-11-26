@@ -131,14 +131,14 @@ class _PlacesMapViewState extends State<PlacesMapView> {
             child: Wrap(
               direction: Axis.vertical,
               children: [
-                TonalFilledIconButton(
+                FilledTonalIconButton(
                     iconSize: 21.0,
                     onPressed: () {
                       final MapCamera(:center, :zoom) = mapController.camera;
                       mapController.move(center, zoom + 1.0);
                     },
                     icon: Icon(Icons.add, color: colorScheme.primary)),
-                TonalFilledIconButton(
+                FilledTonalIconButton(
                     iconSize: 21.0,
                     onPressed: () {
                       final MapCamera(:center, :zoom) = mapController.camera;
