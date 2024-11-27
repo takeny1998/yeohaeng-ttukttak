@@ -3,9 +3,7 @@ package com.yeohaeng_ttukttak.server.domain.travel.service;
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundFailException;
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.InvalidArgumentFailException;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.MemberTravel;
-import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelInvitation;
-import com.yeohaeng_ttukttak.server.domain.travel.repository.MemberTravelRepository;
 import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelInvitationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,7 +26,7 @@ public class TravelInvitationService {
      */
     @Transactional
     public String create(MemberTravel travel, String invitorId) {
-        travel.verifyWriteGrant(invitorId);
+        travel.verifyModifyGrant(invitorId);
 
         final TravelInvitation invitation = repository.save(
                 new TravelInvitation(travel.id(), invitorId));

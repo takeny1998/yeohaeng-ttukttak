@@ -1,7 +1,7 @@
 package com.yeohaeng_ttukttak.server.application.travel.controller;
 
 import com.yeohaeng_ttukttak.server.application.travel.controller.dto.JoinTravelRequest;
-import com.yeohaeng_ttukttak.server.application.travel.service.JoinTravelService;
+import com.yeohaeng_ttukttak.server.application.travel.service.TravelParticipantService;
 import com.yeohaeng_ttukttak.server.common.aop.annotation.Authorization;
 import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
 import com.yeohaeng_ttukttak.server.domain.auth.dto.AccessTokenDto;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class TravelParticipantController {
 
-    private final JoinTravelService participantService;
+    private final TravelParticipantService participantService;
 
     @PostMapping
     @Authorization
@@ -23,7 +23,18 @@ public class TravelParticipantController {
             @Valid @RequestBody JoinTravelRequest request,
             AccessTokenDto accessToken) {
 
-        participantService.call(travelId, request.invitationId(), accessToken.memberId());
+        participantService.join(travelId, request.invitationId(), accessToken.memberId());
+        return new ServerResponse<>();
+    }
+
+    @DeleteMapping("/{participantId}")
+    @Authorization
+    public ServerResponse<Void> kick(
+            @PathVariable Long travelId,
+            @PathVariable Long participantId,
+            AccessTokenDto accessToken) {
+
+        participantService.kick(travelId, accessToken.memberId(), participantId);
         return new ServerResponse<>();
     }
 

@@ -38,6 +38,14 @@ public class TravelParticipant {
         this.inviter = inviter;
     }
 
+    public Long id() {
+        return id;
+    }
+
+    public MemberTravel travel() {
+        return travel;
+    }
+
     public Member invitee() {
         return invitee;
     }

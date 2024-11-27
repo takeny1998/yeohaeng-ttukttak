@@ -51,12 +51,16 @@ public final class MemberTravel extends Travel {
         return member;
     }
 
+    public List<TravelParticipant> participants() {
+        return participants;
+    }
+
     /**
      * 해당 여행 객체에 쓰기 권한이 있는지 검사한다.
      * @param memberId 접근하려는 자의 식별자
      * @throws ForbiddenErrorException 권한이 없는 경우
      */
-    public void verifyWriteGrant(String memberId) {
+    public void verifyModifyGrant(String memberId) {
         final boolean isOwner = Objects.equals(member.id(), memberId);
 
         final boolean isParticipant = participants.stream()
@@ -113,17 +117,36 @@ public final class MemberTravel extends Travel {
      * @param invitee 여행에 참여할 사용자
      * @throws AlreadyJoinedTravelFailException 이미 참여한 사용자일 때 발생한다.
      */
-    public void addParticipant(Member inviter, Member invitee) {
+    public void joinParticipant(Member inviter, Member invitee) {
         final boolean isInviteeParticipated = participants.stream()
                 .anyMatch(participant -> participant.invitee().equals(invitee));
 
-        final boolean isInviteeOwner = Objects.equals(invitee, this.member);
+        final boolean isOwnerInvited = Objects.equals(invitee.id(), this.member.id());
 
-        if (isInviteeParticipated || isInviteeOwner) {
+        if (isInviteeParticipated || isOwnerInvited) {
             throw new AlreadyJoinedTravelFailException("inviteeId");
         }
 
         participants.add(new TravelParticipant(this, invitee, inviter));
+    }
+
+    /**
+     * 지정된 참여자를 해당 여행에서 쫒아(kick)낸다.
+     * @param member 쫒아낼 사용자
+     * @param participant 쫒을 대상 참여자의 식별자
+     * @throws ForbiddenErrorException 대상 참여자를 쫒을 권한이 없는 경우 발생한다.
+     */
+    public void leaveParticipant(Member member, TravelParticipant participant) {
+        verifyModifyGrant(member.id());
+
+        final boolean isInvitedByKicker = Objects.equals(member.id(), participant.invitee().id());
+        final boolean isMemberOwner = Objects.equals(member.id(), this.member.id());
+
+        if (!isInvitedByKicker && !isMemberOwner) {
+            throw new ForbiddenErrorException(TravelParticipant.class);
+        }
+
+        participants.remove(participant);
     }
 
     public void addVisit(Place place, Integer dayOfTravel) {

@@ -1,12 +1,8 @@
 package com.yeohaeng_ttukttak.server.application.travel.service;
 
-import com.yeohaeng_ttukttak.server.common.exception.exception.error.AuthorizationErrorException;
-import com.yeohaeng_ttukttak.server.common.exception.exception.error.ForbiddenErrorException;
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.ArgumentNotInRangeFailException;
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundFailException;
 import com.yeohaeng_ttukttak.server.common.util.LocalDateUtil;
-import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
-import com.yeohaeng_ttukttak.server.domain.member.repository.MemberRepository;
 import com.yeohaeng_ttukttak.server.domain.place.entity.Place;
 import com.yeohaeng_ttukttak.server.domain.place.repository.PlaceRepository;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.MemberTravel;
@@ -15,9 +11,6 @@ import com.yeohaeng_ttukttak.server.domain.travel.repository.MemberTravelReposit
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Objects;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -39,7 +32,7 @@ public class CreateTravelVisitService {
             throw new ArgumentNotInRangeFailException("dayOfTravel", 0, totalDays);
         }
 
-        travel.verifyWriteGrant(memberId);
+        travel.verifyModifyGrant(memberId);
 
         final Place place = placeRepository
                 .findById(placeId)
