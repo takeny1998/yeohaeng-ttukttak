@@ -23,7 +23,6 @@ Map<String, dynamic> _$$ServerSuccessResponseImplToJson(
 _$ServerFailResponseImpl _$$ServerFailResponseImplFromJson(
         Map<String, dynamic> json) =>
     _$ServerFailResponseImpl(
-      message: json['message'] as String,
       data: (json['data'] as Map<String, dynamic>?)?.map(
             (k, e) => MapEntry(k, e as String),
           ) ??
@@ -34,7 +33,6 @@ _$ServerFailResponseImpl _$$ServerFailResponseImplFromJson(
 Map<String, dynamic> _$$ServerFailResponseImplToJson(
         _$ServerFailResponseImpl instance) =>
     <String, dynamic>{
-      'message': instance.message,
       'data': instance.data,
       'status': instance.$type,
     };

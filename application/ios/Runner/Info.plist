@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>FlutterDeepLinkingEnabled</key>
+	<true/>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
@@ -45,23 +47,23 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-  <key>GIDClientID</key>
-  <string>951324022006-dqhtrletm8otr9d6itlssth4iuq3il28.apps.googleusercontent.com</string>
-  <key>GIDServerClientID</key>
-  <string>951324022006-eigc5h6tj71rm2v31eqr5u0v07cbmpn1.apps.googleusercontent.com</string>
-  <key>CFBundleURLTypes</key>
-  <array>
-    <dict>
-      <key>CFBundleURLSchemes</key>
-      <array>
-        <string>com.googleusercontent.apps.951324022006-dqhtrletm8otr9d6itlssth4iuq3il28</string>
-      </array>
-    </dict>
-  </array>
-  <key>CFBundleLocalizations</key>
-  <array>
-  	<string>en</string>
-  	<string>ko</string>
-  </array>
+	<key>GIDClientID</key>
+	<string>951324022006-dqhtrletm8otr9d6itlssth4iuq3il28.apps.googleusercontent.com</string>
+	<key>GIDServerClientID</key>
+	<string>951324022006-eigc5h6tj71rm2v31eqr5u0v07cbmpn1.apps.googleusercontent.com</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.951324022006-dqhtrletm8otr9d6itlssth4iuq3il28</string>
+			</array>
+		</dict>
+	</array>
+	<key>CFBundleLocalizations</key>
+	<array>
+		<string>en</string>
+		<string>ko</string>
+	</array>
 </dict>
 </plist>

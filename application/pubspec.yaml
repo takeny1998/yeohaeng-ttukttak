@@ -46,7 +46,7 @@ dependencies:
   go_router: ^14.2.7
 
   sign_in_with_apple: ^6.1.2
-  flutter_secure_storage: ^4.2.1
+  flutter_secure_storage: ^9.2.2
   google_sign_in: ^6.2.1
   calendar_date_picker2: ^1.1.7
   intl: ^0.19.0
@@ -61,6 +61,9 @@ dependencies:
   vector_map_tiles: ^8.0.0
   uuid: ^4.5.1
   bordered_text: ^2.0.0
+  animations: ^2.0.11
+  share_plus: ^10.1.2
+  share_plus_platform_interface: ^5.0.1
 
 dev_dependencies:
   flutter_test:

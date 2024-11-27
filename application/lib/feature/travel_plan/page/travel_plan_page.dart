@@ -1,8 +1,10 @@
 import 'dart:async';
 
+import 'package:animations/animations.dart';
 import 'package:application_new/common/loading/loading_page.dart';
 import 'package:application_new/feature/travel_plan/component/travel_plan_home_header.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_bookmark_page.dart';
+import 'package:application_new/feature/travel_plan/page/travel_plan_participant/page/travel_plan_participant_page.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_home_page.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_manage/page/travel_plan_manage_page.dart';
 import 'package:application_new/feature/travel_plan/provider/travel_plan_state.dart';
@@ -34,35 +36,66 @@ class _TravelPlanPageState extends ConsumerState<TravelPlanPage> {
 
   @override
   Widget build(BuildContext context) {
-
     final state = ref.watch(travelPlanProvider(widget.travelId));
 
     if (state == null) return const LoadingPage();
 
     final TravelPlanState(:travel, :pageIndex, :cityIndex) = state;
 
-    final city = travel.cities[cityIndex];
+    final cityId = travel.cities[cityIndex].id;
 
     return Scaffold(
-      body: IndexedStack(
-        index: pageIndex,
-        children: [
-          const TravelPlanHomePage(),
-          TravelPlanRecommendPage(travelId: widget.travelId, cityId: city.id),
-          TravelPlanManagePage(travelId: widget.travelId),
-          TravelPlanBookmarkPage(travelId: widget.travelId),
-        ],
+      body: PageTransitionSwitcher(
+        transitionBuilder: (child, primaryAnimation, secondaryAnimation) =>
+            FadeTransition(
+                opacity:primaryAnimation,
+                child: child),
+        child: IndexedStack(
+          index: pageIndex,
+          key: ValueKey<int>(pageIndex),
+          children: [
+            TravelPlanHomePage(provider: travelPlanProvider(widget.travelId), state: state),
+            TravelPlanRecommendPage(travelId: widget.travelId, cityId: cityId),
+            TravelPlanParticipantPage(provider:travelPlanProvider(widget.travelId), state: state),
+            TravelPlanManagePage(travelId: widget.travelId),
+            TravelPlanBookmarkPage(travelId: widget.travelId),
+          ],
+        ),
       ),
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: pageIndex,
-        onDestinationSelected: (index) =>
-            ref.read(travelPlanProvider(widget.travelId).notifier).changePage(index),
-        destinations: const [
-          NavigationDestination(icon: Icon(Icons.home), label: '메인'),
-          NavigationDestination(icon: Icon(Icons.place), label: '둘러보기'),
-          NavigationDestination(icon: Icon(Icons.map), label: '일정'),
-          NavigationDestination(icon: Icon(Icons.bookmark), label: '저장'),
-        ],
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+            border: Border(
+                top: BorderSide(
+                    color:
+                        Theme.of(context).colorScheme.surfaceContainerHigh))),
+        child: NavigationBar(
+          selectedIndex: pageIndex,
+          onDestinationSelected: (index) => ref
+              .read(travelPlanProvider(widget.travelId).notifier)
+              .changePage(index),
+          destinations: const [
+            NavigationDestination(
+                selectedIcon: Icon(Icons.home),
+                icon: Icon(Icons.home_outlined),
+                label: '메인'),
+            NavigationDestination(
+                selectedIcon: Icon(Icons.place),
+                icon: Icon(Icons.place_outlined),
+                label: '둘러보기'),
+            NavigationDestination(
+                selectedIcon: Icon(Icons.person),
+                icon: Icon(Icons.person_outline),
+                label: '팀원'),
+            NavigationDestination(
+                selectedIcon: Icon(Icons.map),
+                icon: Icon(Icons.map_outlined),
+                label: '일정'),
+            NavigationDestination(
+                selectedIcon: Icon(Icons.bookmark),
+                icon: Icon(Icons.bookmark_outline),
+                label: '저장'),
+          ],
+        ),
       ),
     );
   }

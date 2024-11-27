@@ -19,21 +19,20 @@ class SmallChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
 
     return Chip(
         backgroundColor: backgroundColor,
         visualDensity: VisualDensity.compact,
-        padding: const EdgeInsets.symmetric(horizontal: 6.0, vertical: 0.0),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.0)),
-        side: BorderSide(
-            color: borderColor ?? backgroundColor ?? Colors.transparent),
-        labelStyle: textTheme.labelMedium?.copyWith(
-          color: foregroundColor ?? colorScheme.primary,
+        padding: const EdgeInsets.symmetric(horizontal: 2.0),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+        side: borderColor != null ? BorderSide(color: borderColor!) : null,
+        labelStyle: TextStyle(
+          fontSize: 13.0,
+          color: foregroundColor ?? colorScheme.onSurface,
           fontWeight: FontWeight.w600,
         ),
-        avatarBoxConstraints: const BoxConstraints.tightForFinite(),
+        avatarBoxConstraints: const BoxConstraints(maxWidth: 16),
         avatar: leading,
         label: Text(label));
   }

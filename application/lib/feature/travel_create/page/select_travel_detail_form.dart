@@ -1,6 +1,6 @@
 import 'package:application_new/common/util/translation_util.dart';
 import 'package:application_new/feature/travel_create/component/bottom_action_button.dart';
-import 'package:application_new/shared/component/filled_chip_theme.dart';
+import 'package:application_new/shared/theme/my_chip_theme.dart';
 import 'package:application_new/domain/travel/travel_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -33,7 +33,7 @@ class SelectTravelDetailForm extends ConsumerWidget {
       color: Colors.white,
     );
 
-    return FilledChipTheme(
+    return MyChipTheme(
       child: Scaffold(
         appBar: AppBar(
           actions: [

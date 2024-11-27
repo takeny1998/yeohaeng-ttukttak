@@ -20,6 +20,8 @@ mixin _$CityPlacePoisState {
   CityModel get city => throw _privateConstructorUsedError;
   List<PlaceMetricModel> get placeMetrics => throw _privateConstructorUsedError;
   bool get hasNextPage => throw _privateConstructorUsedError;
+  Set<PlaceCategoryType> get selectedTypes =>
+      throw _privateConstructorUsedError;
 
   /// Create a copy of CityPlacePoisState
   /// with the given fields replaced by the non-null parameter values.
@@ -38,7 +40,8 @@ abstract class $CityPlacePoisStateCopyWith<$Res> {
       {TravelModel travel,
       CityModel city,
       List<PlaceMetricModel> placeMetrics,
-      bool hasNextPage});
+      bool hasNextPage,
+      Set<PlaceCategoryType> selectedTypes});
 
   $TravelModelCopyWith<$Res> get travel;
 }
@@ -62,6 +65,7 @@ class _$CityPlacePoisStateCopyWithImpl<$Res, $Val extends CityPlacePoisState>
     Object? city = freezed,
     Object? placeMetrics = null,
     Object? hasNextPage = null,
+    Object? selectedTypes = null,
   }) {
     return _then(_value.copyWith(
       travel: null == travel
@@ -80,6 +84,10 @@ class _$CityPlacePoisStateCopyWithImpl<$Res, $Val extends CityPlacePoisState>
           ? _value.hasNextPage
           : hasNextPage // ignore: cast_nullable_to_non_nullable
               as bool,
+      selectedTypes: null == selectedTypes
+          ? _value.selectedTypes
+          : selectedTypes // ignore: cast_nullable_to_non_nullable
+              as Set<PlaceCategoryType>,
     ) as $Val);
   }
 
@@ -106,7 +114,8 @@ abstract class _$$CityPlacePoisStateImplCopyWith<$Res>
       {TravelModel travel,
       CityModel city,
       List<PlaceMetricModel> placeMetrics,
-      bool hasNextPage});
+      bool hasNextPage,
+      Set<PlaceCategoryType> selectedTypes});
 
   @override
   $TravelModelCopyWith<$Res> get travel;
@@ -129,6 +138,7 @@ class __$$CityPlacePoisStateImplCopyWithImpl<$Res>
     Object? city = freezed,
     Object? placeMetrics = null,
     Object? hasNextPage = null,
+    Object? selectedTypes = null,
   }) {
     return _then(_$CityPlacePoisStateImpl(
       travel: null == travel
@@ -147,6 +157,10 @@ class __$$CityPlacePoisStateImplCopyWithImpl<$Res>
           ? _value.hasNextPage
           : hasNextPage // ignore: cast_nullable_to_non_nullable
               as bool,
+      selectedTypes: null == selectedTypes
+          ? _value._selectedTypes
+          : selectedTypes // ignore: cast_nullable_to_non_nullable
+              as Set<PlaceCategoryType>,
     ));
   }
 }
@@ -158,8 +172,10 @@ class _$CityPlacePoisStateImpl implements _CityPlacePoisState {
       {required this.travel,
       required this.city,
       final List<PlaceMetricModel> placeMetrics = const [],
-      this.hasNextPage = true})
-      : _placeMetrics = placeMetrics;
+      this.hasNextPage = true,
+      final Set<PlaceCategoryType> selectedTypes = const {}})
+      : _placeMetrics = placeMetrics,
+        _selectedTypes = selectedTypes;
 
   @override
   final TravelModel travel;
@@ -177,10 +193,18 @@ class _$CityPlacePoisStateImpl implements _CityPlacePoisState {
   @override
   @JsonKey()
   final bool hasNextPage;
+  final Set<PlaceCategoryType> _selectedTypes;
+  @override
+  @JsonKey()
+  Set<PlaceCategoryType> get selectedTypes {
+    if (_selectedTypes is EqualUnmodifiableSetView) return _selectedTypes;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableSetView(_selectedTypes);
+  }
 
   @override
   String toString() {
-    return 'CityPlacePoisState(travel: $travel, city: $city, placeMetrics: $placeMetrics, hasNextPage: $hasNextPage)';
+    return 'CityPlacePoisState(travel: $travel, city: $city, placeMetrics: $placeMetrics, hasNextPage: $hasNextPage, selectedTypes: $selectedTypes)';
   }
 
   @override
@@ -193,7 +217,9 @@ class _$CityPlacePoisStateImpl implements _CityPlacePoisState {
             const DeepCollectionEquality()
                 .equals(other._placeMetrics, _placeMetrics) &&
             (identical(other.hasNextPage, hasNextPage) ||
-                other.hasNextPage == hasNextPage));
+                other.hasNextPage == hasNextPage) &&
+            const DeepCollectionEquality()
+                .equals(other._selectedTypes, _selectedTypes));
   }
 
   @override
@@ -202,7 +228,8 @@ class _$CityPlacePoisStateImpl implements _CityPlacePoisState {
       travel,
       const DeepCollectionEquality().hash(city),
       const DeepCollectionEquality().hash(_placeMetrics),
-      hasNextPage);
+      hasNextPage,
+      const DeepCollectionEquality().hash(_selectedTypes));
 
   /// Create a copy of CityPlacePoisState
   /// with the given fields replaced by the non-null parameter values.
@@ -219,7 +246,8 @@ abstract class _CityPlacePoisState implements CityPlacePoisState {
       {required final TravelModel travel,
       required final CityModel city,
       final List<PlaceMetricModel> placeMetrics,
-      final bool hasNextPage}) = _$CityPlacePoisStateImpl;
+      final bool hasNextPage,
+      final Set<PlaceCategoryType> selectedTypes}) = _$CityPlacePoisStateImpl;
 
   @override
   TravelModel get travel;
@@ -229,6 +257,8 @@ abstract class _CityPlacePoisState implements CityPlacePoisState {
   List<PlaceMetricModel> get placeMetrics;
   @override
   bool get hasNextPage;
+  @override
+  Set<PlaceCategoryType> get selectedTypes;
 
   /// Create a copy of CityPlacePoisState
   /// with the given fields replaced by the non-null parameter values.

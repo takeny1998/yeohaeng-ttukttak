@@ -23,9 +23,7 @@ public class DeleteTravelVisitService {
         final MemberTravel travel = travelRepository.findById(travelId)
                 .orElseThrow(() -> new EntityNotFoundFailException(Travel.class));
 
-        if (!Objects.equals(travel.member().id(), memberId)) {
-            throw new ForbiddenErrorException(Travel.class);
-        }
+        travel.verifyWriteGrant(memberId);
 
         travel.removeVisit(visitId);
     }

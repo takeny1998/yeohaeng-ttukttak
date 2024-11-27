@@ -13,7 +13,15 @@ import static lombok.AccessLevel.PROTECTED;
 @NoArgsConstructor(access = PROTECTED)
 public class OAuth {
 
-    @Id @GeneratedValue
+    @Id@GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "oauth_generator"
+    )
+    @SequenceGenerator(
+            name = "oauth_generator",
+            sequenceName = "oauth_seq",
+            initialValue = 100000
+    )
     private Long id;
 
     @NotNull

@@ -7,7 +7,7 @@ import 'package:application_new/common/session/session_provider.dart';
 import 'package:application_new/common/util/translation_util.dart';
 import 'package:application_new/feature/authentication/service/auth_service_provider.dart';
 import 'package:application_new/feature/locale/locale_provider.dart';
-import 'package:application_new/shared/component/filled_chip_theme.dart';
+import 'package:application_new/shared/theme/my_chip_theme.dart';
 import 'package:application_new/shared/theme/my_app_bar_theme.dart';
 import 'package:application_new/shared/theme/my_button_theme.dart';
 import 'package:application_new/shared/theme/my_fab_theme.dart';
@@ -15,9 +15,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization_loader/easy_localization_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:logger/logger.dart';
-import 'package:uuid/uuid.dart';
 import 'package:uuid/v4.dart';
 
 import 'common/exception/exception.dart';
@@ -36,7 +34,6 @@ void main() async {
     final uuid =  const UuidV4().generate().substring(0, 6);
 
     logger.e('[$uuid][Error]', stackTrace: stack, error: error);
-
 
     if (error is NetworkException) {
       logger.e('[$uuid][NetworkException] code = ${error.statusCode} message = ${error.statusMessage}');
@@ -156,7 +153,7 @@ class _MyAppState extends ConsumerState<MyApp> {
         return MyFabTheme(
           child: MyAppBarTheme(
             child: MyButtonTheme(
-              child: FilledChipTheme(
+              child: MyChipTheme(
                 key: themeKey,
                 child: Stack(
                   children: [

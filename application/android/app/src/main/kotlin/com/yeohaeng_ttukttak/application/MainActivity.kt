@@ -1,4 +1,4 @@
-package com.yeohaeng_ttukttak.application_new
+package com.yeohaeng_ttukttak.application
 
 import io.flutter.embedding.android.FlutterActivity
 

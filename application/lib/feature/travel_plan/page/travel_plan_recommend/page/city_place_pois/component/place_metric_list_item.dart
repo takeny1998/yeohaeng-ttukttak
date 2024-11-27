@@ -59,10 +59,11 @@ class PlaceMetricListItem extends ConsumerWidget {
               ExtendedWrap(maxLines: 1, spacing: 8.0, children: [
                 if (rating != null)
                   SmallChip(
-                      backgroundColor: colorScheme.primary,
-                      foregroundColor: colorScheme.onPrimary,
+                      backgroundColor: colorScheme.primaryContainer,
+                      foregroundColor: colorScheme.primary,
+                      borderColor: colorScheme.primaryFixedDim,
                       leading: Icon(Icons.star_rate_rounded,
-                          color: colorScheme.onPrimary),
+                          color: colorScheme.primary),
                       label: rating.toStringAsFixed(2)),
                 for (final categoryType in place.categoryTypes)
                   SmallChip(label: TranslationUtil.enumValue(categoryType)),

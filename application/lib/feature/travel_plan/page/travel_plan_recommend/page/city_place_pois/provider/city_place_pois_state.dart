@@ -16,6 +16,7 @@ class CityPlacePoisState with _$CityPlacePoisState {
     required CityModel city,
     @Default([]) List<PlaceMetricModel> placeMetrics,
     @Default(true) bool hasNextPage,
+    @Default({}) Set<PlaceCategoryType> selectedTypes,
   }) = _CityPlacePoisState;
 }
 

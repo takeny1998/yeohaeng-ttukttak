@@ -4,7 +4,7 @@ import 'package:application_new/domain/place/place_model.dart';
 import 'package:application_new/domain/travel/travel_model.dart';
 import 'package:application_new/domain/travel_visit/travel_visit_model.dart';
 import 'package:application_new/domain/travel_visit/travel_visit_repository.dart';
-import 'package:application_new/feature/travel_plan/page/travel_plan_manage/page/travel_plan_date_range_view.dart';
+import 'package:application_new/feature/travel_plan/page/travel_plan_manage/page/travel_date_range_view.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_manage/provider/travel_plan_manage_provider.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_recommend/component/travel_info_item.dart';
 import 'package:flutter/material.dart';

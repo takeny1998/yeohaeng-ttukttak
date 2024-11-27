@@ -1,5 +1,7 @@
 package com.yeohaeng_ttukttak.server.domain.travel.entity;
 
+import com.yeohaeng_ttukttak.server.domain.travel.exception.AlreadyJoinedTravelErrorException;
+import com.yeohaeng_ttukttak.server.common.exception.exception.error.ForbiddenErrorException;
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundFailException;
 import com.yeohaeng_ttukttak.server.domain.member.entity.AgeGroup;
 import com.yeohaeng_ttukttak.server.domain.member.entity.Gender;
@@ -13,6 +15,8 @@ import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Slf4j
@@ -24,6 +28,9 @@ public final class MemberTravel extends Travel {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    @OneToMany(mappedBy = "travel", cascade = { CascadeType.PERSIST, CascadeType.MERGE }, orphanRemoval = true)
+    private List<TravelParticipant> participants = new ArrayList<>();
 
     public MemberTravel(Member member, LocalDate startedOn, LocalDate endedOn) {
         super(startedOn, endedOn);
@@ -42,6 +49,35 @@ public final class MemberTravel extends Travel {
 
     public Member member() {
         return member;
+    }
+
+    /**
+     * 해당 여행 객체에 쓰기 권한이 있는지 검사한다.
+     * @param memberId 접근하려는 자의 식별자
+     * @throws ForbiddenErrorException 권한이 없는 경우
+     */
+    public void verifyWriteGrant(String memberId) {
+        final boolean isOwner = Objects.equals(member.id(), memberId);
+
+        final boolean isParticipant = participants.stream()
+                .anyMatch(e -> e.member().id().equals(memberId));
+
+        if (!(isOwner || isParticipant)) {
+            throw new ForbiddenErrorException(Travel.class);
+        }
+    }
+
+    /**
+     * 여행 여행 객체를 삭제할 수 있는지 검사한다.
+     * @param memberId 접근자의 식별값
+     * @throws ForbiddenErrorException 권한이 없는 경우
+     */
+    public void verifyDeleteGrant(String memberId) {
+        final boolean isOwner = Objects.equals(member.id(), memberId);
+
+        if (!isOwner) {
+            throw new ForbiddenErrorException(Travel.class);
+        }
     }
 
     public void addCity(City city) {
@@ -71,6 +107,22 @@ public final class MemberTravel extends Travel {
         companions().add(new TravelCompanion(this, travelCompanionType));
     }
 
+    /**
+     * 지정된 사용자를 해당 여행에 참여자로 추가한다.
+     * @param member 초대할 사용자 객체
+     * @throws AlreadyJoinedTravelErrorException 이미 참여한 사용자일 때 발생한다.
+     */
+    public void addParticipant(Member member) {
+        final boolean isAlreadyExist = participants.stream()
+                .anyMatch(participant -> participant.member().equals(member));
+
+        if (isAlreadyExist || Objects.equals(member, this.member)) {
+            throw new AlreadyJoinedTravelErrorException();
+        }
+
+        participants.add(new TravelParticipant(this, member));
+    }
+
     public void addVisit(Place place, Integer dayOfTravel) {
         int orderOfVisit = -1;
 
@@ -79,8 +131,6 @@ public final class MemberTravel extends Travel {
                 orderOfVisit = Math.max(orderOfVisit, visit.orderOfVisit());
             }
         }
-
-        log.debug("{}", orderOfVisit);
 
         visits().add(new TravelVisit(dayOfTravel, orderOfVisit + 1, place, this));
     }

@@ -43,12 +43,11 @@ final class HttpService {
         ),
       );
 
-
       final serverResponse = ServerResponse.fromJson(response.data);
 
       return serverResponse.when(
           success: (data) => data,
-          fail: (message, data) {
+          fail: (data) {
             throw ServerFailException(data: data);
           },
           error: (message, statusCode) {

@@ -10,7 +10,6 @@ sealed class ServerResponse with _$ServerResponse {
   }) = ServerSuccessResponse;
 
   const factory ServerResponse.fail({
-    required String message,
     @Default({}) Map<String, String> data,
   }) = ServerFailResponse;
 
