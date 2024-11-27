@@ -19,16 +19,16 @@ public class CreateTravelInvitationService {
     /**
      * 30분간 한 명을 초대할 수 있는 링크를 만들어 반환 한다.
      * @param travelId 초대할 여행의 식별자
-     * @param memberId 초대하는 사용자의 식별자
+     * @param invitorId 초대하는 사용자의 식별자
      * @return 생성된 여행 초대의 식별자
      */
     @Transactional
-    public String create(String memberId, Long travelId) {
+    public String create(String invitorId, Long travelId) {
 
         final MemberTravel travel = travelRepository.findById(travelId)
                 .orElseThrow(() -> new EntityNotFoundFailException(Travel.class));
 
-        return invitationService.create(travel, memberId);
+        return invitationService.create(travel, invitorId);
     }
 
 

@@ -1,6 +1,6 @@
 package com.yeohaeng_ttukttak.server.domain.travel.entity;
 
-import com.yeohaeng_ttukttak.server.domain.travel.exception.AlreadyJoinedTravelErrorException;
+import com.yeohaeng_ttukttak.server.domain.travel.exception.AlreadyJoinedTravelFailException;
 import com.yeohaeng_ttukttak.server.common.exception.exception.error.ForbiddenErrorException;
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundFailException;
 import com.yeohaeng_ttukttak.server.domain.member.entity.AgeGroup;
@@ -60,7 +60,7 @@ public final class MemberTravel extends Travel {
         final boolean isOwner = Objects.equals(member.id(), memberId);
 
         final boolean isParticipant = participants.stream()
-                .anyMatch(e -> e.member().id().equals(memberId));
+                .anyMatch(e -> e.invitee().id().equals(memberId));
 
         if (!(isOwner || isParticipant)) {
             throw new ForbiddenErrorException(Travel.class);
@@ -109,18 +109,21 @@ public final class MemberTravel extends Travel {
 
     /**
      * 지정된 사용자를 해당 여행에 참여자로 추가한다.
-     * @param member 초대할 사용자 객체
-     * @throws AlreadyJoinedTravelErrorException 이미 참여한 사용자일 때 발생한다.
+     * @param inviter 해당 사용자를 초대한 자
+     * @param invitee 여행에 참여할 사용자
+     * @throws AlreadyJoinedTravelFailException 이미 참여한 사용자일 때 발생한다.
      */
-    public void addParticipant(Member member) {
-        final boolean isAlreadyExist = participants.stream()
-                .anyMatch(participant -> participant.member().equals(member));
+    public void addParticipant(Member inviter, Member invitee) {
+        final boolean isInviteeParticipated = participants.stream()
+                .anyMatch(participant -> participant.invitee().equals(invitee));
 
-        if (isAlreadyExist || Objects.equals(member, this.member)) {
-            throw new AlreadyJoinedTravelErrorException();
+        final boolean isInviteeOwner = Objects.equals(invitee, this.member);
+
+        if (isInviteeParticipated || isInviteeOwner) {
+            throw new AlreadyJoinedTravelFailException("inviteeId");
         }
 
-        participants.add(new TravelParticipant(this, member));
+        participants.add(new TravelParticipant(this, invitee, inviter));
     }
 
     public void addVisit(Place place, Integer dayOfTravel) {

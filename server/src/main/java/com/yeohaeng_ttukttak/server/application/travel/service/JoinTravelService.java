@@ -25,19 +25,20 @@ public class JoinTravelService {
      * 초대를 수락해 여행에 가입한 뒤, 해당 초대를 만료한다.
      * @param travelId 가입할 여행의 식별자
      * @param invitationId 받은 초대의 식별자 (필수)
-     * @param memberId 가입할 사용자의 식발자
+     * @param inviteeId 가입할 사용자의 식발자
      */
     @Transactional
-    public void call(Long travelId, String invitationId, String memberId) {
+    public void call(Long travelId, String invitationId, String inviteeId) {
 
         final TravelInvitation invitation = invitationService.find(travelId, invitationId);
 
         final MemberTravel travel = travelRepository.findById(invitation.travelId())
                 .orElseThrow(() -> new EntityNotFoundFailException(Travel.class));
 
-        final Member member = memberService.find(memberId);
+        final Member invitee = memberService.find(inviteeId);
+        final Member inviter = memberService.find(invitation.memberId());
 
-        travel.addParticipant(member);
+        travel.addParticipant(inviter, invitee);
         invitationService.delete(invitation);
     }
 

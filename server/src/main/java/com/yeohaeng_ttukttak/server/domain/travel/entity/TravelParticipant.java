@@ -1,9 +1,12 @@
 package com.yeohaeng_ttukttak.server.domain.travel.entity;
 
 import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
+import com.yeohaeng_ttukttak.server.domain.travel.exception.CannotInviteYourselfFailException;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+
+import java.util.Objects;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -17,15 +20,29 @@ public class TravelParticipant {
     private MemberTravel travel;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
+    @JoinColumn(name = "invitee_id")
+    private Member invitee;
 
-    protected TravelParticipant(MemberTravel travel, Member member) {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "inviter_id")
+    private Member inviter;
+
+    protected TravelParticipant(MemberTravel travel, Member invitee, Member inviter) {
         this.travel = travel;
-        this.member = member;
+
+        if (Objects.equals(invitee.id(), inviter.id())) {
+            throw new CannotInviteYourselfFailException("inviteeId");
+        }
+
+        this.invitee = invitee;
+        this.inviter = inviter;
     }
 
-    public Member member() {
-        return member;
+    public Member invitee() {
+        return invitee;
+    }
+
+    public Member inviter() {
+        return inviter;
     }
 }
