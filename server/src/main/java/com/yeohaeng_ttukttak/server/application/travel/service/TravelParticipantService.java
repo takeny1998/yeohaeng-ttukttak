@@ -4,6 +4,7 @@ import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFou
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.InvalidArgumentFailException;
 import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
 import com.yeohaeng_ttukttak.server.domain.member.service.MemberService;
+import com.yeohaeng_ttukttak.server.domain.travel.dto.TravelParticipantDto;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.MemberTravel;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelInvitation;
@@ -15,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -27,6 +29,16 @@ public class TravelParticipantService {
     private final MemberService memberService;
 
     private final TravelParticipantRepository participantRepository;
+
+    @Transactional(readOnly = true)
+    public List<TravelParticipantDto> find(Long travelId) {
+        final List<TravelParticipant> participants =
+                participantRepository.findAllByTravelId(travelId);
+
+        return participants.stream()
+                .map(TravelParticipantDto::of)
+                .toList();
+    }
 
     /**
      * 초대를 통해 지정한 여행에 참여한 뒤, 해당 초대를 만료한다.
@@ -56,7 +68,7 @@ public class TravelParticipantService {
      * @param participantId 쫒아낼 참여자의 식별자
      */
     @Transactional
-    public void kick(Long travelId, String kickerId, Long participantId) {
+    public void leave(Long travelId, String kickerId, Long participantId) {
         final TravelParticipant participant = participantRepository.findById(participantId)
                 .orElseThrow(() -> new EntityNotFoundFailException(TravelParticipant.class));
 
