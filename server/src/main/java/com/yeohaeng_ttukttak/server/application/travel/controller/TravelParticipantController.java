@@ -5,7 +5,8 @@ import com.yeohaeng_ttukttak.server.application.travel.controller.dto.JoinTravel
 import com.yeohaeng_ttukttak.server.application.travel.service.TravelParticipantService;
 import com.yeohaeng_ttukttak.server.common.aop.annotation.Authorization;
 import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
-import com.yeohaeng_ttukttak.server.domain.auth.dto.AccessTokenDto;
+import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthorizationDto;
+import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
 import com.yeohaeng_ttukttak.server.domain.travel.dto.TravelParticipantDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,9 +26,12 @@ public class TravelParticipantController {
     public ServerResponse<Void> join(
             @PathVariable Long travelId,
             @Valid @RequestBody JoinTravelRequest request,
-            AccessTokenDto accessToken) {
+            AuthorizationDto authorization) {
 
-        participantService.join(travelId, request.invitationId(), accessToken.memberId());
+        participantService.join(travelId,
+                request.invitationId(),
+                authorization.memberId());
+
         return new ServerResponse<>();
     }
 
@@ -46,9 +50,9 @@ public class TravelParticipantController {
     public ServerResponse<Void> leave(
             @PathVariable Long travelId,
             @PathVariable Long participantId,
-            AccessTokenDto accessToken) {
+            AuthorizationDto authorization) {
 
-        participantService.leave(travelId, accessToken.memberId(), participantId);
+        participantService.leave(travelId, authorization.memberId(), participantId);
         return new ServerResponse<>();
     }
 

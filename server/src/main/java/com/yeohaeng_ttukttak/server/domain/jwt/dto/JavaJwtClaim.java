@@ -7,7 +7,7 @@ import java.time.Instant;
 import java.util.Map;
 
 @RequiredArgsConstructor
-public class JavaJwtClaim implements JwtClaim {
+public final class JavaJwtClaim extends JwtClaim {
 
     private final Claim claim;
 

@@ -1,15 +1,15 @@
 package com.yeohaeng_ttukttak.server.common.aop;
 
 import com.yeohaeng_ttukttak.server.common.exception.exception.error.AuthorizationErrorException;
-import com.yeohaeng_ttukttak.server.domain.auth.dto.AccessTokenDto;
+import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthorizationDto;
 import com.yeohaeng_ttukttak.server.domain.auth.service.AccessTokenService;
+import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Pointcut;
 
 import java.util.Objects;
 
@@ -33,16 +33,15 @@ public class AuthorizationAspect {
         }
 
         final String encodedToken = header.substring(TOKEN_PREFIX.length());
-        final AccessTokenDto accessTokenDto = accessTokenService.decode(encodedToken);
+        final AuthorizationDto authorization = accessTokenService.decode(encodedToken);
 
         final Object[] args = joinPoint.getArgs();
 
         for (int i = 0; i < args.length; i++) {
-            final boolean isTargetParameter = args[i] instanceof AccessTokenDto;
-
-            if (!isTargetParameter) continue;
-            args[i] = accessTokenDto;
-            break;
+            if (args[i] instanceof AuthorizationDto) {
+                args[i] = authorization;
+                break;
+            }
         }
 
         return joinPoint.proceed(args);

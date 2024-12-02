@@ -1,13 +1,21 @@
 package com.yeohaeng_ttukttak.server.domain.jwt.dto;
 
 import java.time.Instant;
+import java.util.Map;
 
-public interface JwtClaim {
+public abstract class JwtClaim {
 
-    String asString();
+    public abstract String asString();
 
-    Integer asInteger();
+    public abstract Integer asInteger();
 
-    Instant asInstant();
+    public abstract Instant asInstant();
+
+    public static JwtClaim of(Map<String, JwtClaim> claims, String key) {
+        if (!claims.containsKey(key)) {
+            return new NullJwtClaim();
+        }
+        return claims.get(key);
+    }
 
 }

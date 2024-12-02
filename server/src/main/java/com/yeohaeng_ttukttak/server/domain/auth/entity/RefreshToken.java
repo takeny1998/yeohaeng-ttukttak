@@ -16,16 +16,16 @@ public class RefreshToken {
     private String refreshToken;
 
     @Indexed
-    private String userId;
+    private String memberId;
 
     private LocalDateTime expiredAt;
 
     @TimeToLive
     private Long expirationSeconds;
 
-    public RefreshToken(String refreshToken, String userId, Long expirationSeconds) {
+    public RefreshToken(String refreshToken, String memberId, Long expirationSeconds) {
         this.refreshToken = refreshToken;
-        this.userId = userId;
+        this.memberId = memberId;
         this.expirationSeconds = expirationSeconds;
     }
 
@@ -37,7 +37,7 @@ public class RefreshToken {
         this.expiredAt = expiredAt;
     }
 
-    public String userId() {
-        return userId;
+    public String memberId() {
+        return memberId;
     }
 }
