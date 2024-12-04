@@ -776,3 +776,218 @@ abstract class _TravelCompanion implements TravelCompanionModel {
   _$$TravelCompanionImplCopyWith<_$TravelCompanionImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
+
+TravelParticipantModel _$TravelParticipantModelFromJson(
+    Map<String, dynamic> json) {
+  return _TravelParticipantModel.fromJson(json);
+}
+
+/// @nodoc
+mixin _$TravelParticipantModel {
+  int get id => throw _privateConstructorUsedError;
+  int get travelId => throw _privateConstructorUsedError;
+  String get inviteeId => throw _privateConstructorUsedError;
+  String get invitorId => throw _privateConstructorUsedError;
+
+  /// Serializes this TravelParticipantModel to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of TravelParticipantModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $TravelParticipantModelCopyWith<TravelParticipantModel> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $TravelParticipantModelCopyWith<$Res> {
+  factory $TravelParticipantModelCopyWith(TravelParticipantModel value,
+          $Res Function(TravelParticipantModel) then) =
+      _$TravelParticipantModelCopyWithImpl<$Res, TravelParticipantModel>;
+  @useResult
+  $Res call({int id, int travelId, String inviteeId, String invitorId});
+}
+
+/// @nodoc
+class _$TravelParticipantModelCopyWithImpl<$Res,
+        $Val extends TravelParticipantModel>
+    implements $TravelParticipantModelCopyWith<$Res> {
+  _$TravelParticipantModelCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of TravelParticipantModel
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? travelId = null,
+    Object? inviteeId = null,
+    Object? invitorId = null,
+  }) {
+    return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      travelId: null == travelId
+          ? _value.travelId
+          : travelId // ignore: cast_nullable_to_non_nullable
+              as int,
+      inviteeId: null == inviteeId
+          ? _value.inviteeId
+          : inviteeId // ignore: cast_nullable_to_non_nullable
+              as String,
+      invitorId: null == invitorId
+          ? _value.invitorId
+          : invitorId // ignore: cast_nullable_to_non_nullable
+              as String,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$TravelParticipantModelImplCopyWith<$Res>
+    implements $TravelParticipantModelCopyWith<$Res> {
+  factory _$$TravelParticipantModelImplCopyWith(
+          _$TravelParticipantModelImpl value,
+          $Res Function(_$TravelParticipantModelImpl) then) =
+      __$$TravelParticipantModelImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({int id, int travelId, String inviteeId, String invitorId});
+}
+
+/// @nodoc
+class __$$TravelParticipantModelImplCopyWithImpl<$Res>
+    extends _$TravelParticipantModelCopyWithImpl<$Res,
+        _$TravelParticipantModelImpl>
+    implements _$$TravelParticipantModelImplCopyWith<$Res> {
+  __$$TravelParticipantModelImplCopyWithImpl(
+      _$TravelParticipantModelImpl _value,
+      $Res Function(_$TravelParticipantModelImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of TravelParticipantModel
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? travelId = null,
+    Object? inviteeId = null,
+    Object? invitorId = null,
+  }) {
+    return _then(_$TravelParticipantModelImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      travelId: null == travelId
+          ? _value.travelId
+          : travelId // ignore: cast_nullable_to_non_nullable
+              as int,
+      inviteeId: null == inviteeId
+          ? _value.inviteeId
+          : inviteeId // ignore: cast_nullable_to_non_nullable
+              as String,
+      invitorId: null == invitorId
+          ? _value.invitorId
+          : invitorId // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$TravelParticipantModelImpl implements _TravelParticipantModel {
+  const _$TravelParticipantModelImpl(
+      {required this.id,
+      required this.travelId,
+      required this.inviteeId,
+      required this.invitorId});
+
+  factory _$TravelParticipantModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$TravelParticipantModelImplFromJson(json);
+
+  @override
+  final int id;
+  @override
+  final int travelId;
+  @override
+  final String inviteeId;
+  @override
+  final String invitorId;
+
+  @override
+  String toString() {
+    return 'TravelParticipantModel(id: $id, travelId: $travelId, inviteeId: $inviteeId, invitorId: $invitorId)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$TravelParticipantModelImpl &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.travelId, travelId) ||
+                other.travelId == travelId) &&
+            (identical(other.inviteeId, inviteeId) ||
+                other.inviteeId == inviteeId) &&
+            (identical(other.invitorId, invitorId) ||
+                other.invitorId == invitorId));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, id, travelId, inviteeId, invitorId);
+
+  /// Create a copy of TravelParticipantModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$TravelParticipantModelImplCopyWith<_$TravelParticipantModelImpl>
+      get copyWith => __$$TravelParticipantModelImplCopyWithImpl<
+          _$TravelParticipantModelImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$TravelParticipantModelImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _TravelParticipantModel implements TravelParticipantModel {
+  const factory _TravelParticipantModel(
+      {required final int id,
+      required final int travelId,
+      required final String inviteeId,
+      required final String invitorId}) = _$TravelParticipantModelImpl;
+
+  factory _TravelParticipantModel.fromJson(Map<String, dynamic> json) =
+      _$TravelParticipantModelImpl.fromJson;
+
+  @override
+  int get id;
+  @override
+  int get travelId;
+  @override
+  String get inviteeId;
+  @override
+  String get invitorId;
+
+  /// Create a copy of TravelParticipantModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$TravelParticipantModelImplCopyWith<_$TravelParticipantModelImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}

@@ -15,7 +15,17 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
-mixin _$TravelPlanParticipantState {}
+mixin _$TravelPlanParticipantState {
+  TravelModel get travel => throw _privateConstructorUsedError;
+  List<TravelParticipantModel> get participants =>
+      throw _privateConstructorUsedError;
+
+  /// Create a copy of TravelPlanParticipantState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $TravelPlanParticipantStateCopyWith<TravelPlanParticipantState>
+      get copyWith => throw _privateConstructorUsedError;
+}
 
 /// @nodoc
 abstract class $TravelPlanParticipantStateCopyWith<$Res> {
@@ -23,6 +33,10 @@ abstract class $TravelPlanParticipantStateCopyWith<$Res> {
           $Res Function(TravelPlanParticipantState) then) =
       _$TravelPlanParticipantStateCopyWithImpl<$Res,
           TravelPlanParticipantState>;
+  @useResult
+  $Res call({TravelModel travel, List<TravelParticipantModel> participants});
+
+  $TravelModelCopyWith<$Res> get travel;
 }
 
 /// @nodoc
@@ -38,14 +52,48 @@ class _$TravelPlanParticipantStateCopyWithImpl<$Res,
 
   /// Create a copy of TravelPlanParticipantState
   /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? travel = null,
+    Object? participants = null,
+  }) {
+    return _then(_value.copyWith(
+      travel: null == travel
+          ? _value.travel
+          : travel // ignore: cast_nullable_to_non_nullable
+              as TravelModel,
+      participants: null == participants
+          ? _value.participants
+          : participants // ignore: cast_nullable_to_non_nullable
+              as List<TravelParticipantModel>,
+    ) as $Val);
+  }
+
+  /// Create a copy of TravelPlanParticipantState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $TravelModelCopyWith<$Res> get travel {
+    return $TravelModelCopyWith<$Res>(_value.travel, (value) {
+      return _then(_value.copyWith(travel: value) as $Val);
+    });
+  }
 }
 
 /// @nodoc
-abstract class _$$TravelPlanParticipantStateImplCopyWith<$Res> {
+abstract class _$$TravelPlanParticipantStateImplCopyWith<$Res>
+    implements $TravelPlanParticipantStateCopyWith<$Res> {
   factory _$$TravelPlanParticipantStateImplCopyWith(
           _$TravelPlanParticipantStateImpl value,
           $Res Function(_$TravelPlanParticipantStateImpl) then) =
       __$$TravelPlanParticipantStateImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({TravelModel travel, List<TravelParticipantModel> participants});
+
+  @override
+  $TravelModelCopyWith<$Res> get travel;
 }
 
 /// @nodoc
@@ -60,31 +108,88 @@ class __$$TravelPlanParticipantStateImplCopyWithImpl<$Res>
 
   /// Create a copy of TravelPlanParticipantState
   /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? travel = null,
+    Object? participants = null,
+  }) {
+    return _then(_$TravelPlanParticipantStateImpl(
+      travel: null == travel
+          ? _value.travel
+          : travel // ignore: cast_nullable_to_non_nullable
+              as TravelModel,
+      participants: null == participants
+          ? _value._participants
+          : participants // ignore: cast_nullable_to_non_nullable
+              as List<TravelParticipantModel>,
+    ));
+  }
 }
 
 /// @nodoc
 
 class _$TravelPlanParticipantStateImpl implements _TravelPlanParticipantState {
-  const _$TravelPlanParticipantStateImpl();
+  const _$TravelPlanParticipantStateImpl(
+      {required this.travel,
+      required final List<TravelParticipantModel> participants})
+      : _participants = participants;
+
+  @override
+  final TravelModel travel;
+  final List<TravelParticipantModel> _participants;
+  @override
+  List<TravelParticipantModel> get participants {
+    if (_participants is EqualUnmodifiableListView) return _participants;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_participants);
+  }
 
   @override
   String toString() {
-    return 'TravelPlanParticipantState()';
+    return 'TravelPlanParticipantState(travel: $travel, participants: $participants)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$TravelPlanParticipantStateImpl);
+            other is _$TravelPlanParticipantStateImpl &&
+            (identical(other.travel, travel) || other.travel == travel) &&
+            const DeepCollectionEquality()
+                .equals(other._participants, _participants));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode => Object.hash(
+      runtimeType, travel, const DeepCollectionEquality().hash(_participants));
+
+  /// Create a copy of TravelPlanParticipantState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$TravelPlanParticipantStateImplCopyWith<_$TravelPlanParticipantStateImpl>
+      get copyWith => __$$TravelPlanParticipantStateImplCopyWithImpl<
+          _$TravelPlanParticipantStateImpl>(this, _$identity);
 }
 
 abstract class _TravelPlanParticipantState
     implements TravelPlanParticipantState {
-  const factory _TravelPlanParticipantState() =
+  const factory _TravelPlanParticipantState(
+          {required final TravelModel travel,
+          required final List<TravelParticipantModel> participants}) =
       _$TravelPlanParticipantStateImpl;
+
+  @override
+  TravelModel get travel;
+  @override
+  List<TravelParticipantModel> get participants;
+
+  /// Create a copy of TravelPlanParticipantState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$TravelPlanParticipantStateImplCopyWith<_$TravelPlanParticipantStateImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }

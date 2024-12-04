@@ -99,3 +99,21 @@ const _$TravelCompanionTypeEnumMap = {
   TravelCompanionType.members: 'members',
   TravelCompanionType.others: 'others',
 };
+
+_$TravelParticipantModelImpl _$$TravelParticipantModelImplFromJson(
+        Map<String, dynamic> json) =>
+    _$TravelParticipantModelImpl(
+      id: (json['id'] as num).toInt(),
+      travelId: (json['travelId'] as num).toInt(),
+      inviteeId: json['inviteeId'] as String,
+      invitorId: json['invitorId'] as String,
+    );
+
+Map<String, dynamic> _$$TravelParticipantModelImplToJson(
+        _$TravelParticipantModelImpl instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'travelId': instance.travelId,
+      'inviteeId': instance.inviteeId,
+      'invitorId': instance.invitorId,
+    };
