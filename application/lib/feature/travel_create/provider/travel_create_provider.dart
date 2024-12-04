@@ -91,15 +91,13 @@ class TravelCreate extends _$TravelCreate {
   void submit() async {
     final formModel = TravelFormModel.fromState(state);
 
-    final travel =
-        await ref.read(asyncLoadingProvider.notifier).guard(() async {
-
+    await ref.read(asyncLoadingProvider.notifier).guard(() async {
       final authModel = await ref.read(authServiceProvider).find();
       final response = await ref.read(httpServiceProvider).request(
           'POST', '/api/v2/travels',
           authorization: authModel.accessToken, data: formModel.toMap());
 
-      return TravelModel.fromJson(response);
+      return TravelModel.fromJson(response['travel']);
     });
 
     state = state.copyWith(isSubmitted: true);

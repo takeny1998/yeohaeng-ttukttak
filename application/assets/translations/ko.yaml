@@ -5,8 +5,8 @@ number_of_cities_selected: '도시 {}개 선택됨'
 
 when_will_you_travel: 언제 여행을 떠나시나요?
 please_select_travel_period: 여행 기간을 선택해 주세요.
-start_day_trip: '{start} (당일치기)'
-start_and_end_number_days: '{start} - {end} ({}박 {days}일)'
+start_day_trip: '{} (당일치기)'
+start_and_end_number_days: '{} - {} ({}박 {}일)'
 
 who_will_you_travel_with: 누구와 함께 여행할 예정인가요?
 select_at_least_number_up_to_number: (최소 {}개, 최대 {}개 선택 가능)

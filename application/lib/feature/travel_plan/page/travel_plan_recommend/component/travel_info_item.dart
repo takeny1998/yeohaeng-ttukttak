@@ -28,17 +28,7 @@ class TravelInfoItem extends StatelessWidget {
               Text(travel.formattedName,
                   style: travelNameStyle, overflow: TextOverflow.ellipsis),
               Text(travel.formattedDate, style: travelDateStyle),
-            ]),
-            Expanded(
-              child: ExtendedWrap(
-                  alignment: WrapAlignment.end,
-                  maxLines: 1,
-                  spacing: -21.0,
-                  children: [
-                    for (final companion in travel.companions)
-                      TravelerAvatarItem.companion(companion, radius: 24.0)
-                  ]),
-            )
+            ])
           ],
         ),
 

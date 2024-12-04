@@ -17,10 +17,8 @@ class TravelModel with _$TravelModel {
     required int id,
     required DateTime startedOn,
     required DateTime endedOn,
-    AgeGroup? ageGroup,
-    Gender? gender,
-    String? memberId,
-    required List<TravelCompanionModel> companions,
+    required String memberId,
+    required List<TravelCompanionType> companionTypes,
     required List<TravelMotivationType> motivationTypes,
     required List<CityModel> cities,
   }) = _TravelModel;
@@ -64,19 +62,6 @@ class TravelFormModel with _$TravelFormModel {
         'motivationTypes': motivationTypes.map((e) => e.name).toList(),
         'cities': cities,
       };
-}
-
-@freezed
-class TravelCompanionModel with _$TravelCompanionModel {
-  const factory TravelCompanionModel({
-    required int id,
-    required TravelCompanionType type,
-    AgeGroup? ageGroup,
-    Gender? gender,
-  }) = _TravelCompanion;
-
-  factory TravelCompanionModel.fromJson(Map<String, dynamic> json) =>
-      _$TravelCompanionModelFromJson(json);
 }
 
 @freezed

@@ -1,28 +1,23 @@
-import 'dart:math';
-
-import 'package:application_new/domain/travel/travel_model.dart';
+import 'package:application_new/domain/travel/travel_plan_model.dart';
 import 'package:application_new/domain/travel_visit/travel_visit_model.dart';
-import 'package:application_new/feature/travel_plan/page/travel_plan_manage/component/travel_date_item.dart';
-import 'package:application_new/feature/travel_plan/page/travel_plan_manage/component/travel_plan_list_drag_item.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_manage/component/travel_plan_list_item.dart';
-import 'package:application_new/feature/travel_plan/page/travel_plan_manage/page/travel_date_range_view.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_manage/provider/travel_plan_manage_provider.dart';
-import 'package:application_new/shared/component/fixed_header_delegate.dart';
+import 'package:application_new/feature/travel_plan/page/travel_plan_manage/provider/travel_plan_manage_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class TravelPlanMangeListView extends ConsumerStatefulWidget {
-  final TravelModel travel;
-  final List<TravelVisitWithPlaceModel> visitPlaces;
-  final DateTime selectedDate;
+  final List<TravelPlanModel> plans;
+  final TravelPlanManageProvider provider;
+
   final Function(DateTime) onChangeDate;
 
-  const TravelPlanMangeListView(
-      {super.key,
-      required this.travel,
-      required this.visitPlaces,
-      required this.selectedDate,
-      required this.onChangeDate});
+  const TravelPlanMangeListView({
+    super.key,
+    required this.plans,
+    required this.provider,
+    required this.onChangeDate,
+  });
 
   @override
   ConsumerState createState() => _TravelPlanMangeListViewState();
@@ -42,18 +37,12 @@ class _TravelPlanMangeListViewState
   Widget build(BuildContext context) {
     final ThemeData(:textTheme, :colorScheme) = Theme.of(context);
 
-    var travel = widget.travel;
-    var visitPlaces = widget.visitPlaces;
-
-    final daysOfTravel = DateTimeRange(
-      start: travel.startedOn,
-      end: travel.endedOn,
-    ).duration.inDays;
-
-    ref.listen(travelPlanManageProvider(travel.id), (prev, next) {
+    ref.listen(widget.provider, (prev, next) {
       if (prev?.selectedDate == next?.selectedDate) return;
       scrollController.jumpTo(0.0);
     });
+
+    final plans = widget.plans;
 
     return Stack(
       children: [
@@ -64,16 +53,14 @@ class _TravelPlanMangeListViewState
                 slivers: [
               const SliverToBoxAdapter(child: SizedBox(height: 48.0)),
               SliverList.builder(
-                  itemCount: visitPlaces.length,
+                  itemCount: plans.length,
                   itemBuilder: (context, index) {
-                    final visitPlace = visitPlaces[index];
+                    final plan = plans[index];
 
-                    return DragTarget<TravelVisitWithPlaceModel>(
+                    return DragTarget<TravelPlanModel>(
                         onAcceptWithDetails: (detail) => ref
-                            .read(travelPlanManageProvider(travel.id)
-                                .notifier)
-                            .move(detail.data,
-                                visitPlace.visit.orderOfVisit),
+                            .read(widget.provider.notifier)
+                            .move(detail.data, plan.orderOfVisit),
                         builder: (context, candidateData, rejectedData) {
                           return Column(
                             children: [
@@ -82,29 +69,25 @@ class _TravelPlanMangeListViewState
                                     opacity: 0.5,
                                     child: TravelPlanListItem(
                                         order: index,
-                                        visitPlace:
-                                            candidateData.first!)),
+                                       plan: candidateData.first!)),
                               TravelPlanListItem(
                                   onDelete: () => ref
-                                      .read(travelPlanManageProvider(
-                                              travel.id)
-                                          .notifier)
-                                      .delete(visitPlace),
+                                      .read(widget.provider.notifier)
+                                      .delete(plan),
                                   order: index,
-                                  visitPlace: visitPlace),
+                                  plan: plan),
                             ],
                           );
                         });
                   }),
               SliverFillRemaining(
                 hasScrollBody: false,
-                child: DragTarget<TravelVisitWithPlaceModel>(
+                child: DragTarget<TravelPlanModel>(
                     onAcceptWithDetails: (detail) {
-                  var lastVisit = visitPlaces.lastOrNull?.visit;
+                  final lastPlan = plans.lastOrNull;
                   ref
-                      .read(travelPlanManageProvider(travel.id).notifier)
-                      .move(detail.data,
-                          (lastVisit?.orderOfVisit ?? -1) + 1);
+                      .read(widget.provider.notifier)
+                      .move(detail.data, (lastPlan?.orderOfVisit ?? -1) + 1);
                 }, builder: (context, candidateData, rejectedData) {
                   return Column(
                     children: [
@@ -112,13 +95,11 @@ class _TravelPlanMangeListViewState
                         Opacity(
                             opacity: 0.5,
                             child: TravelPlanListItem(
-                                order: 0,
-                                visitPlace: candidateData.first!)),
+                                order: 0, plan: candidateData.first!)),
                       Expanded(
                         child: Container(
                           width: double.maxFinite,
-                          constraints:
-                              const BoxConstraints(minHeight: 128.0),
+                          constraints: const BoxConstraints(minHeight: 128.0),
                           child: Row(
                             children: [
                               const SizedBox(width: 24.0),
@@ -126,20 +107,18 @@ class _TravelPlanMangeListViewState
                                 width: 32.0,
                                 child: Column(
                                   children: [
-                                    if (visitPlaces.isEmpty)
+                                    if (plans.isEmpty)
                                       CircleAvatar(
                                         radius: 16.0,
                                         child: Icon(
-                                            Icons
-                                                .add_location_alt_outlined,
+                                            Icons.add_location_alt_outlined,
                                             color: colorScheme.primary,
                                             size: 18.0),
                                       ),
                                     Expanded(
                                       child: Container(
                                         width: 1.0,
-                                        color:
-                                            colorScheme.primaryContainer,
+                                        color: colorScheme.primaryContainer,
                                       ),
                                     ),
                                   ],

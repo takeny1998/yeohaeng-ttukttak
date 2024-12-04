@@ -7,7 +7,7 @@ part of 'travel_plan_recommend_provider.dart';
 // **************************************************************************
 
 String _$travelPlanRecommendHash() =>
-    r'5a0c2d9f0c37d2ea269808b2d8a0178b3ae8a751';
+    r'f8d1649822e79d785b473e13c2d2235e39f4b2b3';
 
 /// Copied from Dart SDK
 class _SystemHash {

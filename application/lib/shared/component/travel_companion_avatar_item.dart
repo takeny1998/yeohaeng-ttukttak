@@ -20,17 +20,6 @@ class TravelerAvatarItem extends ConsumerWidget {
     this.radius,
   });
 
-  factory TravelerAvatarItem.companion(
-    TravelCompanionModel travelCompanion, {
-    double? radius,
-  }) {
-    return TravelerAvatarItem(
-        id: travelCompanion.id,
-        gender: travelCompanion.gender,
-        ageGroup: travelCompanion.ageGroup,
-        radius: radius);
-  }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     if (ageGroup == null || gender == null) {
