@@ -1,6 +1,6 @@
-package com.yeohaeng_ttukttak.server.domain.travel.entity;
+package com.yeohaeng_ttukttak.server.domain.shared.entity;
 
-public enum TravelVisitReasonType {
+public enum VisitReasonType {
     landmark,
     goodReviews,
     media,

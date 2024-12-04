@@ -10,8 +10,8 @@ import com.yeohaeng_ttukttak.server.domain.geography.repository.GeographyReposit
 import com.yeohaeng_ttukttak.server.domain.place.entity.Place;
 import com.yeohaeng_ttukttak.server.domain.place.entity.PlaceCategoryType;
 import com.yeohaeng_ttukttak.server.domain.place.repository.PlaceRecommendationsRepository;
-import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelCompanionType;
-import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelMotivationType;
+import com.yeohaeng_ttukttak.server.domain.shared.entity.CompanionType;
+import com.yeohaeng_ttukttak.server.domain.shared.entity.MotivationType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,8 +34,8 @@ public class PlaceRecommendationsController {
             PageCommand pageCommand,
             @RequestParam Long cityId,
             @RequestParam PlaceCategoryType categoryType,
-            @RequestParam List<TravelMotivationType> motivationTypes,
-            @RequestParam List<TravelCompanionType> companionTypes) {
+            @RequestParam List<MotivationType> motivationTypes,
+            @RequestParam List<CompanionType> companionTypes) {
 
         Geography geography = geographyRepository.findById(cityId)
                 .orElseThrow(() -> new EntityNotFoundFailException(Geography.class));

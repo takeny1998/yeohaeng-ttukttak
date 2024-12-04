@@ -5,6 +5,8 @@ import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFou
 import com.yeohaeng_ttukttak.server.domain.geography.entity.City;
 import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
 import com.yeohaeng_ttukttak.server.domain.place.entity.Place;
+import com.yeohaeng_ttukttak.server.domain.shared.entity.CompanionType;
+import com.yeohaeng_ttukttak.server.domain.shared.entity.MotivationType;
 import com.yeohaeng_ttukttak.server.domain.travel.exception.AlreadyJoinedTravelFailException;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -125,22 +127,22 @@ public class Travel {
         cities().add(new TravelCity(this, city));
     }
 
-    public void addMotivation(TravelMotivationType travelMotivationType) {
+    public void addMotivation(MotivationType motivationType) {
         final boolean isAlreadyExist = motivations().stream()
-                .anyMatch(tm -> tm.type().equals(travelMotivationType));
+                .anyMatch(tm -> tm.type().equals(motivationType));
 
         if (isAlreadyExist) return;
 
-        motivations().add(new TravelMotivation(this, travelMotivationType));
+        motivations().add(new TravelMotivation(this, motivationType));
     }
 
-    public void addCompanion(TravelCompanionType travelCompanionType) {
+    public void addCompanion(CompanionType companionType) {
         final boolean isAlreadyExist = companions().stream()
-                .anyMatch(tc -> tc.type().equals(travelCompanionType));
+                .anyMatch(tc -> tc.type().equals(companionType));
 
         if (isAlreadyExist) return;
 
-        companions().add(new TravelCompanion(this, travelCompanionType));
+        companions().add(new TravelCompanion(this, companionType));
     }
 
     /**

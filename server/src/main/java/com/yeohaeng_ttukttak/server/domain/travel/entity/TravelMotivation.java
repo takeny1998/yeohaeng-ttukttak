@@ -1,5 +1,6 @@
 package com.yeohaeng_ttukttak.server.domain.travel.entity;
 
+import com.yeohaeng_ttukttak.server.domain.shared.entity.MotivationType;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -18,14 +19,14 @@ public class TravelMotivation {
     private Travel travel;
 
     @Enumerated(EnumType.STRING)
-    private TravelMotivationType type;
+    private MotivationType type;
 
-       protected TravelMotivation(Travel travel, TravelMotivationType type) {
+       protected TravelMotivation(Travel travel, MotivationType type) {
         this.travel = travel;
         this.type = type;
     }
 
-    public TravelMotivationType type() {
+    public MotivationType type() {
         return type;
     }
 

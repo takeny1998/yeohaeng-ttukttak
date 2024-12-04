@@ -9,7 +9,8 @@ import com.yeohaeng_ttukttak.server.common.util.dto.PageCommand;
 import com.yeohaeng_ttukttak.server.common.util.dto.PageResult;
 import com.yeohaeng_ttukttak.server.domain.place.entity.Place;
 import com.yeohaeng_ttukttak.server.domain.place.entity.PlaceCategoryType;
-import com.yeohaeng_ttukttak.server.domain.travel.entity.*;
+import com.yeohaeng_ttukttak.server.domain.shared.entity.CompanionType;
+import com.yeohaeng_ttukttak.server.domain.shared.entity.MotivationType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -33,8 +34,8 @@ public class PlaceRecommendationsRepository {
 
     public PageResult<Place> call(PlaceCategoryType categoryType,
                             int codeStart, int codeEnd,
-                            List<TravelMotivationType> motivationTypes,
-                            List<TravelCompanionType> companionTypes,
+                            List<MotivationType> motivationTypes,
+                            List<CompanionType> companionTypes,
                             PageCommand pageCommand) {
 
         NumberExpression<Long> matchedMotivationType = new CaseBuilder()

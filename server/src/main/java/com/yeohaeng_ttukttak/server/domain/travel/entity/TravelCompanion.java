@@ -1,5 +1,6 @@
 package com.yeohaeng_ttukttak.server.domain.travel.entity;
 
+import com.yeohaeng_ttukttak.server.domain.shared.entity.CompanionType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -20,9 +21,9 @@ public class TravelCompanion {
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    private TravelCompanionType type;
+    private CompanionType type;
 
-    protected TravelCompanion(Travel travel, TravelCompanionType type) {
+    protected TravelCompanion(Travel travel, CompanionType type) {
         this.travel = travel;
         this.type = type;
     }
@@ -31,7 +32,7 @@ public class TravelCompanion {
         return id;
     }
 
-    public TravelCompanionType type() {
+    public CompanionType type() {
         return type;
     }
 

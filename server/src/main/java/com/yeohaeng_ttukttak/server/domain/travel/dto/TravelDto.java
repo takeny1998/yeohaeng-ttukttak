@@ -1,8 +1,8 @@
 package com.yeohaeng_ttukttak.server.domain.travel.dto;
 
 import com.yeohaeng_ttukttak.server.domain.geography.dto.CityDto;
-import com.yeohaeng_ttukttak.server.domain.member.entity.AgeGroup;
-import com.yeohaeng_ttukttak.server.domain.member.entity.Gender;
+import com.yeohaeng_ttukttak.server.domain.shared.entity.CompanionType;
+import com.yeohaeng_ttukttak.server.domain.shared.entity.MotivationType;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.*;
 
 import java.time.LocalDate;
@@ -13,8 +13,8 @@ public record TravelDto(
         LocalDate startedOn,
         LocalDate endedOn,
         String memberId,
-        List<TravelCompanionType> companionTypes,
-        List<TravelMotivationType> motivationTypes,
+        List<CompanionType> companionTypes,
+        List<MotivationType> motivationTypes,
         List<CityDto> cities
 ) {
 

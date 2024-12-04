@@ -1,6 +1,6 @@
 package com.yeohaeng_ttukttak.server.domain.travelogue.entity;
 
-import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelMotivationType;
+import com.yeohaeng_ttukttak.server.domain.shared.entity.MotivationType;
 import jakarta.persistence.*;
 
 @Entity
@@ -14,7 +14,7 @@ public class TravelogueMotivation {
     private Travelogue travelogue;
 
     @Enumerated(EnumType.STRING)
-    private TravelMotivationType type;
+    private MotivationType type;
 
     public Long id() {
         return id;
@@ -24,7 +24,7 @@ public class TravelogueMotivation {
         return travelogue;
     }
 
-    public TravelMotivationType type() {
+    public MotivationType type() {
         return type;
     }
 }

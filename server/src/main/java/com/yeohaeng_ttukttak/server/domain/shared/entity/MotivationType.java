@@ -1,6 +1,6 @@
-package com.yeohaeng_ttukttak.server.domain.travel.entity;
+package com.yeohaeng_ttukttak.server.domain.shared.entity;
 
-public enum TravelMotivationType {
+public enum MotivationType {
     adventure,
     rest,
     friendship,

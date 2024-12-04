@@ -1,10 +1,9 @@
 package com.yeohaeng_ttukttak.server.domain.travelogue.entity;
 
 import com.yeohaeng_ttukttak.server.domain.place.entity.Place;
-import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelVisitReasonType;
+import com.yeohaeng_ttukttak.server.domain.shared.entity.VisitReasonType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
 
 @Entity
 public class TravelogueVisit {
@@ -27,7 +26,7 @@ public class TravelogueVisit {
     private Travelogue travelogue;
 
     @Enumerated(EnumType.STRING)
-    private TravelVisitReasonType reasonType;
+    private VisitReasonType reasonType;
 
     private Integer satisfaction;
 
@@ -55,7 +54,7 @@ public class TravelogueVisit {
         return travelogue;
     }
 
-    public TravelVisitReasonType reasonType() {
+    public VisitReasonType reasonType() {
         return reasonType;
     }
 

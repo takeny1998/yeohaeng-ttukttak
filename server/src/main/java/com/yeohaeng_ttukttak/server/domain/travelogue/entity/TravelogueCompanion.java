@@ -1,6 +1,6 @@
 package com.yeohaeng_ttukttak.server.domain.travelogue.entity;
 
-import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelCompanionType;
+import com.yeohaeng_ttukttak.server.domain.shared.entity.CompanionType;
 import jakarta.persistence.*;
 
 @Entity
@@ -14,7 +14,7 @@ public class TravelogueCompanion {
     private Travelogue travelogue;
 
     @Enumerated(EnumType.STRING)
-    private TravelCompanionType type;
+    private CompanionType type;
 
     public Long id() {
         return id;
@@ -24,7 +24,7 @@ public class TravelogueCompanion {
         return travelogue;
     }
 
-    public TravelCompanionType type() {
+    public CompanionType type() {
         return type;
     }
 }

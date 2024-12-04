@@ -2,8 +2,8 @@ package com.yeohaeng_ttukttak.server.domain.travelogue.dto;
 
 import com.yeohaeng_ttukttak.server.domain.member.entity.AgeGroup;
 import com.yeohaeng_ttukttak.server.domain.member.entity.Gender;
-import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelCompanionType;
-import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelMotivationType;
+import com.yeohaeng_ttukttak.server.domain.shared.entity.CompanionType;
+import com.yeohaeng_ttukttak.server.domain.shared.entity.MotivationType;
 import com.yeohaeng_ttukttak.server.domain.travelogue.entity.Travelogue;
 import com.yeohaeng_ttukttak.server.domain.travelogue.entity.TravelogueCompanion;
 import com.yeohaeng_ttukttak.server.domain.travelogue.entity.TravelogueMotivation;
@@ -17,8 +17,8 @@ public record TravelogueDto(
         LocalDate endedOn,
         AgeGroup ageGroup,
         Gender gender,
-        List<TravelCompanionType> companionTypes,
-        List<TravelMotivationType> motivationTypes
+        List<CompanionType> companionTypes,
+        List<MotivationType> motivationTypes
 ) {
 
     public static TravelogueDto of(Travelogue travelogue) {
