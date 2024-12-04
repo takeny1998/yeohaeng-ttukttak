@@ -11,15 +11,7 @@ import lombok.ToString;
 @ToString
 public class TravelCity {
 
-    @Id @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "travel_city_id_generator"
-    )
-    @SequenceGenerator(
-            name = "travel_city_id_generator",
-            sequenceName = "travel_city_seq",
-            initialValue = 30000
-    )
+    @Id @GeneratedValue
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -30,7 +22,7 @@ public class TravelCity {
     @JoinColumn(name = "city_id")
     private City city;
 
-    public TravelCity(MemberTravel travel, City city) {
+    protected TravelCity(Travel travel, City city) {
         this.travel = travel;
         this.city = city;
     }

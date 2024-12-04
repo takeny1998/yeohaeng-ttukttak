@@ -1,7 +1,11 @@
 package com.yeohaeng_ttukttak.server.domain.travel.entity;
 
-import com.yeohaeng_ttukttak.server.domain.member.entity.AgeGroup;
-import com.yeohaeng_ttukttak.server.domain.member.entity.Gender;
+import com.yeohaeng_ttukttak.server.common.exception.exception.error.ForbiddenErrorException;
+import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundFailException;
+import com.yeohaeng_ttukttak.server.domain.geography.entity.City;
+import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
+import com.yeohaeng_ttukttak.server.domain.place.entity.Place;
+import com.yeohaeng_ttukttak.server.domain.travel.exception.AlreadyJoinedTravelFailException;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -9,23 +13,16 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static jakarta.persistence.InheritanceType.JOINED;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Inheritance(strategy = JOINED)
-public abstract class Travel {
+public class Travel {
 
-    @Id @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "travel_id_generator"
-    )
-    @SequenceGenerator(
-            name = "travel_id_generator",
-            sequenceName = "travel_seq",
-            initialValue = 100000
-    )
+    @Id @GeneratedValue
     private Long id;
 
     private LocalDate startedOn;
@@ -41,18 +38,22 @@ public abstract class Travel {
     @OneToMany(mappedBy = "travel", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<TravelMotivation> motivations = new ArrayList<>();
 
-    @OrderBy("dayOfTravel ASC nulls last, orderOfVisit ASC nulls last")
+    @OrderBy("dayOfTravel ASC nulls last, orderOfPlan ASC nulls last")
     @OneToMany(mappedBy = "travel", cascade = CascadeType.PERSIST, orphanRemoval = true)
-    private List<TravelVisit> visits = new ArrayList<>();
+    private List<TravelPlan> visits = new ArrayList<>();
 
-    public Travel(LocalDate startedOn, LocalDate endedOn) {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
+    @OneToMany(mappedBy = "travel", cascade = { CascadeType.PERSIST, CascadeType.MERGE }, orphanRemoval = true)
+    private List<TravelParticipant> participants = new ArrayList<>();
+
+    public Travel(Member member, LocalDate startedOn, LocalDate endedOn) {
+        this.member = member;
         this.startedOn = startedOn;
         this.endedOn = endedOn;
     }
-
-    abstract public AgeGroup ageGroup();
-
-    abstract public Gender gender();
 
     public Long id() {
         return id;
@@ -78,8 +79,145 @@ public abstract class Travel {
         return cities;
     }
 
-    public List<TravelVisit> visits() {
+    public List<TravelPlan> visits() {
         return visits;
+    }
+
+    public Member member() {
+        return member;
+    }
+
+    /**
+     * 해당 여행 객체에 쓰기 권한이 있는지 검사한다.
+     * @param memberId 접근하려는 자의 식별자
+     * @throws ForbiddenErrorException 권한이 없는 경우
+     */
+    public void verifyModifyGrant(String memberId) {
+        final boolean isOwner = Objects.equals(member.id(), memberId);
+
+        final boolean isParticipant = participants.stream()
+                .anyMatch(e -> e.invitee().id().equals(memberId));
+
+        if (!(isOwner || isParticipant)) {
+            throw new ForbiddenErrorException(Travel.class);
+        }
+    }
+
+    /**
+     * 여행 여행 객체를 삭제할 수 있는지 검사한다.
+     * @param memberId 접근자의 식별값
+     * @throws ForbiddenErrorException 권한이 없는 경우
+     */
+    public void verifyDeleteGrant(String memberId) {
+        final boolean isOwner = Objects.equals(member.id(), memberId);
+
+        if (!isOwner) {
+            throw new ForbiddenErrorException(Travel.class);
+        }
+    }
+
+    public void addCity(City city) {
+        final boolean isAlreadyExist = cities().stream()
+                .anyMatch(tc -> tc.city().equals(city));
+
+        if (isAlreadyExist) return;
+
+        cities().add(new TravelCity(this, city));
+    }
+
+    public void addMotivation(TravelMotivationType travelMotivationType) {
+        final boolean isAlreadyExist = motivations().stream()
+                .anyMatch(tm -> tm.type().equals(travelMotivationType));
+
+        if (isAlreadyExist) return;
+
+        motivations().add(new TravelMotivation(this, travelMotivationType));
+    }
+
+    public void addCompanion(TravelCompanionType travelCompanionType) {
+        final boolean isAlreadyExist = companions().stream()
+                .anyMatch(tc -> tc.type().equals(travelCompanionType));
+
+        if (isAlreadyExist) return;
+
+        companions().add(new TravelCompanion(this, travelCompanionType));
+    }
+
+    /**
+     * 지정된 사용자를 해당 여행에 참여자로 추가한다.
+     * @param inviter 해당 사용자를 초대한 자
+     * @param invitee 여행에 참여할 사용자
+     * @throws AlreadyJoinedTravelFailException 이미 참여한 사용자일 때 발생한다.
+     */
+    public void joinParticipant(Member inviter, Member invitee) {
+        final boolean isInviteeParticipated = participants.stream()
+                .anyMatch(participant -> participant.invitee().equals(invitee));
+
+        final boolean isOwnerInvited = Objects.equals(invitee.id(), this.member.id());
+
+        if (isInviteeParticipated || isOwnerInvited) {
+            throw new AlreadyJoinedTravelFailException("inviteeId");
+        }
+
+        participants.add(new TravelParticipant(this, invitee, inviter));
+    }
+
+    /**
+     * 지정된 참여자를 해당 여행에서 쫒아(kick)낸다.
+     * @param member 쫒아낼 사용자
+     * @param participant 쫒을 대상 참여자의 식별자
+     * @throws ForbiddenErrorException 대상 참여자를 쫒을 권한이 없는 경우 발생한다.
+     */
+    public void leaveParticipant(Member member, TravelParticipant participant) {
+        verifyModifyGrant(member.id());
+
+        final boolean isInvitedByKicker = Objects.equals(member.id(), participant.invitee().id());
+        final boolean isMemberOwner = Objects.equals(member.id(), this.member.id());
+
+        if (!isInvitedByKicker && !isMemberOwner) {
+            throw new ForbiddenErrorException(TravelParticipant.class);
+        }
+
+        participants.remove(participant);
+    }
+
+    public void addVisit(Place place, Integer dayOfTravel) {
+        int orderOfVisit = -1;
+
+        for (TravelPlan visit : visits()) {
+            if (Objects.equals(visit.dayOfTravel(), dayOfTravel)) {
+                orderOfVisit = Math.max(orderOfVisit, visit.orderOfVisit());
+            }
+        }
+
+        visits().add(new TravelPlan(dayOfTravel, orderOfVisit + 1, place, this));
+    }
+
+    public void moveVisit(Long visitId, Integer dayOfTravel, Integer orderOfVisit) {
+
+        final TravelPlan insertVisit = visits().stream()
+                .filter((visit -> Objects.equals(visit.id(), visitId)))
+                .findFirst()
+                .orElseThrow(() -> new EntityNotFoundFailException(TravelPlan.class));
+
+        visits().remove(insertVisit);
+
+        for (TravelPlan visit : visits()) {
+            if (!Objects.equals(visit.dayOfTravel(), dayOfTravel)) continue;
+            if (visit.orderOfVisit() >= orderOfVisit) {
+                visit.setOrderOfPlan(visit.orderOfVisit() + 1);
+            }
+        }
+
+        insertVisit.setOrderOfPlan(orderOfVisit)
+                .setDayOfTravel(dayOfTravel);
+
+        visits().add(insertVisit);
+
+    }
+
+    public void removeVisit(Long visitId) {
+        visits().removeIf(visit -> visit.id().equals(visitId));
     }
 
 }

@@ -6,7 +6,7 @@ import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
 import com.yeohaeng_ttukttak.server.domain.member.service.MemberService;
 import com.yeohaeng_ttukttak.server.domain.geography.repository.GeographyRepository;
 import com.yeohaeng_ttukttak.server.domain.travel.dto.TravelDto;
-import com.yeohaeng_ttukttak.server.domain.travel.entity.MemberTravel;
+import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
 import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +31,7 @@ public class CreateTravelService {
 
         final Member member = memberService.find(commend.memberId());
 
-        final MemberTravel travel = new MemberTravel(
+        final Travel travel = new Travel(
                 member, commend.startedOn(), commend.endedOn());
 
         geographyRepository.findAllCityByIds(ids)

@@ -5,9 +5,8 @@ import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFou
 import com.yeohaeng_ttukttak.server.common.util.LocalDateUtil;
 import com.yeohaeng_ttukttak.server.domain.place.entity.Place;
 import com.yeohaeng_ttukttak.server.domain.place.repository.PlaceRepository;
-import com.yeohaeng_ttukttak.server.domain.travel.entity.MemberTravel;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
-import com.yeohaeng_ttukttak.server.domain.travel.repository.MemberTravelRepository;
+import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,13 +15,13 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class CreateTravelVisitService {
 
-    private final MemberTravelRepository travelRepository;
+    private final TravelRepository travelRepository;
     private final PlaceRepository placeRepository;
 
     @Transactional
     public void call(Long travelId, String memberId, Long placeId, Integer dayOfTravel) {
 
-        final MemberTravel travel = travelRepository
+        final Travel travel = travelRepository
                 .findById(travelId)
                 .orElseThrow(() -> new EntityNotFoundFailException(Travel.class));
 

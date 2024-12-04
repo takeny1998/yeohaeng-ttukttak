@@ -1,9 +1,8 @@
 package com.yeohaeng_ttukttak.server.application.travel.service;
 
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundFailException;
-import com.yeohaeng_ttukttak.server.domain.travel.entity.MemberTravel;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
-import com.yeohaeng_ttukttak.server.domain.travel.repository.MemberTravelRepository;
+import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,12 +11,12 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class DeleteTravelVisitService {
 
-    private final MemberTravelRepository travelRepository;
+    private final TravelRepository travelRepository;
 
     @Transactional
-    public void call(Long travelId, Long visitId, String memberId) {
+    public void deleteOne(Long travelId, Long visitId, String memberId) {
 
-        final MemberTravel travel = travelRepository.findById(travelId)
+        final Travel travel = travelRepository.findById(travelId)
                 .orElseThrow(() -> new EntityNotFoundFailException(Travel.class));
 
         travel.verifyModifyGrant(memberId);

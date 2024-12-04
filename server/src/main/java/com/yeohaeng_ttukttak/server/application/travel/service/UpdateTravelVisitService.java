@@ -4,9 +4,8 @@ import com.yeohaeng_ttukttak.server.application.travel.service.dto.UpdateTravelV
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.ArgumentNotInRangeFailException;
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundFailException;
 import com.yeohaeng_ttukttak.server.common.util.LocalDateUtil;
-import com.yeohaeng_ttukttak.server.domain.travel.entity.MemberTravel;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
-import com.yeohaeng_ttukttak.server.domain.travel.repository.MemberTravelRepository;
+import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,12 +16,12 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class UpdateTravelVisitService {
 
-    private final MemberTravelRepository travelRepository;
+    private final TravelRepository travelRepository;
 
     @Transactional
     public void call(UpdateTravelVisitCommand command) {
 
-        final MemberTravel travel = travelRepository.findById(command.travelId())
+        final Travel travel = travelRepository.findById(command.travelId())
                 .orElseThrow(() -> new EntityNotFoundFailException(Travel.class));
 
         travel.verifyModifyGrant(command.memberId());

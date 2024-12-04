@@ -55,7 +55,7 @@ public class TravelController {
 
        return new ServerResponse<>(
                new FindMyAllTravelResponse(
-                       findTravelService.findMyTravels(authorization.memberId())));
+                       findTravelService.findByMember(authorization.memberId())));
     }
 
 }

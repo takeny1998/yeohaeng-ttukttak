@@ -10,15 +10,7 @@ import lombok.ToString;
 @ToString
 public class TravelMotivation {
 
-    @Id @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "travel_motivation_generator"
-    )
-    @SequenceGenerator(
-            name = "travel_motivation_generator",
-            sequenceName = "travel_motivation_seq",
-            initialValue = 100000
-    )
+    @Id @GeneratedValue
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -28,7 +20,7 @@ public class TravelMotivation {
     @Enumerated(EnumType.STRING)
     private TravelMotivationType type;
 
-    public TravelMotivation(Travel travel, TravelMotivationType type) {
+       protected TravelMotivation(Travel travel, TravelMotivationType type) {
         this.travel = travel;
         this.type = type;
     }

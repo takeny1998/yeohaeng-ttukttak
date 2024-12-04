@@ -15,10 +15,16 @@ public class MemberService {
 
     private final MemberRepository repository;
 
+    /**
+     * 지정된 식별자에 맞는 사용자를 찾아 반환한다.
+     * @param memberId 찾을 사용자의 식별자
+     * @return 사용자 엔티티
+     * @throws AuthorizationErrorException 사용자를 찾을 수 없는 경우 발생한다.
+     */
     public Member find(String memberId) {
         return repository
                 .findById(UUID.fromString(memberId))
-                .orElseThrow(() -> new EntityNotFoundFailException(Member.class));
+                .orElseThrow(AuthorizationErrorException::new);
     }
 
 

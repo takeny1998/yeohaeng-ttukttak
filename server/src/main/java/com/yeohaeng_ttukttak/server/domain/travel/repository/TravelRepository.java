@@ -5,13 +5,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface TravelRepository extends JpaRepository<Travel, Long> {
 
-    @Query("SELECT DISTINCT t " +
-            "FROM TravelCity as tc " +
-            "JOIN tc.travel as t " +
-            "WHERE tc.city.id = :cityId")
-    List<Travel> findByCity(Long cityId);
+    List<Travel> findAllByMemberId(UUID memberId);
 
 }

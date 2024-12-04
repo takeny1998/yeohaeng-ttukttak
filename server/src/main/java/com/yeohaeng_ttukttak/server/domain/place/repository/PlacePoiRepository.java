@@ -19,7 +19,7 @@ import static com.querydsl.core.types.dsl.Expressions.nullExpression;
 import static com.querydsl.jpa.JPAExpressions.select;
 import static com.yeohaeng_ttukttak.server.domain.place.entity.QPlace.place;
 import static com.yeohaeng_ttukttak.server.domain.place.entity.QPlaceCategory.placeCategory;
-import static com.yeohaeng_ttukttak.server.domain.travel.entity.QTravelVisit.travelVisit;
+import static com.yeohaeng_ttukttak.server.domain.travelogue.entity.QTravelogueVisit.travelogueVisit;
 
 @Slf4j
 @Repository
@@ -33,7 +33,7 @@ public class PlacePoiRepository {
                                    PlaceSortType sortType,
                                    PageCommand pageCommand) {
 
-        NumberExpression<Long> visitCountExpr = travelVisit.countDistinct();
+        NumberExpression<Long> visitCountExpr = travelogueVisit.countDistinct();
         
         BooleanExpression booleanExpression =
                 place.regionCode.between(codeStart, codeEnd)
@@ -44,7 +44,7 @@ public class PlacePoiRepository {
                 .select(new QPlaceMetricRecord(place, nullExpression(), visitCountExpr))
                 .from(place)
                 .join(place.categories, placeCategory)
-                .join(place.visits, travelVisit)
+                .join(place.visits, travelogueVisit)
                 .where(booleanExpression)
                 .groupBy(place);
 
@@ -63,26 +63,26 @@ public class PlacePoiRepository {
 
     private NumberExpression<Double> calculateBayesianAvg(BooleanExpression booleanExpression) {
         final Double entireAvgExpr = queryFactory.select(
-                        travelVisit.satisfaction.avg()
-                                .add(travelVisit.recommend.avg())
-                                .add(travelVisit.revisit.avg())
+                        travelogueVisit.satisfaction.avg()
+                                .add(travelogueVisit.recommend.avg())
+                                .add(travelogueVisit.revisit.avg())
                                 .divide(3.0))
                 .from(place)
                 .join(place.categories, placeCategory)
-                .join(place.visits, travelVisit)
+                .join(place.visits, travelogueVisit)
                 .where(booleanExpression)
                 .fetchOne();
 
         final Double C = 5.0;
 
-        NumberExpression<Double> ratingSumExpr = travelVisit.satisfaction.sum()
-                .add(travelVisit.recommend.sum())
-                .add(travelVisit.revisit.sum())
+        NumberExpression<Double> ratingSumExpr = travelogueVisit.satisfaction.sum()
+                .add(travelogueVisit.recommend.sum())
+                .add(travelogueVisit.revisit.sum())
                 .castToNum(Double.class).divide(3.0);
 
         return ratingSumExpr
                 .add(C * entireAvgExpr)
-                .divide(travelVisit.count().add(C));
+                .divide(travelogueVisit.count().add(C));
     }
 
     private BooleanExpression equalsPrimaryType() {

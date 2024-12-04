@@ -7,17 +7,13 @@ import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelCompanion;
 
 public record TravelCompanionDto(
         Long id,
-        TravelCompanionType type,
-        AgeGroup ageGroup,
-        Gender gender
+        TravelCompanionType type
 ) {
 
     public static TravelCompanionDto of(TravelCompanion travelCompanion) {
         return new TravelCompanionDto(
                 travelCompanion.id(),
-                travelCompanion.type(),
-                travelCompanion.ageGroup(),
-                travelCompanion.gender()
+                travelCompanion.type()
         );
     }
 }

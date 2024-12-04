@@ -1,10 +1,9 @@
 package com.yeohaeng_ttukttak.server.domain.place.entity;
 
-import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelVisit;
+import com.yeohaeng_ttukttak.server.domain.travelogue.entity.TravelogueVisit;
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.hibernate.annotations.BatchSize;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +35,7 @@ public final class Place {
     private List<PlaceCategory> categories = new ArrayList<>();
 
     @OneToMany(mappedBy = "place")
-    private List<TravelVisit> visits = new ArrayList<>();
+    private List<TravelogueVisit> visits = new ArrayList<>();
 
     public Long id() {
         return id;
@@ -70,7 +69,7 @@ public final class Place {
         return categories;
     }
 
-    public List<TravelVisit> visits() {
+    public List<TravelogueVisit> visits() {
         return visits;
     }
 

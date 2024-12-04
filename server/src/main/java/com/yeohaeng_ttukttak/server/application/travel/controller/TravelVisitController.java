@@ -68,7 +68,7 @@ public class TravelVisitController {
             @PathVariable Long visitId,
             AuthorizationDto authorization) {
 
-        deleteService.call(travelId, visitId, authorization.memberId());
+        deleteService.deleteOne(travelId, visitId, authorization.memberId());
         return new ServerResponse<>();
     }
 

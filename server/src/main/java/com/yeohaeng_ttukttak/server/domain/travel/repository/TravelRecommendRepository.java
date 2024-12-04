@@ -45,11 +45,9 @@ public class TravelRecommendRepository {
     }
 
     private BooleanExpression isMatchedTravel(Long cityId) {
-        BooleanExpression matchedCityExists = queryFactory.selectFrom(travelCity)
+        return queryFactory.selectFrom(travelCity)
                 .where(travelCity.travel.eq(travel), travelCity.city.id.eq(cityId))
                 .exists();
-
-        return travel.instanceOf(InitialTravel.class).and(matchedCityExists);
     }
 
 }

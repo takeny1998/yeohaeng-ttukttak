@@ -40,6 +40,9 @@ public class PlaceRecommendationsController {
         Geography geography = geographyRepository.findById(cityId)
                 .orElseThrow(() -> new EntityNotFoundFailException(Geography.class));
 
+
+        log.debug("{} {}", motivationTypes, companionTypes);
+
         PageResult<Place> pageResult = placeRecommendationsRepository.call(
                 categoryType,
                 geography.codeStart(), geography.codeEnd(),
