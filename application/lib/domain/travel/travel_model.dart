@@ -19,6 +19,7 @@ class TravelModel with _$TravelModel {
     required DateTime endedOn,
     AgeGroup? ageGroup,
     Gender? gender,
+    String? memberId,
     required List<TravelCompanionModel> companions,
     required List<TravelMotivationType> motivationTypes,
     required List<CityModel> cities,
@@ -37,7 +38,6 @@ class TravelModel with _$TravelModel {
 
 @freezed
 class TravelFormModel with _$TravelFormModel {
-
   const TravelFormModel._();
 
   const factory TravelFormModel({
@@ -53,18 +53,17 @@ class TravelFormModel with _$TravelFormModel {
       endedOn: state.endedOn,
       motivationTypes: state.motivationTypes,
       companionTypes: state.companionTypes,
-      cities: state.cities
-  );
+      cities: state.cities);
 
   Map<String, dynamic> toMap() => {
-    'date': {
-      'startedOn': startedOn?.toIso8601String(),
-      'endedOn': endedOn?.toIso8601String(),
-    },
-    'companionTypes': companionTypes.map((e) => e.name).toList(),
-    'motivationTypes': motivationTypes.map((e) => e.name).toList(),
-    'cities': cities,
-  };
+        'date': {
+          'startedOn': startedOn?.toIso8601String(),
+          'endedOn': endedOn?.toIso8601String(),
+        },
+        'companionTypes': companionTypes.map((e) => e.name).toList(),
+        'motivationTypes': motivationTypes.map((e) => e.name).toList(),
+        'cities': cities,
+      };
 }
 
 @freezed
@@ -78,6 +77,25 @@ class TravelCompanionModel with _$TravelCompanionModel {
 
   factory TravelCompanionModel.fromJson(Map<String, dynamic> json) =>
       _$TravelCompanionModelFromJson(json);
+}
+
+@freezed
+class TravelParticipantModel with _$TravelParticipantModel {
+  const factory TravelParticipantModel({
+    required int id,
+    required int travelId,
+    required String inviteeId,
+    required String inviterId,
+  }) = _TravelParticipantModel;
+
+  factory TravelParticipantModel.fromJson(Map<String, dynamic> json) =>
+      _$TravelParticipantModelFromJson(json);
+
+  static List<TravelParticipantModel> listFromJson(Map<String, dynamic> json) {
+    return List.of(json['participants'])
+        .map((e) => TravelParticipantModel.fromJson(e))
+        .toList();
+  }
 }
 
 enum TravelMotivationType {

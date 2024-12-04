@@ -21,7 +21,7 @@ sort_by: 정렬 조건
 
 invite_new_participant: 새 일행 초대하기
 share_link_to_invite: • 초대 링크를 공유해 일행을 초대할 수 있어요.
-share_link_expires_after_30_min: • 초대 링크는 30분 후에 만료되요.
+link_expires_after_30_min: • 초대 링크는 30분 후에 만료되요.
 can_plan_with_participants: • 일행과 함께 여행 계획을 짤 수 있어요.
 share_invitation_link: 초대 링크 공유하기
 
@@ -50,6 +50,10 @@ unknown_error_occurred: 알 수 없는 오류가 발생했습니다. 잠시 후 
 you_have_joined_in_travel_name: '{}에 참여했습니다.'
 
 retry: 다시 시도하기
+leave: 떠나기
+kick: 추방하기
+
+travel_participants: 여행 일행
 
 widget:
   VisitListItem:

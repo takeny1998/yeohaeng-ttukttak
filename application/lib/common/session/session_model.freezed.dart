@@ -17,6 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$SessionModel {
   bool get isAuthenticated => throw _privateConstructorUsedError;
+  MemberModel? get member => throw _privateConstructorUsedError;
   String? get errorMessage => throw _privateConstructorUsedError;
 
   /// Create a copy of SessionModel
@@ -32,7 +33,9 @@ abstract class $SessionModelCopyWith<$Res> {
           SessionModel value, $Res Function(SessionModel) then) =
       _$SessionModelCopyWithImpl<$Res, SessionModel>;
   @useResult
-  $Res call({bool isAuthenticated, String? errorMessage});
+  $Res call({bool isAuthenticated, MemberModel? member, String? errorMessage});
+
+  $MemberModelCopyWith<$Res>? get member;
 }
 
 /// @nodoc
@@ -51,6 +54,7 @@ class _$SessionModelCopyWithImpl<$Res, $Val extends SessionModel>
   @override
   $Res call({
     Object? isAuthenticated = null,
+    Object? member = freezed,
     Object? errorMessage = freezed,
   }) {
     return _then(_value.copyWith(
@@ -58,11 +62,29 @@ class _$SessionModelCopyWithImpl<$Res, $Val extends SessionModel>
           ? _value.isAuthenticated
           : isAuthenticated // ignore: cast_nullable_to_non_nullable
               as bool,
+      member: freezed == member
+          ? _value.member
+          : member // ignore: cast_nullable_to_non_nullable
+              as MemberModel?,
       errorMessage: freezed == errorMessage
           ? _value.errorMessage
           : errorMessage // ignore: cast_nullable_to_non_nullable
               as String?,
     ) as $Val);
+  }
+
+  /// Create a copy of SessionModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $MemberModelCopyWith<$Res>? get member {
+    if (_value.member == null) {
+      return null;
+    }
+
+    return $MemberModelCopyWith<$Res>(_value.member!, (value) {
+      return _then(_value.copyWith(member: value) as $Val);
+    });
   }
 }
 
@@ -74,7 +96,10 @@ abstract class _$$SessionModelImplCopyWith<$Res>
       __$$SessionModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({bool isAuthenticated, String? errorMessage});
+  $Res call({bool isAuthenticated, MemberModel? member, String? errorMessage});
+
+  @override
+  $MemberModelCopyWith<$Res>? get member;
 }
 
 /// @nodoc
@@ -91,6 +116,7 @@ class __$$SessionModelImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? isAuthenticated = null,
+    Object? member = freezed,
     Object? errorMessage = freezed,
   }) {
     return _then(_$SessionModelImpl(
@@ -98,6 +124,10 @@ class __$$SessionModelImplCopyWithImpl<$Res>
           ? _value.isAuthenticated
           : isAuthenticated // ignore: cast_nullable_to_non_nullable
               as bool,
+      member: freezed == member
+          ? _value.member
+          : member // ignore: cast_nullable_to_non_nullable
+              as MemberModel?,
       errorMessage: freezed == errorMessage
           ? _value.errorMessage
           : errorMessage // ignore: cast_nullable_to_non_nullable
@@ -109,17 +139,20 @@ class __$$SessionModelImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$SessionModelImpl implements _SessionModel {
-  const _$SessionModelImpl({this.isAuthenticated = false, this.errorMessage});
+  const _$SessionModelImpl(
+      {this.isAuthenticated = false, this.member, this.errorMessage});
 
   @override
   @JsonKey()
   final bool isAuthenticated;
   @override
+  final MemberModel? member;
+  @override
   final String? errorMessage;
 
   @override
   String toString() {
-    return 'SessionModel(isAuthenticated: $isAuthenticated, errorMessage: $errorMessage)';
+    return 'SessionModel(isAuthenticated: $isAuthenticated, member: $member, errorMessage: $errorMessage)';
   }
 
   @override
@@ -129,12 +162,14 @@ class _$SessionModelImpl implements _SessionModel {
             other is _$SessionModelImpl &&
             (identical(other.isAuthenticated, isAuthenticated) ||
                 other.isAuthenticated == isAuthenticated) &&
+            (identical(other.member, member) || other.member == member) &&
             (identical(other.errorMessage, errorMessage) ||
                 other.errorMessage == errorMessage));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, isAuthenticated, errorMessage);
+  int get hashCode =>
+      Object.hash(runtimeType, isAuthenticated, member, errorMessage);
 
   /// Create a copy of SessionModel
   /// with the given fields replaced by the non-null parameter values.
@@ -148,10 +183,13 @@ class _$SessionModelImpl implements _SessionModel {
 abstract class _SessionModel implements SessionModel {
   const factory _SessionModel(
       {final bool isAuthenticated,
+      final MemberModel? member,
       final String? errorMessage}) = _$SessionModelImpl;
 
   @override
   bool get isAuthenticated;
+  @override
+  MemberModel? get member;
   @override
   String? get errorMessage;
 

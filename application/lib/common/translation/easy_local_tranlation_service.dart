@@ -10,9 +10,10 @@ final class EasyLocalTranslationService implements TranslationService {
   }
 
   @override
-  String fromEnum<T extends Enum>(T key) {
-    // TODO: implement fromEnum
-    throw UnimplementedError();
+  String fromEnum<T extends Enum>(T? key) {
+    if (key == null) return 'null'.tr();
+
+    return 'enum.${key.runtimeType}.values.${key.name}'.tr();
   }
 
 }

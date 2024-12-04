@@ -55,7 +55,7 @@ class TravelItem extends ConsumerWidget {
                         textStyle: const TextStyle(
                             fontSize: 12.0, fontWeight: FontWeight.w600),
                         backgroundColor: colorScheme.surface),
-                    child: Text(tr.from('view_travelogues')))),
+                    child: Text(tr.from('read_travelogues')))),
             const SizedBox(width: 8.0),
             Expanded(
               flex: 1,

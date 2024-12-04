@@ -14,18 +14,24 @@ public record TravelDto(
         LocalDate endedOn,
         AgeGroup ageGroup,
         Gender gender,
+        String memberId,
         List<TravelCompanionDto> companions,
         List<TravelMotivationType> motivationTypes,
         List<CityDto> cities
 ) {
 
     public static TravelDto of(Travel travel) {
+        final String memberId = travel instanceof MemberTravel
+                ? ((MemberTravel) travel).member().id()
+                : null;
+
         return new TravelDto(
                 travel.id(),
                 travel.startedOn(),
                 travel.endedOn(),
                 travel.ageGroup(),
                 travel.gender(),
+                memberId,
                 travel.companions().stream()
                         .map(TravelCompanionDto::of)
                         .toList(),

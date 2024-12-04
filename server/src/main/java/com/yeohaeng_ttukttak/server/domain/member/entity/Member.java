@@ -1,6 +1,5 @@
 package com.yeohaeng_ttukttak.server.domain.member.entity;
 
-import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthorizationDto;
 import com.yeohaeng_ttukttak.server.domain.oauth.entity.OAuth;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;

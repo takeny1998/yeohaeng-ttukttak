@@ -1,9 +1,11 @@
+import 'package:application_new/common/router/router_provider.dart';
 import 'package:application_new/common/util/translation_util.dart';
 import 'package:application_new/feature/travel_plan/component/travel_info_list_item.dart';
 import 'package:application_new/feature/travel_plan/provider/travel_plan_provider.dart';
 import 'package:application_new/feature/travel_plan/provider/travel_plan_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class TravelPlanHomePage extends ConsumerWidget {
   final TravelPlanProvider provider;
@@ -73,6 +75,8 @@ class TravelPlanHomePage extends ConsumerWidget {
                       ])),
             ),
           ),
+          SliverToBoxAdapter(child: TextButton(onPressed: () => context.push(
+              '/travels/${travel.id}/participants'), child: Text('여행 일원')))
         ],
       ),
     );

@@ -56,7 +56,6 @@ class _TravelPlanPageState extends ConsumerState<TravelPlanPage> {
           children: [
             TravelPlanHomePage(provider: travelPlanProvider(widget.travelId), state: state),
             TravelPlanRecommendPage(travelId: widget.travelId, cityId: cityId),
-            TravelPlanParticipantPage(provider:travelPlanProvider(widget.travelId), state: state),
             TravelPlanManagePage(travelId: widget.travelId),
             TravelPlanBookmarkPage(travelId: widget.travelId),
           ],
@@ -82,10 +81,6 @@ class _TravelPlanPageState extends ConsumerState<TravelPlanPage> {
                 selectedIcon: Icon(Icons.place),
                 icon: Icon(Icons.place_outlined),
                 label: '둘러보기'),
-            NavigationDestination(
-                selectedIcon: Icon(Icons.person),
-                icon: Icon(Icons.person_outline),
-                label: '팀원'),
             NavigationDestination(
                 selectedIcon: Icon(Icons.map),
                 icon: Icon(Icons.map_outlined),
