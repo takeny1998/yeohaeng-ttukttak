@@ -1,6 +1,7 @@
+import 'package:application_new/common/translation/translation_service.dart';
 import 'package:application_new/common/util/date_util.dart';
-import 'package:application_new/common/util/translation_util.dart';
 import 'package:application_new/feature/travel_create/component/bottom_action_button.dart';
+import 'package:application_new/feature/travel_create/provider/travel_create_state.dart';
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,8 +14,7 @@ class SelectTravelDateForm extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(travelCreateProvider);
-    final startedOn = state.startedOn;
-    final endedOn = state.endedOn;
+    final TravelCreateState(:startedOn, :endedOn) = state;
 
     final firstDate = DateTime.now();
     final lastDate = firstDate.add(const Duration(days: 365));
@@ -22,19 +22,7 @@ class SelectTravelDateForm extends ConsumerWidget {
     final areSelected = startedOn != null && endedOn != null;
 
     final textTheme = Theme.of(context).textTheme;
-
-    final nights = areSelected
-        ? DateTimeRange(start: startedOn, end: endedOn).duration.inDays
-        : 0;
-
-    final translator = TranslationUtil.widget(context);
-
-    final dateFormatter = DateUtil.formatter('yy.m.d');
-
-    final buttonTextStyle = textTheme.titleMedium?.copyWith(
-      fontWeight: FontWeight.w600,
-      color: Colors.white,
-    );
+    final tr = ref.watch(translationServiceProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -44,7 +32,7 @@ class SelectTravelDateForm extends ConsumerWidget {
           child: Container(
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.fromLTRB(24, 0, 24, 16),
-            child: Text(translator.key('ask_date'),
+            child: Text(tr.from('when_will_you_travel'),
                 style: textTheme.titleLarge
                     ?.copyWith(fontWeight: FontWeight.w600)),
           ),
@@ -73,19 +61,25 @@ class SelectTravelDateForm extends ConsumerWidget {
           onPressed: areSelected
               ? ref.read(travelCreateProvider.notifier).nextPage
               : null,
-          child: areSelected
-              ? Text(
-                  translator.plural('show_selected_date', nights, args: {
-                    'start': dateFormatter.date(startedOn),
-                    'end': dateFormatter.date(endedOn),
-                    'days': '${nights + 1}'
-                  }),
-                  style: buttonTextStyle,
-                )
-              : Text(
-                  translator.key('require_select_date'),
-                  style: buttonTextStyle,
-                )),
+          child: Text(formatLabel(tr, startedOn, endedOn))),
     );
+  }
+
+  String formatLabel(
+      TranslationService tr, DateTime? startedOn, DateTime? endedOn) {
+    final format = DateUtil.formatter('yy.m.d');
+
+    if (startedOn != null && endedOn != null) {
+      final nights = endedOn.difference(startedOn).inDays;
+
+      if (nights == 0) {
+        return tr.from('start_day_trip', args: [format.date(startedOn)]);
+      }
+
+      return tr.from('start_and_end_number_days',
+          args: [format.date(startedOn), format.date(endedOn), '$nights']);
+    }
+
+    return tr.from('please_select_travel_period');
   }
 }

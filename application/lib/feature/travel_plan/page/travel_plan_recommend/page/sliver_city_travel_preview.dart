@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:application_new/common/util/translation_util.dart';
+import 'package:application_new/common/translation/translation_service.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_recommend/component/travel_item.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_recommend/page/city_travels/provider/city_travels_provider.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_recommend/page/city_travels/provider/city_travels_state.dart';
@@ -39,15 +39,14 @@ class SliverCityTravelPreview extends ConsumerWidget {
 
     final itemExtent = min(Constants.maxItemWidth, deviceWidth);
 
-    final translator = TranslationUtil.widget(context);
+    final tr = ref.watch(translationServiceProvider);
 
     return SliverToBoxAdapter(
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24.0),
         child: Text(
-            translator
-                .key('travels_of_city', args: {'city_name': state.city.name}),
+            tr.from('travelogues_in_city_name', args: [ state.city.name ]),
             style: titleStyle),
       ),
       const SizedBox(height: 24.0),
@@ -68,7 +67,7 @@ class SliverCityTravelPreview extends ConsumerWidget {
           child: FilledButton(
               onPressed: () =>
                   context.push('/travels/$travelId/cities/$cityId/travels/'),
-              child: const Text('자세히 보기'))),
+              child: Text(tr.from('read_more')))),
     ]));
   }
 }

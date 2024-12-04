@@ -4,7 +4,7 @@ import 'dart:ui';
 import 'package:application_new/common/event/event.dart';
 import 'package:application_new/common/loading/async_loading_provider.dart';
 import 'package:application_new/common/session/session_provider.dart';
-import 'package:application_new/common/util/translation_util.dart';
+import 'package:application_new/common/translation/translation_service.dart';
 import 'package:application_new/feature/authentication/service/auth_service_provider.dart';
 import 'package:application_new/feature/locale/locale_provider.dart';
 import 'package:application_new/shared/theme/my_chip_theme.dart';
@@ -31,20 +31,25 @@ void main() async {
   final providerContainer = ProviderContainer();
 
   PlatformDispatcher.instance.onError = (error, stack) {
-    final uuid =  const UuidV4().generate().substring(0, 6);
+    final uuid = const UuidV4().generate().substring(0, 6);
 
     logger.e('[$uuid][Error]', stackTrace: stack, error: error);
 
     if (error is NetworkException) {
-      logger.e('[$uuid][NetworkException] code = ${error.statusCode} message = ${error.statusMessage}');
-      providerContainer.read(sessionProvider.notifier).omitError(TranslationUtil.message('network_exception'));
+      logger.e(
+          '[$uuid][NetworkException] code = ${error.statusCode} message = ${error.statusMessage}');
+      providerContainer.read(sessionProvider.notifier).omitError(
+          providerContainer
+              .read(translationServiceProvider)
+              .from('network_error_occurred'));
       return true;
     }
 
     if (error is ServerException) {
       switch (error) {
         case ServerErrorException(:final code, :final message):
-          logger.e('[$uuid][ServerErrorException] code = $code, message = $message');
+          logger.e(
+              '[$uuid][ServerErrorException] code = $code, message = $message');
           eventController.add(MessageEvent(message));
         case ServerFailException(:final data):
           logger.e('[$uuid][ServerFailException] data = $data');
@@ -53,7 +58,6 @@ void main() async {
       }
       return true;
     }
-
 
     if (error is BusinessException) {
       switch (error) {

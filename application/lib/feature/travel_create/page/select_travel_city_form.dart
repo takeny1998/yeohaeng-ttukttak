@@ -1,4 +1,5 @@
 import 'package:application_new/common/loading/loading_page.dart';
+import 'package:application_new/common/translation/translation_service.dart';
 import 'package:application_new/common/util/translation_util.dart';
 import 'package:application_new/domain/geography/geography_provider.dart';
 import 'package:application_new/feature/travel_create/component/bottom_action_button.dart';
@@ -32,17 +33,16 @@ class _SelectTravelCityFormState extends ConsumerState<SelectTravelCityForm> {
   Widget build(BuildContext context) {
     final TravelCreateState(cities: selectedCities, region: selectedRegion) =
         ref.watch(travelCreateProvider);
-    
-    
+
     final geography = ref.watch(geographyProvider).value;
-    
+
     if (geography == null) return const LoadingPage();
-    
+
     final (cities, regions) = geography;
-    
+
     final colorScheme = Theme.of(context).colorScheme;
 
-    final translator = TranslationUtil.widget(context);
+    final tr = ref.watch(translationServiceProvider);
 
     final filteredCities = cities.where((city) {
       if (selectedRegion == null) return true;
@@ -71,9 +71,8 @@ class _SelectTravelCityFormState extends ConsumerState<SelectTravelCityForm> {
               onTap: () async {
                 final foundCity = await showSearch(
                     context: context,
-                    delegate: CitySearchDelegate(
-                        cities: cities,
-                        regions: regions));
+                    delegate:
+                        CitySearchDelegate(cities: cities, regions: regions));
 
                 if (foundCity == null || selectedCities.contains(foundCity)) {
                   return;
@@ -85,7 +84,7 @@ class _SelectTravelCityFormState extends ConsumerState<SelectTravelCityForm> {
                 fillColor: colorScheme.primaryContainer,
                 suffixIcon: const Icon(Icons.search),
                 hintStyle: TextStyle(color: colorScheme.secondary),
-                hintText: translator.key('ask_city'),
+                hintText: tr.from('what_city_will_you_travel'),
               ),
             ),
           ),
@@ -130,8 +129,8 @@ class _SelectTravelCityFormState extends ConsumerState<SelectTravelCityForm> {
               itemCount: filteredCities.length,
               itemBuilder: (context, index) {
                 final city = filteredCities[index];
-                final region = regions
-                    .firstWhere((region) => region.id == city.regionId);
+                final region =
+                    regions.firstWhere((region) => region.id == city.regionId);
 
                 return CityListItem(
                     region: region,
@@ -171,8 +170,10 @@ class _SelectTravelCityFormState extends ConsumerState<SelectTravelCityForm> {
           onPressed: isSelected
               ? ref.read(travelCreateProvider.notifier).submit
               : null,
-          child: Text(translator.plural(
-              'show_selected_city', selectedCities.length)),
+          child: Text(isSelected
+              ? tr.from('number_of_cities_selected',
+                  args: ['${selectedCities.length}'])
+              : tr.from('please_select_at_least_one_city')),
         ),
       ),
     ));
