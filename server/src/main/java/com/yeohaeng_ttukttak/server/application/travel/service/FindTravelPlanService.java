@@ -1,7 +1,7 @@
 package com.yeohaeng_ttukttak.server.application.travel.service;
 
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundFailException;
-import com.yeohaeng_ttukttak.server.domain.travel.dto.TravelVisitDto;
+import com.yeohaeng_ttukttak.server.domain.travel.dto.TravelPlanDto;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
 import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,17 +12,17 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class FindTravelVisitsService {
+public class FindTravelPlanService {
 
     private final TravelRepository travelRepository;
 
     @Transactional(readOnly = true)
-    public List<TravelVisitDto> call(Long travelId) {
+    public List<TravelPlanDto> findAll(Long travelId) {
         final Travel travel = travelRepository.findById(travelId)
                 .orElseThrow(() -> new EntityNotFoundFailException(Travel.class));
 
-        return travel.visits().stream()
-                .map((TravelVisitDto::of))
+        return travel.plans().stream()
+                .map((TravelPlanDto::of))
                 .toList();
     }
 

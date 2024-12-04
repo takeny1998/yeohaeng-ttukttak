@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class UpdateTravelVisitService {
+public class UpdateTravelPlanService {
 
     private final TravelRepository travelRepository;
 
@@ -30,7 +30,7 @@ public class UpdateTravelVisitService {
                 .isInRange(command.visitedOn(), travel.startedOn(), travel.endedOn());
 
         if (!inRange) {
-            throw new ArgumentNotInRangeFailException("visitedOn", travel.startedOn(), travel.endedOn());
+            throw new ArgumentNotInRangeFailException("willVisitOn", travel.startedOn(), travel.endedOn());
         }
 
         final long dayOfTravel = LocalDateUtil.getBetweenDays(travel.startedOn(), command.visitedOn());
@@ -38,7 +38,7 @@ public class UpdateTravelVisitService {
         log.debug("command = {}", command);
         log.debug("dayOfTravel = {}", dayOfTravel);
 
-        travel.moveVisit(
+        travel.movePlan(
                 command.visitId(),
                 (int) dayOfTravel,
                 command.orderOfVisit());

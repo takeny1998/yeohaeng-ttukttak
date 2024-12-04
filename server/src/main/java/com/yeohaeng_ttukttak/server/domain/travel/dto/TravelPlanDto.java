@@ -1,18 +1,16 @@
 package com.yeohaeng_ttukttak.server.domain.travel.dto;
 
 import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelPlan;
-import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDate;
 
-@Slf4j
-public record TravelVisitDto(
+public record TravelPlanDto(
         Long id,
         Integer orderOfVisit,
         Long placeId,
-        LocalDate visitedOn) {
+        LocalDate willVisitOn) {
 
-    public static TravelVisitDto of(TravelPlan visit) {
+    public static TravelPlanDto of(TravelPlan visit) {
 
         LocalDate visitedOn = null;
 
@@ -22,9 +20,9 @@ public record TravelVisitDto(
                     .plusDays(visit.dayOfTravel());
         }
 
-        return new TravelVisitDto(
+        return new TravelPlanDto(
                 visit.id(),
-                visit.orderOfVisit(),
+                visit.orderOfPlan(),
                 visit.place().id(),
                 visitedOn
         );

@@ -13,13 +13,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class CreateTravelVisitService {
+public class CreateTravelPlanService {
 
     private final TravelRepository travelRepository;
     private final PlaceRepository placeRepository;
 
     @Transactional
-    public void call(Long travelId, String memberId, Long placeId, Integer dayOfTravel) {
+    public void createOne(Long travelId, String memberId, Long placeId, Integer dayOfTravel) {
 
         final Travel travel = travelRepository
                 .findById(travelId)
@@ -37,7 +37,7 @@ public class CreateTravelVisitService {
                 .findById(placeId)
                 .orElseThrow(() -> new EntityNotFoundFailException(Place.class));
 
-        travel.addVisit(place, dayOfTravel);
+        travel.addPlan(place, dayOfTravel);
     }
 
 }

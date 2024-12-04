@@ -40,7 +40,7 @@ public class Travel {
 
     @OrderBy("dayOfTravel ASC nulls last, orderOfPlan ASC nulls last")
     @OneToMany(mappedBy = "travel", cascade = CascadeType.PERSIST, orphanRemoval = true)
-    private List<TravelPlan> visits = new ArrayList<>();
+    private List<TravelPlan> plans = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
@@ -79,8 +79,8 @@ public class Travel {
         return cities;
     }
 
-    public List<TravelPlan> visits() {
-        return visits;
+    public List<TravelPlan> plans() {
+        return plans;
     }
 
     public Member member() {
@@ -181,43 +181,46 @@ public class Travel {
         participants.remove(participant);
     }
 
-    public void addVisit(Place place, Integer dayOfTravel) {
-        int orderOfVisit = -1;
 
-        for (TravelPlan visit : visits()) {
-            if (Objects.equals(visit.dayOfTravel(), dayOfTravel)) {
-                orderOfVisit = Math.max(orderOfVisit, visit.orderOfVisit());
+    public void addPlan(Place place, Integer dayOfTravel) {
+        int orderOfPlan = -1;
+
+        for (TravelPlan plan : plans) {
+            if (Objects.equals(plan.dayOfTravel(), dayOfTravel)) {
+                orderOfPlan = Math.max(orderOfPlan, plan.orderOfPlan());
             }
         }
 
-        visits().add(new TravelPlan(dayOfTravel, orderOfVisit + 1, place, this));
+        final TravelPlan plan = new TravelPlan(
+                dayOfTravel, orderOfPlan + 1, place, this);
+
+        plans.add(plan);
     }
 
-    public void moveVisit(Long visitId, Integer dayOfTravel, Integer orderOfVisit) {
-
-        final TravelPlan insertVisit = visits().stream()
+    public void movePlan(Long visitId, Integer dayOfTravel, Integer orderOfVisit) {
+        final TravelPlan insertVisit = plans().stream()
                 .filter((visit -> Objects.equals(visit.id(), visitId)))
                 .findFirst()
                 .orElseThrow(() -> new EntityNotFoundFailException(TravelPlan.class));
 
-        visits().remove(insertVisit);
+        plans().remove(insertVisit);
 
-        for (TravelPlan visit : visits()) {
+        for (TravelPlan visit : plans()) {
             if (!Objects.equals(visit.dayOfTravel(), dayOfTravel)) continue;
-            if (visit.orderOfVisit() >= orderOfVisit) {
-                visit.setOrderOfPlan(visit.orderOfVisit() + 1);
+            if (visit.orderOfPlan() >= orderOfVisit) {
+                visit.setOrderOfPlan(visit.orderOfPlan() + 1);
             }
         }
 
         insertVisit.setOrderOfPlan(orderOfVisit)
                 .setDayOfTravel(dayOfTravel);
 
-        visits().add(insertVisit);
+        plans().add(insertVisit);
 
     }
 
     public void removeVisit(Long visitId) {
-        visits().removeIf(visit -> visit.id().equals(visitId));
+        plans().removeIf(visit -> visit.id().equals(visitId));
     }
 
 }

@@ -63,7 +63,7 @@ public class TravelPlan {
         return dayOfTravel;
     }
 
-    public Integer orderOfVisit() {
+    public Integer orderOfPlan() {
         return orderOfPlan;
     }
 }

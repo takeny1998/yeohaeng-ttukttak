@@ -9,9 +9,7 @@ import java.util.List;
 
 public interface TravelPlanRepository extends JpaRepository<TravelPlan, Long> {
 
-    @Query("SELECT p FROM TravelPlan AS p " +
-            "WHERE p.travel = :travel " +
-            "ORDER BY p.orderOfPlan")
+
     List<TravelPlan> findAllByTravel(Travel travel);
 
 }

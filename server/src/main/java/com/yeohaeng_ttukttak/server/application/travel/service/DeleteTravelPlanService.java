@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class DeleteTravelVisitService {
+public class DeleteTravelPlanService {
 
     private final TravelRepository travelRepository;
 
