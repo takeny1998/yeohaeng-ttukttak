@@ -8,7 +8,7 @@ part of 'member_model.dart';
 
 _$MemberModelImpl _$$MemberModelImplFromJson(Map<String, dynamic> json) =>
     _$MemberModelImpl(
-      id: (json['id'] as num).toInt(),
+      id: json['id'] as String,
       ageGroup: $enumDecodeNullable(_$AgeGroupEnumMap, json['ageGroup']),
       gender: $enumDecodeNullable(_$GenderEnumMap, json['gender']),
     );
@@ -29,7 +29,6 @@ const _$AgeGroupEnumMap = {
   AgeGroup.fifties: 'fifties',
   AgeGroup.sixties: 'sixties',
   AgeGroup.seventiesPlus: 'seventiesPlus',
-  AgeGroup.none: 'none',
 };
 
 const _$GenderEnumMap = {

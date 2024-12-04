@@ -56,4 +56,18 @@ class TravelPlanParticipant extends _$TravelPlanParticipant {
 
     Share.share(uri.toString(), subject: '초대 링크 공유하기');
   }
+
+  Future<void> leaveOrKick(int participantId) async {
+    await ref.read(asyncLoadingProvider.notifier).guard(() async {
+      final auth = await ref.read(authServiceProvider).find();
+
+      await ref.read(httpServiceProvider).request(
+            'DELETE',
+            '/api/v2/travels/$travelId/participants/$participantId',
+            authorization: auth.accessToken,
+          );
+    });
+
+    state = state?.copyWith(participants: await _fetch());
+  }
 }

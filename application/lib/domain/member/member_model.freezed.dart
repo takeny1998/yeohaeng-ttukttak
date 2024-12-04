@@ -20,7 +20,7 @@ MemberModel _$MemberModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$MemberModel {
-  int get id => throw _privateConstructorUsedError;
+  String get id => throw _privateConstructorUsedError;
   AgeGroup? get ageGroup => throw _privateConstructorUsedError;
   Gender? get gender => throw _privateConstructorUsedError;
 
@@ -40,7 +40,7 @@ abstract class $MemberModelCopyWith<$Res> {
           MemberModel value, $Res Function(MemberModel) then) =
       _$MemberModelCopyWithImpl<$Res, MemberModel>;
   @useResult
-  $Res call({int id, AgeGroup? ageGroup, Gender? gender});
+  $Res call({String id, AgeGroup? ageGroup, Gender? gender});
 }
 
 /// @nodoc
@@ -66,7 +66,7 @@ class _$MemberModelCopyWithImpl<$Res, $Val extends MemberModel>
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
+              as String,
       ageGroup: freezed == ageGroup
           ? _value.ageGroup
           : ageGroup // ignore: cast_nullable_to_non_nullable
@@ -87,7 +87,7 @@ abstract class _$$MemberModelImplCopyWith<$Res>
       __$$MemberModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int id, AgeGroup? ageGroup, Gender? gender});
+  $Res call({String id, AgeGroup? ageGroup, Gender? gender});
 }
 
 /// @nodoc
@@ -111,7 +111,7 @@ class __$$MemberModelImplCopyWithImpl<$Res>
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
+              as String,
       ageGroup: freezed == ageGroup
           ? _value.ageGroup
           : ageGroup // ignore: cast_nullable_to_non_nullable
@@ -133,7 +133,7 @@ class _$MemberModelImpl implements _MemberModel {
       _$$MemberModelImplFromJson(json);
 
   @override
-  final int id;
+  final String id;
   @override
   final AgeGroup? ageGroup;
   @override
@@ -177,7 +177,7 @@ class _$MemberModelImpl implements _MemberModel {
 
 abstract class _MemberModel implements MemberModel {
   const factory _MemberModel(
-      {required final int id,
+      {required final String id,
       final AgeGroup? ageGroup,
       final Gender? gender}) = _$MemberModelImpl;
 
@@ -185,7 +185,7 @@ abstract class _MemberModel implements MemberModel {
       _$MemberModelImpl.fromJson;
 
   @override
-  int get id;
+  String get id;
   @override
   AgeGroup? get ageGroup;
   @override

@@ -1,4 +1,5 @@
 import 'package:application_new/common/session/session_model.dart';
+import 'package:application_new/domain/member/member_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'session_provider.g.dart';
@@ -10,15 +11,17 @@ class Session extends _$Session {
     return const SessionModel();
   }
 
-  void update({required bool isAuthenticated}) {
+  void update({required bool isAuthenticated, MemberModel? member}) {
     if (state.isAuthenticated == isAuthenticated) {
       return;
     }
 
     state = state.copyWith(
       isAuthenticated: isAuthenticated,
+      member: isAuthenticated ? member : null,
     );
   }
+
 
   void omitError(String message) {
     state = state.copyWith(errorMessage: message);

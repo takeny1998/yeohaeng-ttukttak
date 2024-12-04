@@ -1,8 +1,13 @@
 import 'package:application_new/common/loading/loading_page.dart';
+import 'package:application_new/common/session/session_model.dart';
+import 'package:application_new/common/session/session_provider.dart';
 import 'package:application_new/common/translation/translation_service.dart';
+import 'package:application_new/common/util/iterable_util.dart';
 import 'package:application_new/domain/member/member_provider.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_participant/provider/travel_plan_participant_provider.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_participant/provider/travel_plan_participant_state.dart';
+import 'package:application_new/shared/component/travel_companion_avatar_item.dart';
+import 'package:application_new/shared/model/member_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -20,10 +25,12 @@ class TravelPlanParticipantPage extends ConsumerWidget {
     if (state == null) return const LoadingPage();
 
     final TravelPlanParticipantState(:travel, :participants) = state;
+    final SessionModel(member: me) = ref.watch(sessionProvider);
 
     return Scaffold(
-      appBar: AppBar(title: Text(travel.formattedName)),
+      appBar: AppBar(title: Text(tr.from('travel_participants'))),
       body: CustomScrollView(
+        physics: const ClampingScrollPhysics(),
         slivers: [
           const SliverToBoxAdapter(child: SizedBox(height: 32.0)),
           SliverToBoxAdapter(
@@ -66,12 +73,36 @@ class TravelPlanParticipantPage extends ConsumerWidget {
               itemBuilder: (context, index) {
                 final participant = participants[index];
 
-                final invitee =
-                    ref.watch(memberProvider(participant.inviteeId)).value;
+                // final invitee =
+                //     ref.watch(memberProvider(participant.inviteeId)).value;
+
+                final nickname = IterableUtil.random(['이솔루후야', '제투스', '타틴']);
 
                 return ListTile(
-                  leading: const CircleAvatar(backgroundColor: Colors.red,),
-                  title: Text(invitee?.id.toString() ?? ''),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 24.0),
+                  leading: TravelerAvatarItem(
+                      id: participant.id,
+                      gender: IterableUtil.random(Gender.values),
+                      ageGroup: IterableUtil.random(AgeGroup.values)),
+                  title: Text(
+                    nickname,
+                    style: const TextStyle(fontWeight: FontWeight.w600),
+                  ),
+                  subtitle: const Text(
+                    '닉네임님이 초대함',
+                    style: TextStyle(fontSize: 13.0),
+                  ),
+                  trailing: (participant.inviterId == me?.id) ||
+                          (travel.memberId == me?.id)
+                      ? FilledButton.tonal(
+                          onPressed: () => ref
+                              .read(travelPlanParticipantProvider(travelId)
+                                  .notifier)
+                              .leaveOrKick(participant.id),
+                          child: Text(tr.from(participant.inviteeId == me?.id
+                              ? 'leave'
+                              : 'kick')))
+                      : null,
                 );
               })
         ],

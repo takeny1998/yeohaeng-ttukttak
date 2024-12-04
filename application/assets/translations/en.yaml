@@ -48,6 +48,10 @@ unknown_error_occurred: An unknown error has occurred. Please try again later.
 you_have_joined_in_travel_name: You've joined in {}
 
 retry: Retry
+leave: Leave
+kick: Kick
+
+travel_participants: Travel participants
 
 widget:
   VisitListItem:

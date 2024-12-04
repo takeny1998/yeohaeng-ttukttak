@@ -7,7 +7,7 @@ part 'member_model.g.dart';
 @freezed
 class MemberModel with _$MemberModel {
   const factory MemberModel({
-    required int id,
+    required String id,
     AgeGroup? ageGroup,
     Gender? gender,
   }) = _MemberModel;

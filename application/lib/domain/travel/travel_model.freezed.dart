@@ -25,6 +25,7 @@ mixin _$TravelModel {
   DateTime get endedOn => throw _privateConstructorUsedError;
   AgeGroup? get ageGroup => throw _privateConstructorUsedError;
   Gender? get gender => throw _privateConstructorUsedError;
+  String? get memberId => throw _privateConstructorUsedError;
   List<TravelCompanionModel> get companions =>
       throw _privateConstructorUsedError;
   List<TravelMotivationType> get motivationTypes =>
@@ -53,6 +54,7 @@ abstract class $TravelModelCopyWith<$Res> {
       DateTime endedOn,
       AgeGroup? ageGroup,
       Gender? gender,
+      String? memberId,
       List<TravelCompanionModel> companions,
       List<TravelMotivationType> motivationTypes,
       List<CityModel> cities});
@@ -78,6 +80,7 @@ class _$TravelModelCopyWithImpl<$Res, $Val extends TravelModel>
     Object? endedOn = null,
     Object? ageGroup = freezed,
     Object? gender = freezed,
+    Object? memberId = freezed,
     Object? companions = null,
     Object? motivationTypes = null,
     Object? cities = null,
@@ -103,6 +106,10 @@ class _$TravelModelCopyWithImpl<$Res, $Val extends TravelModel>
           ? _value.gender
           : gender // ignore: cast_nullable_to_non_nullable
               as Gender?,
+      memberId: freezed == memberId
+          ? _value.memberId
+          : memberId // ignore: cast_nullable_to_non_nullable
+              as String?,
       companions: null == companions
           ? _value.companions
           : companions // ignore: cast_nullable_to_non_nullable
@@ -133,6 +140,7 @@ abstract class _$$TravelModelImplCopyWith<$Res>
       DateTime endedOn,
       AgeGroup? ageGroup,
       Gender? gender,
+      String? memberId,
       List<TravelCompanionModel> companions,
       List<TravelMotivationType> motivationTypes,
       List<CityModel> cities});
@@ -156,6 +164,7 @@ class __$$TravelModelImplCopyWithImpl<$Res>
     Object? endedOn = null,
     Object? ageGroup = freezed,
     Object? gender = freezed,
+    Object? memberId = freezed,
     Object? companions = null,
     Object? motivationTypes = null,
     Object? cities = null,
@@ -181,6 +190,10 @@ class __$$TravelModelImplCopyWithImpl<$Res>
           ? _value.gender
           : gender // ignore: cast_nullable_to_non_nullable
               as Gender?,
+      memberId: freezed == memberId
+          ? _value.memberId
+          : memberId // ignore: cast_nullable_to_non_nullable
+              as String?,
       companions: null == companions
           ? _value._companions
           : companions // ignore: cast_nullable_to_non_nullable
@@ -206,6 +219,7 @@ class _$TravelModelImpl extends _TravelModel {
       required this.endedOn,
       this.ageGroup,
       this.gender,
+      this.memberId,
       required final List<TravelCompanionModel> companions,
       required final List<TravelMotivationType> motivationTypes,
       required final List<CityModel> cities})
@@ -227,6 +241,8 @@ class _$TravelModelImpl extends _TravelModel {
   final AgeGroup? ageGroup;
   @override
   final Gender? gender;
+  @override
+  final String? memberId;
   final List<TravelCompanionModel> _companions;
   @override
   List<TravelCompanionModel> get companions {
@@ -253,7 +269,7 @@ class _$TravelModelImpl extends _TravelModel {
 
   @override
   String toString() {
-    return 'TravelModel(id: $id, startedOn: $startedOn, endedOn: $endedOn, ageGroup: $ageGroup, gender: $gender, companions: $companions, motivationTypes: $motivationTypes, cities: $cities)';
+    return 'TravelModel(id: $id, startedOn: $startedOn, endedOn: $endedOn, ageGroup: $ageGroup, gender: $gender, memberId: $memberId, companions: $companions, motivationTypes: $motivationTypes, cities: $cities)';
   }
 
   @override
@@ -268,6 +284,8 @@ class _$TravelModelImpl extends _TravelModel {
             (identical(other.ageGroup, ageGroup) ||
                 other.ageGroup == ageGroup) &&
             (identical(other.gender, gender) || other.gender == gender) &&
+            (identical(other.memberId, memberId) ||
+                other.memberId == memberId) &&
             const DeepCollectionEquality()
                 .equals(other._companions, _companions) &&
             const DeepCollectionEquality()
@@ -284,6 +302,7 @@ class _$TravelModelImpl extends _TravelModel {
       endedOn,
       ageGroup,
       gender,
+      memberId,
       const DeepCollectionEquality().hash(_companions),
       const DeepCollectionEquality().hash(_motivationTypes),
       const DeepCollectionEquality().hash(_cities));
@@ -311,6 +330,7 @@ abstract class _TravelModel extends TravelModel {
       required final DateTime endedOn,
       final AgeGroup? ageGroup,
       final Gender? gender,
+      final String? memberId,
       required final List<TravelCompanionModel> companions,
       required final List<TravelMotivationType> motivationTypes,
       required final List<CityModel> cities}) = _$TravelModelImpl;
@@ -329,6 +349,8 @@ abstract class _TravelModel extends TravelModel {
   AgeGroup? get ageGroup;
   @override
   Gender? get gender;
+  @override
+  String? get memberId;
   @override
   List<TravelCompanionModel> get companions;
   @override
@@ -787,7 +809,7 @@ mixin _$TravelParticipantModel {
   int get id => throw _privateConstructorUsedError;
   int get travelId => throw _privateConstructorUsedError;
   String get inviteeId => throw _privateConstructorUsedError;
-  String get invitorId => throw _privateConstructorUsedError;
+  String get inviterId => throw _privateConstructorUsedError;
 
   /// Serializes this TravelParticipantModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -805,7 +827,7 @@ abstract class $TravelParticipantModelCopyWith<$Res> {
           $Res Function(TravelParticipantModel) then) =
       _$TravelParticipantModelCopyWithImpl<$Res, TravelParticipantModel>;
   @useResult
-  $Res call({int id, int travelId, String inviteeId, String invitorId});
+  $Res call({int id, int travelId, String inviteeId, String inviterId});
 }
 
 /// @nodoc
@@ -827,7 +849,7 @@ class _$TravelParticipantModelCopyWithImpl<$Res,
     Object? id = null,
     Object? travelId = null,
     Object? inviteeId = null,
-    Object? invitorId = null,
+    Object? inviterId = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -842,9 +864,9 @@ class _$TravelParticipantModelCopyWithImpl<$Res,
           ? _value.inviteeId
           : inviteeId // ignore: cast_nullable_to_non_nullable
               as String,
-      invitorId: null == invitorId
-          ? _value.invitorId
-          : invitorId // ignore: cast_nullable_to_non_nullable
+      inviterId: null == inviterId
+          ? _value.inviterId
+          : inviterId // ignore: cast_nullable_to_non_nullable
               as String,
     ) as $Val);
   }
@@ -859,7 +881,7 @@ abstract class _$$TravelParticipantModelImplCopyWith<$Res>
       __$$TravelParticipantModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int id, int travelId, String inviteeId, String invitorId});
+  $Res call({int id, int travelId, String inviteeId, String inviterId});
 }
 
 /// @nodoc
@@ -880,7 +902,7 @@ class __$$TravelParticipantModelImplCopyWithImpl<$Res>
     Object? id = null,
     Object? travelId = null,
     Object? inviteeId = null,
-    Object? invitorId = null,
+    Object? inviterId = null,
   }) {
     return _then(_$TravelParticipantModelImpl(
       id: null == id
@@ -895,9 +917,9 @@ class __$$TravelParticipantModelImplCopyWithImpl<$Res>
           ? _value.inviteeId
           : inviteeId // ignore: cast_nullable_to_non_nullable
               as String,
-      invitorId: null == invitorId
-          ? _value.invitorId
-          : invitorId // ignore: cast_nullable_to_non_nullable
+      inviterId: null == inviterId
+          ? _value.inviterId
+          : inviterId // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
@@ -910,7 +932,7 @@ class _$TravelParticipantModelImpl implements _TravelParticipantModel {
       {required this.id,
       required this.travelId,
       required this.inviteeId,
-      required this.invitorId});
+      required this.inviterId});
 
   factory _$TravelParticipantModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$TravelParticipantModelImplFromJson(json);
@@ -922,11 +944,11 @@ class _$TravelParticipantModelImpl implements _TravelParticipantModel {
   @override
   final String inviteeId;
   @override
-  final String invitorId;
+  final String inviterId;
 
   @override
   String toString() {
-    return 'TravelParticipantModel(id: $id, travelId: $travelId, inviteeId: $inviteeId, invitorId: $invitorId)';
+    return 'TravelParticipantModel(id: $id, travelId: $travelId, inviteeId: $inviteeId, inviterId: $inviterId)';
   }
 
   @override
@@ -939,14 +961,14 @@ class _$TravelParticipantModelImpl implements _TravelParticipantModel {
                 other.travelId == travelId) &&
             (identical(other.inviteeId, inviteeId) ||
                 other.inviteeId == inviteeId) &&
-            (identical(other.invitorId, invitorId) ||
-                other.invitorId == invitorId));
+            (identical(other.inviterId, inviterId) ||
+                other.inviterId == inviterId));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, id, travelId, inviteeId, invitorId);
+      Object.hash(runtimeType, id, travelId, inviteeId, inviterId);
 
   /// Create a copy of TravelParticipantModel
   /// with the given fields replaced by the non-null parameter values.
@@ -970,7 +992,7 @@ abstract class _TravelParticipantModel implements TravelParticipantModel {
       {required final int id,
       required final int travelId,
       required final String inviteeId,
-      required final String invitorId}) = _$TravelParticipantModelImpl;
+      required final String inviterId}) = _$TravelParticipantModelImpl;
 
   factory _TravelParticipantModel.fromJson(Map<String, dynamic> json) =
       _$TravelParticipantModelImpl.fromJson;
@@ -982,7 +1004,7 @@ abstract class _TravelParticipantModel implements TravelParticipantModel {
   @override
   String get inviteeId;
   @override
-  String get invitorId;
+  String get inviterId;
 
   /// Create a copy of TravelParticipantModel
   /// with the given fields replaced by the non-null parameter values.

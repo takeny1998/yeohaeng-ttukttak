@@ -50,6 +50,10 @@ unknown_error_occurred: 알 수 없는 오류가 발생했습니다. 잠시 후 
 you_have_joined_in_travel_name: '{}에 참여했습니다.'
 
 retry: 다시 시도하기
+leave: 떠나기
+kick: 추방하기
+
+travel_participants: 여행 일행
 
 widget:
   VisitListItem:

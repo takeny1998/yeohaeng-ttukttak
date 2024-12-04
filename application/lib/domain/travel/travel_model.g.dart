@@ -13,6 +13,7 @@ _$TravelModelImpl _$$TravelModelImplFromJson(Map<String, dynamic> json) =>
       endedOn: DateTime.parse(json['endedOn'] as String),
       ageGroup: $enumDecodeNullable(_$AgeGroupEnumMap, json['ageGroup']),
       gender: $enumDecodeNullable(_$GenderEnumMap, json['gender']),
+      memberId: json['memberId'] as String?,
       companions: (json['companions'] as List<dynamic>)
           .map((e) => TravelCompanionModel.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -31,6 +32,7 @@ Map<String, dynamic> _$$TravelModelImplToJson(_$TravelModelImpl instance) =>
       'endedOn': instance.endedOn.toIso8601String(),
       'ageGroup': _$AgeGroupEnumMap[instance.ageGroup],
       'gender': _$GenderEnumMap[instance.gender],
+      'memberId': instance.memberId,
       'companions': instance.companions,
       'motivationTypes': instance.motivationTypes
           .map((e) => _$TravelMotivationTypeEnumMap[e]!)
@@ -47,7 +49,6 @@ const _$AgeGroupEnumMap = {
   AgeGroup.fifties: 'fifties',
   AgeGroup.sixties: 'sixties',
   AgeGroup.seventiesPlus: 'seventiesPlus',
-  AgeGroup.none: 'none',
 };
 
 const _$GenderEnumMap = {
@@ -106,7 +107,7 @@ _$TravelParticipantModelImpl _$$TravelParticipantModelImplFromJson(
       id: (json['id'] as num).toInt(),
       travelId: (json['travelId'] as num).toInt(),
       inviteeId: json['inviteeId'] as String,
-      invitorId: json['invitorId'] as String,
+      inviterId: json['inviterId'] as String,
     );
 
 Map<String, dynamic> _$$TravelParticipantModelImplToJson(
@@ -115,5 +116,5 @@ Map<String, dynamic> _$$TravelParticipantModelImplToJson(
       'id': instance.id,
       'travelId': instance.travelId,
       'inviteeId': instance.inviteeId,
-      'invitorId': instance.invitorId,
+      'inviterId': instance.inviterId,
     };

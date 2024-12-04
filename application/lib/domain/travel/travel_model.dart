@@ -19,6 +19,7 @@ class TravelModel with _$TravelModel {
     required DateTime endedOn,
     AgeGroup? ageGroup,
     Gender? gender,
+    String? memberId,
     required List<TravelCompanionModel> companions,
     required List<TravelMotivationType> motivationTypes,
     required List<CityModel> cities,
@@ -84,7 +85,7 @@ class TravelParticipantModel with _$TravelParticipantModel {
     required int id,
     required int travelId,
     required String inviteeId,
-    required String invitorId,
+    required String inviterId,
   }) = _TravelParticipantModel;
 
   factory TravelParticipantModel.fromJson(Map<String, dynamic> json) =>
