@@ -1,6 +1,5 @@
 package com.yeohaeng_ttukttak.server.application.travel.service;
 
-import com.yeohaeng_ttukttak.server.common.exception.exception.error.ForbiddenErrorException;
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundFailException;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.MemberTravel;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
@@ -8,8 +7,6 @@ import com.yeohaeng_ttukttak.server.domain.travel.repository.MemberTravelReposit
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -23,7 +20,7 @@ public class DeleteTravelVisitService {
         final MemberTravel travel = travelRepository.findById(travelId)
                 .orElseThrow(() -> new EntityNotFoundFailException(Travel.class));
 
-        travel.verifyWriteGrant(memberId);
+        travel.verifyModifyGrant(memberId);
 
         travel.removeVisit(visitId);
     }

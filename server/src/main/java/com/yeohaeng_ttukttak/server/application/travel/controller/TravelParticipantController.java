@@ -1,29 +1,58 @@
 package com.yeohaeng_ttukttak.server.application.travel.controller;
 
+import com.yeohaeng_ttukttak.server.application.travel.controller.dto.FindTravelParticipantsResponse;
 import com.yeohaeng_ttukttak.server.application.travel.controller.dto.JoinTravelRequest;
-import com.yeohaeng_ttukttak.server.application.travel.service.JoinTravelService;
+import com.yeohaeng_ttukttak.server.application.travel.service.TravelParticipantService;
 import com.yeohaeng_ttukttak.server.common.aop.annotation.Authorization;
 import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
-import com.yeohaeng_ttukttak.server.domain.auth.dto.AccessTokenDto;
+import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthorizationDto;
+import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
+import com.yeohaeng_ttukttak.server.domain.travel.dto.TravelParticipantDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v2/travels/{travelId}/participants")
 @RequiredArgsConstructor
 public class TravelParticipantController {
 
-    private final JoinTravelService participantService;
+    private final TravelParticipantService participantService;
 
     @PostMapping
     @Authorization
     public ServerResponse<Void> join(
             @PathVariable Long travelId,
             @Valid @RequestBody JoinTravelRequest request,
-            AccessTokenDto accessToken) {
+            AuthorizationDto authorization) {
 
-        participantService.call(travelId, request.invitationId(), accessToken.memberId());
+        participantService.join(travelId,
+                request.invitationId(),
+                authorization.memberId());
+
+        return new ServerResponse<>();
+    }
+
+    @GetMapping
+    public ServerResponse<FindTravelParticipantsResponse> find(
+            @PathVariable Long travelId) {
+        final List<TravelParticipantDto> dtoList =
+                participantService.find(travelId);
+
+        return new ServerResponse<>(
+                new FindTravelParticipantsResponse(dtoList));
+    }
+
+    @DeleteMapping("/{participantId}")
+    @Authorization
+    public ServerResponse<Void> leave(
+            @PathVariable Long travelId,
+            @PathVariable Long participantId,
+            AuthorizationDto authorization) {
+
+        participantService.leave(travelId, authorization.memberId(), participantId);
         return new ServerResponse<>();
     }
 

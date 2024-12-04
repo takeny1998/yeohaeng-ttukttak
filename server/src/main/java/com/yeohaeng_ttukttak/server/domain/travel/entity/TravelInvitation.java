@@ -13,12 +13,12 @@ public class TravelInvitation {
 
     private Long travelId;
 
-    private String memberId;
+    private String invitorId;
 
-    public TravelInvitation(String memberId, Long travelId) {
+    public TravelInvitation(Long travelId, String invitorId) {
         this.id = UUID.randomUUID().toString();
         this.travelId = travelId;
-        this.memberId = memberId;
+        this.invitorId = invitorId;
     }
 
     public String id() {
@@ -26,7 +26,7 @@ public class TravelInvitation {
     }
 
     public String memberId() {
-        return memberId;
+        return invitorId;
     }
 
     public Long travelId() {

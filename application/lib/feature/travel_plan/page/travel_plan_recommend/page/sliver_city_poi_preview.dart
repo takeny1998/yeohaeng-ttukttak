@@ -1,3 +1,4 @@
+import 'package:application_new/common/translation/translation_service.dart';
 import 'package:application_new/common/util/translation_util.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_recommend/component/place_metric_item.dart';
 import 'package:application_new/shared/util/snap_scroll_physics.dart';
@@ -38,13 +39,13 @@ class SliverCityPoiPreview extends ConsumerWidget {
     const itemWidth = 240.0;
     const paddingWidth = 24.0;
 
-    final translator = TranslationUtil.widget(context);
+    final tr = ref.watch(translationServiceProvider);
 
     return SliverToBoxAdapter(
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24.0),
-            child: Text(translator.key('pois_of_city', args: { 'city_name': state.city.name}), style: titleStyle),
+            child: Text(tr.from('pois_in_city_name', args: [ state.city.name ]), style: titleStyle),
           ),
           const SizedBox(height: 16.0),
           SingleChildScrollView(
@@ -68,7 +69,7 @@ class SliverCityPoiPreview extends ConsumerWidget {
               child: FilledButton(
                   onPressed: () =>
                       context.push('/travels/$travelId/cities/${state.city.id}/places/pois'),
-                  child: Text(translator.key('view_detail')))),
+                  child: Text(tr.from('read_more')))),
         ]),
     );
   }

@@ -1,23 +1,21 @@
-import 'package:application_new/common/util/translation_util.dart';
+import 'package:application_new/common/translation/translation_service.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_recommend/component/travel_info_item.dart';
-import 'package:application_new/shared/component/small_chip.dart';
-import 'package:application_new/shared/component/travel_companion_avatar_item.dart';
 import 'package:application_new/domain/travel/travel_model.dart';
-import 'package:extended_wrap/extended_wrap.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:go_router/go_router.dart';
 
-class TravelItem extends StatelessWidget {
+class TravelItem extends ConsumerWidget {
   final TravelModel travel;
 
   const TravelItem({super.key, required this.travel});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final ThemeData(:textTheme, :colorScheme) = Theme.of(context);
-    final translator = TranslationUtil.widget(context);
-
+    final tr = ref.watch(translationServiceProvider);
+    
     return Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -57,7 +55,7 @@ class TravelItem extends StatelessWidget {
                         textStyle: const TextStyle(
                             fontSize: 12.0, fontWeight: FontWeight.w600),
                         backgroundColor: colorScheme.surface),
-                    child: Text(translator.key('view_detail')))),
+                    child: Text(tr.from('view_travelogues')))),
             const SizedBox(width: 8.0),
             Expanded(
               flex: 1,
@@ -68,7 +66,7 @@ class TravelItem extends StatelessWidget {
                     backgroundColor: colorScheme.surface),
                 onPressed: () {},
                 icon: const Icon(Icons.bookmark_outline, size: 18.0),
-                label: Text(translator.key('save')),
+                label: Text(tr.from('save')),
               ),
             ),
           ]),

@@ -46,7 +46,7 @@ public class RefreshTokenService {
         final boolean isUsedBefore = existToken.expiredAt() != null;
         if (isUsedBefore) {
             // TODO: Refresh Token이 재사용 됨, 모든 토큰을 무효화 시킨다.
-            repository.findAllByUserId(existToken.userId()).forEach(this::revoke);
+            repository.findAllByUserId(existToken.memberId()).forEach(this::revoke);
             throw new AuthorizationErrorException();
         }
 

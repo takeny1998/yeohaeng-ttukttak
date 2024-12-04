@@ -7,7 +7,7 @@ import com.yeohaeng_ttukttak.server.application.travel.service.FindTravelVisitsS
 import com.yeohaeng_ttukttak.server.application.travel.service.UpdateTravelVisitService;
 import com.yeohaeng_ttukttak.server.common.aop.annotation.Authorization;
 import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
-import com.yeohaeng_ttukttak.server.domain.auth.dto.AccessTokenDto;
+import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthorizationDto;
 import com.yeohaeng_ttukttak.server.domain.travel.dto.TravelVisitDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -30,10 +30,10 @@ public class TravelVisitController {
     public ServerResponse<Void> create(
             @PathVariable Long travelId,
             @RequestBody CreateTravelVisitRequest request,
-            AccessTokenDto accessToken) {
+            AuthorizationDto authorization) {
 
         createService.call(
-                travelId, accessToken.memberId(), request.placeId(), request.dayOfTravel());
+                travelId, authorization.memberId(), request.placeId(), request.dayOfTravel());
 
         return new ServerResponse<>();
     }
@@ -52,9 +52,9 @@ public class TravelVisitController {
             @PathVariable Long travelId,
             @PathVariable Long visitId,
             @Valid @RequestBody UpdateTravelVisitRequest request,
-            AccessTokenDto accessToken) {
+            AuthorizationDto authorization) {
 
-        updateService.call(request.toCommand(visitId, travelId, accessToken.memberId()));
+        updateService.call(request.toCommand(visitId, travelId, authorization.memberId()));
 
         List<TravelVisitDto> dtoList = findService.call(travelId);
 
@@ -66,9 +66,9 @@ public class TravelVisitController {
     public ServerResponse<Void> delete(
             @PathVariable Long travelId,
             @PathVariable Long visitId,
-            AccessTokenDto accessToken) {
+            AuthorizationDto authorization) {
 
-        deleteService.call(travelId, visitId, accessToken.memberId());
+        deleteService.call(travelId, visitId, authorization.memberId());
         return new ServerResponse<>();
     }
 

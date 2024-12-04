@@ -1,4 +1,5 @@
 
+import 'package:application_new/common/translation/translation_service.dart';
 import 'package:application_new/common/util/translation_util.dart';
 import 'package:application_new/domain/place/place_model.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_recommend/page/city_place_pois/component/travel_city_pois_type_filter_item.dart';
@@ -20,7 +21,8 @@ class TravelCityPoisFilterView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final translator = TranslationUtil.widget(context);
+
+    final tr = ref.watch(translationServiceProvider);
     final CityPlacePoisState(:selectedTypes, :travel) = state;
 
   return SingleChildScrollView(
@@ -28,7 +30,7 @@ class TravelCityPoisFilterView extends ConsumerWidget {
         child: Row(children: [
           const SizedBox(width: 24.0),
           FilterChip(
-              label: Text(translator.key('all_category_type')),
+              label: Text(tr.from('all')),
               selected: selectedTypes.isEmpty,
               onSelected: (isSelected) {
                 if (!isSelected) return;

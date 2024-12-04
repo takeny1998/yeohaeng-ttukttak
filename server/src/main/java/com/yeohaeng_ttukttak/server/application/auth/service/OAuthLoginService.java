@@ -1,6 +1,7 @@
 package com.yeohaeng_ttukttak.server.application.auth.service;
 
 import com.yeohaeng_ttukttak.server.application.auth.service.dto.AuthTokenDto;
+import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthorizationDto;
 import com.yeohaeng_ttukttak.server.domain.auth.service.AccessTokenService;
 import com.yeohaeng_ttukttak.server.domain.auth.service.RefreshTokenService;
 import com.yeohaeng_ttukttak.server.domain.jwt.dto.JwtClaim;
@@ -44,10 +45,14 @@ public class OAuthLoginService {
 
         log.debug("[OAuthLoginService.login] member = {}", member);
 
-        final String memberId = member.id();
+        final AuthorizationDto authorization = new AuthorizationDto(
+                member.id(),
+                member.ageGroup(),
+                member.gender(),
+                member.birthDate());
 
-        final String accessToken = accessTokenService.create(memberId);
-        final String refreshToken = refreshTokenService.create(memberId);
+        final String accessToken = accessTokenService.create(authorization);
+        final String refreshToken = refreshTokenService.create(member.id());
 
         log.debug("[OAuthLoginService.login] accessToken = {}", accessToken);
 

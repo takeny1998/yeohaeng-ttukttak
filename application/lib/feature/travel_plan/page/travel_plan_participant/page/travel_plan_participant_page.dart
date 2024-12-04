@@ -1,6 +1,5 @@
-import 'package:application_new/common/util/translation_util.dart';
+import 'package:application_new/common/translation/translation_service.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_participant/provider/travel_plan_participant_provider.dart';
-import 'package:application_new/shared/component/tonal_filled_icon_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -19,7 +18,8 @@ class TravelPlanParticipantPage extends ConsumerWidget {
     final ThemeData(:colorScheme) = Theme.of(context);
     final TravelPlanState(:travel) = state;
 
-    final tr = TranslationUtil.widget(context);
+    final tr = ref.watch(translationServiceProvider);
+
 
     return Scaffold(
       appBar: AppBar(title: Text(travel.formattedName)),
@@ -33,19 +33,19 @@ class TravelPlanParticipantPage extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(tr.key('invite_participant'),
+                  Text(tr.from('invite_new_participant'),
                       style: const TextStyle(
                           fontSize: 18.0, fontWeight: FontWeight.w600)),
                   const SizedBox(height: 4.0),
-                  Text(tr.key('share_link_to_invite')),
+                  Text(tr.from('share_link_to_invite')),
                   const SizedBox(height: 2.0),
-                  Text(tr.key('share_link_expires_in_30_min')),
+                  Text(tr.from('link_expires_after_30_min')),
                   const SizedBox(height: 2.0),
-                  Text(tr.key('can_plan_with_participants')),
+                  Text(tr.from('can_plan_with_participants')),
                   const SizedBox(height: 16.0),
                   FilledButton.icon(
                     onPressed: () => ref.read(travelPlanParticipantProvider(travel.id).notifier).invite(),
-                    label: Text(tr.key('share_invitation_link')),
+                    label: Text(tr.from('share_invitation_link')),
                     icon: const Icon(Icons.link),
                   )
                 ],

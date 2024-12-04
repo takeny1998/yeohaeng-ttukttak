@@ -1,4 +1,4 @@
-import 'package:application_new/common/util/translation_util.dart';
+import 'package:application_new/common/translation/translation_service.dart';
 import 'package:application_new/feature/travel_create/component/bottom_action_button.dart';
 import 'package:application_new/shared/theme/my_chip_theme.dart';
 import 'package:application_new/domain/travel/travel_model.dart';
@@ -23,8 +23,6 @@ class SelectTravelDetailForm extends ConsumerWidget {
 
     final state = ref.watch(travelCreateProvider);
 
-    final translator = TranslationUtil.widget(context);
-
     final areSelected =
         state.companionTypes.isNotEmpty && state.motivationTypes.isNotEmpty;
 
@@ -32,6 +30,8 @@ class SelectTravelDetailForm extends ConsumerWidget {
       fontWeight: FontWeight.w600,
       color: Colors.white,
     );
+
+    final tr = ref.watch(translationServiceProvider);
 
     return MyChipTheme(
       child: Scaffold(
@@ -48,9 +48,12 @@ class SelectTravelDetailForm extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(translator.key('ask_companion_types'), style: titleStyle),
-              Text(translator.key('hint_select_companion_types'),
-                  style: subTitleStyle),
+              Text(tr.from('who_will_you_travel_with:'), style: titleStyle),
+              Text(
+                tr.from('select_at_least_number_up_to_number',
+                    args: ['1', '3']),
+                style: subTitleStyle,
+              ),
               const SizedBox(height: 16),
               Wrap(
                 spacing: 6,
@@ -58,7 +61,7 @@ class SelectTravelDetailForm extends ConsumerWidget {
                   for (TravelCompanionType companionType
                       in TravelCompanionType.values)
                     FilterChip(
-                      label: Text(TranslationUtil.enumValue(companionType)),
+                      label: Text(tr.fromEnum(companionType)),
                       selected: state.companionTypes.contains(companionType),
                       onSelected: (isSelected) {
                         final notifier =
@@ -69,8 +72,10 @@ class SelectTravelDetailForm extends ConsumerWidget {
                 ],
               ),
               const SizedBox(height: 48),
-              Text(translator.key('ask_motivation_types'), style: titleStyle),
-              Text(translator.key('hint_select_motivation_types'),
+              Text(tr.from('what_purpose_of_your_trip'), style: titleStyle),
+              Text(
+                  tr.from('select_at_least_number_up_to_number',
+                      args: ['1', '5']),
                   style: subTitleStyle),
               const SizedBox(height: 16),
               Wrap(
@@ -79,7 +84,7 @@ class SelectTravelDetailForm extends ConsumerWidget {
                   for (TravelMotivationType motivationType
                       in TravelMotivationType.values)
                     FilterChip(
-                      label: Text(TranslationUtil.enumValue(motivationType)),
+                      label: Text(tr.fromEnum(motivationType)),
                       selected: state.motivationTypes.contains(motivationType),
                       onSelected: (_) {
                         final notifier =
@@ -97,7 +102,9 @@ class SelectTravelDetailForm extends ConsumerWidget {
               ? ref.read(travelCreateProvider.notifier).nextPage
               : null,
           child: Text(
-            areSelected ? TranslationUtil.word('to_next') : translator.key('require_select_detail'),
+            areSelected
+                ? tr.from('next')
+                : tr.from('please_check_all_of_boxes'),
             style: buttonTextStyle,
           ),
         ),

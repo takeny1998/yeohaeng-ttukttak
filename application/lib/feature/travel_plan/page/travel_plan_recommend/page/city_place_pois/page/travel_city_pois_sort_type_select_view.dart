@@ -1,3 +1,4 @@
+import 'package:application_new/common/translation/translation_service.dart';
 import 'package:application_new/common/util/translation_util.dart';
 import 'package:application_new/domain/place/place_model.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_recommend/page/city_place_pois/provider/city_place_pois_state.dart';
@@ -22,14 +23,15 @@ class TravelCityPoisSortTypeSelectView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final ThemeData(:textTheme, :colorScheme) = Theme.of(context);
-
-    final translator = TranslationUtil.widget(context);
+    
+    final tr = ref.watch(translationServiceProvider);
+    
     return Padding(
       padding: const EdgeInsets.only(top: 24.0, bottom: 16.0),
       child: Column(mainAxisSize: MainAxisSize.min, children: [
         Row(children: [
           const SizedBox(width: 24.0),
-          Text(translator.key('require_select_sort_type'),
+          Text(tr.from('sort_type'),
               style:
                   const TextStyle(fontSize: 21.0, fontWeight: FontWeight.w600))
         ]),

@@ -1,5 +1,5 @@
+import 'package:application_new/common/translation/translation_service.dart';
 import 'package:application_new/common/util/string_extension.dart';
-import 'package:application_new/common/util/translation_util.dart';
 import 'package:application_new/shared/component/outlined_icon_button.dart';
 import 'package:application_new/shared/component/small_chip.dart';
 import 'package:extended_wrap/extended_wrap.dart';
@@ -20,7 +20,7 @@ class PlaceMetricItem extends ConsumerWidget {
 
     final PlaceMetricModel(:place, :rating) = placeMetric;
 
-    final translator = TranslationUtil.widget(context);
+    final tr = ref.watch(translationServiceProvider);
 
     final nameStyle =
         textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w600);
@@ -60,7 +60,7 @@ class PlaceMetricItem extends ConsumerWidget {
               label: rating.toStringAsFixed(2)),
         for (int i = 0; i < place.categoryTypes.length; i++)
           SmallChip(
-              label: TranslationUtil.enumValue(place.categoryTypes[i])),
+              label: tr.fromEnum(place.categoryTypes[i])),
       ]),
       const SizedBox(height: 12.0),
       Row(children: [
@@ -70,7 +70,7 @@ class PlaceMetricItem extends ConsumerWidget {
               style: buttonStyle,
               icon: const Icon(Icons.add_location_alt_outlined,
                   size: 18.0),
-              label: Text(translator.key('add_to_plan'))),
+              label: Text(tr.from('add_to_your_plan'))),
         ),
         const SizedBox(width: 8.0),
         const OutlinedIconButton(

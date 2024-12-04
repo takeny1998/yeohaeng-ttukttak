@@ -1,63 +1,55 @@
+what_city_will_you_travel: What cities will you travel?
+please_select_at_least_one_city: Please select at least one city
+number_of_cities_selected: '{} cities selected'
+
+when_will_you_travel: When will you travel?
+please_select_travel_period: Please select a travel period
+start_day_trip: '{} (day trip)'
+start_and_end_number_days: '{} - {} ({} days)'
+
+who_will_you_travel_with: Who will you travel with?
+select_at_least_number_up_to_number: (Select at least {}, up to {})
+what_purpose_of_your_trip: What's the purpose of your trip?
+please_check_all_of_boxes: Please check all of the boxes.
+
+next: Next
+all: All
+sort_by: Sort by
+add_to_your_plan: Add to your plan
+save: Save
+read_travelogues: Read travelogues
+
+travel_has_been_created_successfully: The travel has been created successfully.
+
+invite_new_participant: Invite new participant
+share_link_to_invite: • You can invite participants by sharing this link.
+link_expires_after_30_min:  • The invitation link expire after 30 minutes.
+can_plan_with_participants: • You can plan the travel with participants.
+share_invitation_link: Share invitation link
+
+list_of_recommend:
+  nature: "Heal in nature! A collection of recommended natural tourist spots."
+  tourism: "The essence of travel is in famous places—here's a list of popular tourist attractions."
+  culture: "Immerse yourself in cultural life. A collection of recommended cultural facilities."
+  commerce: "Travel is all about flexibility! A list of recommended commercial facilities."
+  transport: "For convenient travel! A list of transportation facilities."
+  dining: "What to eat today? A list of recommended restaurants/cafés."
+  lodging: "Need a comfortable place to rest? A list of recommended accommodations."
+
+pois_in_city_name: Point of interests in {}
+read_more: Read More
+
+travelogues_in_city_name: Travelogues in a {}
+
+place_has_been_added_to_plan: '{} has been added to plan successfully.'
+place_has_been_removed_to_plan: '{} has been removed from plan successfully.'
+network_error_occurred: A network error occurred. Please try again later.
+unknown_error_occurred: An unknown error has occurred. Please try again later.
+you_have_joined_in_travel_name: You've joined in {}
+
+retry: Retry
+
 widget:
-  SelectTravelCityForm:
-    ask_city: Which cities are you traveling to?
-    show_selected_city:
-      zero: Please select at least one city
-      other: '{} cities selected'
-
-  SelectTravelDateForm:
-    ask_date: When are you going to travel?
-    require_select_date: Please select a travel period
-    show_selected_date:
-      zero: '{start} (day trip)'
-      other: '{start} - {end} ({days} days)'
-
-  SelectTravelDetailForm:
-    ask_companion_types: Who will you travel with?
-    hint_select_companion_types: (Select at least one, up to three)
-    ask_motivation_types: What's the purpose of your trip?
-    hint_select_motivation_types: (Select at least one, up to five)
-    require_select_detail: Please select all of your trip details.
-
-  TravelCityPoisFilterView:
-    require_select_sort_type: Please select sorting criteria.
-
-  TravelCityPoisSortTypeSelectView:
-    all_category_type: All
-
-  TravelPlanParticipantPage:
-    invite_participant: Invite Participant
-    share_link_to_invite: • You can invite participants by sharing this link.
-    share_link_expires_in_30_min: • The invitation link is valid for up to 30 minutes.
-    can_plan_with_participants: • You can plan the trip with participants.
-    share_invitation_link: Share Invitation Link
-
-
-  PlaceMetricItem:
-    add_to_plan: Add to your plan
-
-  TravelItem:
-    view_detail: Read travels
-    save: Save
-
-  CityRecommendPlaceView:
-    show_recommended_category_type:
-      nature: "Heal in nature! A collection of recommended natural tourist spots."
-      tourism: "The essence of travel is in famous places—here's a list of popular tourist attractions."
-      culture: "Immerse yourself in cultural life. A collection of recommended cultural facilities."
-      commerce: "Travel is all about flexibility! A list of recommended commercial facilities."
-      transport: "For convenient travel! A list of transportation facilities."
-      dining: "What to eat today? A list of recommended restaurants/cafés."
-      lodging: "Need a comfortable place to rest? A list of recommended accommodations."
-
-  SliverCityPoiPreview:
-    city_pois: Point of interests in {city_name}
-    view_detail: View all point of interest.
-
-  SliverCityTravelPreview:
-    travels_of_city: '{city_name}의 여행기 목록'
-    view_detail: View all of travels in {city_name}
-
   VisitListItem:
     ask_reason: Why did you visit this place?
 
@@ -88,18 +80,8 @@ widget:
         4: I would recommend it.
         5: I definitely want to recommend it!
 
-message:
-  travel_created: The travel has been created successfully.
-  visit_added: "{place_name} has been added to plan successfully."
-  travel_plan_item_removed: "{place_name} has been removed from plan successfully."
-  travel_plan_edited: The travel plan has been edited successfully.
-  network_exception: A network error occurred. Please try again later.
-  unchecked_exception: An unknown error has occurred. Please try again later.
-
-  joined_travel_successfully: "You've joined in {travel_name}"
 
 korea: Republic of Korea
-
 null: ''
 
 word:
