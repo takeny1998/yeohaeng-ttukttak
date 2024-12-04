@@ -21,7 +21,7 @@ sort_by: 정렬 조건
 
 invite_new_participant: 새 일행 초대하기
 share_link_to_invite: • 초대 링크를 공유해 일행을 초대할 수 있어요.
-share_link_expires_after_30_min: • 초대 링크는 30분 후에 만료되요.
+link_expires_after_30_min: • 초대 링크는 30분 후에 만료되요.
 can_plan_with_participants: • 일행과 함께 여행 계획을 짤 수 있어요.
 share_invitation_link: 초대 링크 공유하기
 
