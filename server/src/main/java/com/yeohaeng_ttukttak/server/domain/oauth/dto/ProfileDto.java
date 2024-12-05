@@ -6,5 +6,6 @@ import java.time.LocalDate;
 
 public record ProfileDto(
         LocalDate birthDate,
-        Gender gender
+        Gender gender,
+        String nickname
 ) { }

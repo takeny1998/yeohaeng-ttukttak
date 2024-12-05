@@ -33,21 +33,26 @@ public class GoogleProfileDeserializer extends JsonDeserializer<GoogleProfileRes
                 .map(this::parseDateNode)
                 .orElse(null);
 
-        final String value = Optional
+        final String genderString = Optional
                 .ofNullable(rootNode.findValue("genders"))
                 .map(node -> node.findValue("value"))
                 .map(node -> node.asText().toLowerCase())
-                .orElse("");
+                .orElse(null);
 
         Gender gender;
 
         try {
-            gender = Gender.valueOf(value);
+            gender = Gender.valueOf(genderString);
         } catch (IllegalArgumentException ex) {
             gender = null;
         }
 
-        return new GoogleProfileResponse(birthDate, gender);
+        String nickname = Optional.ofNullable(rootNode.findValue("nicknames"))
+                .map(node -> node.findValue("value"))
+                .map(JsonNode::asText)
+                .orElse(null);
+
+        return new GoogleProfileResponse(birthDate, gender, nickname);
     }
 
 

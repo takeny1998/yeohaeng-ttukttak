@@ -18,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
+import java.util.Objects;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -68,7 +69,9 @@ public class OAuthLoginService {
         final ProfileDto profileDto = oauthService.getProfile(accessToken);
         final OAuth oauth = new OAuth(openId, oauthService.getProvider());
 
-        final String nickname = nicknameService.generate();
+        final String nickname = Objects.nonNull(profileDto.nickname())
+                ? profileDto.nickname()
+                : nicknameService.generate();
 
         return memberRepository.save(
                 new Member(oauth, nickname, profileDto.gender(), profileDto.birthDate()));
