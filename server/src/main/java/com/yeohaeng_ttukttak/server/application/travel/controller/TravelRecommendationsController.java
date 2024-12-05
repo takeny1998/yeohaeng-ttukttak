@@ -4,8 +4,8 @@ import com.yeohaeng_ttukttak.server.application.travel.controller.dto.RecommendT
 import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
 import com.yeohaeng_ttukttak.server.common.util.dto.PageCommand;
 import com.yeohaeng_ttukttak.server.common.util.dto.PageResult;
-import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelCompanionType;
-import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelMotivationType;
+import com.yeohaeng_ttukttak.server.domain.shared.entity.CompanionType;
+import com.yeohaeng_ttukttak.server.domain.shared.entity.MotivationType;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
 import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelRecommendRepository;
 import lombok.RequiredArgsConstructor;
@@ -30,8 +30,8 @@ public class TravelRecommendationsController {
     @Transactional(readOnly = true)
     public ServerResponse<RecommendTravelResponse> recommend(
             @RequestParam Long cityId,
-            @RequestParam List<TravelMotivationType> motivationTypes,
-            @RequestParam List<TravelCompanionType> companionTypes,
+            @RequestParam List<MotivationType> motivationTypes,
+            @RequestParam List<CompanionType> companionTypes,
             @RequestParam int pageSize,
             @RequestParam int pageNumber
     ) {

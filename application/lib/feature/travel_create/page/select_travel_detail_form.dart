@@ -48,7 +48,7 @@ class SelectTravelDetailForm extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(tr.from('who_will_you_travel_with:'), style: titleStyle),
+              Text(tr.from('who_will_you_travel_with'), style: titleStyle),
               Text(
                 tr.from('select_at_least_number_up_to_number',
                     args: ['1', '3']),

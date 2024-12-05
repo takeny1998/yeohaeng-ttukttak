@@ -28,7 +28,7 @@ class _CityTravelsPageState extends ConsumerState<CityTravelsPage> {
   bool isMatchedTravel(TravelModel travel) {
 
     final motivationTypes = travel.motivationTypes;
-    final companionTypes = travel.companions.map((e) => e.type).toSet();
+    final companionTypes = travel.companionTypes;
 
     return IterableUtil.anyMatched(selectedMotivationTypes, motivationTypes) &&
         IterableUtil.anyMatched(selectedCompanionTypes, companionTypes);

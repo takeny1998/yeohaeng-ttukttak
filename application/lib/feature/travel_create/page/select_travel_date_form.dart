@@ -77,7 +77,7 @@ class SelectTravelDateForm extends ConsumerWidget {
       }
 
       return tr.from('start_and_end_number_days',
-          args: [format.date(startedOn), format.date(endedOn), '$nights']);
+          args: [format.date(startedOn), format.date(endedOn), '$nights', '${nights + 1}']);
     }
 
     return tr.from('please_select_travel_period');

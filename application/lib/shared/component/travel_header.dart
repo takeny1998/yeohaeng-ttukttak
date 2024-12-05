@@ -1,5 +1,4 @@
 import 'package:application_new/common/util/translation_util.dart';
-import 'package:application_new/shared/component/travel_companion_item.dart';
 import 'package:application_new/domain/travel/travel_model.dart';
 import 'package:flutter/material.dart';
 
@@ -18,7 +17,6 @@ class TravelHeader extends StatelessWidget {
     final titleStyle =
         textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w600);
 
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -35,18 +33,6 @@ class TravelHeader extends StatelessWidget {
           for (final motivationType in _travel.motivationTypes)
             Chip(label: Text(TranslationUtil.enumValue(motivationType)))
         ]),
-        const SizedBox(height: 24.0),
-        Wrap(spacing: 16.0, children: [
-          TravelerItem(
-            id: _travel.id,
-            gender: _travel.gender,
-            ageGroup: _travel.ageGroup,
-            relationShip: TranslationUtil.word('me'),
-          ),
-          for (final companion in _travel.companions)
-            TravelerItem.companion(travelCompanion: companion),
-        ]),
-        const SizedBox(height: 12.0),
       ],
     );
   }

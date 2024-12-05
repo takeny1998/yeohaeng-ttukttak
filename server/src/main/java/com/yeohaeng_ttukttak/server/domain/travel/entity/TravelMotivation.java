@@ -1,5 +1,6 @@
 package com.yeohaeng_ttukttak.server.domain.travel.entity;
 
+import com.yeohaeng_ttukttak.server.domain.shared.entity.MotivationType;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -10,15 +11,7 @@ import lombok.ToString;
 @ToString
 public class TravelMotivation {
 
-    @Id @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "travel_motivation_generator"
-    )
-    @SequenceGenerator(
-            name = "travel_motivation_generator",
-            sequenceName = "travel_motivation_seq",
-            initialValue = 100000
-    )
+    @Id @GeneratedValue
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -26,14 +19,14 @@ public class TravelMotivation {
     private Travel travel;
 
     @Enumerated(EnumType.STRING)
-    private TravelMotivationType type;
+    private MotivationType type;
 
-    public TravelMotivation(Travel travel, TravelMotivationType type) {
+       protected TravelMotivation(Travel travel, MotivationType type) {
         this.travel = travel;
         this.type = type;
     }
 
-    public TravelMotivationType type() {
+    public MotivationType type() {
         return type;
     }
 

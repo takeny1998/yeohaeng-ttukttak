@@ -17,8 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$TravelPlanManageState {
   TravelModel get travel => throw _privateConstructorUsedError;
-  List<TravelVisitWithPlaceModel> get visitPlaces =>
-      throw _privateConstructorUsedError;
+  List<TravelPlanModel> get plans => throw _privateConstructorUsedError;
   DateTime get selectedDate => throw _privateConstructorUsedError;
   int get mapHeightLevel => throw _privateConstructorUsedError;
   bool get isAnimating => throw _privateConstructorUsedError;
@@ -38,7 +37,7 @@ abstract class $TravelPlanManageStateCopyWith<$Res> {
   @useResult
   $Res call(
       {TravelModel travel,
-      List<TravelVisitWithPlaceModel> visitPlaces,
+      List<TravelPlanModel> plans,
       DateTime selectedDate,
       int mapHeightLevel,
       bool isAnimating});
@@ -63,7 +62,7 @@ class _$TravelPlanManageStateCopyWithImpl<$Res,
   @override
   $Res call({
     Object? travel = null,
-    Object? visitPlaces = null,
+    Object? plans = null,
     Object? selectedDate = null,
     Object? mapHeightLevel = null,
     Object? isAnimating = null,
@@ -73,10 +72,10 @@ class _$TravelPlanManageStateCopyWithImpl<$Res,
           ? _value.travel
           : travel // ignore: cast_nullable_to_non_nullable
               as TravelModel,
-      visitPlaces: null == visitPlaces
-          ? _value.visitPlaces
-          : visitPlaces // ignore: cast_nullable_to_non_nullable
-              as List<TravelVisitWithPlaceModel>,
+      plans: null == plans
+          ? _value.plans
+          : plans // ignore: cast_nullable_to_non_nullable
+              as List<TravelPlanModel>,
       selectedDate: null == selectedDate
           ? _value.selectedDate
           : selectedDate // ignore: cast_nullable_to_non_nullable
@@ -114,7 +113,7 @@ abstract class _$$TravelPlanManageStateImplCopyWith<$Res>
   @useResult
   $Res call(
       {TravelModel travel,
-      List<TravelVisitWithPlaceModel> visitPlaces,
+      List<TravelPlanModel> plans,
       DateTime selectedDate,
       int mapHeightLevel,
       bool isAnimating});
@@ -138,7 +137,7 @@ class __$$TravelPlanManageStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? travel = null,
-    Object? visitPlaces = null,
+    Object? plans = null,
     Object? selectedDate = null,
     Object? mapHeightLevel = null,
     Object? isAnimating = null,
@@ -148,10 +147,10 @@ class __$$TravelPlanManageStateImplCopyWithImpl<$Res>
           ? _value.travel
           : travel // ignore: cast_nullable_to_non_nullable
               as TravelModel,
-      visitPlaces: null == visitPlaces
-          ? _value._visitPlaces
-          : visitPlaces // ignore: cast_nullable_to_non_nullable
-              as List<TravelVisitWithPlaceModel>,
+      plans: null == plans
+          ? _value._plans
+          : plans // ignore: cast_nullable_to_non_nullable
+              as List<TravelPlanModel>,
       selectedDate: null == selectedDate
           ? _value.selectedDate
           : selectedDate // ignore: cast_nullable_to_non_nullable
@@ -173,20 +172,20 @@ class __$$TravelPlanManageStateImplCopyWithImpl<$Res>
 class _$TravelPlanManageStateImpl implements _TravelPlanManageState {
   const _$TravelPlanManageStateImpl(
       {required this.travel,
-      required final List<TravelVisitWithPlaceModel> visitPlaces,
+      required final List<TravelPlanModel> plans,
       required this.selectedDate,
       this.mapHeightLevel = 1,
       this.isAnimating = false})
-      : _visitPlaces = visitPlaces;
+      : _plans = plans;
 
   @override
   final TravelModel travel;
-  final List<TravelVisitWithPlaceModel> _visitPlaces;
+  final List<TravelPlanModel> _plans;
   @override
-  List<TravelVisitWithPlaceModel> get visitPlaces {
-    if (_visitPlaces is EqualUnmodifiableListView) return _visitPlaces;
+  List<TravelPlanModel> get plans {
+    if (_plans is EqualUnmodifiableListView) return _plans;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_visitPlaces);
+    return EqualUnmodifiableListView(_plans);
   }
 
   @override
@@ -200,7 +199,7 @@ class _$TravelPlanManageStateImpl implements _TravelPlanManageState {
 
   @override
   String toString() {
-    return 'TravelPlanManageState(travel: $travel, visitPlaces: $visitPlaces, selectedDate: $selectedDate, mapHeightLevel: $mapHeightLevel, isAnimating: $isAnimating)';
+    return 'TravelPlanManageState(travel: $travel, plans: $plans, selectedDate: $selectedDate, mapHeightLevel: $mapHeightLevel, isAnimating: $isAnimating)';
   }
 
   @override
@@ -209,8 +208,7 @@ class _$TravelPlanManageStateImpl implements _TravelPlanManageState {
         (other.runtimeType == runtimeType &&
             other is _$TravelPlanManageStateImpl &&
             (identical(other.travel, travel) || other.travel == travel) &&
-            const DeepCollectionEquality()
-                .equals(other._visitPlaces, _visitPlaces) &&
+            const DeepCollectionEquality().equals(other._plans, _plans) &&
             (identical(other.selectedDate, selectedDate) ||
                 other.selectedDate == selectedDate) &&
             (identical(other.mapHeightLevel, mapHeightLevel) ||
@@ -223,7 +221,7 @@ class _$TravelPlanManageStateImpl implements _TravelPlanManageState {
   int get hashCode => Object.hash(
       runtimeType,
       travel,
-      const DeepCollectionEquality().hash(_visitPlaces),
+      const DeepCollectionEquality().hash(_plans),
       selectedDate,
       mapHeightLevel,
       isAnimating);
@@ -241,7 +239,7 @@ class _$TravelPlanManageStateImpl implements _TravelPlanManageState {
 abstract class _TravelPlanManageState implements TravelPlanManageState {
   const factory _TravelPlanManageState(
       {required final TravelModel travel,
-      required final List<TravelVisitWithPlaceModel> visitPlaces,
+      required final List<TravelPlanModel> plans,
       required final DateTime selectedDate,
       final int mapHeightLevel,
       final bool isAnimating}) = _$TravelPlanManageStateImpl;
@@ -249,7 +247,7 @@ abstract class _TravelPlanManageState implements TravelPlanManageState {
   @override
   TravelModel get travel;
   @override
-  List<TravelVisitWithPlaceModel> get visitPlaces;
+  List<TravelPlanModel> get plans;
   @override
   DateTime get selectedDate;
   @override

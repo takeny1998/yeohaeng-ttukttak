@@ -2,7 +2,7 @@ package com.yeohaeng_ttukttak.server.domain.travel.service;
 
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundFailException;
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.InvalidArgumentFailException;
-import com.yeohaeng_ttukttak.server.domain.travel.entity.MemberTravel;
+import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelInvitation;
 import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelInvitationRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ public class TravelInvitationService {
      * @return 생성된 여행 초대의 식별자
      */
     @Transactional
-    public String create(MemberTravel travel, String invitorId) {
+    public String create(Travel travel, String invitorId) {
         travel.verifyModifyGrant(invitorId);
 
         final TravelInvitation invitation = repository.save(

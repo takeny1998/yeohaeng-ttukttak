@@ -1,8 +1,5 @@
-import 'package:application_new/common/event/event.dart';
 import 'package:application_new/common/util/translation_util.dart';
 import 'package:application_new/domain/travel/travel_model.dart';
-import 'package:application_new/domain/travel_visit/travel_visit_model.dart';
-import 'package:application_new/domain/travel_visit/travel_visit_repository.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_recommend/page/travel_plan_add_view.dart';
 import 'package:application_new/shared/component/outlined_icon_button.dart';
 import 'package:application_new/shared/component/small_chip.dart';

@@ -17,7 +17,7 @@ public class TravelParticipant {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "travel_id")
-    private MemberTravel travel;
+    private Travel travel;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "invitee_id")
@@ -27,7 +27,7 @@ public class TravelParticipant {
     @JoinColumn(name = "inviter_id")
     private Member inviter;
 
-    protected TravelParticipant(MemberTravel travel, Member invitee, Member inviter) {
+    protected TravelParticipant(Travel travel, Member invitee, Member inviter) {
         this.travel = travel;
 
         if (Objects.equals(invitee.id(), inviter.id())) {
@@ -42,7 +42,7 @@ public class TravelParticipant {
         return id;
     }
 
-    public MemberTravel travel() {
+    public Travel travel() {
         return travel;
     }
 

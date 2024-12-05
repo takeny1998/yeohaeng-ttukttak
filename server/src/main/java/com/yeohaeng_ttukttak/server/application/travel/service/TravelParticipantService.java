@@ -5,12 +5,11 @@ import com.yeohaeng_ttukttak.server.common.exception.exception.fail.InvalidArgum
 import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
 import com.yeohaeng_ttukttak.server.domain.member.service.MemberService;
 import com.yeohaeng_ttukttak.server.domain.travel.dto.TravelParticipantDto;
-import com.yeohaeng_ttukttak.server.domain.travel.entity.MemberTravel;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelInvitation;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelParticipant;
-import com.yeohaeng_ttukttak.server.domain.travel.repository.MemberTravelRepository;
 import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelParticipantRepository;
+import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelRepository;
 import com.yeohaeng_ttukttak.server.domain.travel.service.TravelInvitationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,7 +22,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class TravelParticipantService {
 
-    private final MemberTravelRepository travelRepository;
+    private final TravelRepository travelRepository;
     private final TravelInvitationService invitationService;
 
     private final MemberService memberService;
@@ -51,7 +50,7 @@ public class TravelParticipantService {
 
         final TravelInvitation invitation = invitationService.find(travelId, invitationId);
 
-        final MemberTravel travel = travelRepository.findById(invitation.travelId())
+        final Travel travel = travelRepository.findById(invitation.travelId())
                 .orElseThrow(() -> new EntityNotFoundFailException(Travel.class));
 
         final Member invitee = memberService.find(inviteeId);
@@ -73,7 +72,7 @@ public class TravelParticipantService {
                 .orElseThrow(() -> new EntityNotFoundFailException(TravelParticipant.class));
 
         final Member kicker = memberService.find(kickerId);
-        final MemberTravel travel = participant.travel();
+        final Travel travel = participant.travel();
 
         if (!Objects.equals(travel.id(), travelId)) {
             throw new InvalidArgumentFailException("participantId");

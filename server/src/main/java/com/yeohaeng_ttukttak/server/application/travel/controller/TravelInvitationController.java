@@ -6,7 +6,6 @@ import com.yeohaeng_ttukttak.server.application.travel.service.FindTravelInvitat
 import com.yeohaeng_ttukttak.server.common.aop.annotation.Authorization;
 import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
 import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthorizationDto;
-import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
 import com.yeohaeng_ttukttak.server.domain.travel.dto.TravelInvitationDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +27,7 @@ public class TravelInvitationController {
             AuthorizationDto authorization
     ) {
 
-        final String createdId = createService.create(
+        final String createdId = createService.createOne(
                 authorization.memberId(), travelId);
         final TravelInvitationDto dto = findService.findOne(travelId, createdId);
 

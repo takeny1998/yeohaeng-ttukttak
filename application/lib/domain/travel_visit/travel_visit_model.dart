@@ -13,7 +13,7 @@ class TravelVisitModel with _$TravelVisitModel {
     required TravelVisitRatingModel rating,
     required List<ImageModel> images,
     required DateTime visitedOn,
-    required  int orderOfVisit,
+    required int orderOfVisit,
     TravelVisitReasonType? reasonType,
   }) = _TravelVisitModel;
 

@@ -1,7 +1,6 @@
 package com.yeohaeng_ttukttak.server.domain.travel.entity;
 
-import com.yeohaeng_ttukttak.server.domain.member.entity.AgeGroup;
-import com.yeohaeng_ttukttak.server.domain.member.entity.Gender;
+import com.yeohaeng_ttukttak.server.domain.shared.entity.CompanionType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -13,15 +12,7 @@ import lombok.ToString;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TravelCompanion {
 
-    @Id @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "travel_companion_generator"
-    )
-    @SequenceGenerator(
-            name = "travel_companion_generator",
-            sequenceName = "travel_companion_seq",
-            initialValue = 100000
-    )
+    @Id @GeneratedValue
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -30,15 +21,9 @@ public class TravelCompanion {
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    private TravelCompanionType type;
+    private CompanionType type;
 
-    @Enumerated(EnumType.STRING)
-    private AgeGroup ageGroup;
-
-    @Enumerated(EnumType.STRING)
-    private Gender gender;
-
-    public TravelCompanion(Travel travel, TravelCompanionType type) {
+    protected TravelCompanion(Travel travel, CompanionType type) {
         this.travel = travel;
         this.type = type;
     }
@@ -47,15 +32,8 @@ public class TravelCompanion {
         return id;
     }
 
-    public TravelCompanionType type() {
+    public CompanionType type() {
         return type;
     }
 
-    public AgeGroup ageGroup() {
-        return ageGroup;
-    }
-
-    public Gender gender() {
-        return gender;
-    }
 }

@@ -39,8 +39,7 @@ class TravelPlanRecommend extends _$TravelPlanRecommend {
 
   void _initTargets(TravelModel travel) {
     _motivationTypes = travel.motivationTypes;
-    _companionTypes =
-        travel.companions.map((companion) => companion.type).toList();
+    _companionTypes = travel.companionTypes;
 
     _targets = {
       for (final categoryType in PlaceCategoryType.values)

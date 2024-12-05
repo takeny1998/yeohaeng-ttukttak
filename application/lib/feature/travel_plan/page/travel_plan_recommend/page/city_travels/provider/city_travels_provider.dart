@@ -25,9 +25,7 @@ class CityTravels extends _$CityTravels {
     if (travel == null || city == null) return null;
 
     _motivationTypes = travel.motivationTypes.toSet();
-    _companionTypes =
-        travel.companions.map((companion) => companion.type).toSet();
-
+    _companionTypes = travel.companionTypes.toSet();
     fetch();
 
     return CityTravelsState(city: city);

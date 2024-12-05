@@ -1,4 +1,3 @@
-import 'package:application_new/common/router/router_provider.dart';
 import 'package:application_new/common/util/translation_util.dart';
 import 'package:application_new/feature/travel_plan/component/travel_info_list_item.dart';
 import 'package:application_new/feature/travel_plan/provider/travel_plan_provider.dart';
@@ -64,8 +63,8 @@ class TravelPlanHomePage extends ConsumerWidget {
                         const SizedBox(height: 12.0),
                         TravelInfoListItem(
                             avatar: Icons.person_outline,
-                            label: travel.companions
-                                .map((e) => TranslationUtil.enumValue(e.type))
+                            label: travel.companionTypes
+                                .map((e) => TranslationUtil.enumValue(e))
                                 .join(', ')),
                         const SizedBox(height: 12.0),
                         TravelInfoListItem(

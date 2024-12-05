@@ -1,6 +1,5 @@
 import 'package:application_new/common/event/event.dart';
 import 'package:application_new/common/translation/translation_service.dart';
-import 'package:application_new/common/util/translation_util.dart';
 import 'package:application_new/feature/travel_create/page/select_travel_city_form.dart';
 import 'package:application_new/feature/travel_create/page/select_travel_date_form.dart';
 import 'package:application_new/feature/travel_create/page/select_travel_detail_form.dart';

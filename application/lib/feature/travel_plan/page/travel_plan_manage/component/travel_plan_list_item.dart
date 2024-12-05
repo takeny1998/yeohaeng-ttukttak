@@ -1,5 +1,6 @@
 import 'package:application_new/common/util/translation_util.dart';
-import 'package:application_new/domain/travel_visit/travel_visit_model.dart';
+import 'package:application_new/domain/place/place_provider.dart';
+import 'package:application_new/domain/travel/travel_plan_model.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_manage/component/travel_plan_list_drag_item.dart';
 import 'package:application_new/shared/component/outlined_icon_button.dart';
 import 'package:flutter/material.dart';
@@ -7,11 +8,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class TravelPlanListItem extends ConsumerStatefulWidget {
   final int order;
-  final TravelVisitWithPlaceModel visitPlace;
+  final TravelPlanModel plan;
   final VoidCallback? onDelete;
 
   const TravelPlanListItem(
-      {super.key, required this.order, required this.visitPlace, this.onDelete});
+      {super.key, required this.order, required this.plan, this.onDelete});
 
   @override
   ConsumerState createState() => _TravelPlanListITemState();
@@ -24,22 +25,22 @@ class _TravelPlanListITemState extends ConsumerState<TravelPlanListItem> {
   @override
   Widget build(BuildContext context) {
 
-    if (draggingId == widget.visitPlace.visit.id) {
+    if (draggingId == widget.plan.id) {
       return const SizedBox();
     }
 
     final ThemeData(:colorScheme) = Theme.of(context);
 
-    final (order, visitPlace) = (widget.order, widget.visitPlace);
+    final (order, plan) = (widget.order, widget.plan);
 
     const titleStyle =
         TextStyle(fontWeight: FontWeight.w600, fontSize: 16.0, height: 1.0);
     const subTitleStyle = TextStyle(fontSize: 12.0);
 
-    final place = visitPlace.place;
+    final place = ref.watch(placeProvider(plan.placeId)).value;
 
     final categoryName =
-        TranslationUtil.enumValue(place.categoryTypes.firstOrNull);
+        TranslationUtil.enumValue(place?.categoryTypes.firstOrNull);
 
     return IntrinsicHeight(
       child: Row(
@@ -73,26 +74,26 @@ class _TravelPlanListITemState extends ConsumerState<TravelPlanListItem> {
                         children: [
                           Row(
                             children: [
-                              Text(place.name, style: titleStyle),
+                              Text(place?.name ?? '', style: titleStyle),
                               const SizedBox(width: 6.0),
                               Text(categoryName,
                                   style: const TextStyle(fontSize: 12.0)),
                             ],
                           ),
                           const SizedBox(height: 4.0),
-                          Text(place.address.value ?? '',
+                          Text(place?.address.value ?? '',
                               style: subTitleStyle,
                               overflow: TextOverflow.ellipsis),
                         ],
                       ),
                     ),
                     const SizedBox(width: 24.0),
-                    Draggable<TravelVisitWithPlaceModel>(
-                      key: ValueKey<int>(visitPlace.visit.id),
-                      data: visitPlace,
+                    Draggable<TravelPlanModel>(
+                      key: ValueKey<int>(plan.id),
+                      data: plan,
                       onDragStarted: () {
                         if (!mounted) return;
-                        setState(() => draggingId = visitPlace.visit.id);
+                        setState(() => draggingId = plan.id);
                       },
                       onDragEnd: (_) {
                         if (!mounted) return;
@@ -104,7 +105,7 @@ class _TravelPlanListITemState extends ConsumerState<TravelPlanListItem> {
                       },
                       onDraggableCanceled: (_, __) =>
                           setState(() => draggingId = null),
-                      feedback: TravelPlanListDragItem(visitPlace: visitPlace),
+                      feedback: TravelPlanListDragItem(place: place),
                       child:  const Icon(Icons.drag_handle)
                     ),
                     const SizedBox(width: 16.0),

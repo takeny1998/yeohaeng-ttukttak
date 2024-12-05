@@ -11,11 +11,9 @@ _$TravelModelImpl _$$TravelModelImplFromJson(Map<String, dynamic> json) =>
       id: (json['id'] as num).toInt(),
       startedOn: DateTime.parse(json['startedOn'] as String),
       endedOn: DateTime.parse(json['endedOn'] as String),
-      ageGroup: $enumDecodeNullable(_$AgeGroupEnumMap, json['ageGroup']),
-      gender: $enumDecodeNullable(_$GenderEnumMap, json['gender']),
-      memberId: json['memberId'] as String?,
-      companions: (json['companions'] as List<dynamic>)
-          .map((e) => TravelCompanionModel.fromJson(e as Map<String, dynamic>))
+      memberId: json['memberId'] as String,
+      companionTypes: (json['companionTypes'] as List<dynamic>)
+          .map((e) => $enumDecode(_$TravelCompanionTypeEnumMap, e))
           .toList(),
       motivationTypes: (json['motivationTypes'] as List<dynamic>)
           .map((e) => $enumDecode(_$TravelMotivationTypeEnumMap, e))
@@ -30,61 +28,14 @@ Map<String, dynamic> _$$TravelModelImplToJson(_$TravelModelImpl instance) =>
       'id': instance.id,
       'startedOn': instance.startedOn.toIso8601String(),
       'endedOn': instance.endedOn.toIso8601String(),
-      'ageGroup': _$AgeGroupEnumMap[instance.ageGroup],
-      'gender': _$GenderEnumMap[instance.gender],
       'memberId': instance.memberId,
-      'companions': instance.companions,
+      'companionTypes': instance.companionTypes
+          .map((e) => _$TravelCompanionTypeEnumMap[e]!)
+          .toList(),
       'motivationTypes': instance.motivationTypes
           .map((e) => _$TravelMotivationTypeEnumMap[e]!)
           .toList(),
       'cities': instance.cities,
-    };
-
-const _$AgeGroupEnumMap = {
-  AgeGroup.underNine: 'underNine',
-  AgeGroup.teens: 'teens',
-  AgeGroup.twenties: 'twenties',
-  AgeGroup.thirties: 'thirties',
-  AgeGroup.forties: 'forties',
-  AgeGroup.fifties: 'fifties',
-  AgeGroup.sixties: 'sixties',
-  AgeGroup.seventiesPlus: 'seventiesPlus',
-};
-
-const _$GenderEnumMap = {
-  Gender.male: 'male',
-  Gender.female: 'female',
-};
-
-const _$TravelMotivationTypeEnumMap = {
-  TravelMotivationType.adventure: 'adventure',
-  TravelMotivationType.rest: 'rest',
-  TravelMotivationType.friendship: 'friendship',
-  TravelMotivationType.selfReflection: 'selfReflection',
-  TravelMotivationType.socialNetwork: 'socialNetwork',
-  TravelMotivationType.fitness: 'fitness',
-  TravelMotivationType.newExperiences: 'newExperiences',
-  TravelMotivationType.education: 'education',
-  TravelMotivationType.special: 'special',
-  TravelMotivationType.other: 'other',
-};
-
-_$TravelCompanionImpl _$$TravelCompanionImplFromJson(
-        Map<String, dynamic> json) =>
-    _$TravelCompanionImpl(
-      id: (json['id'] as num).toInt(),
-      type: $enumDecode(_$TravelCompanionTypeEnumMap, json['type']),
-      ageGroup: $enumDecodeNullable(_$AgeGroupEnumMap, json['ageGroup']),
-      gender: $enumDecodeNullable(_$GenderEnumMap, json['gender']),
-    );
-
-Map<String, dynamic> _$$TravelCompanionImplToJson(
-        _$TravelCompanionImpl instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'type': _$TravelCompanionTypeEnumMap[instance.type]!,
-      'ageGroup': _$AgeGroupEnumMap[instance.ageGroup],
-      'gender': _$GenderEnumMap[instance.gender],
     };
 
 const _$TravelCompanionTypeEnumMap = {
@@ -99,6 +50,19 @@ const _$TravelCompanionTypeEnumMap = {
   TravelCompanionType.colleagues: 'colleagues',
   TravelCompanionType.members: 'members',
   TravelCompanionType.others: 'others',
+};
+
+const _$TravelMotivationTypeEnumMap = {
+  TravelMotivationType.adventure: 'adventure',
+  TravelMotivationType.rest: 'rest',
+  TravelMotivationType.friendship: 'friendship',
+  TravelMotivationType.selfReflection: 'selfReflection',
+  TravelMotivationType.socialNetwork: 'socialNetwork',
+  TravelMotivationType.fitness: 'fitness',
+  TravelMotivationType.newExperiences: 'newExperiences',
+  TravelMotivationType.education: 'education',
+  TravelMotivationType.special: 'special',
+  TravelMotivationType.other: 'other',
 };
 
 _$TravelParticipantModelImpl _$$TravelParticipantModelImplFromJson(

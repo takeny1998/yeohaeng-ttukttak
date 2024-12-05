@@ -6,6 +6,8 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.yeohaeng_ttukttak.server.common.util.PageUtil;
 import com.yeohaeng_ttukttak.server.common.util.dto.PageCommand;
 import com.yeohaeng_ttukttak.server.common.util.dto.PageResult;
+import com.yeohaeng_ttukttak.server.domain.shared.entity.CompanionType;
+import com.yeohaeng_ttukttak.server.domain.shared.entity.MotivationType;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +27,7 @@ public class TravelRecommendRepository {
 
     private final JPAQueryFactory queryFactory;
 
-    public PageResult<Travel> call(Long cityId, List<TravelMotivationType> motivationTypes, List<TravelCompanionType> companionTypes, PageCommand pageCommand) {
+    public PageResult<Travel> call(Long cityId, List<MotivationType> motivationTypes, List<CompanionType> companionTypes, PageCommand pageCommand) {
 
         final JPAQuery<Travel> query = queryFactory
                 .select(travel)
@@ -45,11 +47,9 @@ public class TravelRecommendRepository {
     }
 
     private BooleanExpression isMatchedTravel(Long cityId) {
-        BooleanExpression matchedCityExists = queryFactory.selectFrom(travelCity)
+        return queryFactory.selectFrom(travelCity)
                 .where(travelCity.travel.eq(travel), travelCity.city.id.eq(cityId))
                 .exists();
-
-        return travel.instanceOf(InitialTravel.class).and(matchedCityExists);
     }
 
 }

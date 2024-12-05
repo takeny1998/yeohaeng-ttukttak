@@ -1,10 +1,8 @@
 import 'package:application_new/common/event/event.dart';
 import 'package:application_new/common/translation/translation_service.dart';
-import 'package:application_new/common/util/translation_util.dart';
 import 'package:application_new/domain/place/place_model.dart';
 import 'package:application_new/domain/travel/travel_model.dart';
 import 'package:application_new/domain/travel_visit/travel_visit_model.dart';
-import 'package:application_new/domain/travel_visit/travel_visit_repository.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_manage/page/travel_date_range_view.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_manage/provider/travel_plan_manage_provider.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_recommend/component/travel_info_item.dart';
@@ -86,12 +84,9 @@ class _TravelPlanAddViewState extends ConsumerState<TravelPlanAddView> {
 
                   final navigator = Navigator.of(context);
 
-                  await ref.read(travelVisitRepositoryProvider).create(
-                      travel.id,
-                      TravelVisitForm(
-                          placeId: place.id, dayOfTravel: dayOfTravel));
-
-                  ref.invalidate(travelPlanManageProvider(travel.id));
+                  await ref
+                      .read(travelPlanManageProvider(travel.id).notifier)
+                      .create(place.id, dayOfTravel);
 
                   final message = ref
                       .read(translationServiceProvider)

@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:application_new/common/http/http_service_provider.dart';
 import 'package:application_new/common/loading/async_loading_provider.dart';
 import 'package:application_new/domain/place/place_provider.dart';
+import 'package:application_new/domain/travel/travel_plan_model.dart';
 import 'package:application_new/domain/travel/travel_provider.dart';
 import 'package:application_new/domain/travel_visit/travel_visit_model.dart';
 import 'package:application_new/feature/authentication/service/auth_service_provider.dart';
@@ -13,7 +14,6 @@ part 'travel_plan_manage_provider.g.dart';
 
 @riverpod
 class TravelPlanManage extends _$TravelPlanManage {
-
   static const List<double> mapHeightRatios = [0.0, 0.4, 1.0];
 
   @override
@@ -25,17 +25,14 @@ class TravelPlanManage extends _$TravelPlanManage {
   void _init() async {
     final response = await ref
         .watch(httpServiceProvider)
-        .request('GET', '/api/v2/travels/$travelId/visits');
+        .request('GET', '/api/v2/travels/$travelId/plans');
 
     final travel = await ref.watch(travelProvider(travelId).future);
-    final visits = TravelVisitModel.listFromJson(response);
-
-    final visitPlaces = await _fetchPlaces(visits);
 
     state = TravelPlanManageState(
       travel: travel,
       selectedDate: travel.startedOn,
-      visitPlaces: visitPlaces,
+      plans: TravelPlanModel.listFromJson(response),
     );
   }
 
@@ -51,7 +48,6 @@ class TravelPlanManage extends _$TravelPlanManage {
   }
 
   void updateMapHeight(double dy) {
-
     if (state == null || state!.isAnimating) return;
 
     final isScrollingDown = dy > 0.0;
@@ -60,24 +56,20 @@ class TravelPlanManage extends _$TravelPlanManage {
     if (isScrollingDown) {
       if (mapHeightLevel + 1 == mapHeightRatios.length) return;
 
-      state = state!.copyWith(
-        isAnimating: true,
-        mapHeightLevel: mapHeightLevel + 1
-      );
+      state = state!
+          .copyWith(isAnimating: true, mapHeightLevel: mapHeightLevel + 1);
     } else {
       if (mapHeightLevel == 0) return;
 
-      state = state!.copyWith(
-          isAnimating: true,
-          mapHeightLevel: mapHeightLevel - 1
-      );
+      state = state!
+          .copyWith(isAnimating: true, mapHeightLevel: mapHeightLevel - 1);
     }
   }
 
-  Future<void> move(TravelVisitWithPlaceModel from, int order) async {
+  Future<void> move(TravelPlanModel from, int order) async {
     if (state == null) return;
 
-    final newVisits =
+    final newPlans =
         await ref.read(asyncLoadingProvider.notifier).guard(() async {
       final auth = await ref.read(authServiceProvider).find();
 
@@ -85,23 +77,21 @@ class TravelPlanManage extends _$TravelPlanManage {
 
       final response = await ref.read(httpServiceProvider).request(
         'PATCH',
-        '/api/v2/travels/$travelId/visits/${from.visit.id}',
+        '/api/v2/travels/$travelId/plans/${from.id}',
         authorization: auth.accessToken,
         data: {
-          'visitedOn': selectedDate.toIso8601String(),
           'orderOfVisit': order,
+          'willVisitOn': selectedDate.toIso8601String(),
         },
       );
 
-      return TravelVisitModel.listFromJson(response);
+      return TravelPlanModel.listFromJson(response);
     });
 
-    final newVisitPlaces = await _fetchPlaces(newVisits);
-    state = state!.copyWith(visitPlaces: newVisitPlaces);
+    state = state!.copyWith(plans: newPlans);
   }
 
-  Future<void> delete(TravelVisitWithPlaceModel visitPlace) async {
-
+  Future<void> delete(TravelPlanModel plan) async {
     if (state == null) return;
 
     await ref.read(asyncLoadingProvider.notifier).guard(() async {
@@ -109,23 +99,33 @@ class TravelPlanManage extends _$TravelPlanManage {
 
       await ref.read(httpServiceProvider).request(
             'DELETE',
-            '/api/v2/travels/$travelId/visits/${visitPlace.visit.id}',
+            '/api/v2/travels/$travelId/plans/${plan.id}',
             authorization: auth.accessToken,
           );
     });
 
-    final newVisitPlaces = List.of(state!.visitPlaces)..remove(visitPlace);
-    state = state!.copyWith(visitPlaces: newVisitPlaces);
+    final newPlans = List.of(state!.plans)..remove(plan);
+    state = state!.copyWith(plans: newPlans);
   }
 
-  Future<List<TravelVisitWithPlaceModel>> _fetchPlaces(
-      List<TravelVisitModel> newVisits) async {
-    return await Future.wait(newVisits.map((visit) async =>
-        TravelVisitWithPlaceModel(
-            visit: visit,
-            place: await ref.watch(placeProvider(visit.placeId).future))));
+  Future<void> create(int placeId, int dayOfTravel) async {
+    var loadingNotifier = ref.read(asyncLoadingProvider.notifier);
+
+    final newPlans = await loadingNotifier.guard(() async {
+      final auth = await ref.read(authServiceProvider).find();
+      final response = await ref.read(httpServiceProvider).request(
+        'POST',
+        '/api/v2/travels/$travelId/plans',
+        authorization: auth.accessToken,
+        data: {
+          'placeId': placeId,
+          'dayOfTravel': dayOfTravel,
+        },
+      );
+
+      return TravelPlanModel.listFromJson(response);
+    });
+
+    state = state!.copyWith(plans: newPlans);
   }
-
-
-
 }
