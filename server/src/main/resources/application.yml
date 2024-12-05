@@ -2,7 +2,9 @@ spring:
   cloud.aws.region.static: ap-northeast-2
 
   config:
-    import: aws-parameterstore:/yeohaeng-ttukttak/server_dev/
+    import:
+      - aws-parameterstore:/yeohaeng-ttukttak/server_dev/
+      - classpath:/words.yml
 
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver

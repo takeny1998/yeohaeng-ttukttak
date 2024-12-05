@@ -22,6 +22,9 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private AgeGroup ageGroup;
 
+    @NotNull
+    private String nickname;
+
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
@@ -32,8 +35,9 @@ public class Member {
     @JoinColumn(name = "auth_id", updatable = false)
     private OAuth auth;
 
-    public Member(OAuth auth, Gender gender, LocalDate birthDate) {
+    public Member(OAuth auth, String nickname, Gender gender, LocalDate birthDate) {
         this.auth = auth;
+        this.nickname = nickname;
         this.gender = gender;
         this.birthDate = birthDate;
     }
