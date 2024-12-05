@@ -20,7 +20,8 @@ MemberModel _$MemberModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$MemberModel {
-  String get id => throw _privateConstructorUsedError;
+  String get uuid => throw _privateConstructorUsedError;
+  String get nickname => throw _privateConstructorUsedError;
   AgeGroup? get ageGroup => throw _privateConstructorUsedError;
   Gender? get gender => throw _privateConstructorUsedError;
 
@@ -40,7 +41,7 @@ abstract class $MemberModelCopyWith<$Res> {
           MemberModel value, $Res Function(MemberModel) then) =
       _$MemberModelCopyWithImpl<$Res, MemberModel>;
   @useResult
-  $Res call({String id, AgeGroup? ageGroup, Gender? gender});
+  $Res call({String uuid, String nickname, AgeGroup? ageGroup, Gender? gender});
 }
 
 /// @nodoc
@@ -58,14 +59,19 @@ class _$MemberModelCopyWithImpl<$Res, $Val extends MemberModel>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
+    Object? uuid = null,
+    Object? nickname = null,
     Object? ageGroup = freezed,
     Object? gender = freezed,
   }) {
     return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
+      uuid: null == uuid
+          ? _value.uuid
+          : uuid // ignore: cast_nullable_to_non_nullable
+              as String,
+      nickname: null == nickname
+          ? _value.nickname
+          : nickname // ignore: cast_nullable_to_non_nullable
               as String,
       ageGroup: freezed == ageGroup
           ? _value.ageGroup
@@ -87,7 +93,7 @@ abstract class _$$MemberModelImplCopyWith<$Res>
       __$$MemberModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, AgeGroup? ageGroup, Gender? gender});
+  $Res call({String uuid, String nickname, AgeGroup? ageGroup, Gender? gender});
 }
 
 /// @nodoc
@@ -103,14 +109,19 @@ class __$$MemberModelImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
+    Object? uuid = null,
+    Object? nickname = null,
     Object? ageGroup = freezed,
     Object? gender = freezed,
   }) {
     return _then(_$MemberModelImpl(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
+      uuid: null == uuid
+          ? _value.uuid
+          : uuid // ignore: cast_nullable_to_non_nullable
+              as String,
+      nickname: null == nickname
+          ? _value.nickname
+          : nickname // ignore: cast_nullable_to_non_nullable
               as String,
       ageGroup: freezed == ageGroup
           ? _value.ageGroup
@@ -127,13 +138,16 @@ class __$$MemberModelImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$MemberModelImpl implements _MemberModel {
-  const _$MemberModelImpl({required this.id, this.ageGroup, this.gender});
+  const _$MemberModelImpl(
+      {required this.uuid, required this.nickname, this.ageGroup, this.gender});
 
   factory _$MemberModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$MemberModelImplFromJson(json);
 
   @override
-  final String id;
+  final String uuid;
+  @override
+  final String nickname;
   @override
   final AgeGroup? ageGroup;
   @override
@@ -141,7 +155,7 @@ class _$MemberModelImpl implements _MemberModel {
 
   @override
   String toString() {
-    return 'MemberModel(id: $id, ageGroup: $ageGroup, gender: $gender)';
+    return 'MemberModel(uuid: $uuid, nickname: $nickname, ageGroup: $ageGroup, gender: $gender)';
   }
 
   @override
@@ -149,7 +163,9 @@ class _$MemberModelImpl implements _MemberModel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$MemberModelImpl &&
-            (identical(other.id, id) || other.id == id) &&
+            (identical(other.uuid, uuid) || other.uuid == uuid) &&
+            (identical(other.nickname, nickname) ||
+                other.nickname == nickname) &&
             (identical(other.ageGroup, ageGroup) ||
                 other.ageGroup == ageGroup) &&
             (identical(other.gender, gender) || other.gender == gender));
@@ -157,7 +173,8 @@ class _$MemberModelImpl implements _MemberModel {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, ageGroup, gender);
+  int get hashCode =>
+      Object.hash(runtimeType, uuid, nickname, ageGroup, gender);
 
   /// Create a copy of MemberModel
   /// with the given fields replaced by the non-null parameter values.
@@ -177,7 +194,8 @@ class _$MemberModelImpl implements _MemberModel {
 
 abstract class _MemberModel implements MemberModel {
   const factory _MemberModel(
-      {required final String id,
+      {required final String uuid,
+      required final String nickname,
       final AgeGroup? ageGroup,
       final Gender? gender}) = _$MemberModelImpl;
 
@@ -185,7 +203,9 @@ abstract class _MemberModel implements MemberModel {
       _$MemberModelImpl.fromJson;
 
   @override
-  String get id;
+  String get uuid;
+  @override
+  String get nickname;
   @override
   AgeGroup? get ageGroup;
   @override

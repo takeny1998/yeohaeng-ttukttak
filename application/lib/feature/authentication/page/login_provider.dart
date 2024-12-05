@@ -32,9 +32,7 @@ class Login extends _$Login {
       );
 
       final AuthModel(:accessToken) = await authService.find();
-
-      final claims = JwtDecoder.decode(accessToken);
-      final member = MemberModel(id: claims['sub'] as String);
+      final member = MemberModel.fromAccessToken(accessToken);
 
       sessionNotifier.update(isAuthenticated: true, member: member);
     });
