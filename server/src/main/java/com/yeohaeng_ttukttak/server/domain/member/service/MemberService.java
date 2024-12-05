@@ -7,8 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.UUID;
-
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -18,13 +16,13 @@ public class MemberService {
 
     /**
      * 지정된 식별자에 맞는 사용자를 찾아 반환한다.
-     * @param memberId 찾을 사용자의 식별자
-     * @return 사용자 엔티티
+     * @param memberId 찾을 사용자의 UUID
+     * @return 조회된 사용자 엔티티
      * @throws AuthorizationErrorException 사용자를 찾을 수 없는 경우 발생한다.
      */
     public Member find(String memberId) {
         return memberRepository
-                .findById(UUID.fromString(memberId))
+                .findByUuid(memberId)
                 .orElseThrow(AuthorizationErrorException::new);
     }
 

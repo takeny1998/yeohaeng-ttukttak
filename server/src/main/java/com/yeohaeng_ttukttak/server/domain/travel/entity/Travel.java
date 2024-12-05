@@ -95,10 +95,10 @@ public class Travel {
      * @throws ForbiddenErrorException 권한이 없는 경우
      */
     public void verifyModifyGrant(String memberId) {
-        final boolean isOwner = Objects.equals(member.id(), memberId);
+        final boolean isOwner = Objects.equals(member.uuid(), memberId);
 
         final boolean isParticipant = participants.stream()
-                .anyMatch(e -> e.invitee().id().equals(memberId));
+                .anyMatch(e -> e.invitee().uuid().equals(memberId));
 
         if (!(isOwner || isParticipant)) {
             throw new ForbiddenErrorException(Travel.class);
@@ -111,7 +111,7 @@ public class Travel {
      * @throws ForbiddenErrorException 권한이 없는 경우
      */
     public void verifyDeleteGrant(String memberId) {
-        final boolean isOwner = Objects.equals(member.id(), memberId);
+        final boolean isOwner = Objects.equals(member.uuid(), memberId);
 
         if (!isOwner) {
             throw new ForbiddenErrorException(Travel.class);
@@ -155,7 +155,7 @@ public class Travel {
         final boolean isInviteeParticipated = participants.stream()
                 .anyMatch(participant -> participant.invitee().equals(invitee));
 
-        final boolean isOwnerInvited = Objects.equals(invitee.id(), this.member.id());
+        final boolean isOwnerInvited = Objects.equals(invitee.uuid(), this.member.uuid());
 
         if (isInviteeParticipated || isOwnerInvited) {
             throw new AlreadyJoinedTravelFailException("inviteeId");
@@ -171,10 +171,10 @@ public class Travel {
      * @throws ForbiddenErrorException 대상 참여자를 쫒을 권한이 없는 경우 발생한다.
      */
     public void leaveParticipant(Member member, TravelParticipant participant) {
-        verifyModifyGrant(member.id());
+        verifyModifyGrant(member.uuid());
 
-        final boolean isInvitedByKicker = Objects.equals(member.id(), participant.invitee().id());
-        final boolean isMemberOwner = Objects.equals(member.id(), this.member.id());
+        final boolean isInvitedByKicker = Objects.equals(member.uuid(), participant.invitee().uuid());
+        final boolean isMemberOwner = Objects.equals(member.uuid(), this.member.uuid());
 
         if (!isInvitedByKicker && !isMemberOwner) {
             throw new ForbiddenErrorException(TravelParticipant.class);

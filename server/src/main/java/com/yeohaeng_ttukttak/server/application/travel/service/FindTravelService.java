@@ -25,7 +25,7 @@ public class FindTravelService {
     public List<TravelDto> findByMember(String memberId) {
 
         final List<Travel> travels = memberTravelRepository
-                .findAllByMemberId(UUID.fromString(memberId));
+                .findAllByMemberUuid(memberId);
 
         return travels.stream()
                 .map(TravelDto::of)

@@ -48,13 +48,13 @@ public class OAuthLoginService {
         log.debug("[OAuthLoginService.login] member = {}", member);
 
         final AuthorizationDto authorization = new AuthorizationDto(
-                member.id(),
+                member.uuid(),
                 member.ageGroup(),
                 member.gender(),
                 member.birthDate());
 
         final String accessToken = accessTokenService.create(authorization);
-        final String refreshToken = refreshTokenService.create(member.id());
+        final String refreshToken = refreshTokenService.create(member.uuid());
 
         log.debug("[OAuthLoginService.login] accessToken = {}", accessToken);
 

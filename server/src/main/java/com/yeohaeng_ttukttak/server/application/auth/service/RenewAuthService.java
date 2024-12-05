@@ -30,7 +30,7 @@ public class RenewAuthService {
 
         final Member member = memberService.find(memberId);
         final AuthorizationDto authorization = new AuthorizationDto(
-                member.id(),
+                member.uuid(),
                 member.ageGroup(),
                 member.gender(),
                 member.birthDate());

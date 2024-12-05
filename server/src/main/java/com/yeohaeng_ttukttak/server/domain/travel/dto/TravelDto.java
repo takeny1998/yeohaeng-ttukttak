@@ -24,7 +24,7 @@ public record TravelDto(
                 travel.id(),
                 travel.startedOn(),
                 travel.endedOn(),
-                travel.member().id(),
+                travel.member().uuid(),
                 travel.companions().stream()
                         .map(TravelCompanion::type)
                         .toList(),

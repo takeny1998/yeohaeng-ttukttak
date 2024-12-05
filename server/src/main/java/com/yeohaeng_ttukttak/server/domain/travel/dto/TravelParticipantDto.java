@@ -9,8 +9,8 @@ public record TravelParticipantDto(
         return new TravelParticipantDto(
                 participant.id(),
                 participant.travel().id(),
-                participant.inviter().id(),
-                participant.invitee().id());
+                participant.inviter().uuid(),
+                participant.invitee().uuid());
     }
 
 }

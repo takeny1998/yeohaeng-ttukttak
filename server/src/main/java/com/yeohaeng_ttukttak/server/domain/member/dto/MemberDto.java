@@ -5,14 +5,14 @@ import com.yeohaeng_ttukttak.server.domain.member.entity.Gender;
 import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
 
 public record MemberDto(
-        String id,
+        String uuid,
         AgeGroup ageGroup,
         Gender gender
 ) {
 
     public static MemberDto of(Member member) {
         return new MemberDto(
-                member.id(), member.ageGroup(), member.gender());
+                member.uuid(), member.ageGroup(), member.gender());
     }
 
 }

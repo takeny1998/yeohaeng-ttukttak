@@ -1,5 +1,6 @@
 package com.yeohaeng_ttukttak.server.domain.member.entity;
 
+import com.yeohaeng_ttukttak.server.common.util.StringUtil;
 import com.yeohaeng_ttukttak.server.domain.oauth.entity.OAuth;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -17,7 +18,11 @@ import static lombok.AccessLevel.PROTECTED;
 public class Member {
 
     @Id @GeneratedValue
-    private UUID id;
+    private Long id;
+
+    @NotNull
+    @Column(unique = true, updatable = false)
+    private String uuid;
 
     @Enumerated(EnumType.STRING)
     private AgeGroup ageGroup;
@@ -37,13 +42,14 @@ public class Member {
 
     public Member(OAuth auth, String nickname, Gender gender, LocalDate birthDate) {
         this.auth = auth;
+        this.uuid = StringUtil.createShortUUID();
         this.nickname = nickname;
         this.gender = gender;
         this.birthDate = birthDate;
     }
 
-    public String id() {
-        return id.toString();
+    public String uuid() {
+        return uuid;
     }
 
     public AgeGroup ageGroup() {
