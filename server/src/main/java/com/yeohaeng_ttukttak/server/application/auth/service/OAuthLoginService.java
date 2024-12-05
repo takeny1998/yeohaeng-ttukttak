@@ -49,6 +49,7 @@ public class OAuthLoginService {
 
         final AuthorizationDto authorization = new AuthorizationDto(
                 member.uuid(),
+                member.nickname(),
                 member.ageGroup(),
                 member.gender(),
                 member.birthDate());

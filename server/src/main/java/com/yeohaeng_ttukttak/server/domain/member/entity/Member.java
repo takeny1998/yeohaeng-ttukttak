@@ -63,4 +63,8 @@ public class Member {
     public LocalDate birthDate() {
         return birthDate;
     }
+
+    public String nickname() {
+        return nickname;
+    }
 }
