@@ -36,8 +36,8 @@ public class GoogleProfileDeserializer extends JsonDeserializer<GoogleProfileRes
         final String value = Optional
                 .ofNullable(rootNode.findValue("genders"))
                 .map(node -> node.findValue("value"))
-                .map(node -> node.asText().toUpperCase())
-                .orElse("NONE");
+                .map(node -> node.asText().toLowerCase())
+                .orElse("");
 
         Gender gender;
 
