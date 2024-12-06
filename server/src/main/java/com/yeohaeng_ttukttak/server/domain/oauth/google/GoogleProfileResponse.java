@@ -7,4 +7,4 @@ import java.time.LocalDate;
 
 @JsonDeserialize(using = GoogleProfileDeserializer.class)
 public record GoogleProfileResponse(
-        LocalDate birthday, Gender gender) { }
+        LocalDate birthday, Gender gender, String nickname) { }

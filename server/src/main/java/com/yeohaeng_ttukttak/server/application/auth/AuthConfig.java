@@ -5,6 +5,7 @@ import com.yeohaeng_ttukttak.server.domain.auth.service.AccessTokenService;
 import com.yeohaeng_ttukttak.server.domain.auth.service.RefreshTokenService;
 import com.yeohaeng_ttukttak.server.domain.jwt.service.JwtService;
 import com.yeohaeng_ttukttak.server.domain.member.repository.MemberRepository;
+import com.yeohaeng_ttukttak.server.domain.member.service.NicknameService;
 import com.yeohaeng_ttukttak.server.domain.oauth.service.OAuthService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,10 +19,11 @@ public class AuthConfig {
             JwtService jwtService,
             AccessTokenService accessTokenService,
             RefreshTokenService refreshTokenService,
+            NicknameService nicknameService,
             MemberRepository memberRepository
     ) {
         return new OAuthLoginService(
-                appleOAuthService, jwtService, accessTokenService, refreshTokenService, memberRepository);
+                appleOAuthService, jwtService, accessTokenService, refreshTokenService, nicknameService, memberRepository);
     }
 
     @Bean
@@ -30,9 +32,10 @@ public class AuthConfig {
             JwtService jwtService,
             AccessTokenService accessTokenService,
             RefreshTokenService refreshTokenService,
+            NicknameService nicknameService,
             MemberRepository memberRepository
     ) {
         return new OAuthLoginService(
-                googleOAuthService, jwtService, accessTokenService, refreshTokenService, memberRepository);
+                googleOAuthService, jwtService, accessTokenService, refreshTokenService, nicknameService, memberRepository);
     }
 }

@@ -7,9 +7,11 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface MemberRepository extends JpaRepository<Member, UUID> {
+public interface MemberRepository extends JpaRepository<Member, Long> {
 
     @Query("SELECT u FROM Member u WHERE u.auth.openId = :openId")
     Optional<Member> findByOpenId(String openId);
+
+    Optional<Member> findByUuid(String uuid);
 
 }

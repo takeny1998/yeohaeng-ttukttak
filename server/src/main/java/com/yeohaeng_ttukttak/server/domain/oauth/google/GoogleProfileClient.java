@@ -7,7 +7,7 @@ import org.springframework.web.service.annotation.HttpExchange;
 @HttpExchange("https://people.googleapis.com/v1")
 public interface GoogleProfileClient {
 
-    @GetExchange("/people/me?personFields=birthdays,genders")
+    @GetExchange("/people/me?personFields=birthdays,genders,nicknames")
     GoogleProfileResponse getProfile(
             @RequestHeader("Authorization") String authorization
     );

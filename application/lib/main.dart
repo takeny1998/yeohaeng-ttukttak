@@ -136,8 +136,7 @@ class _MyAppState extends ConsumerState<MyApp> {
 
     final AuthModel(:accessToken) = await authService.find();
 
-    final claims = JwtDecoder.decode(accessToken);
-    final member = MemberModel(id: claims['sub'] as String);
+    final member = MemberModel.fromAccessToken(accessToken);
     sessionNotifier.update(isAuthenticated: true, member: member);
   }
 

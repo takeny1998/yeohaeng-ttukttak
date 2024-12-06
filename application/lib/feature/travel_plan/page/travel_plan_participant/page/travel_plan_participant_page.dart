@@ -27,6 +27,9 @@ class TravelPlanParticipantPage extends ConsumerWidget {
     final TravelPlanParticipantState(:travel, :participants) = state;
     final SessionModel(member: me) = ref.watch(sessionProvider);
 
+    final owner = ref.watch(memberProvider(travel.memberId)).value;
+
+
     return Scaffold(
       appBar: AppBar(title: Text(tr.from('travel_participants'))),
       body: CustomScrollView(
@@ -68,38 +71,49 @@ class TravelPlanParticipantPage extends ConsumerWidget {
               height: 8.0,
             ),
           ),
+          SliverToBoxAdapter(
+            child: ListTile(
+              contentPadding: const EdgeInsets.symmetric(horizontal: 24.0),
+              leading: TravelerAvatarItem(id: travelId,
+                  gender: owner?.gender ?? Gender.male,
+                  ageGroup: owner?.ageGroup ?? AgeGroup.twenties),
+              title: Text(
+                owner?.nickname ?? '',
+                style: const TextStyle(fontWeight: FontWeight.w600)),
+              subtitle: Text(
+                owner?.uuid.substring(0, 6) ?? '',
+                style: const TextStyle(fontSize: 12.0),
+              ),
+            ),
+          ),
           SliverList.builder(
               itemCount: participants.length,
               itemBuilder: (context, index) {
                 final participant = participants[index];
 
-                // final invitee =
-                //     ref.watch(memberProvider(participant.inviteeId)).value;
-
-                final nickname = IterableUtil.random(['이솔루후야', '제투스', '타틴']);
+                final invitee =
+                    ref.watch(memberProvider(participant.inviteeId)).value;
 
                 return ListTile(
                   contentPadding: const EdgeInsets.symmetric(horizontal: 24.0),
                   leading: TravelerAvatarItem(
                       id: participant.id,
-                      gender: IterableUtil.random(Gender.values),
-                      ageGroup: IterableUtil.random(AgeGroup.values)),
-                  title: Text(
-                    nickname,
-                    style: const TextStyle(fontWeight: FontWeight.w600),
+                      gender: invitee?.gender ?? Gender.male,
+                      ageGroup: invitee?.ageGroup ?? AgeGroup.twenties),
+                  title: Text(invitee?.nickname ?? '',
+                      style: const TextStyle(fontWeight: FontWeight.w600)),
+                  subtitle: Text(
+                    invitee?.uuid.substring(0, 6) ?? '',
+                    style: const TextStyle(fontSize: 12.0),
                   ),
-                  subtitle: const Text(
-                    '닉네임님이 초대함',
-                    style: TextStyle(fontSize: 13.0),
-                  ),
-                  trailing: (participant.inviterId == me?.id) ||
-                          (travel.memberId == me?.id)
+                  trailing: (participant.inviterId == me?.uuid) ||
+                          (travel.memberId == me?.uuid)
                       ? FilledButton.tonal(
                           onPressed: () => ref
                               .read(travelPlanParticipantProvider(travelId)
                                   .notifier)
                               .leaveOrKick(participant.id),
-                          child: Text(tr.from(participant.inviteeId == me?.id
+                          child: Text(tr.from(participant.inviteeId == me?.uuid
                               ? 'leave'
                               : 'kick')))
                       : null,

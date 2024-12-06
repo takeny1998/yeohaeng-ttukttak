@@ -8,6 +8,7 @@ import com.yeohaeng_ttukttak.server.domain.jwt.dto.JwtClaim;
 import com.yeohaeng_ttukttak.server.domain.jwt.service.JwtService;
 import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
 import com.yeohaeng_ttukttak.server.domain.member.repository.MemberRepository;
+import com.yeohaeng_ttukttak.server.domain.member.service.NicknameService;
 import com.yeohaeng_ttukttak.server.domain.oauth.service.OAuthService;
 import com.yeohaeng_ttukttak.server.domain.oauth.dto.ProfileDto;
 import com.yeohaeng_ttukttak.server.domain.oauth.dto.TokenDto;
@@ -17,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
+import java.util.Objects;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -28,6 +30,7 @@ public class OAuthLoginService {
     private final AccessTokenService accessTokenService;
     private final RefreshTokenService refreshTokenService;
 
+    private final NicknameService nicknameService;
     private final MemberRepository memberRepository;
 
     @Transactional
@@ -46,13 +49,14 @@ public class OAuthLoginService {
         log.debug("[OAuthLoginService.login] member = {}", member);
 
         final AuthorizationDto authorization = new AuthorizationDto(
-                member.id(),
+                member.uuid(),
+                member.nickname(),
                 member.ageGroup(),
                 member.gender(),
                 member.birthDate());
 
         final String accessToken = accessTokenService.create(authorization);
-        final String refreshToken = refreshTokenService.create(member.id());
+        final String refreshToken = refreshTokenService.create(member.uuid());
 
         log.debug("[OAuthLoginService.login] accessToken = {}", accessToken);
 
@@ -65,10 +69,12 @@ public class OAuthLoginService {
         final ProfileDto profileDto = oauthService.getProfile(accessToken);
         final OAuth oauth = new OAuth(openId, oauthService.getProvider());
 
+        final String nickname = Objects.nonNull(profileDto.nickname())
+                ? profileDto.nickname()
+                : nicknameService.generate();
+
         return memberRepository.save(
-                new Member(oauth, profileDto.gender(), profileDto.birthDate()));
-
+                new Member(oauth, nickname, profileDto.gender(), profileDto.birthDate()));
     }
-
 
 }

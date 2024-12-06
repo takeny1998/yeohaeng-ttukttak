@@ -32,7 +32,7 @@ public class GoogleOAuthService implements OAuthService {
         GoogleProfileResponse response = profileClient.getProfile("Bearer " + accessToken);
         log.debug("[GoogleOAuthService.getProfile] profileResponse = {}", response);
 
-        return new ProfileDto(response.birthday(), response.gender());
+        return new ProfileDto(response.birthday(), response.gender(), response.nickname());
     }
 
     @Override

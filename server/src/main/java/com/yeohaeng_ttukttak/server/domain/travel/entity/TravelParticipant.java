@@ -30,7 +30,7 @@ public class TravelParticipant {
     protected TravelParticipant(Travel travel, Member invitee, Member inviter) {
         this.travel = travel;
 
-        if (Objects.equals(invitee.id(), inviter.id())) {
+        if (Objects.equals(invitee.uuid(), inviter.uuid())) {
             throw new CannotInviteYourselfFailException("inviteeId");
         }
 

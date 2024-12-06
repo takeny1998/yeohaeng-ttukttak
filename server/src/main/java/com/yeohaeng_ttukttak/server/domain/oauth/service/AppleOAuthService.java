@@ -23,7 +23,7 @@ public class AppleOAuthService implements OAuthService {
 
     @Override
     public ProfileDto getProfile(String accessToken) {
-        return new ProfileDto(null, null);
+        return new ProfileDto(null, null, null);
     }
 
     @Override
