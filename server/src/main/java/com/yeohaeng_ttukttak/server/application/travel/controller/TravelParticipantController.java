@@ -6,7 +6,6 @@ import com.yeohaeng_ttukttak.server.application.travel.service.TravelParticipant
 import com.yeohaeng_ttukttak.server.common.aop.annotation.Authorization;
 import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
 import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthorizationDto;
-import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
 import com.yeohaeng_ttukttak.server.domain.travel.dto.TravelParticipantDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

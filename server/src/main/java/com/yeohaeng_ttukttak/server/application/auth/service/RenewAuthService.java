@@ -33,8 +33,7 @@ public class RenewAuthService {
                 member.uuid(),
                 member.nickname(),
                 member.ageGroup(),
-                member.gender(),
-                member.birthDate());
+                member.gender());
 
         return new AuthTokenDto(
                 accessTokenService.create(authorization),

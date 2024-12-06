@@ -7,7 +7,6 @@ part 'session_model.freezed.dart';
 class SessionModel with _$SessionModel {
 
   const factory SessionModel({
-    @Default(false) bool isAuthenticated,
     MemberModel? member,
     String? errorMessage,
   }) = _SessionModel;

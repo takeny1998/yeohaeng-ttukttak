@@ -1,6 +1,7 @@
 import 'package:application_new/common/exception/exception.dart';
 import 'package:application_new/common/http/dto/server_response.dart';
 import 'package:application_new/common/http/http_service.dart';
+import 'package:application_new/domain/member/member_model.dart';
 import 'package:application_new/feature/authentication/model/auth_model.dart';
 import 'package:application_new/feature/authentication/repository/auth_repository.dart';
 
@@ -8,10 +9,10 @@ final class AuthService {
   final AuthRepository _authRepository;
   final HttpService _httpService;
 
-  AuthService(
-      {required AuthRepository authRepository,
-      required HttpService httpService})
-      : _authRepository = authRepository,
+  AuthService({
+    required AuthRepository authRepository,
+    required HttpService httpService,
+  })  : _authRepository = authRepository,
         _httpService = httpService;
 
   Future<AuthModel> find() async {
@@ -51,17 +52,36 @@ final class AuthService {
     return renewedAuthModel;
   }
 
-  Future<void> login({
+  Future<MemberModel> register({
     required String provider,
     required String authorizationCode,
   }) async {
-    final response = await _httpService.request("POST", "/api/v2/auth/login",
-        data: {
-          "provider": provider,
-          "authorizationCode": authorizationCode
-        });
+    final authResponse =
+        await _httpService.request("POST", "/api/v2/auth/login", data: {
+      "provider": provider,
+      "authorizationCode": authorizationCode,
+    });
 
-    final authModel = AuthModel.fromResponse(response);
+    final authModel = AuthModel.fromResponse(authResponse);
+    final member = await _findMember(authModel.accessToken);
+
     await _authRepository.save(authModel);
+
+    return member;
+  }
+
+  Future<MemberModel> login() async {
+    final AuthModel(:accessToken) = await find();
+    return _findMember(accessToken);
+  }
+
+  Future<MemberModel> _findMember(String accessToken) async {
+    final memberResponse = await _httpService.request(
+      'GET',
+      '/api/v2/members/me',
+      authorization: accessToken,
+    );
+
+    return MemberModel.fromJson(memberResponse['member']);
   }
 }

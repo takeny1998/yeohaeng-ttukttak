@@ -11,17 +11,13 @@ class Session extends _$Session {
     return const SessionModel();
   }
 
-  void update({required bool isAuthenticated, MemberModel? member}) {
-    if (state.isAuthenticated == isAuthenticated) {
-      return;
-    }
+  void updateLoginMember(MemberModel? member) {
+    if (state.member == member) return;
 
     state = state.copyWith(
-      isAuthenticated: isAuthenticated,
-      member: isAuthenticated ? member : null,
+      member: member,
     );
   }
-
 
   void omitError(String message) {
     state = state.copyWith(errorMessage: message);

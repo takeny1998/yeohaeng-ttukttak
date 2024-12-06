@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Locale;
+
 @RestController
 @RequestMapping("/api/v2/auth")
 @RequiredArgsConstructor
@@ -27,12 +29,12 @@ public class AuthController {
     private final LogoutService logoutService;
 
     @PostMapping("/login")
-    public ServerResponse<AuthTokenDto> login(@RequestBody LoginRequest request) {
+    public ServerResponse<AuthTokenDto> login(@RequestBody LoginRequest request, Locale locale) {
         final String authorizationCode = request.authorizationCode();
 
         final AuthTokenDto authTokenDto = switch (request.provider()) {
-            case APPLE -> appleLoginService.call(authorizationCode);
-            case GOOGLE -> googleLoginService.call(authorizationCode);
+            case APPLE -> appleLoginService.call(authorizationCode, locale);
+            case GOOGLE -> googleLoginService.call(authorizationCode, locale);
         };
 
         return new ServerResponse<>(authTokenDto);

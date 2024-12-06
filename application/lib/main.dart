@@ -2,10 +2,10 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:application_new/common/event/event.dart';
+import 'package:application_new/common/http/http_service_provider.dart';
 import 'package:application_new/common/loading/async_loading_provider.dart';
 import 'package:application_new/common/session/session_provider.dart';
 import 'package:application_new/common/translation/translation_service.dart';
-import 'package:application_new/feature/authentication/model/auth_model.dart';
 import 'package:application_new/feature/authentication/service/auth_service_provider.dart';
 import 'package:application_new/feature/locale/locale_provider.dart';
 import 'package:application_new/shared/theme/my_chip_theme.dart';
@@ -16,13 +16,11 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization_loader/easy_localization_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:logger/logger.dart';
 import 'package:uuid/v4.dart';
 
 import 'common/exception/exception.dart';
 import 'common/router/router_provider.dart';
-import 'domain/member/member_model.dart';
 
 final messengerKey = GlobalKey<ScaffoldMessengerState>();
 
@@ -67,7 +65,7 @@ void main() async {
         case AuthorizationException():
           final sessionNotifier =
               providerContainer.read(sessionProvider.notifier);
-          sessionNotifier.update(isAuthenticated: false);
+          sessionNotifier.updateLoginMember(null);
       }
     }
 
@@ -134,10 +132,8 @@ class _MyAppState extends ConsumerState<MyApp> {
     final authService = ref.read(authServiceProvider);
     final sessionNotifier = ref.read(sessionProvider.notifier);
 
-    final AuthModel(:accessToken) = await authService.find();
-
-    final member = MemberModel.fromAccessToken(accessToken);
-    sessionNotifier.update(isAuthenticated: true, member: member);
+    final member = await authService.login();
+    sessionNotifier.updateLoginMember(member);
   }
 
   @override
