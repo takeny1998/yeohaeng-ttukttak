@@ -8,7 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.time.LocalDate;
-import java.util.UUID;
+import java.time.Period;
+import java.util.Objects;
 
 import static lombok.AccessLevel.PROTECTED;
 
@@ -33,8 +34,6 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    private LocalDate birthDate;
-
     @NotNull
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "auth_id", updatable = false)
@@ -45,7 +44,7 @@ public class Member {
         this.uuid = StringUtil.createShortUUID();
         this.nickname = nickname;
         this.gender = gender;
-        this.birthDate = birthDate;
+        this.ageGroup = AgeGroup.fromBrithDate(birthDate);
     }
 
     public String uuid() {
@@ -60,11 +59,8 @@ public class Member {
         return gender;
     }
 
-    public LocalDate birthDate() {
-        return birthDate;
-    }
-
     public String nickname() {
         return nickname;
     }
+
 }

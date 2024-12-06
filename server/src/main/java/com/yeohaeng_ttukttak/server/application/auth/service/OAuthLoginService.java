@@ -52,8 +52,7 @@ public class OAuthLoginService {
                 member.uuid(),
                 member.nickname(),
                 member.ageGroup(),
-                member.gender(),
-                member.birthDate());
+                member.gender());
 
         final String accessToken = accessTokenService.create(authorization);
         final String refreshToken = refreshTokenService.create(member.uuid());
