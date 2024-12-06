@@ -8,6 +8,7 @@ import com.yeohaeng_ttukttak.server.domain.jwt.dto.JwtClaim;
 import com.yeohaeng_ttukttak.server.domain.jwt.service.JwtService;
 import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
 import com.yeohaeng_ttukttak.server.domain.member.repository.MemberRepository;
+import com.yeohaeng_ttukttak.server.domain.nickname.Nickname;
 import com.yeohaeng_ttukttak.server.domain.nickname.NicknameService;
 import com.yeohaeng_ttukttak.server.domain.oauth.service.OAuthService;
 import com.yeohaeng_ttukttak.server.domain.oauth.dto.ProfileDto;
@@ -65,12 +66,11 @@ public class OAuthLoginService {
     }
 
     private Member createMember(Locale locale, String openId, String accessToken) {
-
         final ProfileDto profileDto = oauthService.getProfile(accessToken);
         final OAuth oauth = new OAuth(openId, oauthService.getProvider());
 
-        final String nickname = Objects.nonNull(profileDto.nickname())
-                ? profileDto.nickname()
+        final Nickname nickname = Objects.nonNull(profileDto.nickname())
+                ? nicknameService.create(profileDto.nickname())
                 : nicknameService.generate(locale);
 
         return memberRepository.save(

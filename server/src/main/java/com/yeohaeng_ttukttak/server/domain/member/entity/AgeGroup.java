@@ -19,7 +19,7 @@ public enum AgeGroup {
      * @param birthDate 생년월일
      * @return 연령대 그룹 혹은 null
      */
-    static AgeGroup fromBrithDate(LocalDate birthDate) {
+    public static AgeGroup fromBrithDate(LocalDate birthDate) {
         final LocalDate currentDate = LocalDate.now();
 
         if (Objects.isNull(birthDate)) {

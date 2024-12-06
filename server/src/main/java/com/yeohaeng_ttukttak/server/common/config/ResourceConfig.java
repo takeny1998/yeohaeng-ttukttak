@@ -18,6 +18,11 @@ import java.util.*;
 public class ResourceConfig {
 
     @Bean
+    public List<String> fWords() {
+        return loadWords("data/fword_ko.txt", "data/fword_en.txt");
+    }
+
+    @Bean
     public LocalizedMessagesProvider adjectivesProvider() {
 
         return new HashMapLocalizedMessagesProvider(Map.of(

@@ -1,6 +1,9 @@
 package com.yeohaeng_ttukttak.server.domain.member.entity;
 
 import com.yeohaeng_ttukttak.server.common.util.StringUtil;
+import com.yeohaeng_ttukttak.server.domain.member.entity.AgeGroup;
+import com.yeohaeng_ttukttak.server.domain.member.entity.Gender;
+import com.yeohaeng_ttukttak.server.domain.nickname.Nickname;
 import com.yeohaeng_ttukttak.server.domain.oauth.entity.OAuth;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -39,10 +42,10 @@ public class Member {
     @JoinColumn(name = "auth_id", updatable = false)
     private OAuth auth;
 
-    public Member(OAuth auth, String nickname, Gender gender, LocalDate birthDate) {
+    public Member(OAuth auth, Nickname nickname, Gender gender, LocalDate birthDate) {
         this.auth = auth;
         this.uuid = StringUtil.createShortUUID();
-        this.nickname = nickname;
+        this.nickname = nickname.value();
         this.gender = gender;
         this.ageGroup = AgeGroup.fromBrithDate(birthDate);
     }
@@ -61,6 +64,27 @@ public class Member {
 
     public String nickname() {
         return nickname;
+    }
+
+    /**
+     * 사용자 프로필 내용을 변경한다. 변경할 속성을 null이 아닌 값으로
+     * @param nickname
+     * @param gender
+     * @param ageGroup
+     */
+    public void updateProfile(String nickname, Gender gender, AgeGroup ageGroup) {
+        if (nickname != null) {
+
+            this.nickname = nickname;
+        }
+
+        if (gender != null) {
+            this.gender = gender;
+        }
+
+        if (ageGroup != null) {
+            this.ageGroup = ageGroup;
+        }
     }
 
 }
