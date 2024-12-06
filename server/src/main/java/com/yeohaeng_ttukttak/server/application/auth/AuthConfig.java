@@ -5,7 +5,7 @@ import com.yeohaeng_ttukttak.server.domain.auth.service.AccessTokenService;
 import com.yeohaeng_ttukttak.server.domain.auth.service.RefreshTokenService;
 import com.yeohaeng_ttukttak.server.domain.jwt.service.JwtService;
 import com.yeohaeng_ttukttak.server.domain.member.repository.MemberRepository;
-import com.yeohaeng_ttukttak.server.domain.member.service.NicknameService;
+import com.yeohaeng_ttukttak.server.domain.nickname.NicknameService;
 import com.yeohaeng_ttukttak.server.domain.oauth.service.OAuthService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

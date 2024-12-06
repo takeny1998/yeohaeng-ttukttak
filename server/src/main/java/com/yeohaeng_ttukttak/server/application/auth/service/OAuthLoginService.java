@@ -8,7 +8,7 @@ import com.yeohaeng_ttukttak.server.domain.jwt.dto.JwtClaim;
 import com.yeohaeng_ttukttak.server.domain.jwt.service.JwtService;
 import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
 import com.yeohaeng_ttukttak.server.domain.member.repository.MemberRepository;
-import com.yeohaeng_ttukttak.server.domain.member.service.NicknameService;
+import com.yeohaeng_ttukttak.server.domain.nickname.NicknameService;
 import com.yeohaeng_ttukttak.server.domain.oauth.service.OAuthService;
 import com.yeohaeng_ttukttak.server.domain.oauth.dto.ProfileDto;
 import com.yeohaeng_ttukttak.server.domain.oauth.dto.TokenDto;
@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -34,7 +35,7 @@ public class OAuthLoginService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public AuthTokenDto call(String authorizationCode) {
+    public AuthTokenDto call(String authorizationCode, Locale locale) {
 
         final TokenDto tokenDto = oauthService.getToken(authorizationCode);
 
@@ -44,7 +45,7 @@ public class OAuthLoginService {
         final String openId = subClaim != null ? subClaim.asString() : null;
 
         final Member member = memberRepository.findByOpenId(openId)
-                .orElseGet(() -> createMember(openId, tokenDto.accessToken()));
+                .orElseGet(() -> createMember(locale, openId, tokenDto.accessToken()));
 
         log.debug("[OAuthLoginService.login] member = {}", member);
 
@@ -63,14 +64,14 @@ public class OAuthLoginService {
 
     }
 
-    private Member createMember(String openId, String accessToken) {
+    private Member createMember(Locale locale, String openId, String accessToken) {
 
         final ProfileDto profileDto = oauthService.getProfile(accessToken);
         final OAuth oauth = new OAuth(openId, oauthService.getProvider());
 
         final String nickname = Objects.nonNull(profileDto.nickname())
                 ? profileDto.nickname()
-                : nicknameService.generate();
+                : nicknameService.generate(locale);
 
         return memberRepository.save(
                 new Member(oauth, nickname, profileDto.gender(), profileDto.birthDate()));
