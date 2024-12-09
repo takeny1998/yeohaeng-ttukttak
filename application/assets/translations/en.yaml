@@ -51,7 +51,18 @@ retry: Retry
 leave: Leave
 kick: Kick
 
+edit_profile: Edit profile
 travel_participants: Travel participants
+please_log_in: Please Log in.
+
+please_enter_nickname: Please enter a nickname.
+
+profile_has_been_edited: The profile was updated successfully.
+
+gender: Gender
+age_group: Age Group
+nickname: Nickname
+edit_complete: Edit complete
 
 widget:
   VisitListItem:

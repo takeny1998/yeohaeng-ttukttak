@@ -1,6 +1,7 @@
 import 'package:application_new/common/loading/async_loading_provider.dart';
 
 import 'package:application_new/feature/authentication/page/login_provider.dart';
+import 'package:application_new/feature/profile/profile_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -16,6 +17,7 @@ class HomePage extends ConsumerWidget {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         actions: const [],
       ),
+      endDrawer: const ProfileDrawer(),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 36.0),
         child: Column(

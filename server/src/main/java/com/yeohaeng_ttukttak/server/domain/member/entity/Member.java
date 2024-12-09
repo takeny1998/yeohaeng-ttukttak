@@ -42,6 +42,10 @@ public class Member {
     @JoinColumn(name = "auth_id", updatable = false)
     private OAuth auth;
 
+    @NotNull
+    @OneToOne(mappedBy = "member")
+    private Avatar avatar;
+
     public Member(OAuth auth, Nickname nickname, Gender gender, LocalDate birthDate) {
         this.auth = auth;
         this.uuid = StringUtil.createShortUUID();
@@ -49,6 +53,8 @@ public class Member {
         this.gender = gender;
         this.ageGroup = AgeGroup.fromBrithDate(birthDate);
     }
+
+    Long id() { return id; }
 
     public String uuid() {
         return uuid;
@@ -66,16 +72,19 @@ public class Member {
         return nickname;
     }
 
-    /**
-     * 사용자 프로필 내용을 변경한다. 변경할 속성을 null이 아닌 값으로
-     * @param nickname
-     * @param gender
-     * @param ageGroup
-     */
-    public void updateProfile(String nickname, Gender gender, AgeGroup ageGroup) {
-        if (nickname != null) {
+    public Avatar avatar() {
+        return avatar;
+    }
 
-            this.nickname = nickname;
+    /**
+     * 사용자 프로필 내용을 변경한다. 변경할 속성을 null이 아닌 값으로 설정한다.
+     * @param nickname 변경할 닉네임 값
+     * @param gender 변경할 성별 값
+     * @param ageGroup 변경할 연령대 값
+     */
+    public void updateProfile(Nickname nickname, Gender gender, AgeGroup ageGroup) {
+        if (nickname != null) {
+            this.nickname = nickname.value();
         }
 
         if (gender != null) {

@@ -22,6 +22,7 @@ MemberModel _$MemberModelFromJson(Map<String, dynamic> json) {
 mixin _$MemberModel {
   String get uuid => throw _privateConstructorUsedError;
   String get nickname => throw _privateConstructorUsedError;
+  AvatarModel get avatar => throw _privateConstructorUsedError;
   AgeGroup? get ageGroup => throw _privateConstructorUsedError;
   Gender? get gender => throw _privateConstructorUsedError;
 
@@ -41,7 +42,14 @@ abstract class $MemberModelCopyWith<$Res> {
           MemberModel value, $Res Function(MemberModel) then) =
       _$MemberModelCopyWithImpl<$Res, MemberModel>;
   @useResult
-  $Res call({String uuid, String nickname, AgeGroup? ageGroup, Gender? gender});
+  $Res call(
+      {String uuid,
+      String nickname,
+      AvatarModel avatar,
+      AgeGroup? ageGroup,
+      Gender? gender});
+
+  $AvatarModelCopyWith<$Res> get avatar;
 }
 
 /// @nodoc
@@ -61,6 +69,7 @@ class _$MemberModelCopyWithImpl<$Res, $Val extends MemberModel>
   $Res call({
     Object? uuid = null,
     Object? nickname = null,
+    Object? avatar = null,
     Object? ageGroup = freezed,
     Object? gender = freezed,
   }) {
@@ -73,6 +82,10 @@ class _$MemberModelCopyWithImpl<$Res, $Val extends MemberModel>
           ? _value.nickname
           : nickname // ignore: cast_nullable_to_non_nullable
               as String,
+      avatar: null == avatar
+          ? _value.avatar
+          : avatar // ignore: cast_nullable_to_non_nullable
+              as AvatarModel,
       ageGroup: freezed == ageGroup
           ? _value.ageGroup
           : ageGroup // ignore: cast_nullable_to_non_nullable
@@ -82,6 +95,16 @@ class _$MemberModelCopyWithImpl<$Res, $Val extends MemberModel>
           : gender // ignore: cast_nullable_to_non_nullable
               as Gender?,
     ) as $Val);
+  }
+
+  /// Create a copy of MemberModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $AvatarModelCopyWith<$Res> get avatar {
+    return $AvatarModelCopyWith<$Res>(_value.avatar, (value) {
+      return _then(_value.copyWith(avatar: value) as $Val);
+    });
   }
 }
 
@@ -93,7 +116,15 @@ abstract class _$$MemberModelImplCopyWith<$Res>
       __$$MemberModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String uuid, String nickname, AgeGroup? ageGroup, Gender? gender});
+  $Res call(
+      {String uuid,
+      String nickname,
+      AvatarModel avatar,
+      AgeGroup? ageGroup,
+      Gender? gender});
+
+  @override
+  $AvatarModelCopyWith<$Res> get avatar;
 }
 
 /// @nodoc
@@ -111,6 +142,7 @@ class __$$MemberModelImplCopyWithImpl<$Res>
   $Res call({
     Object? uuid = null,
     Object? nickname = null,
+    Object? avatar = null,
     Object? ageGroup = freezed,
     Object? gender = freezed,
   }) {
@@ -123,6 +155,10 @@ class __$$MemberModelImplCopyWithImpl<$Res>
           ? _value.nickname
           : nickname // ignore: cast_nullable_to_non_nullable
               as String,
+      avatar: null == avatar
+          ? _value.avatar
+          : avatar // ignore: cast_nullable_to_non_nullable
+              as AvatarModel,
       ageGroup: freezed == ageGroup
           ? _value.ageGroup
           : ageGroup // ignore: cast_nullable_to_non_nullable
@@ -139,7 +175,11 @@ class __$$MemberModelImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$MemberModelImpl implements _MemberModel {
   const _$MemberModelImpl(
-      {required this.uuid, required this.nickname, this.ageGroup, this.gender});
+      {required this.uuid,
+      required this.nickname,
+      required this.avatar,
+      this.ageGroup,
+      this.gender});
 
   factory _$MemberModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$MemberModelImplFromJson(json);
@@ -149,13 +189,15 @@ class _$MemberModelImpl implements _MemberModel {
   @override
   final String nickname;
   @override
+  final AvatarModel avatar;
+  @override
   final AgeGroup? ageGroup;
   @override
   final Gender? gender;
 
   @override
   String toString() {
-    return 'MemberModel(uuid: $uuid, nickname: $nickname, ageGroup: $ageGroup, gender: $gender)';
+    return 'MemberModel(uuid: $uuid, nickname: $nickname, avatar: $avatar, ageGroup: $ageGroup, gender: $gender)';
   }
 
   @override
@@ -166,6 +208,7 @@ class _$MemberModelImpl implements _MemberModel {
             (identical(other.uuid, uuid) || other.uuid == uuid) &&
             (identical(other.nickname, nickname) ||
                 other.nickname == nickname) &&
+            (identical(other.avatar, avatar) || other.avatar == avatar) &&
             (identical(other.ageGroup, ageGroup) ||
                 other.ageGroup == ageGroup) &&
             (identical(other.gender, gender) || other.gender == gender));
@@ -174,7 +217,7 @@ class _$MemberModelImpl implements _MemberModel {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, uuid, nickname, ageGroup, gender);
+      Object.hash(runtimeType, uuid, nickname, avatar, ageGroup, gender);
 
   /// Create a copy of MemberModel
   /// with the given fields replaced by the non-null parameter values.
@@ -196,6 +239,7 @@ abstract class _MemberModel implements MemberModel {
   const factory _MemberModel(
       {required final String uuid,
       required final String nickname,
+      required final AvatarModel avatar,
       final AgeGroup? ageGroup,
       final Gender? gender}) = _$MemberModelImpl;
 
@@ -207,6 +251,8 @@ abstract class _MemberModel implements MemberModel {
   @override
   String get nickname;
   @override
+  AvatarModel get avatar;
+  @override
   AgeGroup? get ageGroup;
   @override
   Gender? get gender;
@@ -216,5 +262,190 @@ abstract class _MemberModel implements MemberModel {
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$MemberModelImplCopyWith<_$MemberModelImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+AvatarModel _$AvatarModelFromJson(Map<String, dynamic> json) {
+  return _AvatarModel.fromJson(json);
+}
+
+/// @nodoc
+mixin _$AvatarModel {
+  String get host => throw _privateConstructorUsedError;
+  String get path => throw _privateConstructorUsedError;
+  String get ext => throw _privateConstructorUsedError;
+
+  /// Serializes this AvatarModel to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of AvatarModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $AvatarModelCopyWith<AvatarModel> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $AvatarModelCopyWith<$Res> {
+  factory $AvatarModelCopyWith(
+          AvatarModel value, $Res Function(AvatarModel) then) =
+      _$AvatarModelCopyWithImpl<$Res, AvatarModel>;
+  @useResult
+  $Res call({String host, String path, String ext});
+}
+
+/// @nodoc
+class _$AvatarModelCopyWithImpl<$Res, $Val extends AvatarModel>
+    implements $AvatarModelCopyWith<$Res> {
+  _$AvatarModelCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of AvatarModel
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? host = null,
+    Object? path = null,
+    Object? ext = null,
+  }) {
+    return _then(_value.copyWith(
+      host: null == host
+          ? _value.host
+          : host // ignore: cast_nullable_to_non_nullable
+              as String,
+      path: null == path
+          ? _value.path
+          : path // ignore: cast_nullable_to_non_nullable
+              as String,
+      ext: null == ext
+          ? _value.ext
+          : ext // ignore: cast_nullable_to_non_nullable
+              as String,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$AvatarModelImplCopyWith<$Res>
+    implements $AvatarModelCopyWith<$Res> {
+  factory _$$AvatarModelImplCopyWith(
+          _$AvatarModelImpl value, $Res Function(_$AvatarModelImpl) then) =
+      __$$AvatarModelImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String host, String path, String ext});
+}
+
+/// @nodoc
+class __$$AvatarModelImplCopyWithImpl<$Res>
+    extends _$AvatarModelCopyWithImpl<$Res, _$AvatarModelImpl>
+    implements _$$AvatarModelImplCopyWith<$Res> {
+  __$$AvatarModelImplCopyWithImpl(
+      _$AvatarModelImpl _value, $Res Function(_$AvatarModelImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of AvatarModel
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? host = null,
+    Object? path = null,
+    Object? ext = null,
+  }) {
+    return _then(_$AvatarModelImpl(
+      host: null == host
+          ? _value.host
+          : host // ignore: cast_nullable_to_non_nullable
+              as String,
+      path: null == path
+          ? _value.path
+          : path // ignore: cast_nullable_to_non_nullable
+              as String,
+      ext: null == ext
+          ? _value.ext
+          : ext // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$AvatarModelImpl implements _AvatarModel {
+  const _$AvatarModelImpl(
+      {required this.host, required this.path, required this.ext});
+
+  factory _$AvatarModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$AvatarModelImplFromJson(json);
+
+  @override
+  final String host;
+  @override
+  final String path;
+  @override
+  final String ext;
+
+  @override
+  String toString() {
+    return 'AvatarModel(host: $host, path: $path, ext: $ext)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$AvatarModelImpl &&
+            (identical(other.host, host) || other.host == host) &&
+            (identical(other.path, path) || other.path == path) &&
+            (identical(other.ext, ext) || other.ext == ext));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, host, path, ext);
+
+  /// Create a copy of AvatarModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$AvatarModelImplCopyWith<_$AvatarModelImpl> get copyWith =>
+      __$$AvatarModelImplCopyWithImpl<_$AvatarModelImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$AvatarModelImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _AvatarModel implements AvatarModel {
+  const factory _AvatarModel(
+      {required final String host,
+      required final String path,
+      required final String ext}) = _$AvatarModelImpl;
+
+  factory _AvatarModel.fromJson(Map<String, dynamic> json) =
+      _$AvatarModelImpl.fromJson;
+
+  @override
+  String get host;
+  @override
+  String get path;
+  @override
+  String get ext;
+
+  /// Create a copy of AvatarModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$AvatarModelImplCopyWith<_$AvatarModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
