@@ -13,20 +13,20 @@ final class DateUtil {
   
   static String formatRange(DateTimeRange range) {
     
-    final formatter = DateUtil.formatter('yMMMd');
+    final formatter = DateUtil.formatter('yy.M.c');
     final DateTimeRange(:start, :end) = range;
     
     if (DateUtils.isSameMonth(start, end)) {
-      return '${formatter.date(start)} ~ ${DateUtil.formatter('d').date(end)}';
+      return '${formatter.date(start)} - ${DateUtil.formatter('c').date(end)}';
     }
 
     // 두 날짜의 연도는 같지만, 달이 다른 경우
     if (start.year == end.year) {
-      return '${formatter.date(start)} ~ ${DateUtil.formatter('MMMd').date(end)}';
+      return '${formatter.date(start)} - ${DateUtil.formatter('M.c').date(end)}';
     }
 
     // 두 날짜의 연도가 다른 경우
-    return '${formatter.date(start)} ~ ${formatter.date(end)}';
+    return '${formatter.date(start)} - ${formatter.date(end)}';
 
   }
 

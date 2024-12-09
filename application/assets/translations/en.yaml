@@ -123,13 +123,13 @@ enum:
   TravelMotivationType:
     name: Motivation for travel
     values:
-      adventure: Break out of routine
+      adventure: Adventure
       rest: Rest
       friendship: Friendship
-      selfReflection: Self-reflection
-      socialNetwork: Social network
+      selfReflection: Reflection
+      socialNetwork: SNS
       fitness: Fitness
-      newExperiences: Seek new experiences
+      newExperiences: Experiences
       education: Education
 
   AgeGroup:

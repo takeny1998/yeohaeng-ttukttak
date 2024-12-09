@@ -8,10 +8,8 @@ part 'travel_plan_provider.g.dart';
 
 @riverpod
 class TravelPlan extends _$TravelPlan {
-
   @override
   TravelPlanState? build(int travelId) {
-
     final travel = ref.watch(travelProvider(travelId)).value;
 
     if (travel == null) return null;
@@ -38,5 +36,11 @@ class TravelPlan extends _$TravelPlan {
     state = state?.copyWith(
       cityIndex: cityIndex,
     );
+  }
+
+  void setAppBarHeight(double appBarHeight) {
+    if (state == null || state?.appBarHeight == appBarHeight) return;
+
+    state = state?.copyWith(appBarHeight: appBarHeight);
   }
 }
