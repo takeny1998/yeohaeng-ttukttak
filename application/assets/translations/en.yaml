@@ -51,7 +51,9 @@ retry: Retry
 leave: Leave
 kick: Kick
 
+edit_profile: Edit profile
 travel_participants: Travel participants
+please_log_in: Please Log in.
 
 widget:
   VisitListItem:

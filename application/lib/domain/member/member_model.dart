@@ -9,6 +9,7 @@ class MemberModel with _$MemberModel {
   const factory MemberModel({
     required String uuid,
     required String nickname,
+    required AvatarModel avatar,
     AgeGroup? ageGroup,
     Gender? gender,
   }) = _MemberModel;
@@ -16,4 +17,17 @@ class MemberModel with _$MemberModel {
   factory MemberModel.fromJson(Map<String, dynamic> json) =>
       _$MemberModelFromJson(json);
 
+}
+
+@freezed
+class AvatarModel with _$AvatarModel {
+
+  const factory AvatarModel({
+    required String host,
+    required String path,
+    required String ext
+  }) = _AvatarModel;
+
+  factory AvatarModel.fromJson(Map<String, dynamic> json) =>
+      _$AvatarModelFromJson(json);
 }

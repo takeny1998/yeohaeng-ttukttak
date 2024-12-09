@@ -1,6 +1,7 @@
 
 import 'package:application_new/feature/authentication/model/auth_provider.dart';
 import 'package:application_new/feature/authentication/page/login_provider.dart';
+import 'package:application_new/feature/profile/profile_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -15,6 +16,7 @@ class LoginPage extends ConsumerWidget {
         title: const Text('Login'),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
+      endDrawer: const ProfileDrawer(),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
