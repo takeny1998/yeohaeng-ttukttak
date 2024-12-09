@@ -12,6 +12,7 @@ import 'package:application_new/shared/theme/my_chip_theme.dart';
 import 'package:application_new/shared/theme/my_app_bar_theme.dart';
 import 'package:application_new/shared/theme/my_button_theme.dart';
 import 'package:application_new/shared/theme/my_fab_theme.dart';
+import 'package:application_new/shared/theme/my_input_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization_loader/easy_localization_loader.dart';
 import 'package:flutter/material.dart';
@@ -66,6 +67,8 @@ void main() async {
           final sessionNotifier =
               providerContainer.read(sessionProvider.notifier);
           sessionNotifier.updateLoginMember(null);
+        case ValidationException():
+          // TODO: Handle this case.
       }
     }
 
@@ -158,18 +161,20 @@ class _MyAppState extends ConsumerState<MyApp> {
         return MyFabTheme(
           child: MyAppBarTheme(
             child: MyButtonTheme(
-              child: MyChipTheme(
-                key: themeKey,
-                child: Stack(
-                  children: [
-                    widget!,
-                    if (isLoading)
-                      Positioned.fill(
-                          child: Container(
-                        color: Colors.white.withOpacity(0.5),
-                        child: const Center(child: CircularProgressIndicator()),
-                      ))
-                  ],
+              child: MyInputTheme(
+                child: MyChipTheme(
+                  key: themeKey,
+                  child: Stack(
+                    children: [
+                      widget!,
+                      if (isLoading)
+                        Positioned.fill(
+                            child: Container(
+                          color: Colors.white.withOpacity(0.5),
+                          child: const Center(child: CircularProgressIndicator()),
+                        ))
+                    ],
+                  ),
                 ),
               ),
             ),

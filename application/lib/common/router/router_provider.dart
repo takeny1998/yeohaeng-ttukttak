@@ -3,6 +3,7 @@ import 'package:application_new/common/session/session_provider.dart';
 import 'package:application_new/feature/authentication/page/login_page.dart';
 import 'package:application_new/feature/error/error_page.dart';
 import 'package:application_new/feature/home/home_page.dart';
+import 'package:application_new/feature/profile/profile_edit_page.dart';
 import 'package:application_new/feature/travel_create/page/travel_create_page.dart';
 import 'package:application_new/feature/travel_invitation/page/travel_invitation_page.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_participant/page/travel_plan_participant_page.dart';
@@ -39,6 +40,9 @@ GoRouter router(RouterRef ref) {
       return ErrorPage(message: state.error?.message);
     },
     routes: [
+      GoRoute(
+          path: '/profile/edit',
+          builder: (context, state) => ProfileEditPage()),
       GoRoute(
           path: '/error',
           builder: (context, state) {

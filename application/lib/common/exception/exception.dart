@@ -46,3 +46,12 @@ final class AuthorizationException extends BusinessException {
 
   AuthorizationException({this.message});
 }
+
+class ValidationException extends BusinessException {
+
+  final String target;
+  final String message;
+
+  ValidationException(this.target, this.message);
+
+}

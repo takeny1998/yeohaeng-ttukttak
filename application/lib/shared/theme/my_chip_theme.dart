@@ -30,14 +30,14 @@ class MyChipTheme extends StatelessWidget {
               backgroundColor: colorScheme.surfaceContainerLow,
               deleteIconColor: colorScheme.primary,
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16.0)),
+                  borderRadius: BorderRadius.circular(8.0)),
               side: WidgetStateBorderSide.resolveWith((states) {
                 if (states.contains(WidgetState.selected)) {
                   return BorderSide(color: colorScheme.primaryFixedDim);
                 }
                 return BorderSide(color: colorScheme.surfaceDim);
               }),
-              padding: const EdgeInsets.all(10.0)),
+              padding: const EdgeInsets.all(8.0)),
         ),
         child: _child);
   }

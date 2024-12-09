@@ -23,15 +23,13 @@ class MyButtonTheme extends StatelessWidget {
                 textStyle: textTheme.bodyLarge
                     ?.copyWith(fontWeight: FontWeight.w600))),
         filledButtonTheme: FilledButtonThemeData(
-            style: FilledButton.styleFrom(
-          shape:
-              RoundedRectangleBorder(
-                  side: BorderSide(color: colorScheme.primaryFixedDim),
-                  borderRadius: BorderRadius.circular(8.0)),
-          textStyle: buttonTextStyle,
-          backgroundColor: colorScheme.primaryContainer,
-          foregroundColor: colorScheme.primary,
-        )),
+          style: FilledButton.styleFrom(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0)),
+            textStyle: buttonTextStyle,
+            padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 16)
+          ),
+        ),
         outlinedButtonTheme: OutlinedButtonThemeData(
           style: OutlinedButton.styleFrom(
             side: BorderSide(color: colorScheme.surfaceDim),

@@ -56,6 +56,12 @@ kick: 추방하기
 edit_profile: 프로필 수정
 travel_participants: 여행 일행
 please_log_in: 로그인해 주세요.
+please_enter_nickname: 닉네임을 입력해 주세요.
+
+gender: 성별
+age_group: 연령대
+nickname: 닉네임
+edit_complete: 수정 완료
 
 widget:
   VisitListItem:
@@ -139,21 +145,20 @@ enum:
   AgeGroup:
     name: 연령대
     values:
-      underNine: 9세이하
+      underNine: 9세 이하
       teens: 10대
       twenties: 20대
       thirties: 30대
       forties: 40대
       fifties: 50대
       sixties: 60대
-      seventiesPlus: 70세이상
-      other: 기타
+      seventiesPlus: 70세 이상
 
   Gender:
     name: 성별
     values:
-      male: Male
-      female: Female
+      male: 남성
+      female: 여성
       other: 기타
 
   TravelVisitReasonType:

@@ -1,8 +1,11 @@
+import 'package:application_new/common/router/router_provider.dart';
 import 'package:application_new/common/session/session_provider.dart';
 import 'package:application_new/common/translation/translation_service.dart';
 import 'package:application_new/domain/member/member_model.dart';
+import 'package:application_new/feature/profile/profile_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class ProfileDrawer extends ConsumerWidget {
   const ProfileDrawer({super.key});
@@ -12,10 +15,8 @@ class ProfileDrawer extends ConsumerWidget {
     final member = ref.watch(sessionProvider).member;
 
     final tr = ref.watch(translationServiceProvider);
-
     final ThemeData(:colorScheme) = Theme.of(context);
 
-    final avatar = member?.avatar;
     const tilePadding = EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0);
 
     return Drawer(
@@ -47,14 +48,7 @@ class ProfileDrawer extends ConsumerWidget {
                 ],
               ),
               ListTile(
-                leading: CircleAvatar(
-                  radius: 32.0,
-                  backgroundColor: colorScheme.primaryContainer,
-                  backgroundImage: avatar != null
-                      ? NetworkImage(
-                          '${avatar.host}/${avatar.path}.${avatar.ext}')
-                      : null,
-                ),
+                leading: const ProfileAvatar(),
                 title: Text(
                   member?.nickname ?? tr.from('please_log_in'),
                   style: const TextStyle(
@@ -71,16 +65,18 @@ class ProfileDrawer extends ConsumerWidget {
                     : null,
               ),
               const SizedBox(height: 8.0),
-              ListTile(
-                onTap: member != null ? () {} : null,
-                contentPadding: tilePadding,
-                title: Text(
-                  tr.from('edit_profile'),
-                  style: const TextStyle(fontWeight: FontWeight.bold),
+              if (member != null) ...[
+                ListTile(
+                  onTap: () => context.push('/profile/edit'),
+                  contentPadding: tilePadding,
+                  title: Text(
+                    tr.from('edit_profile'),
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  trailing: const Icon(Icons.keyboard_arrow_right_outlined),
                 ),
-                trailing: const Icon(Icons.keyboard_arrow_right_outlined),
-              ),
-              Container(height: 8.0, color: colorScheme.surfaceContainerHigh),
+                Container(height: 8.0, color: colorScheme.surfaceContainerHigh),
+              ]
             ]),
       ),
     );
