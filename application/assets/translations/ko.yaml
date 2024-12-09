@@ -63,6 +63,8 @@ age_group: 연령대
 nickname: 닉네임
 edit_complete: 수정 완료
 
+profile_has_been_edited: 프로필이 성공적으로 수정되었습니다.
+
 widget:
   VisitListItem:
     ask_reason: 이곳을 방문한 이유는 무엇인가요?

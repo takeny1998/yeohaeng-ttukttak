@@ -1,3 +1,4 @@
+import 'package:application_new/common/event/event.dart';
 import 'package:application_new/common/exception/exception.dart';
 import 'package:application_new/common/http/http_service_provider.dart';
 import 'package:application_new/common/loading/async_loading_provider.dart';
@@ -93,8 +94,10 @@ class ProfileEdit extends _$ProfileEdit {
 
       return MemberModel.fromJson(response['member']);
     });
-
+    eventController.add(MessageEvent(
+        ref.read(translationServiceProvider).from('profile_has_been_edited')));
     ref.read(sessionProvider.notifier).updateLoginMember(updatedMember);
+
   }
 
   void updateErrorMessages(Map<String, String> errorMessages) {

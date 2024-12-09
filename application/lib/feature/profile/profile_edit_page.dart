@@ -85,21 +85,20 @@ class ProfileEditPage extends ConsumerWidget {
           child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24.0),
               child: FilledButton(
-                  onPressed: errorMessages.isEmpty
-                      ? () {
-                          final notifier =
-                              ref.read(profileEditProvider.notifier);
-
-                          notifier.submit().catchError((error) {
-                            if (error is ServerFailException) {
-                              notifier.updateErrorMessages(error.data);
-                              return;
-                            }
-                            throw error;
-                          });
-                        }
-                      : null,
+                  onPressed: errorMessages.isEmpty ? () => _submit(ref) : null,
                   child: Text(tr.from('edit_complete'))))),
     );
+  }
+
+  void _submit(WidgetRef ref) {
+    final notifier = ref.read(profileEditProvider.notifier);
+
+    notifier.submit().catchError((error) {
+      if (error is ServerFailException) {
+        notifier.updateErrorMessages(error.data);
+        return;
+      }
+      throw error;
+    });
   }
 }
