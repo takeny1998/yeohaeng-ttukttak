@@ -2,7 +2,6 @@ package com.yeohaeng_ttukttak.server;
 
 import com.yeohaeng_ttukttak.server.domain.auth.AccessTokenProperties;
 import com.yeohaeng_ttukttak.server.domain.auth.RefreshTokenProperties;
-import com.yeohaeng_ttukttak.server.common.config.WordsProperties;
 import com.yeohaeng_ttukttak.server.domain.oauth.apple.AppleOAuthProperties;
 import com.yeohaeng_ttukttak.server.domain.oauth.google.GoogleOAuthProperties;
 import org.springframework.boot.SpringApplication;
@@ -10,7 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
 @SpringBootApplication
-@EnableConfigurationProperties({WordsProperties.class, AppleOAuthProperties.class, GoogleOAuthProperties.class, AccessTokenProperties.class, RefreshTokenProperties.class})
+@EnableConfigurationProperties({AppleOAuthProperties.class, GoogleOAuthProperties.class, AccessTokenProperties.class, RefreshTokenProperties.class})
 public class ServerApplication {
 
 	public static void main(String[] args) {

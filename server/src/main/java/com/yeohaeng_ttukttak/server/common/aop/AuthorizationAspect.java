@@ -3,7 +3,6 @@ package com.yeohaeng_ttukttak.server.common.aop;
 import com.yeohaeng_ttukttak.server.common.exception.exception.error.AuthorizationErrorException;
 import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthorizationDto;
 import com.yeohaeng_ttukttak.server.domain.auth.service.AccessTokenService;
-import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

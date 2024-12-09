@@ -29,7 +29,7 @@ GoRouter router(RouterRef ref) {
         return '/error';
       }
 
-      if (!session.isAuthenticated) {
+      if (session.member == null) {
         return '/login';
       }
 

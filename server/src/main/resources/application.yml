@@ -4,7 +4,6 @@ spring:
   config:
     import:
       - aws-parameterstore:/yeohaeng-ttukttak/server_dev/
-      - classpath:/words.yml
 
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
