@@ -2,6 +2,7 @@ import 'package:application_new/common/exception/exception.dart';
 import 'package:application_new/common/http/http_service_provider.dart';
 import 'package:application_new/common/loading/async_loading_provider.dart';
 import 'package:application_new/common/session/session_provider.dart';
+import 'package:application_new/common/translation/translation_service.dart';
 import 'package:application_new/domain/member/member_model.dart';
 import 'package:application_new/feature/authentication/model/auth_model.dart';
 import 'package:application_new/feature/authentication/service/auth_service_provider.dart';
@@ -32,9 +33,24 @@ class ProfileEdit extends _$ProfileEdit {
     );
   }
 
-  void editNickname(String editNickname) {
+  void editNickname(String? editNickname) {
     if (state.nickname == editNickname) return;
-    state = state.copyWith(nickname: editNickname);
+    final errorMessages = Map.of(state.errorMessages);
+
+    if (editNickname == null || editNickname.isEmpty) {
+      errorMessages['nickname'] =
+          ref.read(translationServiceProvider).from('please_enter_nickname');
+
+      state = state.copyWith(errorMessages: errorMessages);
+      return;
+    }
+
+    errorMessages.remove('nickname');
+
+    state = state.copyWith(
+      errorMessages: errorMessages,
+      nickname: editNickname,
+    );
   }
 
   void selectGender(Gender gender) {
@@ -47,7 +63,7 @@ class ProfileEdit extends _$ProfileEdit {
     state = state.copyWith(ageGroup: ageGroup);
   }
 
-  void submit() async {
+  Future<void> submit() async {
     final loadingNotifier = ref.read(asyncLoadingProvider.notifier);
 
     final updatedMember = await loadingNotifier.guard(() async {
@@ -77,7 +93,11 @@ class ProfileEdit extends _$ProfileEdit {
 
       return MemberModel.fromJson(response['member']);
     });
-    
+
     ref.read(sessionProvider.notifier).updateLoginMember(updatedMember);
+  }
+
+  void updateErrorMessages(Map<String, String> errorMessages) {
+    state = state.copyWith(errorMessages: errorMessages);
   }
 }

@@ -8,6 +8,7 @@ class ProfileEditState with _$ProfileEditState {
 
   const factory ProfileEditState({
     required String nickname,
+    @Default({}) Map<String, String?> errorMessages,
     Gender? gender,
     AgeGroup? ageGroup,
   }) = _ProfileEditState;

@@ -17,6 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$ProfileEditState {
   String get nickname => throw _privateConstructorUsedError;
+  Map<String, String?> get errorMessages => throw _privateConstructorUsedError;
   Gender? get gender => throw _privateConstructorUsedError;
   AgeGroup? get ageGroup => throw _privateConstructorUsedError;
 
@@ -33,7 +34,11 @@ abstract class $ProfileEditStateCopyWith<$Res> {
           ProfileEditState value, $Res Function(ProfileEditState) then) =
       _$ProfileEditStateCopyWithImpl<$Res, ProfileEditState>;
   @useResult
-  $Res call({String nickname, Gender? gender, AgeGroup? ageGroup});
+  $Res call(
+      {String nickname,
+      Map<String, String?> errorMessages,
+      Gender? gender,
+      AgeGroup? ageGroup});
 }
 
 /// @nodoc
@@ -52,6 +57,7 @@ class _$ProfileEditStateCopyWithImpl<$Res, $Val extends ProfileEditState>
   @override
   $Res call({
     Object? nickname = null,
+    Object? errorMessages = null,
     Object? gender = freezed,
     Object? ageGroup = freezed,
   }) {
@@ -60,6 +66,10 @@ class _$ProfileEditStateCopyWithImpl<$Res, $Val extends ProfileEditState>
           ? _value.nickname
           : nickname // ignore: cast_nullable_to_non_nullable
               as String,
+      errorMessages: null == errorMessages
+          ? _value.errorMessages
+          : errorMessages // ignore: cast_nullable_to_non_nullable
+              as Map<String, String?>,
       gender: freezed == gender
           ? _value.gender
           : gender // ignore: cast_nullable_to_non_nullable
@@ -80,7 +90,11 @@ abstract class _$$ProfileEditStateImplCopyWith<$Res>
       __$$ProfileEditStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String nickname, Gender? gender, AgeGroup? ageGroup});
+  $Res call(
+      {String nickname,
+      Map<String, String?> errorMessages,
+      Gender? gender,
+      AgeGroup? ageGroup});
 }
 
 /// @nodoc
@@ -97,6 +111,7 @@ class __$$ProfileEditStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? nickname = null,
+    Object? errorMessages = null,
     Object? gender = freezed,
     Object? ageGroup = freezed,
   }) {
@@ -105,6 +120,10 @@ class __$$ProfileEditStateImplCopyWithImpl<$Res>
           ? _value.nickname
           : nickname // ignore: cast_nullable_to_non_nullable
               as String,
+      errorMessages: null == errorMessages
+          ? _value._errorMessages
+          : errorMessages // ignore: cast_nullable_to_non_nullable
+              as Map<String, String?>,
       gender: freezed == gender
           ? _value.gender
           : gender // ignore: cast_nullable_to_non_nullable
@@ -121,10 +140,23 @@ class __$$ProfileEditStateImplCopyWithImpl<$Res>
 
 class _$ProfileEditStateImpl implements _ProfileEditState {
   const _$ProfileEditStateImpl(
-      {required this.nickname, this.gender, this.ageGroup});
+      {required this.nickname,
+      final Map<String, String?> errorMessages = const {},
+      this.gender,
+      this.ageGroup})
+      : _errorMessages = errorMessages;
 
   @override
   final String nickname;
+  final Map<String, String?> _errorMessages;
+  @override
+  @JsonKey()
+  Map<String, String?> get errorMessages {
+    if (_errorMessages is EqualUnmodifiableMapView) return _errorMessages;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(_errorMessages);
+  }
+
   @override
   final Gender? gender;
   @override
@@ -132,7 +164,7 @@ class _$ProfileEditStateImpl implements _ProfileEditState {
 
   @override
   String toString() {
-    return 'ProfileEditState(nickname: $nickname, gender: $gender, ageGroup: $ageGroup)';
+    return 'ProfileEditState(nickname: $nickname, errorMessages: $errorMessages, gender: $gender, ageGroup: $ageGroup)';
   }
 
   @override
@@ -142,13 +174,16 @@ class _$ProfileEditStateImpl implements _ProfileEditState {
             other is _$ProfileEditStateImpl &&
             (identical(other.nickname, nickname) ||
                 other.nickname == nickname) &&
+            const DeepCollectionEquality()
+                .equals(other._errorMessages, _errorMessages) &&
             (identical(other.gender, gender) || other.gender == gender) &&
             (identical(other.ageGroup, ageGroup) ||
                 other.ageGroup == ageGroup));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, nickname, gender, ageGroup);
+  int get hashCode => Object.hash(runtimeType, nickname,
+      const DeepCollectionEquality().hash(_errorMessages), gender, ageGroup);
 
   /// Create a copy of ProfileEditState
   /// with the given fields replaced by the non-null parameter values.
@@ -163,11 +198,14 @@ class _$ProfileEditStateImpl implements _ProfileEditState {
 abstract class _ProfileEditState implements ProfileEditState {
   const factory _ProfileEditState(
       {required final String nickname,
+      final Map<String, String?> errorMessages,
       final Gender? gender,
       final AgeGroup? ageGroup}) = _$ProfileEditStateImpl;
 
   @override
   String get nickname;
+  @override
+  Map<String, String?> get errorMessages;
   @override
   Gender? get gender;
   @override

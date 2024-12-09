@@ -1,3 +1,4 @@
+import 'package:application_new/common/exception/exception.dart';
 import 'package:application_new/common/session/session_provider.dart';
 import 'package:application_new/common/translation/translation_service.dart';
 import 'package:application_new/feature/profile/profile_avatar.dart';
@@ -17,6 +18,7 @@ class ProfileEditPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final ProfileEditState(
       :nickname,
+      :errorMessages,
       ageGroup: memberAgeGroup,
       gender: memberGender
     ) = ref.watch(profileEditProvider);
@@ -36,18 +38,11 @@ class ProfileEditPage extends ConsumerWidget {
             const Center(child: ProfileAvatar(radius: 56.0)),
             const SizedBox(height: 24.0),
             TextFormField(
-              decoration: InputDecoration(labelText: tr.from('nickname')),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return tr.from('please_enter_nickname');
-                }
-                return null;
-              },
-              onChanged: (value) {
-                final isValid = formKey.currentState?.validate();
-                if (isValid == null || isValid == false) return;
-                ref.read(profileEditProvider.notifier).editNickname(value);
-              },
+              decoration: InputDecoration(
+                  labelText: tr.from('nickname'),
+                  errorText: errorMessages['nickname']),
+              onChanged: (value) =>
+                  ref.read(profileEditProvider.notifier).editNickname(value),
               initialValue: nickname,
             ),
             const SizedBox(height: 48.0),
@@ -90,11 +85,20 @@ class ProfileEditPage extends ConsumerWidget {
           child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24.0),
               child: FilledButton(
-                  onPressed: () {
-                    final isValid = formKey.currentState?.validate();
-                    if (isValid == null || isValid == false) return;
-                    ref.read(profileEditProvider.notifier).submit();
-                  },
+                  onPressed: errorMessages.isEmpty
+                      ? () {
+                          final notifier =
+                              ref.read(profileEditProvider.notifier);
+
+                          notifier.submit().catchError((error) {
+                            if (error is ServerFailException) {
+                              notifier.updateErrorMessages(error.data);
+                              return;
+                            }
+                            throw error;
+                          });
+                        }
+                      : null,
                   child: Text(tr.from('edit_complete'))))),
     );
   }
