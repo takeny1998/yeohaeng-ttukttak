@@ -42,6 +42,10 @@ public class Member {
     @JoinColumn(name = "auth_id", updatable = false)
     private OAuth auth;
 
+    @NotNull
+    @OneToOne(mappedBy = "member")
+    private Avatar avatar;
+
     public Member(OAuth auth, Nickname nickname, Gender gender, LocalDate birthDate) {
         this.auth = auth;
         this.uuid = StringUtil.createShortUUID();
@@ -49,6 +53,8 @@ public class Member {
         this.gender = gender;
         this.ageGroup = AgeGroup.fromBrithDate(birthDate);
     }
+
+    Long id() { return id; }
 
     public String uuid() {
         return uuid;
@@ -64,6 +70,10 @@ public class Member {
 
     public String nickname() {
         return nickname;
+    }
+
+    public Avatar avatar() {
+        return avatar;
     }
 
     /**

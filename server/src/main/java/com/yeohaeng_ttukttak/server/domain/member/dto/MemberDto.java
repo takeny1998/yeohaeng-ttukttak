@@ -8,12 +8,17 @@ public record MemberDto(
         String uuid,
         String nickname,
         AgeGroup ageGroup,
-        Gender gender
+        Gender gender,
+        AvatarDto avatar
 ) {
 
-    public static MemberDto of(Member member) {
+    public static MemberDto of(String host, Member member) {
         return new MemberDto(
-                member.uuid(), member.nickname(), member.ageGroup(), member.gender());
+                member.uuid(),
+                member.nickname(),
+                member.ageGroup(),
+                member.gender(),
+                AvatarDto.of(host, member.avatar()));
     }
 
 }
