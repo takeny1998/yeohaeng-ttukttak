@@ -9,6 +9,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.NaturalId;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -24,8 +25,8 @@ public class Member {
     @Id @GeneratedValue
     private Long id;
 
-    @NotNull
-    @Column(unique = true, updatable = false)
+    @NaturalId
+    @Column(nullable = false, unique = true, updatable = false)
     private String uuid;
 
     @Enumerated(EnumType.STRING)

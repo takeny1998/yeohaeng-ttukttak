@@ -36,6 +36,8 @@ public class AuthorizationAspect {
 
         final Object[] args = joinPoint.getArgs();
 
+        AuthenticationContextHolder.setContext(context);
+
         for (int i = 0; i < args.length; i++) {
             if (args[i] instanceof AuthenticationContext) {
                 args[i] = context;
