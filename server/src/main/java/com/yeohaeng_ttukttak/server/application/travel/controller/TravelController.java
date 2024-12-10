@@ -6,7 +6,7 @@ import com.yeohaeng_ttukttak.server.application.travel.service.FindTravelService
 import com.yeohaeng_ttukttak.server.common.aop.annotation.Authorization;
 import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundFailException;
-import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthorizationDto;
+import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthenticationContext;
 import com.yeohaeng_ttukttak.server.domain.travel.dto.TravelDto;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
 import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelRepository;
@@ -30,10 +30,10 @@ public class TravelController {
     @Authorization
     public ServerResponse<CreateTravelResponse> create(
             @RequestBody @Valid CreateTravelRequest request,
-            AuthorizationDto authorization) {
+            AuthenticationContext authorization) {
 
         TravelDto travelDto = createTravelService
-                .call(request.toCommand(authorization.memberId()));
+                .call(request.toCommand(authorization.uuid()));
 
         return new ServerResponse<>(new CreateTravelResponse(travelDto));
     }
@@ -51,11 +51,11 @@ public class TravelController {
     @GetMapping("/members/me")
     @Authorization
     public ServerResponse<FindMyAllTravelResponse> findMyAll(
-            AuthorizationDto authorization) {
+            AuthenticationContext authorization) {
 
        return new ServerResponse<>(
                new FindMyAllTravelResponse(
-                       findTravelService.findByMember(authorization.memberId())));
+                       findTravelService.findByMember(authorization.uuid())));
     }
 
 }

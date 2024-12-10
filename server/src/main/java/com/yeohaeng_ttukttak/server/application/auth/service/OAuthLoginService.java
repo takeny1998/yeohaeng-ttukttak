@@ -1,7 +1,7 @@
 package com.yeohaeng_ttukttak.server.application.auth.service;
 
 import com.yeohaeng_ttukttak.server.application.auth.service.dto.AuthTokenDto;
-import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthorizationDto;
+import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthenticationContext;
 import com.yeohaeng_ttukttak.server.domain.auth.service.AccessTokenService;
 import com.yeohaeng_ttukttak.server.domain.auth.service.RefreshTokenService;
 import com.yeohaeng_ttukttak.server.domain.jwt.dto.JwtClaim;
@@ -50,7 +50,7 @@ public class OAuthLoginService {
 
         log.debug("[OAuthLoginService.login] member = {}", member);
 
-        final AuthorizationDto authorization = new AuthorizationDto(
+        final AuthenticationContext authorization = new AuthenticationContext(
                 member.uuid(),
                 member.nickname(),
                 member.ageGroup(),

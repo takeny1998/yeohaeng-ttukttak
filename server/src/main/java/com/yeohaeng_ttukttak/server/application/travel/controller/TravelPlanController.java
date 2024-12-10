@@ -7,7 +7,7 @@ import com.yeohaeng_ttukttak.server.application.travel.service.FindTravelPlanSer
 import com.yeohaeng_ttukttak.server.application.travel.service.UpdateTravelPlanService;
 import com.yeohaeng_ttukttak.server.common.aop.annotation.Authorization;
 import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
-import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthorizationDto;
+import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthenticationContext;
 import com.yeohaeng_ttukttak.server.domain.travel.dto.TravelPlanDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -32,11 +32,11 @@ public class TravelPlanController {
     public ServerResponse<TravelPlanListResponse> create(
             @PathVariable Long travelId,
             @RequestBody CreateTravelPlanRequest request,
-            AuthorizationDto authorization) {
+            AuthenticationContext authorization) {
 
         createService.createOne(
                 travelId,
-                authorization.memberId(),
+                authorization.uuid(),
                 request.placeId(),
                 request.dayOfTravel());
 
@@ -58,9 +58,9 @@ public class TravelPlanController {
             @PathVariable Long travelId,
             @PathVariable Long planId,
             @Valid @RequestBody UpdateTravelPlanRequest request,
-            AuthorizationDto authorization) {
+            AuthenticationContext authorization) {
 
-        updateService.call(request.toCommand(planId, travelId, authorization.memberId()));
+        updateService.call(request.toCommand(planId, travelId, authorization.uuid()));
 
         List<TravelPlanDto> dtoList = findService.findAll(travelId);
 
@@ -72,9 +72,9 @@ public class TravelPlanController {
     public ServerResponse<TravelPlanListResponse> delete(
             @PathVariable Long travelId,
             @PathVariable Long planId,
-            AuthorizationDto authorization) {
+            AuthenticationContext authorization) {
 
-        deleteService.deleteOne(travelId, planId, authorization.memberId());
+        deleteService.deleteOne(travelId, planId, authorization.uuid());
         final List<TravelPlanDto> dtoList = findService.findAll(travelId);
 
         return new ServerResponse<>(new TravelPlanListResponse(dtoList));

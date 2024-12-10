@@ -1,7 +1,7 @@
 package com.yeohaeng_ttukttak.server.domain.auth.service;
 
 import com.yeohaeng_ttukttak.server.domain.auth.AccessTokenProperties;
-import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthorizationDto;
+import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthenticationContext;
 import com.yeohaeng_ttukttak.server.domain.jwt.dto.JwtClaim;
 import com.yeohaeng_ttukttak.server.domain.jwt.service.JwtService;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +24,7 @@ public class AccessTokenService {
      * @param authorization 인증 정보를 담을 DTO
      * @return 문자열로 인코딩된 JWT 토큰
      */
-    public String create(AuthorizationDto authorization) {
+    public String create(AuthenticationContext authorization) {
         final Duration expiration = properties.expiration();
         final String secret = properties.secret();
         final String issuer = properties.issuer();
@@ -32,11 +32,11 @@ public class AccessTokenService {
         return jwtService.issueByHS256(secret, issuer, expiration, authorization.toClaims());
     }
 
-    public AuthorizationDto decode(String encodedAuthorization) {
+    public AuthenticationContext decode(String encodedAuthorization) {
         final Map<String, JwtClaim> claims = jwtService.verifyByHS256(
                 encodedAuthorization, properties.secret(), properties.issuer());
 
-        return AuthorizationDto.fromClaims(claims);
+        return AuthenticationContext.fromClaims(claims);
     }
 
 }
