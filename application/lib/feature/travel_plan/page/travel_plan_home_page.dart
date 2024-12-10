@@ -41,8 +41,8 @@ class _TravelPlanHomePageState extends ConsumerState<TravelPlanHomePage> {
             padding: EdgeInsets.fromLTRB(
                 24.0,
                 MediaQuery.of(context).padding.top + kToolbarHeight + 8.0,
-                48.0,
-                40.0),
+                24.0,
+                24.0),
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text(travel.formattedName, style: headerStyle),

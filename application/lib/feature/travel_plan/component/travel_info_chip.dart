@@ -15,19 +15,14 @@ class TravelInfoChip extends ConsumerWidget {
     return Chip(
       padding: const EdgeInsets.only(right: 2.0),
       backgroundColor: colorScheme.primaryContainer,
-      labelStyle: TextStyle(
-          color: colorScheme.primary, fontSize: 13.0),
+      labelStyle: const TextStyle(fontSize: 13.0),
       side: BorderSide(
-          color: colorScheme.primaryFixedDim),
+          color: colorScheme.primaryContainer),
       label: Wrap(
         crossAxisAlignment: WrapCrossAlignment.center,
         spacing: 6.0,
         children: [
-          Icon(
-            avatar,
-            size: 14,
-            color: colorScheme.primary,
-          ),
+          Icon(avatar, size: 14,),
           Text(label),
         ],
       ),
