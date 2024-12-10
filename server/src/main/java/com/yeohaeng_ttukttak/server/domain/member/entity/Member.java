@@ -43,7 +43,7 @@ public class Member {
     private OAuth auth;
 
     @NotNull
-    @OneToOne(mappedBy = "member")
+    @OneToOne(mappedBy = "member", cascade = CascadeType.ALL)
     private Avatar avatar;
 
     public Member(OAuth auth, Nickname nickname, Gender gender, LocalDate birthDate) {
@@ -52,6 +52,7 @@ public class Member {
         this.nickname = nickname.value();
         this.gender = gender;
         this.ageGroup = AgeGroup.fromBrithDate(birthDate);
+        this.avatar = new DefaultAvatar(this);
     }
 
     Long id() { return id; }
