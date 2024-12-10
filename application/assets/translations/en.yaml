@@ -64,6 +64,10 @@ age_group: Age Group
 nickname: Nickname
 edit_complete: Edit complete
 
+leader: Team Leader
+member: Team Member
+me: 나
+
 widget:
   VisitListItem:
     ask_reason: Why did you visit this place?

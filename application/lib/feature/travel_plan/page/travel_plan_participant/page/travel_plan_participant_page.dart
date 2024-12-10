@@ -4,6 +4,9 @@ import 'package:application_new/common/session/session_provider.dart';
 import 'package:application_new/common/translation/translation_service.dart';
 import 'package:application_new/common/util/iterable_util.dart';
 import 'package:application_new/domain/member/member_provider.dart';
+import 'package:application_new/domain/travel/travel_model.dart';
+import 'package:application_new/feature/profile/profile_avatar.dart';
+import 'package:application_new/feature/travel_plan/page/travel_plan_participant/component/travel_member_list_item.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_participant/provider/travel_plan_participant_provider.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_participant/provider/travel_plan_participant_state.dart';
 import 'package:application_new/shared/component/travel_companion_avatar_item.dart';
@@ -29,6 +32,9 @@ class TravelPlanParticipantPage extends ConsumerWidget {
 
     final owner = ref.watch(memberProvider(travel.memberId)).value;
 
+    final otherParticipants = participants
+        .where((participant) => participant.inviteeId != me?.uuid)
+        .toList();
 
     return Scaffold(
       appBar: AppBar(title: Text(tr.from('travel_participants'))),
@@ -53,7 +59,7 @@ class TravelPlanParticipantPage extends ConsumerWidget {
                   const SizedBox(height: 2.0),
                   Text(tr.from('can_plan_with_participants')),
                   const SizedBox(height: 16.0),
-                  FilledButton.icon(
+                  FilledButton.tonalIcon(
                     onPressed: () => ref
                         .read(travelPlanParticipantProvider(travel.id).notifier)
                         .shareLink(),
@@ -71,43 +77,47 @@ class TravelPlanParticipantPage extends ConsumerWidget {
               height: 8.0,
             ),
           ),
-          SliverToBoxAdapter(
-            child: ListTile(
-              contentPadding: const EdgeInsets.symmetric(horizontal: 24.0),
-              leading: TravelerAvatarItem(id: travelId,
-                  gender: owner?.gender ?? Gender.male,
-                  ageGroup: owner?.ageGroup ?? AgeGroup.twenties),
-              title: Text(
-                owner?.nickname ?? '',
-                style: const TextStyle(fontWeight: FontWeight.w600)),
-              subtitle: Text(
-                owner?.uuid.substring(0, 6) ?? '',
-                style: const TextStyle(fontSize: 12.0),
-              ),
+          SliverList(
+              delegate: SliverChildListDelegate([
+            TravelMemberListItem(
+              travel: travel,
+              member: me,
+              trailing: owner?.uuid != me?.uuid
+                  ? FilledButton.tonal(
+                      onPressed: () {
+                        final participant = participants
+                            .where((participant) =>
+                                participant.inviteeId == me?.uuid)
+                            .firstOrNull;
+                        if (participant == null) return;
+
+                        ref
+                            .read(travelPlanParticipantProvider(travelId)
+                                .notifier)
+                            .leaveOrKick(participant.id);
+                      },
+                      child: Text(tr.from('leave')),
+                    )
+                  : null,
             ),
-          ),
+            if (owner?.uuid != me?.uuid)
+              TravelMemberListItem(travel: travel, member: owner),
+          ])),
           SliverList.builder(
-              itemCount: participants.length,
+              itemCount: otherParticipants.length,
               itemBuilder: (context, index) {
-                final participant = participants[index];
+                final participant = otherParticipants[index];
 
                 final invitee =
                     ref.watch(memberProvider(participant.inviteeId)).value;
 
-                return ListTile(
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 24.0),
-                  leading: TravelerAvatarItem(
-                      id: participant.id,
-                      gender: invitee?.gender ?? Gender.male,
-                      ageGroup: invitee?.ageGroup ?? AgeGroup.twenties),
-                  title: Text(invitee?.nickname ?? '',
-                      style: const TextStyle(fontWeight: FontWeight.w600)),
-                  subtitle: Text(
-                    invitee?.uuid.substring(0, 6) ?? '',
-                    style: const TextStyle(fontSize: 12.0),
-                  ),
-                  trailing: (participant.inviterId == me?.uuid) ||
-                          (travel.memberId == me?.uuid)
+                final canKickOrLeave = (participant.inviterId == me?.uuid) ||
+                    (owner?.uuid == me?.uuid);
+
+                return TravelMemberListItem(
+                  travel: travel,
+                  member: invitee,
+                  trailing: canKickOrLeave
                       ? FilledButton.tonal(
                           onPressed: () => ref
                               .read(travelPlanParticipantProvider(travelId)

@@ -43,7 +43,7 @@ class HomePage extends ConsumerWidget {
               onSubmitted: (text) {
                 final id = int.tryParse(text);
                 if (id == null) return;
-                context.push('/travels/$id/detail');
+                context.push('/travels/$id');
               }),
             TextField(
                 decoration: const InputDecoration(hintText: '여행 초대 페이지'),
