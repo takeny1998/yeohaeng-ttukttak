@@ -7,9 +7,11 @@ import com.yeohaeng_ttukttak.server.domain.oauth.google.GoogleOAuthProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
-@SpringBootApplication
+@EnableJpaAuditing
 @EnableConfigurationProperties({AppleOAuthProperties.class, GoogleOAuthProperties.class, AccessTokenProperties.class, RefreshTokenProperties.class})
+@SpringBootApplication
 public class ServerApplication {
 
 	public static void main(String[] args) {
@@ -17,3 +19,4 @@ public class ServerApplication {
 	}
 
 }
+

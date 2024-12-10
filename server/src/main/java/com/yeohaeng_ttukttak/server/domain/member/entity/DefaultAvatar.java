@@ -18,6 +18,9 @@ public class DefaultAvatar extends Avatar {
 
     private static final int imagesPerType = 24;
 
+    public DefaultAvatar(Member member) {
+        super(member);
+    }
 
     @Override
     public String path() {

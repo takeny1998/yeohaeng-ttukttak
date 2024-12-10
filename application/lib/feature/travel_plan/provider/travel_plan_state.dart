@@ -11,6 +11,7 @@ class TravelPlanState with _$TravelPlanState {
     required TravelModel travel,
     @Default(0) int pageIndex,
     @Default(0) int cityIndex,
+    @Default(0.0) double appBarHeight,
   }) = _TravelPlanState;
 
 }

@@ -37,7 +37,7 @@ public class GoogleProfileDeserializer extends JsonDeserializer<GoogleProfileRes
                 .ofNullable(rootNode.findValue("genders"))
                 .map(node -> node.findValue("value"))
                 .map(node -> node.asText().toLowerCase())
-                .orElse(null);
+                .orElse("");
 
         Gender gender;
 
@@ -55,14 +55,17 @@ public class GoogleProfileDeserializer extends JsonDeserializer<GoogleProfileRes
         return new GoogleProfileResponse(birthDate, gender, nickname);
     }
 
-
     private LocalDate parseDateNode(JsonNode dateNode) {
 
         if (dateNode == null) return null;
 
-        int year = dateNode.get("year").asInt(0);
-        int month = dateNode.get("month").asInt(0);
-        int day = dateNode.get("day").asInt(0);
+        final Integer year = getIntOrNull(dateNode, "year");
+        final Integer month = getIntOrNull(dateNode, "month");
+        final Integer day = getIntOrNull(dateNode, "day");
+
+        if (year == null || month == null || day == null) {
+            return null;
+        }
 
         try {
             return LocalDate.of(year, month, day);
@@ -70,6 +73,14 @@ public class GoogleProfileDeserializer extends JsonDeserializer<GoogleProfileRes
             return null;
         }
 
+    }
+
+    private Integer getIntOrNull(JsonNode node, String key) {
+        if (node == null || node.isNull()) return null;
+        final JsonNode foundNode = node.get(key);
+
+        if (foundNode == null || foundNode.isNull()) return null;
+        return foundNode.asInt();
     }
 
 }

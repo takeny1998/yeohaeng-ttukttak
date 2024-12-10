@@ -6,12 +6,10 @@ import com.yeohaeng_ttukttak.server.application.member.service.FindMemberService
 import com.yeohaeng_ttukttak.server.application.member.service.UpdateMemberService;
 import com.yeohaeng_ttukttak.server.common.aop.annotation.Authorization;
 import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
-import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthorizationDto;
+import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthenticationContext;
 import com.yeohaeng_ttukttak.server.domain.member.dto.MemberDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/v2/members")
@@ -29,8 +27,8 @@ public class MemberController {
 
     @GetMapping("/me")
     @Authorization
-    public ServerResponse<MemberResponse> findMe(AuthorizationDto authorization) {
-        final MemberDto dto = findMemberService.findOne(authorization.memberId());
+    public ServerResponse<MemberResponse> findMe(AuthenticationContext authorization) {
+        final MemberDto dto = findMemberService.findOne(authorization.uuid());
         return new ServerResponse<>(new MemberResponse(dto));
     }
 
@@ -38,12 +36,12 @@ public class MemberController {
     @Authorization
     public ServerResponse<MemberResponse> updateProfile(
             @RequestBody UpdateMemberProfileRequest request,
-            AuthorizationDto authorization) {
+            AuthenticationContext authorization) {
 
-        updateMemberService.updateProfile(authorization.memberId(),
+        updateMemberService.updateProfile(authorization.uuid(),
                 request.nickname(), request.ageGroup(), request.gender());
 
-        MemberDto dto = findMemberService.findOne(authorization.memberId());
+        MemberDto dto = findMemberService.findOne(authorization.uuid());
         return new ServerResponse<>(new MemberResponse(dto));
 
     }

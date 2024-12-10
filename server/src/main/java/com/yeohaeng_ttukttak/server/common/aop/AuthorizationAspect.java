@@ -1,7 +1,7 @@
 package com.yeohaeng_ttukttak.server.common.aop;
 
 import com.yeohaeng_ttukttak.server.common.exception.exception.error.AuthorizationErrorException;
-import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthorizationDto;
+import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthenticationContext;
 import com.yeohaeng_ttukttak.server.domain.auth.service.AccessTokenService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -32,13 +32,15 @@ public class AuthorizationAspect {
         }
 
         final String encodedToken = header.substring(TOKEN_PREFIX.length());
-        final AuthorizationDto authorization = accessTokenService.decode(encodedToken);
+        final AuthenticationContext context = accessTokenService.decode(encodedToken);
 
         final Object[] args = joinPoint.getArgs();
 
+        AuthenticationContextHolder.setContext(context);
+
         for (int i = 0; i < args.length; i++) {
-            if (args[i] instanceof AuthorizationDto) {
-                args[i] = authorization;
+            if (args[i] instanceof AuthenticationContext) {
+                args[i] = context;
                 break;
             }
         }

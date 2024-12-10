@@ -1,7 +1,7 @@
 package com.yeohaeng_ttukttak.server.application.auth.service;
 
 import com.yeohaeng_ttukttak.server.application.auth.service.dto.AuthTokenDto;
-import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthorizationDto;
+import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthenticationContext;
 import com.yeohaeng_ttukttak.server.domain.auth.entity.RefreshToken;
 import com.yeohaeng_ttukttak.server.domain.auth.service.AccessTokenService;
 import com.yeohaeng_ttukttak.server.domain.auth.service.RefreshTokenService;
@@ -29,7 +29,7 @@ public class RenewAuthService {
         refreshTokenService.revoke(verifiedToken);
 
         final Member member = memberService.find(memberId);
-        final AuthorizationDto authorization = new AuthorizationDto(
+        final AuthenticationContext authorization = new AuthenticationContext(
                 member.uuid(),
                 member.nickname(),
                 member.ageGroup(),
