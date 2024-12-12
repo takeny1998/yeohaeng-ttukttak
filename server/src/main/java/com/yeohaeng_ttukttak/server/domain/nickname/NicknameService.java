@@ -1,5 +1,6 @@
 package com.yeohaeng_ttukttak.server.domain.nickname;
 
+import com.yeohaeng_ttukttak.server.common.util.StringUtil;
 import com.yeohaeng_ttukttak.server.domain.locale.LocalizedMessagesProvider;
 import com.yeohaeng_ttukttak.server.domain.member.exception.BadNicknameFailException;
 import com.yeohaeng_ttukttak.server.domain.member.exception.InvalidNicknameCharacterFailException;
@@ -32,16 +33,11 @@ public class NicknameService {
      */
     public Nickname create(String value) {
 
-        try {
-            int bytes = value.getBytes("euc-kr").length;
+        final int byteLength = StringUtil.getByteLengthInEucKr(value);
 
-            if (bytes < 4 || bytes > 12) {
-                throw new InvalidNicknameLengthFailException();
-            }
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
+        if (byteLength < 4 || byteLength > 12) {
+            throw new InvalidNicknameLengthFailException();
         }
-
 
         final boolean hasCharOrNumber = value.matches("^[가-힣a-zA-Z1-9]+$");
         final boolean hasCharMoreThanTwo = value.matches("(?:.*[가-힣a-zA-Z]){2,}");

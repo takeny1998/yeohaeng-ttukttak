@@ -1,6 +1,8 @@
-package com.yeohaeng_ttukttak.server.domain.travel.entity;
+package com.yeohaeng_ttukttak.server.domain.travel_plan;
 
+import com.yeohaeng_ttukttak.server.common.exception.exception.error.ForbiddenErrorException;
 import com.yeohaeng_ttukttak.server.domain.place.entity.Place;
+import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -33,7 +35,8 @@ public class TravelPlan {
     @JoinColumn(name = "travel_id")
     private Travel travel;
 
-    @OneToMany(mappedBy = "plan", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToMany(mappedBy = "plan", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    @OrderBy("createdAt DESC, lastModifiedAt DESC, id ASC")
     private List<TravelPlanComment> comments = new ArrayList<>();
 
     public TravelPlan(Integer dayOfTravel, Integer orderOfPlan, Place place, Travel travel) {
@@ -73,8 +76,19 @@ public class TravelPlan {
         return orderOfPlan;
     }
 
-    public void writeComment() {
-        comments.add(new TravelPlanComment(this));
+    /**
+     * 여행 계획에 새 댓글을 추가한다.
+     * @param writerId 추가할 사용자의 식별자
+     * @param content 댓글의 내용
+     * @throws ForbiddenErrorException 댓글을 추가할 권한이 없는 경우 발생한다.
+     */
+    public void writeComment(String writerId, String content) {
+        travel.verifyModifyGrant(writerId);
+        comments.add(new TravelPlanComment(this, content));
+    }
+
+    public List<TravelPlanComment> getOrderedComments() {
+        return comments;
     }
 
 }

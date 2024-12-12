@@ -24,4 +24,11 @@ public abstract class BaseTimeMemberEntity extends BaseTimeEntity {
     @LastModifiedBy
     private Member lastModifiedBy;
 
+    public Member createdBy() {
+        return createdBy;
+    }
+
+    public Member lastModifiedBy() {
+        return lastModifiedBy;
+    }
 }

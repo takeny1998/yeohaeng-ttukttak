@@ -1,6 +1,4 @@
-package com.yeohaeng_ttukttak.server.domain.travel.dto;
-
-import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelPlan;
+package com.yeohaeng_ttukttak.server.domain.travel_plan;
 
 import java.time.LocalDate;
 

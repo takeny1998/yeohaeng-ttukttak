@@ -21,4 +21,12 @@ public abstract class BaseTimeEntity {
     @Column(updatable = false)
     private LocalDateTime lastModifiedAt;
 
+    public LocalDateTime createdAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime lastModifiedAt() {
+        return lastModifiedAt;
+    }
+
 }
