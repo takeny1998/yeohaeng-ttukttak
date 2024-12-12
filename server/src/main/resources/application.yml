@@ -20,6 +20,7 @@ spring:
         format_sql: true
         use_sql_comments: true
         default_batch_fetch_size: 500
+        current_session_context_class: org.springframework.orm.hibernate5.SpringSessionContext
     open-in-view: false
 
 logging:

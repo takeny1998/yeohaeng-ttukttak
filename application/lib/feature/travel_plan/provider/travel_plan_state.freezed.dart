@@ -19,6 +19,7 @@ mixin _$TravelPlanState {
   TravelModel get travel => throw _privateConstructorUsedError;
   int get pageIndex => throw _privateConstructorUsedError;
   int get cityIndex => throw _privateConstructorUsedError;
+  double get appBarHeight => throw _privateConstructorUsedError;
 
   /// Create a copy of TravelPlanState
   /// with the given fields replaced by the non-null parameter values.
@@ -33,7 +34,8 @@ abstract class $TravelPlanStateCopyWith<$Res> {
           TravelPlanState value, $Res Function(TravelPlanState) then) =
       _$TravelPlanStateCopyWithImpl<$Res, TravelPlanState>;
   @useResult
-  $Res call({TravelModel travel, int pageIndex, int cityIndex});
+  $Res call(
+      {TravelModel travel, int pageIndex, int cityIndex, double appBarHeight});
 
   $TravelModelCopyWith<$Res> get travel;
 }
@@ -56,6 +58,7 @@ class _$TravelPlanStateCopyWithImpl<$Res, $Val extends TravelPlanState>
     Object? travel = null,
     Object? pageIndex = null,
     Object? cityIndex = null,
+    Object? appBarHeight = null,
   }) {
     return _then(_value.copyWith(
       travel: null == travel
@@ -70,6 +73,10 @@ class _$TravelPlanStateCopyWithImpl<$Res, $Val extends TravelPlanState>
           ? _value.cityIndex
           : cityIndex // ignore: cast_nullable_to_non_nullable
               as int,
+      appBarHeight: null == appBarHeight
+          ? _value.appBarHeight
+          : appBarHeight // ignore: cast_nullable_to_non_nullable
+              as double,
     ) as $Val);
   }
 
@@ -92,7 +99,8 @@ abstract class _$$TravelPlanStateImplCopyWith<$Res>
       __$$TravelPlanStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({TravelModel travel, int pageIndex, int cityIndex});
+  $Res call(
+      {TravelModel travel, int pageIndex, int cityIndex, double appBarHeight});
 
   @override
   $TravelModelCopyWith<$Res> get travel;
@@ -114,6 +122,7 @@ class __$$TravelPlanStateImplCopyWithImpl<$Res>
     Object? travel = null,
     Object? pageIndex = null,
     Object? cityIndex = null,
+    Object? appBarHeight = null,
   }) {
     return _then(_$TravelPlanStateImpl(
       travel: null == travel
@@ -128,6 +137,10 @@ class __$$TravelPlanStateImplCopyWithImpl<$Res>
           ? _value.cityIndex
           : cityIndex // ignore: cast_nullable_to_non_nullable
               as int,
+      appBarHeight: null == appBarHeight
+          ? _value.appBarHeight
+          : appBarHeight // ignore: cast_nullable_to_non_nullable
+              as double,
     ));
   }
 }
@@ -136,7 +149,10 @@ class __$$TravelPlanStateImplCopyWithImpl<$Res>
 
 class _$TravelPlanStateImpl extends _TravelPlanState {
   const _$TravelPlanStateImpl(
-      {required this.travel, this.pageIndex = 0, this.cityIndex = 0})
+      {required this.travel,
+      this.pageIndex = 0,
+      this.cityIndex = 0,
+      this.appBarHeight = 0.0})
       : super._();
 
   @override
@@ -147,10 +163,13 @@ class _$TravelPlanStateImpl extends _TravelPlanState {
   @override
   @JsonKey()
   final int cityIndex;
+  @override
+  @JsonKey()
+  final double appBarHeight;
 
   @override
   String toString() {
-    return 'TravelPlanState(travel: $travel, pageIndex: $pageIndex, cityIndex: $cityIndex)';
+    return 'TravelPlanState(travel: $travel, pageIndex: $pageIndex, cityIndex: $cityIndex, appBarHeight: $appBarHeight)';
   }
 
   @override
@@ -162,11 +181,14 @@ class _$TravelPlanStateImpl extends _TravelPlanState {
             (identical(other.pageIndex, pageIndex) ||
                 other.pageIndex == pageIndex) &&
             (identical(other.cityIndex, cityIndex) ||
-                other.cityIndex == cityIndex));
+                other.cityIndex == cityIndex) &&
+            (identical(other.appBarHeight, appBarHeight) ||
+                other.appBarHeight == appBarHeight));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, travel, pageIndex, cityIndex);
+  int get hashCode =>
+      Object.hash(runtimeType, travel, pageIndex, cityIndex, appBarHeight);
 
   /// Create a copy of TravelPlanState
   /// with the given fields replaced by the non-null parameter values.
@@ -182,7 +204,8 @@ abstract class _TravelPlanState extends TravelPlanState {
   const factory _TravelPlanState(
       {required final TravelModel travel,
       final int pageIndex,
-      final int cityIndex}) = _$TravelPlanStateImpl;
+      final int cityIndex,
+      final double appBarHeight}) = _$TravelPlanStateImpl;
   const _TravelPlanState._() : super._();
 
   @override
@@ -191,6 +214,8 @@ abstract class _TravelPlanState extends TravelPlanState {
   int get pageIndex;
   @override
   int get cityIndex;
+  @override
+  double get appBarHeight;
 
   /// Create a copy of TravelPlanState
   /// with the given fields replaced by the non-null parameter values.

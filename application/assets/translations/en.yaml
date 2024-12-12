@@ -64,6 +64,10 @@ age_group: Age Group
 nickname: Nickname
 edit_complete: Edit complete
 
+leader: Team Leader
+member: Team Member
+me: 나
+
 widget:
   VisitListItem:
     ask_reason: Why did you visit this place?
@@ -123,13 +127,13 @@ enum:
   TravelMotivationType:
     name: Motivation for travel
     values:
-      adventure: Break out of routine
+      adventure: Adventure
       rest: Rest
       friendship: Friendship
-      selfReflection: Self-reflection
-      socialNetwork: Social network
+      selfReflection: Reflection
+      socialNetwork: SNS
       fitness: Fitness
-      newExperiences: Seek new experiences
+      newExperiences: Experiences
       education: Education
 
   AgeGroup:

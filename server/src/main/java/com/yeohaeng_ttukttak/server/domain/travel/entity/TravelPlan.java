@@ -7,6 +7,9 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -29,6 +32,9 @@ public class TravelPlan {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "travel_id")
     private Travel travel;
+
+    @OneToMany(mappedBy = "plan", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private List<TravelPlanComment> comments = new ArrayList<>();
 
     public TravelPlan(Integer dayOfTravel, Integer orderOfPlan, Place place, Travel travel) {
         this.dayOfTravel = dayOfTravel;
@@ -66,4 +72,9 @@ public class TravelPlan {
     public Integer orderOfPlan() {
         return orderOfPlan;
     }
+
+    public void writeComment() {
+        comments.add(new TravelPlanComment(this));
+    }
+
 }

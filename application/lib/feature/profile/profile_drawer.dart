@@ -48,7 +48,7 @@ class ProfileDrawer extends ConsumerWidget {
                 ],
               ),
               ListTile(
-                leading: const ProfileAvatar(),
+                leading: ProfileAvatar(avatar: member?.avatar),
                 title: Text(
                   member?.nickname ?? tr.from('please_log_in'),
                   style: const TextStyle(

@@ -9,6 +9,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.NaturalId;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -24,8 +25,8 @@ public class Member {
     @Id @GeneratedValue
     private Long id;
 
-    @NotNull
-    @Column(unique = true, updatable = false)
+    @NaturalId
+    @Column(nullable = false, unique = true, updatable = false)
     private String uuid;
 
     @Enumerated(EnumType.STRING)
@@ -43,7 +44,7 @@ public class Member {
     private OAuth auth;
 
     @NotNull
-    @OneToOne(mappedBy = "member")
+    @OneToOne(mappedBy = "member", cascade = CascadeType.ALL)
     private Avatar avatar;
 
     public Member(OAuth auth, Nickname nickname, Gender gender, LocalDate birthDate) {
@@ -52,6 +53,7 @@ public class Member {
         this.nickname = nickname.value();
         this.gender = gender;
         this.ageGroup = AgeGroup.fromBrithDate(birthDate);
+        this.avatar = new DefaultAvatar(this);
     }
 
     Long id() { return id; }

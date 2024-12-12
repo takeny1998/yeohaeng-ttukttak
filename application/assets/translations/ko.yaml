@@ -63,6 +63,10 @@ age_group: 연령대
 nickname: 닉네임
 edit_complete: 수정 완료
 
+leader: 팀 리더
+member: 팀원
+me: 나
+
 profile_has_been_edited: 프로필이 성공적으로 수정되었습니다.
 
 widget:
@@ -133,15 +137,15 @@ enum:
   TravelMotivationType:
     name: 여행 동기
     values:
-      adventure: 일상에서 탈피
+      adventure: 모험
       rest: 휴식
-      friendship: 친목 쌓기
-      selfReflection: 자아 성찰
-      socialNetwork: SNS 등록
-      fitness: 건강 증진
-      newExperiences: 새로운 경험 추구
-      education: 교육 목적
-      special: 특수 목적
+      friendship: 친목
+      selfReflection: 성찰
+      socialNetwork: SNS
+      fitness: 건강
+      newExperiences: 경험
+      education: 교육
+      special: 특수
       other: 기타
 
   AgeGroup:
