@@ -24,13 +24,4 @@ public class AopConfig {
         return new AuthorizationAspect(accessTokenService, httpServletRequest);
     }
 
-    @Bean
-    public AccessTokenAuditorAware accessTokenAuditorAware(
-            EntityManagerFactory entityManagerFactory) {
-
-        final SessionFactory sessionFactory =
-                entityManagerFactory.unwrap(SessionFactory.class);
-
-        return new AccessTokenAuditorAware(sessionFactory);
-    }
 }
