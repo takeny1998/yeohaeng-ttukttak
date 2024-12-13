@@ -1,7 +1,9 @@
 package com.yeohaeng_ttukttak.server.domain.travel.entity;
 
 import com.yeohaeng_ttukttak.server.common.exception.exception.error.ForbiddenErrorException;
+import com.yeohaeng_ttukttak.server.common.exception.exception.fail.ArgumentNotInRangeFailException;
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundFailException;
+import com.yeohaeng_ttukttak.server.common.util.LocalDateUtil;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.City;
 import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
 import com.yeohaeng_ttukttak.server.domain.place.entity.Place;
@@ -175,7 +177,18 @@ public class Travel extends BaseTimeMemberEntity {
     }
 
 
-    public void addPlan(Place place, Integer dayOfTravel) {
+    public void addPlan(
+//            String memberId,
+                        Place place, Integer dayOfTravel) {
+//
+//        final long totalDays = LocalDateUtil.getBetweenDays(startedOn, endedOn);
+//
+//        if (dayOfTravel < 0 || dayOfTravel >= totalDays) {
+//            throw new ArgumentNotInRangeFailException("dayOfTravel", 0, totalDays);
+//        }
+//
+//        verifyModifyGrant(memberId);
+
         int orderOfPlan = -1;
 
         for (TravelPlan plan : plans) {

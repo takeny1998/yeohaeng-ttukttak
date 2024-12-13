@@ -1,4 +1,4 @@
-package com.yeohaeng_ttukttak.server.domain.travel_plan;
+package com.yeohaeng_ttukttak.server.domain.comment;
 
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.FailException;
 

@@ -1,15 +1,18 @@
 package com.yeohaeng_ttukttak.server.domain.travel_plan;
 
-import com.yeohaeng_ttukttak.server.common.util.StringUtil;
+import com.yeohaeng_ttukttak.server.common.exception.exception.error.ForbiddenErrorException;
+import com.yeohaeng_ttukttak.server.domain.comment.Comment;
+import com.yeohaeng_ttukttak.server.domain.comment.OnlyWriterCanAccessCommentFailException;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.BaseTimeMemberEntity;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import java.util.Objects;
+
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class TravelPlanComment extends BaseTimeMemberEntity {
+public class TravelPlanComment {
 
     @Id @GeneratedValue
     private Long id;
@@ -18,17 +21,20 @@ public class TravelPlanComment extends BaseTimeMemberEntity {
     @JoinColumn(name = "plan_id")
     private TravelPlan plan;
 
-    @NotNull
-    private String content;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "comment_id")
+    private Comment comment;
 
-    TravelPlanComment(TravelPlan plan, String content) {
-        final int byteLength = StringUtil.getByteLengthInEucKr(content);
-        if (byteLength > 100) {
-            throw new CommentContentLengthTooLongFailException();
-        }
-
+    /**
+     * 여행 계획에 새 댓글을 추가한다.
+     * @param writerId 추가할 사용자의 식별자
+     * @param plan 댓글을 추가할 여행 계획 대상
+     * @param comment 작성할 댓글 엔티티
+     * @throws ForbiddenErrorException 댓글을 추가할 권한이 없는 경우 발생한다.
+     */
+    public TravelPlanComment(String writerId, TravelPlan plan, Comment comment) {
         this.plan = plan;
-        this.content = content;
+        this.comment = comment;
     }
 
     Long id() {
@@ -39,8 +45,8 @@ public class TravelPlanComment extends BaseTimeMemberEntity {
         return plan;
     }
 
-    String content() {
-        return content;
+    public Comment comment() {
+        return comment;
     }
 
 }

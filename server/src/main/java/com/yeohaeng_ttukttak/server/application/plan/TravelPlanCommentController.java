@@ -5,21 +5,21 @@ import com.yeohaeng_ttukttak.server.application.plan.dto.WriteCommentRequest;
 import com.yeohaeng_ttukttak.server.common.aop.annotation.Authorization;
 import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
 import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthenticationContext;
-import com.yeohaeng_ttukttak.server.domain.travel_plan.TravelPlanCommentDto;
+import com.yeohaeng_ttukttak.server.domain.comment.CommentDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Slf4j
 @RestController
 @RequestMapping("/api/v2/plans/{planId}/comments")
 @RequiredArgsConstructor
 public class TravelPlanCommentController {
 
-    private final TravelPlanService travelPlanService;
+    private final TravelPlanCommentService travelPlanCommentService;
 
     @PostMapping
     @Authorization
@@ -28,15 +28,32 @@ public class TravelPlanCommentController {
             @RequestBody @Valid WriteCommentRequest request,
             AuthenticationContext authentication) {
 
-        travelPlanService.writeComment(
-                planId,
+        travelPlanCommentService.writeComment(
                 authentication.uuid(),
+                planId,
                 request.content());
 
-        final List<TravelPlanCommentDto> comments =
-                travelPlanService.getOrderedComments(planId);
+        final List<CommentDto> dtoList =
+                travelPlanCommentService.getOrderedComments(planId);
 
-        return new ServerResponse<>(new CommentListResponse(comments));
+        return new ServerResponse<>(
+                new CommentListResponse(dtoList));
+    }
+
+    @DeleteMapping("/{commentId}")
+    @Authorization
+    public ServerResponse<CommentListResponse> deleteComment(
+            @PathVariable Long planId,
+            @PathVariable Long commentId,
+            AuthenticationContext authentication) {
+
+        travelPlanCommentService.deleteComment(authentication.uuid(), planId, commentId);
+
+        final List<CommentDto> dtoList =
+                travelPlanCommentService.getOrderedComments(planId);
+
+        return new ServerResponse<>(
+                new CommentListResponse(dtoList));
     }
 
 }
