@@ -29,11 +29,11 @@ public class TravelController {
     @PostMapping
     @Authorization
     public ServerResponse<CreateTravelResponse> create(
-            @RequestBody @Valid CreateTravelRequest request,
-            AuthenticationContext authorization) {
+            @RequestBody @Valid CreateTravelRequest request) {
 
-        TravelDto travelDto = createTravelService
-                .call(request.toCommand(authorization.uuid()));
+        final Long createdId = createTravelService.call(request.toCommand());
+
+        final TravelDto travelDto = findTravelService.findById(createdId);
 
         return new ServerResponse<>(new CreateTravelResponse(travelDto));
     }

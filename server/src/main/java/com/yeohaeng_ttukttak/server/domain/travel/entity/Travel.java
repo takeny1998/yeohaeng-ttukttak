@@ -5,6 +5,8 @@ import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFou
 import com.yeohaeng_ttukttak.server.domain.geography.entity.City;
 import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
 import com.yeohaeng_ttukttak.server.domain.place.entity.Place;
+import com.yeohaeng_ttukttak.server.domain.shared.entity.BaseTimeEntity;
+import com.yeohaeng_ttukttak.server.domain.shared.entity.BaseTimeMemberEntity;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.CompanionType;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.MotivationType;
 import com.yeohaeng_ttukttak.server.domain.travel.exception.AlreadyJoinedTravelFailException;
@@ -18,12 +20,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static jakarta.persistence.InheritanceType.JOINED;
-
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Inheritance(strategy = JOINED)
-public class Travel {
+public class Travel extends BaseTimeMemberEntity {
 
     @Id @GeneratedValue
     private Long id;
@@ -45,15 +44,10 @@ public class Travel {
     @OneToMany(mappedBy = "travel", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<TravelPlan> plans = new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
-
     @OneToMany(mappedBy = "travel", cascade = { CascadeType.PERSIST, CascadeType.MERGE }, orphanRemoval = true)
     private List<TravelParticipant> participants = new ArrayList<>();
 
-    public Travel(Member member, LocalDate startedOn, LocalDate endedOn) {
-        this.member = member;
+    public Travel(LocalDate startedOn, LocalDate endedOn) {
         this.startedOn = startedOn;
         this.endedOn = endedOn;
     }
@@ -86,17 +80,13 @@ public class Travel {
         return plans;
     }
 
-    public Member member() {
-        return member;
-    }
-
     /**
      * 해당 여행 객체에 쓰기 권한이 있는지 검사한다.
      * @param memberId 접근하려는 자의 식별자
      * @throws ForbiddenErrorException 권한이 없는 경우
      */
     public void verifyModifyGrant(String memberId) {
-        final boolean isOwner = Objects.equals(member.uuid(), memberId);
+        final boolean isOwner = Objects.equals(createdBy().uuid(), memberId);
 
         final boolean isParticipant = participants.stream()
                 .anyMatch(e -> e.invitee().uuid().equals(memberId));
@@ -112,7 +102,7 @@ public class Travel {
      * @throws ForbiddenErrorException 권한이 없는 경우
      */
     public void verifyDeleteGrant(String memberId) {
-        final boolean isOwner = Objects.equals(member.uuid(), memberId);
+        final boolean isOwner = Objects.equals(createdBy().uuid(), memberId);
 
         if (!isOwner) {
             throw new ForbiddenErrorException(Travel.class);
@@ -156,7 +146,7 @@ public class Travel {
         final boolean isInviteeParticipated = participants.stream()
                 .anyMatch(participant -> participant.invitee().equals(invitee));
 
-        final boolean isOwnerInvited = Objects.equals(invitee.uuid(), this.member.uuid());
+        final boolean isOwnerInvited = Objects.equals(invitee.uuid(), createdBy().uuid());
 
         if (isInviteeParticipated || isOwnerInvited) {
             throw new AlreadyJoinedTravelFailException("inviteeId");
@@ -175,7 +165,7 @@ public class Travel {
         verifyModifyGrant(member.uuid());
 
         final boolean isInvitedByKicker = Objects.equals(member.uuid(), participant.invitee().uuid());
-        final boolean isMemberOwner = Objects.equals(member.uuid(), this.member.uuid());
+        final boolean isMemberOwner = Objects.equals(member.uuid(), createdBy().uuid());
 
         if (!isInvitedByKicker && !isMemberOwner) {
             throw new ForbiddenErrorException(TravelParticipant.class);

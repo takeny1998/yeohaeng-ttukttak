@@ -20,19 +20,15 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CreateTravelService {
 
-    private final MemberService memberService;
     private final TravelRepository travelRepository;
     private final GeographyRepository geographyRepository;
 
     @Transactional
-    public TravelDto call(CreateTravelCommand commend) {
+    public Long call(CreateTravelCommand commend) {
 
         List<Long> ids = EntityReference.extractId(commend.cities());
 
-        final Member member = memberService.find(commend.memberId());
-
-        final Travel travel = new Travel(
-                member, commend.startedOn(), commend.endedOn());
+        final Travel travel = new Travel(commend.startedOn(), commend.endedOn());
 
         geographyRepository.findAllCityByIds(ids)
                 .forEach(travel::addCity);
@@ -40,9 +36,9 @@ public class CreateTravelService {
         commend.motivationTypes().forEach(travel::addMotivation);
         commend.companionTypes().forEach(travel::addCompanion);
 
-        travelRepository.save(travel);
+        final Travel savedTravel = travelRepository.save(travel);
 
-        return TravelDto.of(travel);
+        return savedTravel.id();
     }
 
 }
