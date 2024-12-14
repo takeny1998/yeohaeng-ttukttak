@@ -1,7 +1,7 @@
 package com.yeohaeng_ttukttak.server.domain.comment;
 
+import com.yeohaeng_ttukttak.server.common.exception.exception.fail.AccessDeniedFailException;
 import com.yeohaeng_ttukttak.server.common.util.StringUtil;
-import com.yeohaeng_ttukttak.server.domain.shared.entity.BaseTimeEntity;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.BaseTimeMemberEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -35,7 +35,7 @@ public class Comment extends BaseTimeMemberEntity {
      * 댓글의 내용을 수정한다.
      * @param editorId 수정자의 식별자
      * @param newContent 수정할 댓글 내용
-     * @throws OnlyWriterCanAccessCommentFailException 댓글 작성자가 아닌 사용자가 수정을 시도한 경우 발생한다.
+     * @throws AccessDeniedFailException 댓글 작성자가 아닌 사용자가 수정을 시도한 경우 발생한다.
      */
     public void editContent(String editorId, String newContent) {
         verifyWriter(editorId);
@@ -60,14 +60,14 @@ public class Comment extends BaseTimeMemberEntity {
     /**
      * 댓글을 쓴 사용자가 맞는지 접근 권한을 검사한다.
      * @param memberId 검사할 사용자의 식별자
-     * @throws OnlyWriterCanAccessCommentFailException 댓글을 쓴 사용자가 이닌 경우 발생한다.
+     * @throws AccessDeniedFailException 댓글을 쓴 사용자가 이닌 경우 발생한다.
      */
     public void verifyWriter(String memberId) {
 
         final String writerId = createdBy().uuid();
 
         if (!Objects.equals(memberId, writerId)) {
-            throw new OnlyWriterCanAccessCommentFailException();
+            throw new AccessDeniedFailException(Comment.class);
         }
 
     }
