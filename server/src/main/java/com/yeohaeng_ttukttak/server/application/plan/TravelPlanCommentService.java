@@ -20,7 +20,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TravelPlanCommentService {
 
-    private final TravelRepository travelRepository;
     private final TravelPlanRepository travelPlanRepository;
     private final TravelPlanCommentRepository travelPlanCommentRepository;
 
@@ -28,19 +27,17 @@ public class TravelPlanCommentService {
 
     @Transactional
     public void writeComment(String writerId, Long travelId, Long planId, String content) {
-
-        final Travel travel = travelRepository.findById(travelId)
-                .orElseThrow(() -> new EntityNotFoundFailException(Travel.class));
-
-        travel.verifyModifyGrant(writerId);
-
-        final TravelPlan travelPlan = travelPlanRepository.findById(planId)
+        final TravelPlan travelPlan = travelPlanRepository
+                .findByIdAndTravelId(planId, travelId)
                 .orElseThrow(() -> new EntityNotFoundFailException(TravelPlan.class));
+
+        travelPlan.travel().verifyModifyGrant(writerId);
 
         final Comment comment = new Comment(content);
         commentRepository.save(comment);
 
-        travelPlanCommentRepository.save(new TravelPlanComment(travelPlan, comment));
+        travelPlanCommentRepository.save(
+                new TravelPlanComment(travelPlan, comment));
     }
 
     @Transactional(readOnly = true)
