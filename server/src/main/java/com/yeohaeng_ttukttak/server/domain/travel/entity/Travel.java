@@ -1,13 +1,10 @@
 package com.yeohaeng_ttukttak.server.domain.travel.entity;
 
-import com.yeohaeng_ttukttak.server.common.exception.exception.error.ForbiddenErrorException;
-import com.yeohaeng_ttukttak.server.common.exception.exception.fail.ArgumentNotInRangeFailException;
+import com.yeohaeng_ttukttak.server.common.exception.exception.fail.AccessDeinedFailException;
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundFailException;
-import com.yeohaeng_ttukttak.server.common.util.LocalDateUtil;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.City;
 import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
 import com.yeohaeng_ttukttak.server.domain.place.entity.Place;
-import com.yeohaeng_ttukttak.server.domain.shared.entity.BaseTimeEntity;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.BaseTimeMemberEntity;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.CompanionType;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.MotivationType;
@@ -85,7 +82,7 @@ public class Travel extends BaseTimeMemberEntity {
     /**
      * 해당 여행 객체에 쓰기 권한이 있는지 검사한다.
      * @param memberId 접근하려는 자의 식별자
-     * @throws ForbiddenErrorException 권한이 없는 경우
+     * @throws AccessDeinedFailException 권한이 없는 경우
      */
     public void verifyModifyGrant(String memberId) {
         final boolean isOwner = Objects.equals(createdBy().uuid(), memberId);
@@ -94,20 +91,20 @@ public class Travel extends BaseTimeMemberEntity {
                 .anyMatch(e -> e.invitee().uuid().equals(memberId));
 
         if (!(isOwner || isParticipant)) {
-            throw new ForbiddenErrorException(Travel.class);
+            throw new AccessDeinedFailException(Travel.class);
         }
     }
 
     /**
      * 여행 여행 객체를 삭제할 수 있는지 검사한다.
      * @param memberId 접근자의 식별값
-     * @throws ForbiddenErrorException 권한이 없는 경우
+     * @throws AccessDeinedFailException 권한이 없는 경우
      */
     public void verifyDeleteGrant(String memberId) {
         final boolean isOwner = Objects.equals(createdBy().uuid(), memberId);
 
         if (!isOwner) {
-            throw new ForbiddenErrorException(Travel.class);
+            throw new AccessDeinedFailException(Travel.class);
         }
     }
 
@@ -161,7 +158,7 @@ public class Travel extends BaseTimeMemberEntity {
      * 지정된 참여자를 해당 여행에서 쫒아(kick)낸다.
      * @param member 쫒아낼 사용자
      * @param participant 쫒을 대상 참여자의 식별자
-     * @throws ForbiddenErrorException 대상 참여자를 쫒을 권한이 없는 경우 발생한다.
+     * @throws AccessDeinedFailException 대상 참여자를 쫒을 권한이 없는 경우 발생한다.
      */
     public void leaveParticipant(Member member, TravelParticipant participant) {
         verifyModifyGrant(member.uuid());
@@ -170,7 +167,7 @@ public class Travel extends BaseTimeMemberEntity {
         final boolean isMemberOwner = Objects.equals(member.uuid(), createdBy().uuid());
 
         if (!isInvitedByKicker && !isMemberOwner) {
-            throw new ForbiddenErrorException(TravelParticipant.class);
+            throw new AccessDeinedFailException(TravelParticipant.class);
         }
 
         participants.remove(participant);

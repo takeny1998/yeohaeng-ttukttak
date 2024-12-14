@@ -1,7 +1,5 @@
 package com.yeohaeng_ttukttak.server.domain.travel_plan;
 
-import com.yeohaeng_ttukttak.server.common.exception.exception.error.ForbiddenErrorException;
-import com.yeohaeng_ttukttak.server.domain.comment.Comment;
 import com.yeohaeng_ttukttak.server.domain.place.entity.Place;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.BaseTimeMemberEntity;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;

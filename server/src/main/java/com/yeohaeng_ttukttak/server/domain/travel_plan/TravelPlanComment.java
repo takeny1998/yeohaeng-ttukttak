@@ -1,14 +1,10 @@
 package com.yeohaeng_ttukttak.server.domain.travel_plan;
 
-import com.yeohaeng_ttukttak.server.common.exception.exception.error.ForbiddenErrorException;
+import com.yeohaeng_ttukttak.server.common.exception.exception.fail.AccessDeinedFailException;
 import com.yeohaeng_ttukttak.server.domain.comment.Comment;
-import com.yeohaeng_ttukttak.server.domain.comment.OnlyWriterCanAccessCommentFailException;
-import com.yeohaeng_ttukttak.server.domain.shared.entity.BaseTimeMemberEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-
-import java.util.Objects;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -30,7 +26,7 @@ public class TravelPlanComment {
      * @param writerId 추가할 사용자의 식별자
      * @param plan 댓글을 추가할 여행 계획 대상
      * @param comment 작성할 댓글 엔티티
-     * @throws ForbiddenErrorException 댓글을 추가할 권한이 없는 경우 발생한다.
+     * @throws AccessDeinedFailException 댓글을 추가할 권한이 없는 경우 발생한다.
      */
     public TravelPlanComment(String writerId, TravelPlan plan, Comment comment) {
         this.plan = plan;
