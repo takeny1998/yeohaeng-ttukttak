@@ -38,21 +38,35 @@ public class ExceptionAdvice {
 
     @ExceptionHandler(FailException.class)
     public ServerFailResponse handleFailException(
-            FailException ex, Locale locale, HttpServletRequest request) {
-        logError(ex, request);
-        final String message = getMessage(ex, locale);
+            FailException exception, Locale locale, HttpServletRequest request) {
 
-        return new ServerFailResponse(Map.of(ex.getField(), message));
+        logError(exception, request);
+
+        final Map<String, String> error = new HashMap<>(
+                Map.of("code", exception.code(),
+                        "message", getMessage(exception, locale)));
+
+        if (Objects.nonNull(exception.field())) {
+            error.put("field", exception.field());
+        }
+
+        return new ServerFailResponse(List.of(error));
+
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ServerFailResponse handleValidationException(
-            MethodArgumentNotValidException ex, Locale locale, HttpServletRequest request) {
-        logError(ex, request);
+            MethodArgumentNotValidException exception, Locale locale, HttpServletRequest request) {
+        logError(exception, request);
 
-        final Map<String, String> data = ex.getFieldErrors()
+        final List<Map<String, String>> data = exception
+                .getFieldErrors()
                 .stream()
-                .collect(Collectors.toMap(FieldError::getField, fieldError -> messageSource.getMessage(fieldError, locale)));
+                .map(fieldError -> Map.of(
+                        "code", "METHOD_ARGUMENT_NOT_VALID_FAIL",
+                        "field", fieldError.getField(),
+                        "message", messageSource.getMessage(fieldError, locale)))
+                .toList();
 
         return new ServerFailResponse(data);
     }
