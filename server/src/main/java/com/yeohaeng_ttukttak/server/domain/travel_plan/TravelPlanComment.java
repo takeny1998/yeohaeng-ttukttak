@@ -23,12 +23,11 @@ public class TravelPlanComment {
 
     /**
      * 여행 계획에 새 댓글을 추가한다.
-     * @param writerId 추가할 사용자의 식별자
      * @param plan 댓글을 추가할 여행 계획 대상
      * @param comment 작성할 댓글 엔티티
      * @throws AccessDeinedFailException 댓글을 추가할 권한이 없는 경우 발생한다.
      */
-    public TravelPlanComment(String writerId, TravelPlan plan, Comment comment) {
+    public TravelPlanComment(TravelPlan plan, Comment comment) {
         this.plan = plan;
         this.comment = comment;
     }

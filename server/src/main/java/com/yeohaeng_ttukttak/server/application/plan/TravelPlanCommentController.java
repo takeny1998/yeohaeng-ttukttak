@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v2/plans/{planId}/comments")
+@RequestMapping("/api/v2/travels/{travelId}/plans/{planId}/comments")
 @RequiredArgsConstructor
 public class TravelPlanCommentController {
 
@@ -24,14 +24,15 @@ public class TravelPlanCommentController {
     @PostMapping
     @Authorization
     public ServerResponse<CommentListResponse> writeComment(
+            @PathVariable Long travelId,
             @PathVariable Long planId,
             @RequestBody @Valid WriteCommentRequest request,
             AuthenticationContext authentication) {
 
+        final String writerId = authentication.uuid();
+
         travelPlanCommentService.writeComment(
-                authentication.uuid(),
-                planId,
-                request.content());
+                writerId, travelId, planId, request.content());
 
         final List<CommentDto> dtoList =
                 travelPlanCommentService.getOrderedComments(planId);
