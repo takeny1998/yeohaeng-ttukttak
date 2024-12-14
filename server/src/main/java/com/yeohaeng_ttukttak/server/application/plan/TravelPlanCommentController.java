@@ -1,6 +1,7 @@
 package com.yeohaeng_ttukttak.server.application.plan;
 
 import com.yeohaeng_ttukttak.server.application.plan.dto.CommentListResponse;
+import com.yeohaeng_ttukttak.server.application.plan.dto.EditCommentRequest;
 import com.yeohaeng_ttukttak.server.application.plan.dto.WriteCommentRequest;
 import com.yeohaeng_ttukttak.server.common.aop.annotation.Authorization;
 import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
@@ -41,9 +42,32 @@ public class TravelPlanCommentController {
                 new CommentListResponse(dtoList));
     }
 
+    @PatchMapping("/{commentId}")
+    @Authorization
+    public ServerResponse<CommentListResponse> editComment(
+            @PathVariable Long travelId,
+            @PathVariable Long planId,
+            @PathVariable Long commentId,
+            @RequestBody @Valid EditCommentRequest request,
+            AuthenticationContext authentication) {
+
+        final String editorId = authentication.uuid();
+        final String content = request.content();
+
+        travelPlanCommentService.editComment(
+                editorId, travelId, planId, commentId, content);
+
+        final List<CommentDto> dtoList =
+                travelPlanCommentService.getOrderedComments(planId);
+
+        return new ServerResponse<>(
+                new CommentListResponse(dtoList));
+    }
+
     @DeleteMapping("/{commentId}")
     @Authorization
     public ServerResponse<CommentListResponse> deleteComment(
+            @PathVariable Long travelId,
             @PathVariable Long planId,
             @PathVariable Long commentId,
             AuthenticationContext authentication) {

@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import java.util.Objects;
+
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TravelPlanComment {
@@ -36,7 +38,7 @@ public class TravelPlanComment {
         return id;
     }
 
-    TravelPlan plan() {
+    public TravelPlan plan() {
         return plan;
     }
 

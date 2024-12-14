@@ -100,10 +100,11 @@ public class Travel extends BaseTimeMemberEntity {
      * @param memberId 접근자의 식별값
      * @throws AccessDeinedFailException 권한이 없는 경우
      */
-    public void verifyDeleteGrant(String memberId) {
-        final boolean isOwner = Objects.equals(createdBy().uuid(), memberId);
+    public void verifyCreator(String memberId) {
+        final boolean isCreator =
+                Objects.equals(createdBy().uuid(), memberId);
 
-        if (!isOwner) {
+        if (!isCreator) {
             throw new AccessDeinedFailException(Travel.class);
         }
     }

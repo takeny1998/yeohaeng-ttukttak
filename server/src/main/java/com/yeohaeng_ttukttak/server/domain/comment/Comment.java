@@ -7,6 +7,8 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import java.util.Objects;
+
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Comment extends BaseTimeMemberEntity {
@@ -62,11 +64,11 @@ public class Comment extends BaseTimeMemberEntity {
      */
     public void verifyWriter(String memberId) {
 
-//        final String writerId = createdBy().uuid();
-//
-//        if (!Objects.equals(memberId, writerId)) {
-//            throw new OnlyWriterCanAccessCommentFailException();
-//        }
+        final String writerId = createdBy().uuid();
+
+        if (!Objects.equals(memberId, writerId)) {
+            throw new OnlyWriterCanAccessCommentFailException();
+        }
 
     }
 }

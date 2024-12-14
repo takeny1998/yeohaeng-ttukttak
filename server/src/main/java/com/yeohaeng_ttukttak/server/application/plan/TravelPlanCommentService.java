@@ -3,8 +3,6 @@ package com.yeohaeng_ttukttak.server.application.plan;
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundFailException;
 import com.yeohaeng_ttukttak.server.domain.comment.Comment;
 import com.yeohaeng_ttukttak.server.domain.comment.CommentRepository;
-import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
-import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelRepository;
 import com.yeohaeng_ttukttak.server.domain.travel_plan.TravelPlan;
 import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelPlanRepository;
 import com.yeohaeng_ttukttak.server.domain.travel_plan.TravelPlanComment;
@@ -47,6 +45,17 @@ public class TravelPlanCommentService {
                 .stream()
                 .map(CommentDto::of)
                 .toList();
+    }
+
+    @Transactional
+    public void editComment(
+            String editorId, Long travelId, Long planId, Long commentId, String content) {
+
+        final TravelPlanComment travelPlanComment = travelPlanCommentRepository
+                .findByTravelIdAndPlanIdAndCommentId(travelId, planId, commentId)
+                .orElseThrow(() -> new EntityNotFoundFailException(Comment.class));
+
+        travelPlanComment.comment().editContent(editorId, content);
     }
 
     @Transactional
