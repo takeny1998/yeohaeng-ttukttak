@@ -60,6 +60,10 @@ please_enter_nickname: Please enter a nickname.
 profile_has_been_edited: The profile was updated successfully.
 number_more_comments: '{} more comments'
 comment_by_member: 'Comment by {}'
+number_of_comment: '{} comments'
+please_enter_a_comment: Please enter a comment.
+
+edited: Edited
 
 gender: Gender
 age_group: Age Group

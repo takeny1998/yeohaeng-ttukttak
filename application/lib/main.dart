@@ -17,6 +17,7 @@ import 'package:easy_localization_loader/easy_localization_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'common/router/router_provider.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 final messengerKey = GlobalKey<ScaffoldMessengerState>();
 final providerContainer = ProviderContainer();
@@ -30,6 +31,8 @@ void main() async {
 
   const korean = Locale.fromSubtags(languageCode: 'ko');
   const english = Locale.fromSubtags(languageCode: 'en');
+  
+  timeago.setLocaleMessages('ko', timeago.KoMessages());
 
   runApp(EasyLocalization(
     path: 'assets/translations',

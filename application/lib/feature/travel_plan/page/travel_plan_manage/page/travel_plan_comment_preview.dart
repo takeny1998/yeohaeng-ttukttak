@@ -1,15 +1,17 @@
+import 'package:application_new/common/router/router_provider.dart';
 import 'package:application_new/common/translation/translation_service.dart';
 import 'package:application_new/domain/travel/travel_plan/travel_plan_comment_model.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_manage/component/travel_plan_comment_list_item.dart';
-import 'package:application_new/feature/travel_plan/page/travel_plan_manage/provider/travel_plan_comment_provider.dart';
+import 'package:application_new/feature/travel_plan_comment/travel_plan_comment_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
-class TravelPlanCommentView extends ConsumerWidget {
+class TravelPlanCommentPreview extends ConsumerWidget {
   final int travelId;
   final int planId;
 
-  const TravelPlanCommentView(
+  const TravelPlanCommentPreview(
       {super.key, required this.travelId, required this.planId});
 
   @override
@@ -27,11 +29,11 @@ class TravelPlanCommentView extends ConsumerWidget {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       if (comments != null) ...[
         for (final comment in comments)
-          TravelPlanCommentListItem(comment: comment),
+          TravelPlanCommentListItem(comment: comment, isCollapsed: true),
         const SizedBox(height: 8.0),
       ],
       OutlinedButton.icon(
-          onPressed: () {},
+          onPressed: () => context.push('/travels/$travelId/plans/$planId/comments'),
           icon: const Icon(Icons.comment_outlined, size: 16.0),
           label: Text(tr.from('number_more_comments',
               args: ['${comments?.length ?? '0'}'])))

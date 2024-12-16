@@ -72,6 +72,10 @@ back_to_main_page: 메인 페이지로
 profile_has_been_edited: 프로필이 성공적으로 수정되었습니다.
 number_more_comments: '{}개 댓글 더보기'
 comment_by_member: '{}님의 댓글'
+number_of_comment: 댓글 {}개
+please_enter_a_comment: 댓글 내용을 입력해 주세요.
+
+edited: 수정됨
 
 widget:
   VisitListItem:

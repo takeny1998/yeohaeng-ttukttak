@@ -1,7 +1,7 @@
 import 'package:application_new/domain/travel/travel_plan/travel_plan_model.dart';
 import 'package:application_new/domain/travel_visit/travel_visit_model.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_manage/page/travel_plan_view.dart';
-import 'package:application_new/feature/travel_plan/page/travel_plan_manage/page/travel_plan_comment_view.dart';
+import 'package:application_new/feature/travel_plan/page/travel_plan_manage/page/travel_plan_comment_preview.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_manage/provider/travel_plan_manage_provider.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_manage/provider/travel_plan_manage_state.dart';
 import 'package:flutter/material.dart';

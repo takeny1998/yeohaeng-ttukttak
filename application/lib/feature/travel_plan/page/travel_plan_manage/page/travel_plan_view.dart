@@ -2,7 +2,7 @@ import 'package:application_new/common/util/translation_util.dart';
 import 'package:application_new/domain/place/place_provider.dart';
 import 'package:application_new/domain/travel/travel_plan/travel_plan_model.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_manage/component/travel_plan_list_drag_item.dart';
-import 'package:application_new/feature/travel_plan/page/travel_plan_manage/page/travel_plan_comment_view.dart';
+import 'package:application_new/feature/travel_plan/page/travel_plan_manage/page/travel_plan_comment_preview.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_manage/provider/travel_plan_manage_provider.dart';
 import 'package:application_new/shared/component/outlined_icon_button.dart';
 import 'package:flutter/material.dart';
@@ -121,7 +121,7 @@ class TravelPlanView extends ConsumerWidget {
                   ],
                 ),
                 if (draggingIndex == null) ...[
-                  TravelPlanCommentView(
+                  TravelPlanCommentPreview(
                       travelId: provider.travelId, planId: plan.id),
                 ],
                 const SizedBox(height: 48.0),

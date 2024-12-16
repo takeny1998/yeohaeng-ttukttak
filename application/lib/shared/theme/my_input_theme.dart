@@ -12,6 +12,12 @@ class MyInputTheme extends StatelessWidget {
     return Theme(
         data: Theme.of(context).copyWith(
             inputDecorationTheme: InputDecorationTheme(
+                suffixIconColor: WidgetStateColor.resolveWith((states) {
+                  if (states.contains(WidgetState.focused)) {
+                    return colorScheme.primary;
+                  }
+                  return colorScheme.onSurface;
+                }),
                 labelStyle: TextStyle(
                     color: colorScheme.onSurfaceVariant,
                     fontSize: 15.0,
