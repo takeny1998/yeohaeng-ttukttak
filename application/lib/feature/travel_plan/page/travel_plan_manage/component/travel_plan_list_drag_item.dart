@@ -1,6 +1,6 @@
 import 'package:application_new/common/util/translation_util.dart';
 import 'package:application_new/domain/place/place_model.dart';
-import 'package:application_new/domain/travel/travel_plan_model.dart';
+import 'package:application_new/domain/travel/travel_plan/travel_plan_model.dart';
 import 'package:application_new/domain/travel_visit/travel_visit_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

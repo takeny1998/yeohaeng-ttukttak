@@ -1,11 +1,7 @@
-import 'dart:math';
-
 import 'package:application_new/common/http/http_service_provider.dart';
 import 'package:application_new/common/loading/async_loading_provider.dart';
-import 'package:application_new/domain/place/place_provider.dart';
-import 'package:application_new/domain/travel/travel_plan_model.dart';
+import 'package:application_new/domain/travel/travel_plan/travel_plan_model.dart';
 import 'package:application_new/domain/travel/travel_provider.dart';
-import 'package:application_new/domain/travel_visit/travel_visit_model.dart';
 import 'package:application_new/feature/authentication/service/auth_service_provider.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_manage/provider/travel_plan_manage_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';

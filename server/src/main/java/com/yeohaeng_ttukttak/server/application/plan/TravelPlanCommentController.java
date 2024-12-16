@@ -42,6 +42,18 @@ public class TravelPlanCommentController {
                 new CommentListResponse(dtoList));
     }
 
+    @GetMapping
+    public ServerResponse<CommentListResponse> getOrderedComments(
+            @PathVariable Long travelId,
+            @PathVariable Long planId) {
+
+        final List<CommentDto> dtoList =
+                travelPlanCommentService.getOrderedComments(planId);
+
+        return new ServerResponse<>(
+                new CommentListResponse(dtoList));
+    }
+
     @PatchMapping("/{commentId}")
     @Authorization
     public ServerResponse<CommentListResponse> editComment(
