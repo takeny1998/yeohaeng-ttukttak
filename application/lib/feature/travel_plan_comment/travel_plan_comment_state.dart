@@ -8,5 +8,7 @@ class TravelPlanCommentState with _$TravelPlanCommentState {
   const factory TravelPlanCommentState({
     @Default([]) List<TravelPlanCommentModel> comments,
     @Default({}) Map<String, String> fieldErrors,
+    String? content,
+    int? editingCommentId,
   }) = _TravelPlanCommentState;
 }

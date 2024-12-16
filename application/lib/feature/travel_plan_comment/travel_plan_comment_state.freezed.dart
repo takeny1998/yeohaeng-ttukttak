@@ -19,6 +19,8 @@ mixin _$TravelPlanCommentState {
   List<TravelPlanCommentModel> get comments =>
       throw _privateConstructorUsedError;
   Map<String, String> get fieldErrors => throw _privateConstructorUsedError;
+  String? get content => throw _privateConstructorUsedError;
+  int? get editingCommentId => throw _privateConstructorUsedError;
 
   /// Create a copy of TravelPlanCommentState
   /// with the given fields replaced by the non-null parameter values.
@@ -34,7 +36,10 @@ abstract class $TravelPlanCommentStateCopyWith<$Res> {
       _$TravelPlanCommentStateCopyWithImpl<$Res, TravelPlanCommentState>;
   @useResult
   $Res call(
-      {List<TravelPlanCommentModel> comments, Map<String, String> fieldErrors});
+      {List<TravelPlanCommentModel> comments,
+      Map<String, String> fieldErrors,
+      String? content,
+      int? editingCommentId});
 }
 
 /// @nodoc
@@ -55,6 +60,8 @@ class _$TravelPlanCommentStateCopyWithImpl<$Res,
   $Res call({
     Object? comments = null,
     Object? fieldErrors = null,
+    Object? content = freezed,
+    Object? editingCommentId = freezed,
   }) {
     return _then(_value.copyWith(
       comments: null == comments
@@ -65,6 +72,14 @@ class _$TravelPlanCommentStateCopyWithImpl<$Res,
           ? _value.fieldErrors
           : fieldErrors // ignore: cast_nullable_to_non_nullable
               as Map<String, String>,
+      content: freezed == content
+          ? _value.content
+          : content // ignore: cast_nullable_to_non_nullable
+              as String?,
+      editingCommentId: freezed == editingCommentId
+          ? _value.editingCommentId
+          : editingCommentId // ignore: cast_nullable_to_non_nullable
+              as int?,
     ) as $Val);
   }
 }
@@ -79,7 +94,10 @@ abstract class _$$TravelPlanCommentStateImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {List<TravelPlanCommentModel> comments, Map<String, String> fieldErrors});
+      {List<TravelPlanCommentModel> comments,
+      Map<String, String> fieldErrors,
+      String? content,
+      int? editingCommentId});
 }
 
 /// @nodoc
@@ -99,6 +117,8 @@ class __$$TravelPlanCommentStateImplCopyWithImpl<$Res>
   $Res call({
     Object? comments = null,
     Object? fieldErrors = null,
+    Object? content = freezed,
+    Object? editingCommentId = freezed,
   }) {
     return _then(_$TravelPlanCommentStateImpl(
       comments: null == comments
@@ -109,6 +129,14 @@ class __$$TravelPlanCommentStateImplCopyWithImpl<$Res>
           ? _value._fieldErrors
           : fieldErrors // ignore: cast_nullable_to_non_nullable
               as Map<String, String>,
+      content: freezed == content
+          ? _value.content
+          : content // ignore: cast_nullable_to_non_nullable
+              as String?,
+      editingCommentId: freezed == editingCommentId
+          ? _value.editingCommentId
+          : editingCommentId // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -118,7 +146,9 @@ class __$$TravelPlanCommentStateImplCopyWithImpl<$Res>
 class _$TravelPlanCommentStateImpl implements _TravelPlanCommentState {
   const _$TravelPlanCommentStateImpl(
       {final List<TravelPlanCommentModel> comments = const [],
-      final Map<String, String> fieldErrors = const {}})
+      final Map<String, String> fieldErrors = const {},
+      this.content,
+      this.editingCommentId})
       : _comments = comments,
         _fieldErrors = fieldErrors;
 
@@ -141,8 +171,13 @@ class _$TravelPlanCommentStateImpl implements _TravelPlanCommentState {
   }
 
   @override
+  final String? content;
+  @override
+  final int? editingCommentId;
+
+  @override
   String toString() {
-    return 'TravelPlanCommentState(comments: $comments, fieldErrors: $fieldErrors)';
+    return 'TravelPlanCommentState(comments: $comments, fieldErrors: $fieldErrors, content: $content, editingCommentId: $editingCommentId)';
   }
 
   @override
@@ -152,14 +187,19 @@ class _$TravelPlanCommentStateImpl implements _TravelPlanCommentState {
             other is _$TravelPlanCommentStateImpl &&
             const DeepCollectionEquality().equals(other._comments, _comments) &&
             const DeepCollectionEquality()
-                .equals(other._fieldErrors, _fieldErrors));
+                .equals(other._fieldErrors, _fieldErrors) &&
+            (identical(other.content, content) || other.content == content) &&
+            (identical(other.editingCommentId, editingCommentId) ||
+                other.editingCommentId == editingCommentId));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(_comments),
-      const DeepCollectionEquality().hash(_fieldErrors));
+      const DeepCollectionEquality().hash(_fieldErrors),
+      content,
+      editingCommentId);
 
   /// Create a copy of TravelPlanCommentState
   /// with the given fields replaced by the non-null parameter values.
@@ -174,12 +214,18 @@ class _$TravelPlanCommentStateImpl implements _TravelPlanCommentState {
 abstract class _TravelPlanCommentState implements TravelPlanCommentState {
   const factory _TravelPlanCommentState(
       {final List<TravelPlanCommentModel> comments,
-      final Map<String, String> fieldErrors}) = _$TravelPlanCommentStateImpl;
+      final Map<String, String> fieldErrors,
+      final String? content,
+      final int? editingCommentId}) = _$TravelPlanCommentStateImpl;
 
   @override
   List<TravelPlanCommentModel> get comments;
   @override
   Map<String, String> get fieldErrors;
+  @override
+  String? get content;
+  @override
+  int? get editingCommentId;
 
   /// Create a copy of TravelPlanCommentState
   /// with the given fields replaced by the non-null parameter values.

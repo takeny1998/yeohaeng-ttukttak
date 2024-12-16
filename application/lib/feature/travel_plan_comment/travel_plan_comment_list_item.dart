@@ -3,6 +3,8 @@ import 'package:application_new/common/translation/translation_service.dart';
 import 'package:application_new/domain/member/member_provider.dart';
 import 'package:application_new/domain/travel/travel_plan/travel_plan_comment_model.dart';
 import 'package:application_new/feature/profile/profile_avatar.dart';
+import 'package:application_new/feature/travel_plan_comment/travel_plan_comment_action_sheet.dart';
+import 'package:application_new/feature/travel_plan_comment/travel_plan_comment_provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
@@ -10,11 +12,13 @@ import 'package:timeago/timeago.dart' as timeago;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class TravelPlanCommentListItem extends ConsumerWidget {
-  final TravelPlanCommentModel? comment;
+
+  final TravelPlanCommentModel comment;
+  final TravelPlanCommentProvider provider;
   final bool isCollapsed;
 
   const TravelPlanCommentListItem(
-      {super.key, required this.comment, this.isCollapsed = false});
+      {super.key, required this.comment, required this.provider, this.isCollapsed = false});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -22,20 +26,18 @@ class TravelPlanCommentListItem extends ConsumerWidget {
 
     final tr = ref.watch(translationServiceProvider);
 
-    final member = comment != null
-        ? ref.watch(memberProvider(comment!.createdBy)).value
-        : null;
+    final member =  ref.watch(memberProvider(comment.createdBy)).value;
 
     String agoLabel = ' · ';
 
-    if (comment?.lastModifiedAt != null) {
+    if (comment.lastModifiedAt != null) {
       agoLabel += '${timeago.format(
-        comment!.lastModifiedAt,
+        comment.lastModifiedAt!,
         locale: context.locale.languageCode,
       )} (${tr.from('edited')})';
-    } else if (comment?.createdAt != null) {
+    } else {
       agoLabel += timeago.format(
-        comment!.createdAt,
+        comment.createdAt,
         locale: context.locale.languageCode,
       );
     }
@@ -62,17 +64,17 @@ class TravelPlanCommentListItem extends ConsumerWidget {
       ),
       titleAlignment: ListTileTitleAlignment.titleHeight,
       trailing: !isCollapsed ? IconButton(
-          onPressed: () {},
+          onPressed: () => TravelPlanCommentActionSheet.showSheet(context, provider: provider, comment: comment),
           icon: const Icon(
             Icons.more_horiz,
-            size: 18.0,
+            size: 20.0,
           )) : null,
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 2.0),
           Text(
-            comment?.content ?? '',
+            comment.content ,
             overflow: isCollapsed ? TextOverflow.ellipsis : null,
             style: const TextStyle(fontSize: 13.5),
           ),

@@ -1,6 +1,6 @@
 import 'package:application_new/common/exception/server_exception.dart';
 import 'package:application_new/common/translation/translation_service.dart';
-import 'package:application_new/feature/travel_plan/page/travel_plan_manage/component/travel_plan_comment_list_item.dart';
+import 'package:application_new/feature/travel_plan_comment/travel_plan_comment_list_item.dart';
 import 'package:application_new/feature/travel_plan_comment/travel_plan_comment_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,17 +9,33 @@ class TravelPlanCommentPage extends ConsumerWidget {
   final int travelId, planId;
 
   final contentController = TextEditingController();
+  final contentFocusNode = FocusNode();
 
   TravelPlanCommentPage(
       {super.key, required this.travelId, required this.planId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(travelPlanCommentProvider(travelId, planId));
+    final provider = travelPlanCommentProvider(travelId, planId);
+    final state = ref.watch(provider);
 
     final colorScheme = Theme.of(context).colorScheme;
 
     final tr = ref.watch(translationServiceProvider);
+
+    // 댓글 수정을 위한 리스너
+    ref.listen(provider, (prev, next) {
+      if (!next.hasValue) return;
+      final content = next.value?.content;
+
+      if (content != null) {
+        contentController.text = content;
+        FocusScope.of(context).requestFocus(contentFocusNode);
+      } else {
+        contentController.text = '';
+        FocusManager.instance.primaryFocus?.unfocus();
+      }
+    });
 
     return Scaffold(
       appBar: AppBar(
@@ -38,6 +54,7 @@ class TravelPlanCommentPage extends ConsumerWidget {
                       itemCount: data.comments.length,
                       itemBuilder: (context, index) =>
                           TravelPlanCommentListItem(
+                              provider: provider,
                               comment: data.comments[index]),
                     ),
                   ),
@@ -51,8 +68,10 @@ class TravelPlanCommentPage extends ConsumerWidget {
                         horizontal: 24.0, vertical: 24.0),
                     child: TextFormField(
                       controller: contentController,
+                      focusNode: contentFocusNode,
                       onTapOutside: (_) {
                         contentController.clear();
+                        ref.read(provider.notifier).cancelEditingComment();
                         FocusManager.instance.primaryFocus?.unfocus();
                       },
                       decoration: InputDecoration(
@@ -60,11 +79,9 @@ class TravelPlanCommentPage extends ConsumerWidget {
                           errorText: data.fieldErrors['content'],
                           suffixIcon: const Icon(Icons.add)),
                       onFieldSubmitted: (content) {
-                        final notifier = ref.read(
-                            travelPlanCommentProvider(travelId, planId)
-                                .notifier);
+                        final notifier = ref.read(provider.notifier);
 
-                        notifier.writeComment(content).catchError((error, _) {
+                        notifier.submitComment(content).catchError((error, _) {
                           if (error is ServerFailException) {
                             notifier.consumeFieldError(error);
                             return;

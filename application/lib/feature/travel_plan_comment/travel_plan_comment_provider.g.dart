@@ -6,7 +6,7 @@ part of 'travel_plan_comment_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$travelPlanCommentHash() => r'afebddd784ae144488dbce39ab019006356e736f';
+String _$travelPlanCommentHash() => r'810ffeb92bbd2a102a05bd35235ffede2cbc1d47';
 
 /// Copied from Dart SDK
 class _SystemHash {

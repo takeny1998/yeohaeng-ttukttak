@@ -1,7 +1,7 @@
 import 'package:application_new/common/router/router_provider.dart';
 import 'package:application_new/common/translation/translation_service.dart';
 import 'package:application_new/domain/travel/travel_plan/travel_plan_comment_model.dart';
-import 'package:application_new/feature/travel_plan/page/travel_plan_manage/component/travel_plan_comment_list_item.dart';
+import 'package:application_new/feature/travel_plan_comment/travel_plan_comment_list_item.dart';
 import 'package:application_new/feature/travel_plan_comment/travel_plan_comment_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -16,7 +16,9 @@ class TravelPlanCommentPreview extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(travelPlanCommentProvider(travelId, planId));
+
+    final provider = travelPlanCommentProvider(travelId, planId);
+    final state = ref.watch(provider);
 
     final tr = ref.watch(translationServiceProvider);
 
@@ -29,7 +31,7 @@ class TravelPlanCommentPreview extends ConsumerWidget {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       if (comments != null) ...[
         for (final comment in comments)
-          TravelPlanCommentListItem(comment: comment, isCollapsed: true),
+          TravelPlanCommentListItem(comment: comment, isCollapsed: true, provider: provider),
         const SizedBox(height: 8.0),
       ],
       OutlinedButton.icon(

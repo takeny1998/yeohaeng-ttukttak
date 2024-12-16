@@ -6,7 +6,7 @@ import 'package:application_new/common/loading/async_loading_provider.dart';
 import 'package:application_new/domain/travel/travel_plan/travel_plan_comment_model.dart';
 import 'package:application_new/feature/authentication/model/auth_model.dart';
 import 'package:application_new/feature/authentication/service/auth_service_provider.dart';
-import 'package:application_new/feature/travel_plan/page/travel_plan_manage/provider/travel_plan_comment_state.dart';
+import 'package:application_new/feature/travel_plan_comment/travel_plan_comment_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'travel_plan_comment_provider.g.dart';
@@ -24,9 +24,9 @@ class TravelPlanComment extends _$TravelPlanComment {
     return TravelPlanCommentState(comments: comments);
   }
 
-  Future<void> writeComment(String content) async {
-
-    if (content.isEmpty) return;
+  Future<void> submitComment(String content) async {
+    final prevState = state.value;
+    if (prevState == null || content.isEmpty) return;
 
     final loadingNotifier = ref.read(asyncLoadingProvider.notifier);
 
@@ -36,14 +36,22 @@ class TravelPlanComment extends _$TravelPlanComment {
       final AuthModel(:accessToken) =
           await ref.read(authServiceProvider).find();
 
-      final response = await httpService.request(
-          'POST', '/api/v2/travels/$travelId/plans/$planId/comments',
-          authorization: accessToken, data: {'content': content});
-
-      return TravelPlanCommentModel.listFromJson(response);
+      if (prevState.editingCommentId != null) {
+        final response = await httpService.request('PATCh',
+            '/api/v2/travels/$travelId/plans/$planId/comments/${prevState.editingCommentId}',
+            authorization: accessToken, data: {'content': content});
+        return TravelPlanCommentModel.listFromJson(response);
+      } else {
+        final response = await httpService.request(
+            'POST', '/api/v2/travels/$travelId/plans/$planId/comments',
+            authorization: accessToken, data: {'content': content});
+        return TravelPlanCommentModel.listFromJson(response);
+      }
     });
 
-    state = AsyncValue.data(state.value!.copyWith(comments: updatedComments));
+    state = AsyncValue.data(prevState.copyWith(
+        content: null,
+        comments: updatedComments));
   }
 
   Future<void> consumeFieldError(ServerFailException exception) async {
@@ -54,5 +62,28 @@ class TravelPlanComment extends _$TravelPlanComment {
         ),
       );
     });
+  }
+
+  void startEditingComment(int commentId, String content) {
+    final prevState = state.value;
+    if (prevState == null || prevState.editingCommentId != null) return;
+
+    state = AsyncValue.data(prevState.copyWith(
+        content: content,
+        editingCommentId: commentId));
+  }
+
+  void cancelEditingComment() {
+    final prevState = state.value;
+    if (prevState == null || prevState.editingCommentId == null) return;
+
+    state = AsyncValue.data(prevState.copyWith(
+        content: '',
+        editingCommentId: null));
+  }
+
+  Future<void> editComment(String newContent) async {
+    final prevState = state.value;
+    if (prevState == null || newContent.isEmpty) return;
   }
 }

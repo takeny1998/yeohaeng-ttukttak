@@ -13,7 +13,9 @@ _$TravelPlanCommentModelImpl _$$TravelPlanCommentModelImplFromJson(
       content: json['content'] as String,
       createdBy: json['createdBy'] as String,
       createdAt: DateTime.parse(json['createdAt'] as String),
-      lastModifiedAt: DateTime.parse(json['lastModifiedAt'] as String),
+      lastModifiedAt: json['lastModifiedAt'] == null
+          ? null
+          : DateTime.parse(json['lastModifiedAt'] as String),
     );
 
 Map<String, dynamic> _$$TravelPlanCommentModelImplToJson(
@@ -23,5 +25,5 @@ Map<String, dynamic> _$$TravelPlanCommentModelImplToJson(
       'content': instance.content,
       'createdBy': instance.createdBy,
       'createdAt': instance.createdAt.toIso8601String(),
-      'lastModifiedAt': instance.lastModifiedAt.toIso8601String(),
+      'lastModifiedAt': instance.lastModifiedAt?.toIso8601String(),
     };

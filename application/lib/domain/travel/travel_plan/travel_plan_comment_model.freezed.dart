@@ -25,7 +25,7 @@ mixin _$TravelPlanCommentModel {
   String get content => throw _privateConstructorUsedError;
   String get createdBy => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
-  DateTime get lastModifiedAt => throw _privateConstructorUsedError;
+  DateTime? get lastModifiedAt => throw _privateConstructorUsedError;
 
   /// Serializes this TravelPlanCommentModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -48,7 +48,7 @@ abstract class $TravelPlanCommentModelCopyWith<$Res> {
       String content,
       String createdBy,
       DateTime createdAt,
-      DateTime lastModifiedAt});
+      DateTime? lastModifiedAt});
 }
 
 /// @nodoc
@@ -71,7 +71,7 @@ class _$TravelPlanCommentModelCopyWithImpl<$Res,
     Object? content = null,
     Object? createdBy = null,
     Object? createdAt = null,
-    Object? lastModifiedAt = null,
+    Object? lastModifiedAt = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -90,10 +90,10 @@ class _$TravelPlanCommentModelCopyWithImpl<$Res,
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      lastModifiedAt: null == lastModifiedAt
+      lastModifiedAt: freezed == lastModifiedAt
           ? _value.lastModifiedAt
           : lastModifiedAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as DateTime?,
     ) as $Val);
   }
 }
@@ -112,7 +112,7 @@ abstract class _$$TravelPlanCommentModelImplCopyWith<$Res>
       String content,
       String createdBy,
       DateTime createdAt,
-      DateTime lastModifiedAt});
+      DateTime? lastModifiedAt});
 }
 
 /// @nodoc
@@ -134,7 +134,7 @@ class __$$TravelPlanCommentModelImplCopyWithImpl<$Res>
     Object? content = null,
     Object? createdBy = null,
     Object? createdAt = null,
-    Object? lastModifiedAt = null,
+    Object? lastModifiedAt = freezed,
   }) {
     return _then(_$TravelPlanCommentModelImpl(
       id: null == id
@@ -153,10 +153,10 @@ class __$$TravelPlanCommentModelImplCopyWithImpl<$Res>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      lastModifiedAt: null == lastModifiedAt
+      lastModifiedAt: freezed == lastModifiedAt
           ? _value.lastModifiedAt
           : lastModifiedAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as DateTime?,
     ));
   }
 }
@@ -169,7 +169,7 @@ class _$TravelPlanCommentModelImpl implements _TravelPlanCommentModel {
       required this.content,
       required this.createdBy,
       required this.createdAt,
-      required this.lastModifiedAt});
+      this.lastModifiedAt});
 
   factory _$TravelPlanCommentModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$TravelPlanCommentModelImplFromJson(json);
@@ -183,7 +183,7 @@ class _$TravelPlanCommentModelImpl implements _TravelPlanCommentModel {
   @override
   final DateTime createdAt;
   @override
-  final DateTime lastModifiedAt;
+  final DateTime? lastModifiedAt;
 
   @override
   String toString() {
@@ -233,7 +233,7 @@ abstract class _TravelPlanCommentModel implements TravelPlanCommentModel {
       required final String content,
       required final String createdBy,
       required final DateTime createdAt,
-      required final DateTime lastModifiedAt}) = _$TravelPlanCommentModelImpl;
+      final DateTime? lastModifiedAt}) = _$TravelPlanCommentModelImpl;
 
   factory _TravelPlanCommentModel.fromJson(Map<String, dynamic> json) =
       _$TravelPlanCommentModelImpl.fromJson;
@@ -247,7 +247,7 @@ abstract class _TravelPlanCommentModel implements TravelPlanCommentModel {
   @override
   DateTime get createdAt;
   @override
-  DateTime get lastModifiedAt;
+  DateTime? get lastModifiedAt;
 
   /// Create a copy of TravelPlanCommentModel
   /// with the given fields replaced by the non-null parameter values.

@@ -10,7 +10,7 @@ class TravelPlanCommentModel with _$TravelPlanCommentModel {
     required String content,
     required String createdBy,
     required DateTime createdAt,
-    required DateTime lastModifiedAt,
+    DateTime? lastModifiedAt,
   }) = _TravelPlanCommentModel;
 
   factory TravelPlanCommentModel.fromJson(Map<String, dynamic> json) =>
