@@ -5,9 +5,8 @@ part 'travel_plan_comment_state.freezed.dart';
 
 @freezed
 class TravelPlanCommentState with _$TravelPlanCommentState {
-
   const factory TravelPlanCommentState({
     @Default([]) List<TravelPlanCommentModel> comments,
+    @Default({}) Map<String, String> fieldErrors,
   }) = _TravelPlanCommentState;
-
 }

@@ -18,6 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$TravelPlanCommentState {
   List<TravelPlanCommentModel> get comments =>
       throw _privateConstructorUsedError;
+  Map<String, String> get fieldErrors => throw _privateConstructorUsedError;
 
   /// Create a copy of TravelPlanCommentState
   /// with the given fields replaced by the non-null parameter values.
@@ -32,7 +33,8 @@ abstract class $TravelPlanCommentStateCopyWith<$Res> {
           $Res Function(TravelPlanCommentState) then) =
       _$TravelPlanCommentStateCopyWithImpl<$Res, TravelPlanCommentState>;
   @useResult
-  $Res call({List<TravelPlanCommentModel> comments});
+  $Res call(
+      {List<TravelPlanCommentModel> comments, Map<String, String> fieldErrors});
 }
 
 /// @nodoc
@@ -52,12 +54,17 @@ class _$TravelPlanCommentStateCopyWithImpl<$Res,
   @override
   $Res call({
     Object? comments = null,
+    Object? fieldErrors = null,
   }) {
     return _then(_value.copyWith(
       comments: null == comments
           ? _value.comments
           : comments // ignore: cast_nullable_to_non_nullable
               as List<TravelPlanCommentModel>,
+      fieldErrors: null == fieldErrors
+          ? _value.fieldErrors
+          : fieldErrors // ignore: cast_nullable_to_non_nullable
+              as Map<String, String>,
     ) as $Val);
   }
 }
@@ -71,7 +78,8 @@ abstract class _$$TravelPlanCommentStateImplCopyWith<$Res>
       __$$TravelPlanCommentStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<TravelPlanCommentModel> comments});
+  $Res call(
+      {List<TravelPlanCommentModel> comments, Map<String, String> fieldErrors});
 }
 
 /// @nodoc
@@ -90,12 +98,17 @@ class __$$TravelPlanCommentStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? comments = null,
+    Object? fieldErrors = null,
   }) {
     return _then(_$TravelPlanCommentStateImpl(
       comments: null == comments
           ? _value._comments
           : comments // ignore: cast_nullable_to_non_nullable
               as List<TravelPlanCommentModel>,
+      fieldErrors: null == fieldErrors
+          ? _value._fieldErrors
+          : fieldErrors // ignore: cast_nullable_to_non_nullable
+              as Map<String, String>,
     ));
   }
 }
@@ -104,8 +117,10 @@ class __$$TravelPlanCommentStateImplCopyWithImpl<$Res>
 
 class _$TravelPlanCommentStateImpl implements _TravelPlanCommentState {
   const _$TravelPlanCommentStateImpl(
-      {final List<TravelPlanCommentModel> comments = const []})
-      : _comments = comments;
+      {final List<TravelPlanCommentModel> comments = const [],
+      final Map<String, String> fieldErrors = const {}})
+      : _comments = comments,
+        _fieldErrors = fieldErrors;
 
   final List<TravelPlanCommentModel> _comments;
   @override
@@ -116,9 +131,18 @@ class _$TravelPlanCommentStateImpl implements _TravelPlanCommentState {
     return EqualUnmodifiableListView(_comments);
   }
 
+  final Map<String, String> _fieldErrors;
+  @override
+  @JsonKey()
+  Map<String, String> get fieldErrors {
+    if (_fieldErrors is EqualUnmodifiableMapView) return _fieldErrors;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(_fieldErrors);
+  }
+
   @override
   String toString() {
-    return 'TravelPlanCommentState(comments: $comments)';
+    return 'TravelPlanCommentState(comments: $comments, fieldErrors: $fieldErrors)';
   }
 
   @override
@@ -126,12 +150,16 @@ class _$TravelPlanCommentStateImpl implements _TravelPlanCommentState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$TravelPlanCommentStateImpl &&
-            const DeepCollectionEquality().equals(other._comments, _comments));
+            const DeepCollectionEquality().equals(other._comments, _comments) &&
+            const DeepCollectionEquality()
+                .equals(other._fieldErrors, _fieldErrors));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(_comments));
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(_comments),
+      const DeepCollectionEquality().hash(_fieldErrors));
 
   /// Create a copy of TravelPlanCommentState
   /// with the given fields replaced by the non-null parameter values.
@@ -145,11 +173,13 @@ class _$TravelPlanCommentStateImpl implements _TravelPlanCommentState {
 
 abstract class _TravelPlanCommentState implements TravelPlanCommentState {
   const factory _TravelPlanCommentState(
-          {final List<TravelPlanCommentModel> comments}) =
-      _$TravelPlanCommentStateImpl;
+      {final List<TravelPlanCommentModel> comments,
+      final Map<String, String> fieldErrors}) = _$TravelPlanCommentStateImpl;
 
   @override
   List<TravelPlanCommentModel> get comments;
+  @override
+  Map<String, String> get fieldErrors;
 
   /// Create a copy of TravelPlanCommentState
   /// with the given fields replaced by the non-null parameter values.

@@ -1,3 +1,4 @@
+import 'package:application_new/common/exception/server_exception.dart';
 import 'package:application_new/common/translation/translation_service.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_manage/component/travel_plan_comment_list_item.dart';
 import 'package:application_new/feature/travel_plan_comment/travel_plan_comment_provider.dart';
@@ -7,7 +8,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class TravelPlanCommentPage extends ConsumerWidget {
   final int travelId, planId;
 
-  const TravelPlanCommentPage(
+  final contentController = TextEditingController();
+
+  TravelPlanCommentPage(
       {super.key, required this.travelId, required this.planId});
 
   @override
@@ -47,12 +50,30 @@ class TravelPlanCommentPage extends ConsumerWidget {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 24.0, vertical: 24.0),
                     child: TextFormField(
-                      onTapOutside: (_) =>
-                          FocusManager.instance.primaryFocus?.unfocus(),
-                      decoration:
-                          InputDecoration(
-                              hintText: tr.from('please_enter_a_comment'),
-                              suffixIcon: const Icon(Icons.add)),
+                      controller: contentController,
+                      onTapOutside: (_) {
+                        contentController.clear();
+                        FocusManager.instance.primaryFocus?.unfocus();
+                      },
+                      decoration: InputDecoration(
+                          hintText: tr.from('please_enter_a_comment'),
+                          errorText: data.fieldErrors['content'],
+                          suffixIcon: const Icon(Icons.add)),
+                      onFieldSubmitted: (content) {
+                        final notifier = ref.read(
+                            travelPlanCommentProvider(travelId, planId)
+                                .notifier);
+
+                        notifier.writeComment(content).catchError((error, _) {
+                          if (error is ServerFailException) {
+                            notifier.consumeFieldError(error);
+                            return;
+                          }
+                          throw error;
+                        });
+
+                        contentController.clear();
+                      },
                       enabled: !state.isLoading,
                     ),
                   )
