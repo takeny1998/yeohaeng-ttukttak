@@ -1,6 +1,7 @@
 import 'package:application_new/domain/travel/travel_plan/travel_plan_model.dart';
 import 'package:application_new/domain/travel_visit/travel_visit_model.dart';
-import 'package:application_new/feature/travel_plan/page/travel_plan_manage/component/travel_plan_list_item.dart';
+import 'package:application_new/feature/travel_plan/page/travel_plan_manage/page/travel_plan_view.dart';
+import 'package:application_new/feature/travel_plan/page/travel_plan_manage/page/travel_plan_comment_view.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_manage/provider/travel_plan_manage_provider.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_manage/provider/travel_plan_manage_state.dart';
 import 'package:flutter/material.dart';
@@ -42,7 +43,7 @@ class _TravelPlanMangeListViewState
       scrollController.jumpTo(0.0);
     });
 
-    final plans = widget.plans;
+    final (plans, travelId) = (widget.plans, widget.provider.travelId);
 
     return Stack(
       children: [
@@ -67,35 +68,41 @@ class _TravelPlanMangeListViewState
                               if (candidateData.isNotEmpty)
                                 Opacity(
                                     opacity: 0.5,
-                                    child: TravelPlanListItem(
-                                        order: index,
-                                       plan: candidateData.first!)),
-                              TravelPlanListItem(
-                                  onDelete: () => ref
-                                      .read(widget.provider.notifier)
-                                      .delete(plan),
-                                  order: index,
-                                  plan: plan),
+                                    child: TravelPlanView(
+                                        provider: widget.provider,
+                                        index: index,
+                                        plan: candidateData.first!)),
+                              TravelPlanView(
+                                onDelete: () => ref
+                                    .read(widget.provider.notifier)
+                                    .delete(plan),
+                                provider: widget.provider,
+                                index: index,
+                                plan: plan,
+                              ),
                             ],
                           );
                         });
                   }),
               SliverFillRemaining(
                 hasScrollBody: false,
-                child: DragTarget<TravelPlanModel>(
-                    onAcceptWithDetails: (detail) {
+                child:
+                    DragTarget<TravelPlanModel>(onAcceptWithDetails: (detail) {
                   final lastPlan = plans.lastOrNull;
                   ref
                       .read(widget.provider.notifier)
                       .move(detail.data, (lastPlan?.orderOfVisit ?? -1) + 1);
                 }, builder: (context, candidateData, rejectedData) {
+
                   return Column(
                     children: [
                       if (candidateData.isNotEmpty)
                         Opacity(
                             opacity: 0.5,
-                            child: TravelPlanListItem(
-                                order: 0, plan: candidateData.first!)),
+                            child: TravelPlanView(
+                                provider: widget.provider,
+                                index:  plans.length,
+                                plan: candidateData.first!)),
                       Expanded(
                         child: Container(
                           width: double.maxFinite,

@@ -37,6 +37,11 @@ class TravelPlanManage extends _$TravelPlanManage {
     state = state?.copyWith(selectedDate: date);
   }
 
+  void updateDraggingIndex(int? index) {
+    if (state?.draggingIndex == index) return;
+    state = state?.copyWith(draggingIndex: index);
+  }
+
   void endAnimating() {
     if (state == null || !state!.isAnimating) return;
 
@@ -63,6 +68,9 @@ class TravelPlanManage extends _$TravelPlanManage {
   }
 
   Future<void> move(TravelPlanModel from, int order) async {
+
+    state = state?.copyWith(draggingIndex: null);
+
     if (state == null) return;
 
     final newPlans =

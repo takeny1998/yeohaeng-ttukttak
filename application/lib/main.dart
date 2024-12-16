@@ -3,10 +3,8 @@ import 'dart:ui';
 
 import 'package:application_new/common/event/event.dart';
 import 'package:application_new/common/exception/exception_handler.dart';
-import 'package:application_new/common/http/http_service_provider.dart';
 import 'package:application_new/common/loading/async_loading_provider.dart';
 import 'package:application_new/common/session/session_provider.dart';
-import 'package:application_new/common/translation/translation_service.dart';
 import 'package:application_new/feature/authentication/service/auth_service_provider.dart';
 import 'package:application_new/feature/locale/locale_provider.dart';
 import 'package:application_new/shared/theme/my_chip_theme.dart';
@@ -27,6 +25,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
 
+  FlutterError.onError = (details) => handleException(details.exception, details.stack);
   PlatformDispatcher.instance.onError = handleException;
 
   const korean = Locale.fromSubtags(languageCode: 'ko');

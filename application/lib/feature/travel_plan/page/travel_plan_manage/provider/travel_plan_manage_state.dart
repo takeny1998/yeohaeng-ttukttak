@@ -14,5 +14,6 @@ class TravelPlanManageState with _$TravelPlanManageState {
     required DateTime selectedDate,
     @Default(1) int mapHeightLevel,
     @Default(false) bool isAnimating,
+    int? draggingIndex,
   }) = _TravelPlanManageState;
 }

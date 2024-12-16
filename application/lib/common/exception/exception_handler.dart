@@ -10,7 +10,7 @@ import 'business_exception.dart';
 import 'network_exception.dart';
 import 'server_exception.dart';
 
-bool handleException(Object error, StackTrace stack) {
+bool handleException(Object error, StackTrace? stack) {
   final uuid = const UuidV4().generate().substring(0, 6);
 
   logger.e('[$uuid][Error]', stackTrace: stack, error: error);

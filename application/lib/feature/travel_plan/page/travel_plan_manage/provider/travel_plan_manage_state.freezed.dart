@@ -21,6 +21,7 @@ mixin _$TravelPlanManageState {
   DateTime get selectedDate => throw _privateConstructorUsedError;
   int get mapHeightLevel => throw _privateConstructorUsedError;
   bool get isAnimating => throw _privateConstructorUsedError;
+  int? get draggingIndex => throw _privateConstructorUsedError;
 
   /// Create a copy of TravelPlanManageState
   /// with the given fields replaced by the non-null parameter values.
@@ -40,7 +41,8 @@ abstract class $TravelPlanManageStateCopyWith<$Res> {
       List<TravelPlanModel> plans,
       DateTime selectedDate,
       int mapHeightLevel,
-      bool isAnimating});
+      bool isAnimating,
+      int? draggingIndex});
 
   $TravelModelCopyWith<$Res> get travel;
 }
@@ -66,6 +68,7 @@ class _$TravelPlanManageStateCopyWithImpl<$Res,
     Object? selectedDate = null,
     Object? mapHeightLevel = null,
     Object? isAnimating = null,
+    Object? draggingIndex = freezed,
   }) {
     return _then(_value.copyWith(
       travel: null == travel
@@ -88,6 +91,10 @@ class _$TravelPlanManageStateCopyWithImpl<$Res,
           ? _value.isAnimating
           : isAnimating // ignore: cast_nullable_to_non_nullable
               as bool,
+      draggingIndex: freezed == draggingIndex
+          ? _value.draggingIndex
+          : draggingIndex // ignore: cast_nullable_to_non_nullable
+              as int?,
     ) as $Val);
   }
 
@@ -116,7 +123,8 @@ abstract class _$$TravelPlanManageStateImplCopyWith<$Res>
       List<TravelPlanModel> plans,
       DateTime selectedDate,
       int mapHeightLevel,
-      bool isAnimating});
+      bool isAnimating,
+      int? draggingIndex});
 
   @override
   $TravelModelCopyWith<$Res> get travel;
@@ -141,6 +149,7 @@ class __$$TravelPlanManageStateImplCopyWithImpl<$Res>
     Object? selectedDate = null,
     Object? mapHeightLevel = null,
     Object? isAnimating = null,
+    Object? draggingIndex = freezed,
   }) {
     return _then(_$TravelPlanManageStateImpl(
       travel: null == travel
@@ -163,6 +172,10 @@ class __$$TravelPlanManageStateImplCopyWithImpl<$Res>
           ? _value.isAnimating
           : isAnimating // ignore: cast_nullable_to_non_nullable
               as bool,
+      draggingIndex: freezed == draggingIndex
+          ? _value.draggingIndex
+          : draggingIndex // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -175,7 +188,8 @@ class _$TravelPlanManageStateImpl implements _TravelPlanManageState {
       required final List<TravelPlanModel> plans,
       required this.selectedDate,
       this.mapHeightLevel = 1,
-      this.isAnimating = false})
+      this.isAnimating = false,
+      this.draggingIndex})
       : _plans = plans;
 
   @override
@@ -196,10 +210,12 @@ class _$TravelPlanManageStateImpl implements _TravelPlanManageState {
   @override
   @JsonKey()
   final bool isAnimating;
+  @override
+  final int? draggingIndex;
 
   @override
   String toString() {
-    return 'TravelPlanManageState(travel: $travel, plans: $plans, selectedDate: $selectedDate, mapHeightLevel: $mapHeightLevel, isAnimating: $isAnimating)';
+    return 'TravelPlanManageState(travel: $travel, plans: $plans, selectedDate: $selectedDate, mapHeightLevel: $mapHeightLevel, isAnimating: $isAnimating, draggingIndex: $draggingIndex)';
   }
 
   @override
@@ -214,7 +230,9 @@ class _$TravelPlanManageStateImpl implements _TravelPlanManageState {
             (identical(other.mapHeightLevel, mapHeightLevel) ||
                 other.mapHeightLevel == mapHeightLevel) &&
             (identical(other.isAnimating, isAnimating) ||
-                other.isAnimating == isAnimating));
+                other.isAnimating == isAnimating) &&
+            (identical(other.draggingIndex, draggingIndex) ||
+                other.draggingIndex == draggingIndex));
   }
 
   @override
@@ -224,7 +242,8 @@ class _$TravelPlanManageStateImpl implements _TravelPlanManageState {
       const DeepCollectionEquality().hash(_plans),
       selectedDate,
       mapHeightLevel,
-      isAnimating);
+      isAnimating,
+      draggingIndex);
 
   /// Create a copy of TravelPlanManageState
   /// with the given fields replaced by the non-null parameter values.
@@ -242,7 +261,8 @@ abstract class _TravelPlanManageState implements TravelPlanManageState {
       required final List<TravelPlanModel> plans,
       required final DateTime selectedDate,
       final int mapHeightLevel,
-      final bool isAnimating}) = _$TravelPlanManageStateImpl;
+      final bool isAnimating,
+      final int? draggingIndex}) = _$TravelPlanManageStateImpl;
 
   @override
   TravelModel get travel;
@@ -254,6 +274,8 @@ abstract class _TravelPlanManageState implements TravelPlanManageState {
   int get mapHeightLevel;
   @override
   bool get isAnimating;
+  @override
+  int? get draggingIndex;
 
   /// Create a copy of TravelPlanManageState
   /// with the given fields replaced by the non-null parameter values.

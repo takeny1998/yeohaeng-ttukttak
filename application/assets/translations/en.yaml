@@ -58,6 +58,8 @@ please_log_in: Please Log in.
 please_enter_nickname: Please enter a nickname.
 
 profile_has_been_edited: The profile was updated successfully.
+number_more_comments: '{} more comments'
+comment_by_member: 'Comment by {}'
 
 gender: Gender
 age_group: Age Group
