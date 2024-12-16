@@ -5,17 +5,18 @@ part 'server_response.g.dart';
 
 @Freezed(unionKey: 'status')
 sealed class ServerResponse with _$ServerResponse {
+
   const factory ServerResponse.success({
     @Default({}) Map<String, dynamic> data,
   }) = ServerSuccessResponse;
 
   const factory ServerResponse.fail({
-    @Default({}) Map<String, String> data,
+    @Default({}) Map<String, dynamic> data,
   }) = ServerFailResponse;
 
   const factory ServerResponse.error({
+    required String code,
     required String message,
-    required int code,
   }) = ServerErrorResponse;
 
   factory ServerResponse.fromJson(Map<String, dynamic> json) =>

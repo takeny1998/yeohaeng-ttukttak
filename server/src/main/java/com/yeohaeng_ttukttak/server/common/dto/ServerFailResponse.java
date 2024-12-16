@@ -2,6 +2,7 @@ package com.yeohaeng_ttukttak.server.common.dto;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
 import java.util.List;
@@ -14,10 +15,12 @@ public final class ServerFailResponse {
 
     private final String status = "fail";
 
-    private final List<Map<String, String>> data;
+    private final ServerFailResponseData data;
 
-    public ServerFailResponse(List<Map<String, String>> data) {
-        this.data = data;
+    public ServerFailResponse(List<Map<String, String>> errors) {
+        this.data = new ServerFailResponseData(errors);
     }
+
+    record ServerFailResponseData(List<Map<String, String>> errors) { }
 
 }

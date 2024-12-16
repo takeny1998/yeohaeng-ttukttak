@@ -1,4 +1,4 @@
-import 'package:application_new/common/exception/exception.dart';
+import 'package:application_new/common/exception/business_exception.dart';
 import 'package:application_new/common/http/dto/server_response.dart';
 import 'package:application_new/common/http/http_service.dart';
 import 'package:application_new/domain/member/member_model.dart';

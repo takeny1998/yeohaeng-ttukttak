@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:application_new/common/exception/exception.dart';
+import 'package:application_new/common/exception/business_exception.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
