@@ -11,4 +11,5 @@ public class InvalidArgumentFailException extends FailException {
     public InvalidArgumentFailException(String field) {
         this(code, field);
     }
+
 }

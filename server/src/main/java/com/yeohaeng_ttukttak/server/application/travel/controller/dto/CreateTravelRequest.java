@@ -17,9 +17,8 @@ public record CreateTravelRequest (
         @NotEmpty @Size(max = 10) List<EntityReference<Long>> cities
 ) {
 
-    public CreateTravelCommand toCommand(String memberId) {
+    public CreateTravelCommand toCommand() {
         return new CreateTravelCommand(
-                memberId,
                 date().startedOn(),
                 date().endedOn(),
                 companionTypes(),

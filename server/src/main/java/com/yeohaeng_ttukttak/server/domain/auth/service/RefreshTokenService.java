@@ -1,6 +1,6 @@
 package com.yeohaeng_ttukttak.server.domain.auth.service;
 
-import com.yeohaeng_ttukttak.server.common.exception.exception.error.AuthorizationErrorException;
+import com.yeohaeng_ttukttak.server.common.exception.exception.fail.AuthorizationFailException;
 import com.yeohaeng_ttukttak.server.domain.auth.RefreshTokenProperties;
 import com.yeohaeng_ttukttak.server.domain.auth.entity.RefreshToken;
 import com.yeohaeng_ttukttak.server.domain.auth.repository.RefreshTokenRepository;
@@ -39,7 +39,7 @@ public class RefreshTokenService {
 
         // TODO: 찾지 못한다면 인증이 없거나 만료된 것
         final RefreshToken existToken = repository.findById(refreshToken)
-                .orElseThrow(AuthorizationErrorException::new);
+                .orElseThrow(AuthorizationFailException::new);
 
         log.debug("[RefreshTokenService.verify] existToken = {}", existToken);
 
@@ -47,7 +47,7 @@ public class RefreshTokenService {
         if (isUsedBefore) {
             // TODO: Refresh Token이 재사용 됨, 모든 토큰을 무효화 시킨다.
             repository.findAllByUserId(existToken.memberId()).forEach(this::revoke);
-            throw new AuthorizationErrorException();
+            throw new AuthorizationFailException();
         }
 
         return existToken;

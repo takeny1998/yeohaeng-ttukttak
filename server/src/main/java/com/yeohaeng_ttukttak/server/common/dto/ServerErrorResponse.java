@@ -10,10 +10,12 @@ import lombok.ToString;
 public final class ServerErrorResponse {
 
     private final String status = "error";
-    private final String message;
-    private final Integer code;
 
-    public ServerErrorResponse(String message, Integer code) {
+    private final String code;
+
+    private final String message;
+
+    public ServerErrorResponse(String code, String message) {
         this.message = message;
         this.code = code;
     }

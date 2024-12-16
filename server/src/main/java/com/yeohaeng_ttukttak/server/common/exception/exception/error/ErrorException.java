@@ -7,15 +7,12 @@ import org.springframework.http.HttpStatus;
 @Getter
 public abstract class ErrorException extends BaseException {
 
-    private final HttpStatus status;
-
-    public ErrorException(HttpStatus status, String code, Throwable cause) {
+    protected ErrorException(String code, Throwable cause) {
         super(code,  cause);
-        this.status = status;
     }
 
-    public ErrorException(HttpStatus status, String code) {
-        this(status, code, null);
+    protected ErrorException(String code) {
+        this(code, null);
     }
 
 }

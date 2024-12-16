@@ -8,7 +8,7 @@ import com.yeohaeng_ttukttak.server.application.travel.service.UpdateTravelPlanS
 import com.yeohaeng_ttukttak.server.common.aop.annotation.Authorization;
 import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
 import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthenticationContext;
-import com.yeohaeng_ttukttak.server.domain.travel.dto.TravelPlanDto;
+import com.yeohaeng_ttukttak.server.domain.travel_plan.TravelPlanDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

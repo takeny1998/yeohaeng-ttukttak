@@ -1,13 +1,15 @@
 package com.yeohaeng_ttukttak.server.domain.travel.entity;
 
-import com.yeohaeng_ttukttak.server.common.exception.exception.error.ForbiddenErrorException;
+import com.yeohaeng_ttukttak.server.common.exception.exception.fail.AccessDeniedFailException;
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundFailException;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.City;
 import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
 import com.yeohaeng_ttukttak.server.domain.place.entity.Place;
+import com.yeohaeng_ttukttak.server.domain.shared.entity.BaseTimeMemberEntity;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.CompanionType;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.MotivationType;
 import com.yeohaeng_ttukttak.server.domain.travel.exception.AlreadyJoinedTravelFailException;
+import com.yeohaeng_ttukttak.server.domain.travel_plan.TravelPlan;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -17,12 +19,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static jakarta.persistence.InheritanceType.JOINED;
-
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Inheritance(strategy = JOINED)
-public class Travel {
+public class Travel extends BaseTimeMemberEntity {
 
     @Id @GeneratedValue
     private Long id;
@@ -44,15 +43,10 @@ public class Travel {
     @OneToMany(mappedBy = "travel", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<TravelPlan> plans = new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
-
     @OneToMany(mappedBy = "travel", cascade = { CascadeType.PERSIST, CascadeType.MERGE }, orphanRemoval = true)
     private List<TravelParticipant> participants = new ArrayList<>();
 
-    public Travel(Member member, LocalDate startedOn, LocalDate endedOn) {
-        this.member = member;
+    public Travel(LocalDate startedOn, LocalDate endedOn) {
         this.startedOn = startedOn;
         this.endedOn = endedOn;
     }
@@ -85,36 +79,33 @@ public class Travel {
         return plans;
     }
 
-    public Member member() {
-        return member;
-    }
-
     /**
      * 해당 여행 객체에 쓰기 권한이 있는지 검사한다.
      * @param memberId 접근하려는 자의 식별자
-     * @throws ForbiddenErrorException 권한이 없는 경우
+     * @throws AccessDeniedFailException 권한이 없는 경우
      */
     public void verifyModifyGrant(String memberId) {
-        final boolean isOwner = Objects.equals(member.uuid(), memberId);
+        final boolean isOwner = Objects.equals(createdBy().uuid(), memberId);
 
         final boolean isParticipant = participants.stream()
                 .anyMatch(e -> e.invitee().uuid().equals(memberId));
 
         if (!(isOwner || isParticipant)) {
-            throw new ForbiddenErrorException(Travel.class);
+            throw new AccessDeniedFailException(Travel.class);
         }
     }
 
     /**
      * 여행 여행 객체를 삭제할 수 있는지 검사한다.
      * @param memberId 접근자의 식별값
-     * @throws ForbiddenErrorException 권한이 없는 경우
+     * @throws AccessDeniedFailException 권한이 없는 경우
      */
-    public void verifyDeleteGrant(String memberId) {
-        final boolean isOwner = Objects.equals(member.uuid(), memberId);
+    public void verifyCreator(String memberId) {
+        final boolean isCreator =
+                Objects.equals(createdBy().uuid(), memberId);
 
-        if (!isOwner) {
-            throw new ForbiddenErrorException(Travel.class);
+        if (!isCreator) {
+            throw new AccessDeniedFailException(Travel.class);
         }
     }
 
@@ -155,7 +146,7 @@ public class Travel {
         final boolean isInviteeParticipated = participants.stream()
                 .anyMatch(participant -> participant.invitee().equals(invitee));
 
-        final boolean isOwnerInvited = Objects.equals(invitee.uuid(), this.member.uuid());
+        final boolean isOwnerInvited = Objects.equals(invitee.uuid(), createdBy().uuid());
 
         if (isInviteeParticipated || isOwnerInvited) {
             throw new AlreadyJoinedTravelFailException("inviteeId");
@@ -168,23 +159,34 @@ public class Travel {
      * 지정된 참여자를 해당 여행에서 쫒아(kick)낸다.
      * @param member 쫒아낼 사용자
      * @param participant 쫒을 대상 참여자의 식별자
-     * @throws ForbiddenErrorException 대상 참여자를 쫒을 권한이 없는 경우 발생한다.
+     * @throws AccessDeniedFailException 대상 참여자를 쫒을 권한이 없는 경우 발생한다.
      */
     public void leaveParticipant(Member member, TravelParticipant participant) {
         verifyModifyGrant(member.uuid());
 
         final boolean isInvitedByKicker = Objects.equals(member.uuid(), participant.invitee().uuid());
-        final boolean isMemberOwner = Objects.equals(member.uuid(), this.member.uuid());
+        final boolean isMemberOwner = Objects.equals(member.uuid(), createdBy().uuid());
 
         if (!isInvitedByKicker && !isMemberOwner) {
-            throw new ForbiddenErrorException(TravelParticipant.class);
+            throw new AccessDeniedFailException(TravelParticipant.class);
         }
 
         participants.remove(participant);
     }
 
 
-    public void addPlan(Place place, Integer dayOfTravel) {
+    public void addPlan(
+//            String memberId,
+                        Place place, Integer dayOfTravel) {
+//
+//        final long totalDays = LocalDateUtil.getBetweenDays(startedOn, endedOn);
+//
+//        if (dayOfTravel < 0 || dayOfTravel >= totalDays) {
+//            throw new ArgumentNotInRangeFailException("dayOfTravel", 0, totalDays);
+//        }
+//
+//        verifyModifyGrant(memberId);
+
         int orderOfPlan = -1;
 
         for (TravelPlan plan : plans) {

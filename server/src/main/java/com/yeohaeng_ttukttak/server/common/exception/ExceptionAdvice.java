@@ -4,6 +4,7 @@ import com.yeohaeng_ttukttak.server.common.dto.ServerErrorResponse;
 import com.yeohaeng_ttukttak.server.common.dto.ServerFailResponse;
 import com.yeohaeng_ttukttak.server.common.exception.exception.BaseException;
 import com.yeohaeng_ttukttak.server.common.exception.exception.error.ErrorException;
+import com.yeohaeng_ttukttak.server.common.exception.exception.error.InternalServerErrorException;
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.FailException;
 import com.yeohaeng_ttukttak.server.common.exception.interfaces.ArgumentException;
 import com.yeohaeng_ttukttak.server.common.exception.interfaces.EntityTargetException;
@@ -18,7 +19,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RestControllerAdvice
@@ -27,49 +27,63 @@ public class ExceptionAdvice {
 
     private final MessageSource messageSource;
 
-    @ExceptionHandler(ErrorException.class)
-    public ServerErrorResponse handleErrorException(
-            ErrorException ex, Locale locale, HttpServletRequest request) {
-        logError(ex, request);
-        final String message = getMessage(ex, locale);
-
-        return new ServerErrorResponse(message, ex.getStatus().value());
-    }
-
     @ExceptionHandler(FailException.class)
     public ServerFailResponse handleFailException(
-            FailException ex, Locale locale, HttpServletRequest request) {
-        logError(ex, request);
-        final String message = getMessage(ex, locale);
+            FailException exception, Locale locale, HttpServletRequest request) {
 
-        return new ServerFailResponse(Map.of(ex.getField(), message));
+        logError(exception, request);
+
+        final Map<String, String> error = new HashMap<>(
+                Map.of("code", exception.code(),
+                        "message", getMessage(exception, locale)));
+
+        if (Objects.nonNull(exception.field())) {
+            error.put("field", exception.field());
+        }
+
+        return new ServerFailResponse(List.of(error));
+
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ServerFailResponse handleValidationException(
-            MethodArgumentNotValidException ex, Locale locale, HttpServletRequest request) {
-        logError(ex, request);
+            MethodArgumentNotValidException exception, Locale locale, HttpServletRequest request) {
+        logError(exception, request);
 
-        final Map<String, String> data = ex.getFieldErrors()
+        final List<Map<String, String>> data = exception
+                .getFieldErrors()
                 .stream()
-                .collect(Collectors.toMap(FieldError::getField, fieldError -> messageSource.getMessage(fieldError, locale)));
+                .map(fieldError -> Map.of(
+                        "code", "METHOD_ARGUMENT_NOT_VALID_FAIL",
+                        "field", fieldError.getField(),
+                        "message", messageSource.getMessage(fieldError, locale)))
+                .toList();
 
         return new ServerFailResponse(data);
     }
 
+    @ExceptionHandler(ErrorException.class)
+    public ServerErrorResponse handleErrorException(
+            ErrorException exception, Locale locale, HttpServletRequest request) {
+
+        logError(exception, request);
+        final String message = getMessage(exception, locale);
+
+        return new ServerErrorResponse(exception.code(), message);
+    }
+
     @ExceptionHandler(Exception.class)
     public ServerErrorResponse handleException(
-            Exception ex, HttpServletRequest request) {
-        logError(ex, request);
+            Exception exception, Locale locale, HttpServletRequest request) {
 
-        Integer code = null;
+        final InternalServerErrorException errorException =
+                new InternalServerErrorException(exception);
 
-        if (ex instanceof ErrorResponse) {
-            code = ((ErrorResponse) ex).getStatusCode().value();
-        }
+        logError(errorException, request);
 
-        final String message = ex.getLocalizedMessage();
-        return new ServerErrorResponse(message, code);
+        final String message = getMessage(errorException, locale);
+
+        return new ServerErrorResponse(errorException.code(), message);
     }
 
     private String getMessage(BaseException ex, Locale locale) {

@@ -12,7 +12,7 @@ public class EntityNotFoundFailException extends FailException implements Entity
     private final Class<?> target;
 
     public EntityNotFoundFailException(Class<?> target) {
-        super(code, format("%sId", uncapitalize(target.getSimpleName())));
+        super(code);
         this.target = target;
     }
 

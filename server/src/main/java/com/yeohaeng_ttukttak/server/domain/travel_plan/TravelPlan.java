@@ -1,19 +1,18 @@
-package com.yeohaeng_ttukttak.server.domain.travel.entity;
+package com.yeohaeng_ttukttak.server.domain.travel_plan;
 
 import com.yeohaeng_ttukttak.server.domain.place.entity.Place;
+import com.yeohaeng_ttukttak.server.domain.shared.entity.BaseTimeMemberEntity;
+import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Entity
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class TravelPlan {
+public class TravelPlan extends BaseTimeMemberEntity {
 
     @Id @GeneratedValue
     private Long id;
@@ -32,9 +31,6 @@ public class TravelPlan {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "travel_id")
     private Travel travel;
-
-    @OneToMany(mappedBy = "plan", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private List<TravelPlanComment> comments = new ArrayList<>();
 
     public TravelPlan(Integer dayOfTravel, Integer orderOfPlan, Place place, Travel travel) {
         this.dayOfTravel = dayOfTravel;
@@ -57,7 +53,7 @@ public class TravelPlan {
         return id;
     }
 
-    public Place place() {
+    Place place() {
         return place;
     }
 
@@ -71,10 +67,6 @@ public class TravelPlan {
 
     public Integer orderOfPlan() {
         return orderOfPlan;
-    }
-
-    public void writeComment() {
-        comments.add(new TravelPlanComment(this));
     }
 
 }

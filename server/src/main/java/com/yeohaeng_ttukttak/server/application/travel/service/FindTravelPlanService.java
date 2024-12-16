@@ -1,7 +1,7 @@
 package com.yeohaeng_ttukttak.server.application.travel.service;
 
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundFailException;
-import com.yeohaeng_ttukttak.server.domain.travel.dto.TravelPlanDto;
+import com.yeohaeng_ttukttak.server.domain.travel_plan.TravelPlanDto;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
 import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelRepository;
 import lombok.RequiredArgsConstructor;

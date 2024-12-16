@@ -2,6 +2,7 @@ package com.yeohaeng_ttukttak.server.common.util;
 
 import org.springframework.util.StringUtils;
 
+import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.util.Base64;
 import java.util.UUID;
@@ -27,6 +28,14 @@ public class StringUtil {
                 .encodeToString(buffer.array());
 
         return StringUtils.trimTrailingCharacter(encodedUUID, '=');
+    }
+
+    public static int getByteLengthInEucKr(String string) {
+        try {
+            return string.getBytes("euc-kr").length;
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }
