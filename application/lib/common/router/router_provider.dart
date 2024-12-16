@@ -1,4 +1,5 @@
 import 'package:application_new/common/loading/loading_page.dart';
+import 'package:application_new/common/session/error_model.dart';
 import 'package:application_new/common/session/session_provider.dart';
 import 'package:application_new/feature/authentication/page/login_page.dart';
 import 'package:application_new/feature/error/error_page.dart';
@@ -26,7 +27,7 @@ GoRouter router(RouterRef ref) {
 
   return GoRouter(
     redirect: (context, state) {
-      if (session.errorMessage != null) {
+      if (session.error != null) {
         return '/error';
       }
 
@@ -37,7 +38,10 @@ GoRouter router(RouterRef ref) {
       return null;
     },
     errorBuilder: (context, state) {
-      return ErrorPage(message: state.error?.message);
+      return ErrorPage(error: ErrorModel(
+        code: 'route_error_occurred',
+        message: state.error?.message ?? ''
+      ));
     },
     routes: [
       GoRoute(
@@ -46,7 +50,7 @@ GoRouter router(RouterRef ref) {
       GoRoute(
           path: '/error',
           builder: (context, state) {
-            return ErrorPage(message: session.errorMessage);
+            return ErrorPage(error: session.error!);
           }),
       GoRoute(
           path: '/loading', builder: (context, state) => const LoadingPage()),

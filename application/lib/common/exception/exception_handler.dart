@@ -18,9 +18,13 @@ bool handleException(Object error, StackTrace stack) {
   if (error is NetworkException) {
     logger.e(
         '[$uuid][NetworkException] code = ${error.statusCode} message = ${error.statusMessage}');
-    providerContainer.read(sessionProvider.notifier).omitError(providerContainer
-        .read(translationServiceProvider)
-        .from('network_error_occurred'));
+
+    const code = 'network_error_occurred';
+
+    final message =
+        providerContainer.read(translationServiceProvider).from(code);
+
+    providerContainer.read(sessionProvider.notifier).omitError(code, message);
     return true;
   }
 
@@ -29,7 +33,10 @@ bool handleException(Object error, StackTrace stack) {
       logger.e(
           '[$uuid][ServerErrorException] code = ${error.code}, message = ${error.message}');
 
-      eventController.add(MessageEvent(error.message));
+      providerContainer
+          .read(sessionProvider.notifier)
+          .omitError(error.code, error.message);
+
       return true;
     }
 

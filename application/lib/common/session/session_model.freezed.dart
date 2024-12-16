@@ -17,7 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$SessionModel {
   MemberModel? get member => throw _privateConstructorUsedError;
-  String? get errorMessage => throw _privateConstructorUsedError;
+  ErrorModel? get error => throw _privateConstructorUsedError;
 
   /// Create a copy of SessionModel
   /// with the given fields replaced by the non-null parameter values.
@@ -32,9 +32,10 @@ abstract class $SessionModelCopyWith<$Res> {
           SessionModel value, $Res Function(SessionModel) then) =
       _$SessionModelCopyWithImpl<$Res, SessionModel>;
   @useResult
-  $Res call({MemberModel? member, String? errorMessage});
+  $Res call({MemberModel? member, ErrorModel? error});
 
   $MemberModelCopyWith<$Res>? get member;
+  $ErrorModelCopyWith<$Res>? get error;
 }
 
 /// @nodoc
@@ -53,17 +54,17 @@ class _$SessionModelCopyWithImpl<$Res, $Val extends SessionModel>
   @override
   $Res call({
     Object? member = freezed,
-    Object? errorMessage = freezed,
+    Object? error = freezed,
   }) {
     return _then(_value.copyWith(
       member: freezed == member
           ? _value.member
           : member // ignore: cast_nullable_to_non_nullable
               as MemberModel?,
-      errorMessage: freezed == errorMessage
-          ? _value.errorMessage
-          : errorMessage // ignore: cast_nullable_to_non_nullable
-              as String?,
+      error: freezed == error
+          ? _value.error
+          : error // ignore: cast_nullable_to_non_nullable
+              as ErrorModel?,
     ) as $Val);
   }
 
@@ -80,6 +81,20 @@ class _$SessionModelCopyWithImpl<$Res, $Val extends SessionModel>
       return _then(_value.copyWith(member: value) as $Val);
     });
   }
+
+  /// Create a copy of SessionModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $ErrorModelCopyWith<$Res>? get error {
+    if (_value.error == null) {
+      return null;
+    }
+
+    return $ErrorModelCopyWith<$Res>(_value.error!, (value) {
+      return _then(_value.copyWith(error: value) as $Val);
+    });
+  }
 }
 
 /// @nodoc
@@ -90,10 +105,12 @@ abstract class _$$SessionModelImplCopyWith<$Res>
       __$$SessionModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({MemberModel? member, String? errorMessage});
+  $Res call({MemberModel? member, ErrorModel? error});
 
   @override
   $MemberModelCopyWith<$Res>? get member;
+  @override
+  $ErrorModelCopyWith<$Res>? get error;
 }
 
 /// @nodoc
@@ -110,17 +127,17 @@ class __$$SessionModelImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? member = freezed,
-    Object? errorMessage = freezed,
+    Object? error = freezed,
   }) {
     return _then(_$SessionModelImpl(
       member: freezed == member
           ? _value.member
           : member // ignore: cast_nullable_to_non_nullable
               as MemberModel?,
-      errorMessage: freezed == errorMessage
-          ? _value.errorMessage
-          : errorMessage // ignore: cast_nullable_to_non_nullable
-              as String?,
+      error: freezed == error
+          ? _value.error
+          : error // ignore: cast_nullable_to_non_nullable
+              as ErrorModel?,
     ));
   }
 }
@@ -128,16 +145,16 @@ class __$$SessionModelImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$SessionModelImpl implements _SessionModel {
-  const _$SessionModelImpl({this.member, this.errorMessage});
+  const _$SessionModelImpl({this.member, this.error});
 
   @override
   final MemberModel? member;
   @override
-  final String? errorMessage;
+  final ErrorModel? error;
 
   @override
   String toString() {
-    return 'SessionModel(member: $member, errorMessage: $errorMessage)';
+    return 'SessionModel(member: $member, error: $error)';
   }
 
   @override
@@ -146,12 +163,11 @@ class _$SessionModelImpl implements _SessionModel {
         (other.runtimeType == runtimeType &&
             other is _$SessionModelImpl &&
             (identical(other.member, member) || other.member == member) &&
-            (identical(other.errorMessage, errorMessage) ||
-                other.errorMessage == errorMessage));
+            (identical(other.error, error) || other.error == error));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, member, errorMessage);
+  int get hashCode => Object.hash(runtimeType, member, error);
 
   /// Create a copy of SessionModel
   /// with the given fields replaced by the non-null parameter values.
@@ -165,12 +181,12 @@ class _$SessionModelImpl implements _SessionModel {
 abstract class _SessionModel implements SessionModel {
   const factory _SessionModel(
       {final MemberModel? member,
-      final String? errorMessage}) = _$SessionModelImpl;
+      final ErrorModel? error}) = _$SessionModelImpl;
 
   @override
   MemberModel? get member;
   @override
-  String? get errorMessage;
+  ErrorModel? get error;
 
   /// Create a copy of SessionModel
   /// with the given fields replaced by the non-null parameter values.

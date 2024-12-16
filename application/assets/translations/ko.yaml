@@ -66,6 +66,8 @@ edit_complete: 수정 완료
 leader: 팀 리더
 member: 팀원
 me: 나
+an_error_occurred: 에러가 발생했습니다.
+back_to_main_page: 메인 페이지로
 
 profile_has_been_edited: 프로필이 성공적으로 수정되었습니다.
 
