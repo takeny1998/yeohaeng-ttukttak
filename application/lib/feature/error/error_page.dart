@@ -18,7 +18,6 @@ class ErrorPage extends ConsumerWidget {
     final tr = ref.watch(translationServiceProvider);
 
     return Scaffold(
-      backgroundColor: colorScheme.primaryContainer,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(48.0),
@@ -27,7 +26,7 @@ class ErrorPage extends ConsumerWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 CircleAvatar(
-                  backgroundColor: colorScheme.primaryFixedDim,
+                  backgroundColor: colorScheme.primaryFixed,
                   radius: 32.0,
                   child: const Icon(Icons.warning_amber_rounded, size: 32.0),
                 ),
@@ -45,8 +44,6 @@ class ErrorPage extends ConsumerWidget {
                 ),
                 const SizedBox(height: 40.0),
                 FilledButton.tonalIcon(
-                    style: FilledButton.styleFrom(
-                        backgroundColor: colorScheme.primaryFixedDim),
                     onPressed: () => context.go('/'),
                     icon: const Icon(Icons.home_outlined),
                     label: Text(tr.from('back_to_main_page'))),

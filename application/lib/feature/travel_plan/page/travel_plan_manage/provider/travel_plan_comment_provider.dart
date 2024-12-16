@@ -18,5 +18,4 @@ class TravelPlanComment extends _$TravelPlanComment {
     return TravelPlanCommentState(comments: comments);
   }
 
-  
 }
