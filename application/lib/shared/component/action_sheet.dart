@@ -1,4 +1,4 @@
-import 'package:application_new/common/translation/translation_service.dart';
+import 'package:application_new/core/translation/translation_service.dart';
 import 'package:application_new/shared/component/action_sheet_group_item.dart';
 import 'package:application_new/shared/component/action_sheet_item.dart';
 import 'package:flutter/material.dart';

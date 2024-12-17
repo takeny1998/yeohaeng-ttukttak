@@ -30,7 +30,7 @@ class TravelModel with _$TravelModel {
       DateUtil.formatRange(DateTimeRange(start: startedOn, end: endedOn));
 
   String get formattedName {
-    return '${cities.map((city) => city.name).join(' · ')} ${TranslationUtil.word('travel')}';
+    return '${cities.map((city) => city.name).join(' · ')}';
   }
 }
 

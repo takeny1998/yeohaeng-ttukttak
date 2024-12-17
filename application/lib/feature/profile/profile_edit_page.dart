@@ -1,7 +1,7 @@
 import 'package:application_new/common/exception/business_exception.dart';
 import 'package:application_new/common/exception/server_exception.dart';
 import 'package:application_new/common/session/session_provider.dart';
-import 'package:application_new/common/translation/translation_service.dart';
+import 'package:application_new/core/translation/translation_service.dart';
 import 'package:application_new/feature/profile/profile_avatar.dart';
 import 'package:application_new/feature/profile/profile_edit_provider.dart';
 import 'package:application_new/feature/profile/profile_edit_state.dart';
@@ -28,7 +28,7 @@ class ProfileEditPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(tr.from('edit_profile')),
+        title: Text(tr.from('Edit profile')),
       ),
       body: Form(
         key: formKey,
@@ -40,14 +40,14 @@ class ProfileEditPage extends ConsumerWidget {
             const SizedBox(height: 24.0),
             TextFormField(
               decoration: InputDecoration(
-                  labelText: tr.from('nickname'),
+                  labelText: tr.from('Nickname'),
                   errorText: errorMessages['nickname']),
               onChanged: (value) =>
                   ref.read(profileEditProvider.notifier).editNickname(value),
               initialValue: nickname,
             ),
             const SizedBox(height: 48.0),
-            Text(tr.from('gender')),
+            Text(tr.from('Gender')),
             const SizedBox(height: 12.0),
             Wrap(
               spacing: 12.0,
@@ -65,7 +65,7 @@ class ProfileEditPage extends ConsumerWidget {
               ],
             ),
             const SizedBox(height: 48.0),
-            Text(tr.from('age_group')),
+            Text(tr.from('Age group')),
             const SizedBox(height: 8.0),
             Wrap(
               spacing: 8.0,
@@ -87,7 +87,7 @@ class ProfileEditPage extends ConsumerWidget {
               padding: const EdgeInsets.symmetric(horizontal: 24.0),
               child: FilledButton(
                   onPressed: errorMessages.isEmpty ? () => _submit(ref) : null,
-                  child: Text(tr.from('edit_complete'))))),
+                  child: Text(tr.from('Complete'))))),
     );
   }
 

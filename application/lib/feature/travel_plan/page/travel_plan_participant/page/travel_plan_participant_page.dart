@@ -1,7 +1,7 @@
 import 'package:application_new/common/loading/loading_page.dart';
 import 'package:application_new/common/session/session_model.dart';
 import 'package:application_new/common/session/session_provider.dart';
-import 'package:application_new/common/translation/translation_service.dart';
+import 'package:application_new/core/translation/translation_service.dart';
 import 'package:application_new/common/util/iterable_util.dart';
 import 'package:application_new/domain/member/member_provider.dart';
 import 'package:application_new/domain/travel/travel_model.dart';
@@ -37,7 +37,7 @@ class TravelPlanParticipantPage extends ConsumerWidget {
         .toList();
 
     return Scaffold(
-      appBar: AppBar(title: Text(tr.from('travel_participants'))),
+      appBar: AppBar(title: Text(tr.from('Travel Participants'))),
       body: CustomScrollView(
         physics: const ClampingScrollPhysics(),
         slivers: [
@@ -49,21 +49,21 @@ class TravelPlanParticipantPage extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(tr.from('invite_new_participant'),
+                  Text(tr.from('Invite new participant'),
                       style: const TextStyle(
                           fontSize: 18.0, fontWeight: FontWeight.w600)),
                   const SizedBox(height: 4.0),
-                  Text(tr.from('share_link_to_invite')),
+                  Text(tr.from('You can invite participants by sharing this link.')),
                   const SizedBox(height: 2.0),
-                  Text(tr.from('link_expires_after_30_min')),
+                  Text(tr.from('The invitation link expire after 30 minutes.')),
                   const SizedBox(height: 2.0),
-                  Text(tr.from('can_plan_with_participants')),
+                  Text(tr.from('You can plan the travel with participants.')),
                   const SizedBox(height: 16.0),
                   FilledButton.tonalIcon(
                     onPressed: () => ref
                         .read(travelPlanParticipantProvider(travel.id).notifier)
                         .shareLink(),
-                    label: Text(tr.from('share_invitation_link')),
+                    label: Text(tr.from('Share invitation link')),
                     icon: const Icon(Icons.link),
                   )
                 ],
@@ -96,7 +96,7 @@ class TravelPlanParticipantPage extends ConsumerWidget {
                                 .notifier)
                             .leaveOrKick(participant.id);
                       },
-                      child: Text(tr.from('leave')),
+                      child: Text(tr.from('Leave')),
                     )
                   : null,
             ),
@@ -124,8 +124,8 @@ class TravelPlanParticipantPage extends ConsumerWidget {
                                   .notifier)
                               .leaveOrKick(participant.id),
                           child: Text(tr.from(participant.inviteeId == me?.uuid
-                              ? 'leave'
-                              : 'kick')))
+                              ? 'Leave'
+                              : 'Kick')))
                       : null,
                 );
               })

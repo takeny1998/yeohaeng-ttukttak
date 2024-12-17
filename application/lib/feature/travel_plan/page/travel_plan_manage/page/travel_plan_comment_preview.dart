@@ -1,5 +1,5 @@
 import 'package:application_new/common/router/router_provider.dart';
-import 'package:application_new/common/translation/translation_service.dart';
+import 'package:application_new/core/translation/translation_service.dart';
 import 'package:application_new/domain/travel/travel_plan/travel_plan_comment_model.dart';
 import 'package:application_new/feature/travel_plan_comment/travel_plan_comment_list_item.dart';
 import 'package:application_new/feature/travel_plan_comment/travel_plan_comment_provider.dart';
@@ -37,7 +37,7 @@ class TravelPlanCommentPreview extends ConsumerWidget {
       OutlinedButton.icon(
           onPressed: () => context.push('/travels/$travelId/plans/$planId/comments'),
           icon: const Icon(Icons.comment_outlined, size: 16.0),
-          label: Text(tr.from('number_more_comments',
+          label: Text(tr.from('{} comments',
               args: ['${comments?.length ?? '0'}'])))
     ]);
   }

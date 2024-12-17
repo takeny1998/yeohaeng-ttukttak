@@ -5,7 +5,7 @@ import 'package:application_new/common/http/http_service.dart';
 import 'package:application_new/common/http/http_service_provider.dart';
 import 'package:application_new/common/loading/async_loading_provider.dart';
 import 'package:application_new/common/session/session_provider.dart';
-import 'package:application_new/common/translation/translation_service.dart';
+import 'package:application_new/core/translation/translation_service.dart';
 import 'package:application_new/domain/member/member_model.dart';
 import 'package:application_new/feature/authentication/model/auth_model.dart';
 import 'package:application_new/feature/authentication/service/auth_service_provider.dart';
@@ -42,7 +42,7 @@ class ProfileEdit extends _$ProfileEdit {
 
     if (editNickname == null || editNickname.isEmpty) {
       errorMessages['nickname'] =
-          ref.read(translationServiceProvider).from('please_enter_nickname');
+          ref.read(translationServiceProvider).from('Please enter a nickname.');
 
       state = state.copyWith(errorMessages: errorMessages);
       return;
@@ -91,7 +91,7 @@ class ProfileEdit extends _$ProfileEdit {
       return MemberModel.fromJson(response['member']);
     });
     eventController.add(MessageEvent(
-        ref.read(translationServiceProvider).from('profile_has_been_edited')));
+        ref.read(translationServiceProvider).from('The profile was updated successfully.')));
     ref.read(sessionProvider.notifier).updateLoginMember(updatedMember);
   }
 

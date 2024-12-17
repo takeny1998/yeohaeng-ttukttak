@@ -1,6 +1,6 @@
 import 'package:application_new/common/session/session_model.dart';
 import 'package:application_new/common/session/session_provider.dart';
-import 'package:application_new/common/translation/translation_service.dart';
+import 'package:application_new/core/translation/translation_service.dart';
 import 'package:application_new/domain/member/member_provider.dart';
 import 'package:application_new/domain/travel/travel_plan/travel_plan_comment_model.dart';
 import 'package:application_new/feature/profile/profile_avatar.dart';
@@ -38,9 +38,9 @@ class TravelPlanCommentListItem extends ConsumerWidget {
     )}';
 
     if (comment.lastModifiedAt != null) {
-      agoLabel += '(${tr.from('edited')})';
+      agoLabel += '(${tr.from('Edited')})';
     }
-    
+
     return ListTile(
       contentPadding: EdgeInsets.zero,
       leading: CircleAvatar(
@@ -55,7 +55,7 @@ class TravelPlanCommentListItem extends ConsumerWidget {
       title: Row(
         children: [
           Text(
-            tr.from('comment_by_member', args: [member?.nickname ?? '']),
+            tr.from('Comment by {}', args: [member?.nickname ?? '']),
             style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15.0),
           ),
           Text(agoLabel, style: const TextStyle(fontSize: 12.0)),

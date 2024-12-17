@@ -1,6 +1,6 @@
 import 'package:application_new/common/router/router_provider.dart';
 import 'package:application_new/common/session/session_provider.dart';
-import 'package:application_new/common/translation/translation_service.dart';
+import 'package:application_new/core/translation/translation_service.dart';
 import 'package:application_new/domain/member/member_model.dart';
 import 'package:application_new/feature/profile/profile_avatar.dart';
 import 'package:flutter/material.dart';
@@ -50,7 +50,7 @@ class ProfileDrawer extends ConsumerWidget {
               ListTile(
                 leading: ProfileAvatar(avatar: member?.avatar),
                 title: Text(
-                  member?.nickname ?? tr.from('please_log_in'),
+                  member?.nickname ?? tr.from('Please Log in.'),
                   style: const TextStyle(
                     fontSize: 18.0,
                     fontWeight: FontWeight.w600,
@@ -70,7 +70,7 @@ class ProfileDrawer extends ConsumerWidget {
                   onTap: () => context.push('/profile/edit'),
                   contentPadding: tilePadding,
                   title: Text(
-                    tr.from('edit_profile'),
+                    tr.from('Edit profile'),
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                   trailing: const Icon(Icons.keyboard_arrow_right_outlined),

@@ -1,4 +1,4 @@
-import 'package:application_new/common/translation/translation_service.dart';
+import 'package:application_new/core/translation/translation_service.dart';
 import 'package:application_new/domain/travel/travel_model.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_recommend/model/place_recommend_model.dart';
 import 'package:flutter/material.dart';

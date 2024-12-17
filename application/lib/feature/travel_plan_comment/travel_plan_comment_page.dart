@@ -1,5 +1,5 @@
 import 'package:application_new/common/exception/server_exception.dart';
-import 'package:application_new/common/translation/translation_service.dart';
+import 'package:application_new/core/translation/translation_service.dart';
 import 'package:application_new/feature/travel_plan_comment/travel_plan_comment_list_item.dart';
 import 'package:application_new/feature/travel_plan_comment/travel_plan_comment_provider.dart';
 import 'package:flutter/material.dart';
@@ -39,7 +39,7 @@ class TravelPlanCommentPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(tr.from('number_of_comment',
+        title: Text(tr.from('{} comments',
             args: ['${state.value?.comments.length ?? '0'}'])),
       ),
       body: SafeArea(
@@ -75,7 +75,7 @@ class TravelPlanCommentPage extends ConsumerWidget {
                         FocusManager.instance.primaryFocus?.unfocus();
                       },
                       decoration: InputDecoration(
-                          hintText: tr.from('please_enter_a_comment'),
+                          hintText: tr.from('Please enter a comment.'),
                           errorText: data.fieldErrors['content'],
                           suffixIcon: const Icon(Icons.add)),
                       onFieldSubmitted: (content) {

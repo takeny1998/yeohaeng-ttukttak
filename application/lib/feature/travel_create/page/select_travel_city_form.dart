@@ -1,5 +1,5 @@
 import 'package:application_new/common/loading/loading_page.dart';
-import 'package:application_new/common/translation/translation_service.dart';
+import 'package:application_new/core/translation/translation_service.dart';
 import 'package:application_new/common/util/translation_util.dart';
 import 'package:application_new/domain/geography/geography_provider.dart';
 import 'package:application_new/feature/travel_create/component/bottom_action_button.dart';
@@ -84,7 +84,7 @@ class _SelectTravelCityFormState extends ConsumerState<SelectTravelCityForm> {
                 fillColor: colorScheme.primaryContainer,
                 suffixIcon: const Icon(Icons.search),
                 hintStyle: TextStyle(color: colorScheme.secondary),
-                hintText: tr.from('what_city_will_you_travel'),
+                hintText: tr.from('What cities will you travel?'),
               ),
             ),
           ),
@@ -171,9 +171,9 @@ class _SelectTravelCityFormState extends ConsumerState<SelectTravelCityForm> {
               ? ref.read(travelCreateProvider.notifier).submit
               : null,
           child: Text(isSelected
-              ? tr.from('number_of_cities_selected',
+              ? tr.from('{} Cities Selected',
                   args: ['${selectedCities.length}'])
-              : tr.from('please_select_at_least_one_city')),
+              : tr.from('Please select at least one city')),
         ),
       ),
     ));

@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:application_new/common/translation/translation_service.dart';
+import 'package:application_new/core/translation/translation_service.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_recommend/component/travel_item.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_recommend/page/city_travels/provider/city_travels_provider.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_recommend/page/city_travels/provider/city_travels_state.dart';
@@ -46,7 +46,7 @@ class SliverCityTravelPreview extends ConsumerWidget {
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24.0),
         child: Text(
-            tr.from('travelogues_in_city_name', args: [ state.city.name ]),
+            tr.from('Travelogues in a {}', args: [ state.city.name ]),
             style: titleStyle),
       ),
       const SizedBox(height: 24.0),
@@ -67,7 +67,7 @@ class SliverCityTravelPreview extends ConsumerWidget {
           child: FilledButton(
               onPressed: () =>
                   context.push('/travels/$travelId/cities/$cityId/travels/'),
-              child: Text(tr.from('read_more')))),
+              child: Text(tr.from('Read More')))),
     ]));
   }
 }

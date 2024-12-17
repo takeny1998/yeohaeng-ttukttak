@@ -1,5 +1,5 @@
 
-import 'package:application_new/common/translation/translation_service.dart';
+import 'translation_service.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 final class EasyLocalTranslationService implements TranslationService {
