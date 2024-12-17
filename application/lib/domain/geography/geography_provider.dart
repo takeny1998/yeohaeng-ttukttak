@@ -6,11 +6,8 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'geography_provider.g.dart';
 
 @Riverpod(keepAlive: true)
-Future<(List<CityModel>, List<RegionModel>)> geography(
-    GeographyRef ref) async {
-  final response = await ref
-      .watch(httpServiceProvider)
-      .request('GET', '/api/v2/geographies');
+Future<(List<CityModel>, List<RegionModel>)> geography(GeographyRef ref) async {
+  final response = await ref.watch(httpServiceProvider).get('/geographies');
 
   return (
     GeographyModel.citiesFromJson(response),

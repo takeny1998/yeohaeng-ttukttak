@@ -1,6 +1,7 @@
 import 'package:application_new/common/event/event.dart';
 import 'package:application_new/common/exception/business_exception.dart';
 import 'package:application_new/common/exception/server_exception.dart';
+import 'package:application_new/common/http/http_service.dart';
 import 'package:application_new/common/http/http_service_provider.dart';
 import 'package:application_new/common/loading/async_loading_provider.dart';
 import 'package:application_new/common/session/session_provider.dart';
@@ -69,9 +70,6 @@ class ProfileEdit extends _$ProfileEdit {
     final loadingNotifier = ref.read(asyncLoadingProvider.notifier);
 
     final updatedMember = await loadingNotifier.guard(() async {
-      final AuthModel(:accessToken) =
-          await ref.read(authServiceProvider).find();
-
       final Map<String, String> data = {};
 
       if (member.nickname != state.nickname) {
@@ -86,12 +84,9 @@ class ProfileEdit extends _$ProfileEdit {
         data['gender'] = state.gender!.name;
       }
 
-      final response = await ref.read(httpServiceProvider).request(
-            'PATCH',
-            '/api/v2/members/me/profile',
-            authorization: accessToken,
-            data: data,
-          );
+      final response = await ref.read(httpServiceProvider).patch(
+            '/members/me/profile',
+            options: ServerRequestOptions(data: data));
 
       return MemberModel.fromJson(response['member']);
     });

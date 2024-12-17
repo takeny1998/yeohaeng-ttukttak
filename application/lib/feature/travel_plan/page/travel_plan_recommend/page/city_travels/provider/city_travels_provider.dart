@@ -1,3 +1,4 @@
+import 'package:application_new/common/http/http_service.dart';
 import 'package:application_new/domain/geography/geography_provider.dart';
 import 'package:application_new/domain/travel/travel_model.dart';
 import 'package:application_new/domain/travel/travel_provider.dart';
@@ -41,19 +42,14 @@ class CityTravels extends _$CityTravels {
   Future<PagedTravelsModel> _fetch() async {
     final httpService = ref.read(httpServiceProvider);
 
-    final Map<String, dynamic> queryParams = {
-      'cityId': cityId,
-      'pageNumber': _pageNumber,
-      'pageSize': _pageSize,
-      'motivationTypes': _motivationTypes.map((e) => e.name).join(','),
-      'companionTypes': _companionTypes.map((e) => e.name).join(','),
-    };
-
-    final response = await httpService.request(
-      'GET',
-      '/api/v2/travels/recommendations',
-      queryParams: queryParams,
-    );
+    final response = await httpService.get('/travels/recommendations',
+        options: ServerRequestOptions(queryParameters: {
+          'cityId': cityId,
+          'pageNumber': _pageNumber,
+          'pageSize': _pageSize,
+          'motivationTypes': _motivationTypes.map((e) => e.name).join(','),
+          'companionTypes': _companionTypes.map((e) => e.name).join(','),
+        }));
 
     return PagedTravelsModel.fromJson(response);
   }

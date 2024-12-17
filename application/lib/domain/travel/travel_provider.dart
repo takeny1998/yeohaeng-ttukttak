@@ -6,9 +6,6 @@ part 'travel_provider.g.dart';
 
 @Riverpod(keepAlive: true)
 Future<TravelModel> travel(TravelRef ref, int id) async {
-  final response = await ref
-      .watch(httpServiceProvider)
-      .request('GET', '/api/v2/travels/$id');
-
+  final response = await ref.watch(httpServiceProvider).get('/travels/$id');
   return TravelModel.fromJson(response['travel']);
 }

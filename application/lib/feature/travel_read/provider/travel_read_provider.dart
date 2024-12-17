@@ -24,7 +24,7 @@ class TravelRead extends _$TravelRead {
     final httpService = ref.watch(httpServiceProvider);
 
     final visitsRes =
-        await httpService.request('GET', '/api/v2/travels/$travelId/visits');
+        await httpService.get('/travels/$travelId/visits');
 
     final visits = List.of(visitsRes['visits'])
         .map((json) => TravelVisitModel.fromJson(json))

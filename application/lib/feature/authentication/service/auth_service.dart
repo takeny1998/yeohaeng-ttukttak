@@ -1,5 +1,3 @@
-import 'package:application_new/common/exception/business_exception.dart';
-import 'package:application_new/common/http/dto/server_response.dart';
 import 'package:application_new/common/http/http_service.dart';
 import 'package:application_new/domain/member/member_model.dart';
 import 'package:application_new/feature/authentication/model/auth_model.dart';
@@ -15,73 +13,28 @@ final class AuthService {
   })  : _authRepository = authRepository,
         _httpService = httpService;
 
-  Future<AuthModel> find() async {
-    final authModel = await _authRepository.find();
-
-    if (authModel == null) {
-      throw AuthorizationException();
-    }
-
-    final isExpired = authModel.expiresAt.isBefore(DateTime.now());
-
-    if (isExpired) {
-      return await renew(authModel);
-    }
-
-    return authModel;
-  }
-
-  Future<AuthModel> renew(AuthModel authModel) async {
-    final response = await _httpService.request(
-      "POST",
-      "/api/v2/auth/renew",
-      data: {
-        "refreshToken": authModel.refreshToken,
-      },
-    ).catchError((error) {
-      if (error is ServerErrorResponse && error.code == 401) {
-        _authRepository.delete();
-        throw AuthorizationException();
-      }
-      throw error;
-    });
-
-    final renewedAuthModel = AuthModel.fromResponse(response);
-    await _authRepository.save(renewedAuthModel);
-
-    return renewedAuthModel;
-  }
-
   Future<MemberModel> register({
     required String provider,
     required String authorizationCode,
   }) async {
-    final authResponse =
-        await _httpService.request("POST", "/api/v2/auth/login", data: {
-      "provider": provider,
-      "authorizationCode": authorizationCode,
-    });
+    final authResponse = await _httpService.post("/auth/login",
+        options: ServerRequestOptions(data: {
+          "provider": provider,
+          "authorizationCode": authorizationCode,
+        }));
 
     final authModel = AuthModel.fromResponse(authResponse);
-    final member = await _findMember(authModel.accessToken);
-
     await _authRepository.save(authModel);
 
-    return member;
+    return _findMember();
   }
 
   Future<MemberModel> login() async {
-    final AuthModel(:accessToken) = await find();
-    return _findMember(accessToken);
+    return _findMember();
   }
 
-  Future<MemberModel> _findMember(String accessToken) async {
-    final memberResponse = await _httpService.request(
-      'GET',
-      '/api/v2/members/me',
-      authorization: accessToken,
-    );
-
+  Future<MemberModel> _findMember() async {
+    final memberResponse = await _httpService.get('/members/me');
     return MemberModel.fromJson(memberResponse['member']);
   }
 }

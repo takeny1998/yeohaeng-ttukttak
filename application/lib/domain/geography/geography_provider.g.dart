@@ -6,7 +6,7 @@ part of 'geography_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$geographyHash() => r'f6808399d02d16e48dc05637545bd4104d7b0c36';
+String _$geographyHash() => r'66814bbb8a37dff094ccc1e2deac88bb126453fb';
 
 /// See also [geography].
 @ProviderFor(geography)

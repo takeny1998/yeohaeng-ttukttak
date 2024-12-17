@@ -9,7 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
-@EnableJpaAuditing
+@EnableJpaAuditing(modifyOnCreate = false)
 @EnableConfigurationProperties({AppleOAuthProperties.class, GoogleOAuthProperties.class, AccessTokenProperties.class, RefreshTokenProperties.class})
 @SpringBootApplication
 public class ServerApplication {

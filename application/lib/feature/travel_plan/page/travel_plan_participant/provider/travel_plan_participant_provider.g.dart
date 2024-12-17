@@ -7,7 +7,7 @@ part of 'travel_plan_participant_provider.dart';
 // **************************************************************************
 
 String _$travelPlanParticipantHash() =>
-    r'86dde68af26b388c4ac8fd510149cfa91da19742';
+    r'8aa21e5ba666bb620c4021d742582a03e02e9242';
 
 /// Copied from Dart SDK
 class _SystemHash {

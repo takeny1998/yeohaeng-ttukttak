@@ -42,7 +42,6 @@ bool handleException(Object error, StackTrace? stack) {
 
     if (error is ServerFailException) {
       logger.e('[$uuid][ServerFailException] errors = ${error.errors}');
-
       final List<String> messages = [];
 
       for (final error in error.errors) {
@@ -51,6 +50,8 @@ bool handleException(Object error, StackTrace? stack) {
         }
         messages.add(error.message);
       }
+      showErrorMessage(messages.join('\n'));
+
       return true;
     }
     return true;
@@ -61,6 +62,10 @@ bool handleException(Object error, StackTrace? stack) {
       invalidateAuthorization();
       return true;
     }
+
+    if (error.message != null) {
+      showErrorMessage(error.message!);
+    }
     return true;
   }
 
@@ -70,4 +75,8 @@ bool handleException(Object error, StackTrace? stack) {
 void invalidateAuthorization() {
   final sessionNotifier = providerContainer.read(sessionProvider.notifier);
   sessionNotifier.updateLoginMember(null);
+}
+
+void showErrorMessage(String message) {
+  eventController.add(MessageEvent(message));
 }

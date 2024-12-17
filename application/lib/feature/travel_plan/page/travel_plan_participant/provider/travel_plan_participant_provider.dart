@@ -29,8 +29,7 @@ class TravelPlanParticipant extends _$TravelPlanParticipant {
   Future<List<TravelParticipantModel>> _fetch() async {
     final httpService = ref.watch(httpServiceProvider);
 
-    final response = await httpService.request(
-        'GET', '/api/v2/travels/$travelId/participants');
+    final response = await httpService.get('/travels/$travelId/participants');
 
     return TravelParticipantModel.listFromJson(response);
   }
@@ -38,13 +37,9 @@ class TravelPlanParticipant extends _$TravelPlanParticipant {
   Future<void> shareLink() async {
     final invitation =
         await ref.read(asyncLoadingProvider.notifier).guard(() async {
-      final auth = await ref.read(authServiceProvider).find();
-
-      final response = await ref.read(httpServiceProvider).request(
-            'POST',
-            '/api/v2/travels/$travelId/invitations',
-            authorization: auth.accessToken,
-          );
+      final response = await ref
+          .read(httpServiceProvider)
+          .post('/travels/$travelId/invitations');
 
       return TravelInvitationModel.fromJson(response['invitation']);
     });
@@ -59,13 +54,9 @@ class TravelPlanParticipant extends _$TravelPlanParticipant {
 
   Future<void> leaveOrKick(int participantId) async {
     await ref.read(asyncLoadingProvider.notifier).guard(() async {
-      final auth = await ref.read(authServiceProvider).find();
-
-      await ref.read(httpServiceProvider).request(
-            'DELETE',
-            '/api/v2/travels/$travelId/participants/$participantId',
-            authorization: auth.accessToken,
-          );
+      await ref
+          .read(httpServiceProvider)
+          .delete('/travels/$travelId/participants/$participantId');
     });
 
     state = state?.copyWith(participants: await _fetch());

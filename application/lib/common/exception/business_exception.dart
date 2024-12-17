@@ -1,7 +1,12 @@
-abstract class BusinessException extends Error {}
+class BusinessException extends Error {
 
-final class AuthorizationException extends BusinessException {
   final String? message;
 
-  AuthorizationException({this.message});
+  BusinessException({this.message});
+
+}
+
+final class AuthorizationException extends BusinessException {
+
+  AuthorizationException({super.message});
 }

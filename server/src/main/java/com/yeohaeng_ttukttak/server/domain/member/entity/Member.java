@@ -25,7 +25,6 @@ public class Member {
     @Id @GeneratedValue
     private Long id;
 
-    @NaturalId
     @Column(nullable = false, unique = true, updatable = false)
     private String uuid;
 

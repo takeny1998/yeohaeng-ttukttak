@@ -40,7 +40,7 @@ public class Travel extends BaseTimeMemberEntity {
     private List<TravelMotivation> motivations = new ArrayList<>();
 
     @OrderBy("dayOfTravel ASC nulls last, orderOfPlan ASC nulls last")
-    @OneToMany(mappedBy = "travel", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @OneToMany(mappedBy = "travel", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
     private List<TravelPlan> plans = new ArrayList<>();
 
     @OneToMany(mappedBy = "travel", cascade = { CascadeType.PERSIST, CascadeType.MERGE }, orphanRemoval = true)

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:application_new/common/http/http_service.dart';
 import 'package:application_new/common/http/http_service_provider.dart';
 import 'package:application_new/common/util/iterable_util.dart';
 import 'package:application_new/feature/travel_plan/provider/travel_plan_provider.dart';
@@ -85,18 +86,17 @@ class TravelPlanRecommend extends _$TravelPlanRecommend {
     final httpService = ref.read(httpServiceProvider);
     final categoryType = target.categoryType;
 
-    final queryParams = {
-      'cityId': cityId,
-      'categoryType': categoryType.name,
-      'pageSize': pageSize,
-      'pageNumber': target.pageNumber,
-      'motivationTypes': _motivationTypes.map((e) => e.name).join(','),
-      'companionTypes': _companionTypes.map((e) => e.name).join(','),
-    };
-
-    final response = await httpService.request(
-        'GET', '/api/v2/places/recommendations',
-        queryParams: queryParams);
+    final response = await httpService.get('/places/recommendations',
+        options: ServerRequestOptions(
+          queryParameters: {
+            'cityId': cityId,
+            'categoryType': categoryType.name,
+            'pageSize': pageSize,
+            'pageNumber': target.pageNumber,
+            'motivationTypes': _motivationTypes.map((e) => e.name).join(','),
+            'companionTypes': _companionTypes.map((e) => e.name).join(','),
+          }
+        ));
 
     final hasNext = response['hasNextPage'] as bool;
 
