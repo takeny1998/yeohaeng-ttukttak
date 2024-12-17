@@ -103,12 +103,14 @@ class TravelPlanCommentListItem extends ConsumerWidget {
             onAction: () {
               final notifier = ref.read(provider.notifier);
               notifier.startEditingComment(comment.id, comment.content);
-              Navigator.of(context).pop();
             }),
         ActionSheetItem(
             title: tr.from('Delete comment'),
             titleColor: Theme.of(context).colorScheme.error,
-            onAction: () {}),
+            onAction: () {
+              final notifier = ref.read(provider.notifier);
+              notifier.deleteComment(comment.id);
+            }),
       ],
     ]);
   }
