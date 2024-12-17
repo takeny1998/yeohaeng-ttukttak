@@ -1,4 +1,5 @@
-import 'package:application_new/common/exception/exception.dart';
+import 'package:application_new/common/exception/business_exception.dart';
+import 'package:application_new/common/exception/server_exception.dart';
 import 'package:application_new/common/session/session_provider.dart';
 import 'package:application_new/common/translation/translation_service.dart';
 import 'package:application_new/feature/profile/profile_avatar.dart';
@@ -95,7 +96,7 @@ class ProfileEditPage extends ConsumerWidget {
 
     notifier.submit().catchError((error) {
       if (error is ServerFailException) {
-        notifier.updateErrorMessages(error.data);
+        notifier.updateErrorMessages(error);
         return;
       }
       throw error;

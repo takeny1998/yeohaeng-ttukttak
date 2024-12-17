@@ -1,9 +1,14 @@
 import 'dart:ui';
 
-import 'package:application_new/common/exception/exception.dart';
+import 'package:application_new/common/exception/business_exception.dart';
+import 'package:application_new/common/exception/dto/server_fail_model.dart';
+import 'package:application_new/common/exception/server_exception.dart';
 import 'package:application_new/common/http/dto/server_response.dart';
 import 'package:application_new/common/log/logger.dart';
 import 'package:dio/dio.dart';
+import 'package:easy_localization/easy_localization.dart';
+
+import '../exception/network_exception.dart';
 
 final class HttpService {
   final Dio _dio;
@@ -48,24 +53,24 @@ final class HttpService {
       return serverResponse.when(
           success: (data) => data,
           fail: (data) {
-            throw ServerFailException(data: data);
+            throw ServerFailException(
+              errors: List.of(data['errors'])
+                  .map((json) => ServerFailModel.fromJson(json))
+                  .toList(),
+            );
           },
-          error: (message, statusCode) {
-            if (statusCode == 401) {
-              throw AuthorizationException(message: message);
-            }
-
-            throw ServerErrorException(message: message, code: statusCode);
+          error: (code, message) {
+            throw ServerErrorException(code: code, message: message);
           });
     } on DioException catch (e) {
       final response = e.response;
       logger.e('[HttpService.request] exception = $e');
 
       if (response == null) {
-
         throw NetworkException(
             statusMessage: e.message,
-            requestUri: e.requestOptions.uri, requestMethod: e.requestOptions.method);
+            requestUri: e.requestOptions.uri,
+            requestMethod: e.requestOptions.method);
       }
 
       throw NetworkException.fromResponse(response);

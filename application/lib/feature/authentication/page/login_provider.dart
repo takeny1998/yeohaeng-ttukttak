@@ -1,6 +1,6 @@
 import 'dart:ffi';
 
-import 'package:application_new/common/exception/exception.dart';
+import 'package:application_new/common/exception/business_exception.dart';
 import 'package:application_new/common/loading/async_loading_provider.dart';
 import 'package:application_new/common/session/session_provider.dart';
 import 'package:application_new/feature/authentication/model/auth_provider.dart';

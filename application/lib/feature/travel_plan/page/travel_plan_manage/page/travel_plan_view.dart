@@ -1,46 +1,46 @@
 import 'package:application_new/common/util/translation_util.dart';
 import 'package:application_new/domain/place/place_provider.dart';
-import 'package:application_new/domain/travel/travel_plan_model.dart';
+import 'package:application_new/domain/travel/travel_plan/travel_plan_model.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_manage/component/travel_plan_list_drag_item.dart';
+import 'package:application_new/feature/travel_plan/page/travel_plan_manage/page/travel_plan_comment_preview.dart';
+import 'package:application_new/feature/travel_plan/page/travel_plan_manage/provider/travel_plan_manage_provider.dart';
 import 'package:application_new/shared/component/outlined_icon_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class TravelPlanListItem extends ConsumerStatefulWidget {
-  final int order;
+class TravelPlanView extends ConsumerWidget {
+  final int index;
   final TravelPlanModel plan;
+
+  final TravelPlanManageProvider provider;
+
   final VoidCallback? onDelete;
 
-  const TravelPlanListItem(
-      {super.key, required this.order, required this.plan, this.onDelete});
+  const TravelPlanView(
+      {super.key,
+      required this.provider,
+      required this.index,
+      required this.plan,
+      this.onDelete});
 
   @override
-  ConsumerState createState() => _TravelPlanListITemState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final ThemeData(:colorScheme) = Theme.of(context);
 
-class _TravelPlanListITemState extends ConsumerState<TravelPlanListItem> {
+    final draggingIndex = ref.watch(provider)?.draggingIndex;
 
-  int? draggingId;
-
-  @override
-  Widget build(BuildContext context) {
-
-    if (draggingId == widget.plan.id) {
+    if (draggingIndex == index) {
       return const SizedBox();
     }
 
-    final ThemeData(:colorScheme) = Theme.of(context);
-
-    final (order, plan) = (widget.order, widget.plan);
-
     const titleStyle =
-        TextStyle(fontWeight: FontWeight.w600, fontSize: 16.0, height: 1.0);
+    TextStyle(fontWeight: FontWeight.w600, fontSize: 16.0, height: 1.0);
     const subTitleStyle = TextStyle(fontSize: 12.0);
 
     final place = ref.watch(placeProvider(plan.placeId)).value;
 
     final categoryName =
-        TranslationUtil.enumValue(place?.categoryTypes.firstOrNull);
+    TranslationUtil.enumValue(place?.categoryTypes.firstOrNull);
 
     return IntrinsicHeight(
       child: Row(
@@ -52,7 +52,7 @@ class _TravelPlanListITemState extends ConsumerState<TravelPlanListItem> {
               CircleAvatar(
                   radius: 16.0,
                   backgroundColor: colorScheme.primaryContainer,
-                  child: Text('${order + 1}',
+                  child: Text('${index + 1}',
                       style: TextStyle(
                           fontWeight: FontWeight.w800,
                           color: colorScheme.primary))),
@@ -89,25 +89,21 @@ class _TravelPlanListITemState extends ConsumerState<TravelPlanListItem> {
                     ),
                     const SizedBox(width: 24.0),
                     Draggable<TravelPlanModel>(
-                      key: ValueKey<int>(plan.id),
-                      data: plan,
-                      onDragStarted: () {
-                        if (!mounted) return;
-                        setState(() => draggingId = plan.id);
-                      },
-                      onDragEnd: (_) {
-                        if (!mounted) return;
-                        setState(() => draggingId = null);
-                      },
-                      onDragCompleted: () {
-                        if (!mounted) return;
-                        setState(() => draggingId = null);
-                      },
-                      onDraggableCanceled: (_, __) =>
-                          setState(() => draggingId = null),
-                      feedback: TravelPlanListDragItem(place: place),
-                      child:  const Icon(Icons.drag_handle)
-                    ),
+                        key: ValueKey<int>(plan.id),
+                        data: plan,
+                        onDragStarted: () {
+                          ref.read(provider.notifier).updateDraggingIndex(index);
+                        },
+                        onDragEnd: (_) {
+                          ref.read(provider.notifier).updateDraggingIndex(null);
+                        },
+                        onDragCompleted: () {
+                          ref.read(provider.notifier).updateDraggingIndex(null);
+                        },
+                        onDraggableCanceled: (_, __) =>
+                            ref.read(provider.notifier).updateDraggingIndex(null),
+                        feedback: TravelPlanListDragItem(place: place),
+                        child: const Icon(Icons.drag_handle)),
                     const SizedBox(width: 16.0),
                   ],
                 ),
@@ -117,16 +113,17 @@ class _TravelPlanListITemState extends ConsumerState<TravelPlanListItem> {
                   children: [
                     OutlinedIconButton(
                         onPressed: () {},
-                        icon: const Icon(Icons.comment_outlined)),
-                    OutlinedIconButton(
-                        onPressed: () {},
                         icon: const Icon(Icons.rate_review_outlined)),
                     OutlinedIconButton(
-                        onPressed: widget.onDelete,
+                        onPressed: onDelete,
                         foregroundColor: colorScheme.error,
                         icon: const Icon(Icons.delete_outline)),
                   ],
                 ),
+                if (draggingIndex == null) ...[
+                  TravelPlanCommentPreview(
+                      travelId: provider.travelId, planId: plan.id),
+                ],
                 const SizedBox(height: 48.0),
               ],
             ),
@@ -136,4 +133,5 @@ class _TravelPlanListITemState extends ConsumerState<TravelPlanListItem> {
       ),
     );
   }
+
 }

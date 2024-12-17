@@ -58,6 +58,12 @@ please_log_in: Please Log in.
 please_enter_nickname: Please enter a nickname.
 
 profile_has_been_edited: The profile was updated successfully.
+number_more_comments: '{} more comments'
+comment_by_member: 'Comment by {}'
+number_of_comment: '{} comments'
+please_enter_a_comment: Please enter a comment.
+
+edited: Edited
 
 gender: Gender
 age_group: Age Group
@@ -66,7 +72,9 @@ edit_complete: Edit complete
 
 leader: Team Leader
 member: Team Member
-me: 나
+me: Me
+an_error_occurred: An error occurred.
+back_to_main_page: Back to main page.
 
 widget:
   VisitListItem:

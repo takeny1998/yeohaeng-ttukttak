@@ -2,10 +2,9 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:application_new/common/event/event.dart';
-import 'package:application_new/common/http/http_service_provider.dart';
+import 'package:application_new/common/exception/exception_handler.dart';
 import 'package:application_new/common/loading/async_loading_provider.dart';
 import 'package:application_new/common/session/session_provider.dart';
-import 'package:application_new/common/translation/translation_service.dart';
 import 'package:application_new/feature/authentication/service/auth_service_provider.dart';
 import 'package:application_new/feature/locale/locale_provider.dart';
 import 'package:application_new/shared/theme/my_chip_theme.dart';
@@ -17,66 +16,23 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization_loader/easy_localization_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:logger/logger.dart';
-import 'package:uuid/v4.dart';
-
-import 'common/exception/exception.dart';
 import 'common/router/router_provider.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 final messengerKey = GlobalKey<ScaffoldMessengerState>();
+final providerContainer = ProviderContainer();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
 
-  final logger = Logger();
-  final providerContainer = ProviderContainer();
-
-  PlatformDispatcher.instance.onError = (error, stack) {
-    final uuid = const UuidV4().generate().substring(0, 6);
-
-    logger.e('[$uuid][Error]', stackTrace: stack, error: error);
-
-    if (error is NetworkException) {
-      logger.e(
-          '[$uuid][NetworkException] code = ${error.statusCode} message = ${error.statusMessage}');
-      providerContainer.read(sessionProvider.notifier).omitError(
-          providerContainer
-              .read(translationServiceProvider)
-              .from('network_error_occurred'));
-      return true;
-    }
-
-    if (error is ServerException) {
-      switch (error) {
-        case ServerErrorException(:final code, :final message):
-          logger.e(
-              '[$uuid][ServerErrorException] code = $code, message = $message');
-          eventController.add(MessageEvent(message));
-        case ServerFailException(:final data):
-          logger.e('[$uuid][ServerFailException] data = $data');
-          final message = data.values.join('\n');
-          eventController.add(MessageEvent(message));
-      }
-      return true;
-    }
-
-    if (error is BusinessException) {
-      switch (error) {
-        case AuthorizationException():
-          final sessionNotifier =
-              providerContainer.read(sessionProvider.notifier);
-          sessionNotifier.updateLoginMember(null);
-        case ValidationException():
-          // TODO: Handle this case.
-      }
-    }
-
-    return true;
-  };
+  FlutterError.onError = (details) => handleException(details.exception, details.stack);
+  PlatformDispatcher.instance.onError = handleException;
 
   const korean = Locale.fromSubtags(languageCode: 'ko');
   const english = Locale.fromSubtags(languageCode: 'en');
+  
+  timeago.setLocaleMessages('ko', timeago.KoMessages());
 
   runApp(EasyLocalization(
     path: 'assets/translations',
@@ -171,7 +127,8 @@ class _MyAppState extends ConsumerState<MyApp> {
                         Positioned.fill(
                             child: Container(
                           color: Colors.white.withOpacity(0.5),
-                          child: const Center(child: CircularProgressIndicator()),
+                          child:
+                              const Center(child: CircularProgressIndicator()),
                         ))
                     ],
                   ),

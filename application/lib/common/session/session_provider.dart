@@ -1,3 +1,4 @@
+import 'package:application_new/common/session/error_model.dart';
 import 'package:application_new/common/session/session_model.dart';
 import 'package:application_new/domain/member/member_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -19,11 +20,11 @@ class Session extends _$Session {
     );
   }
 
-  void omitError(String message) {
-    state = state.copyWith(errorMessage: message);
+  void omitError(String code, String message) {
+    state = state.copyWith(error: ErrorModel(code: code, message: message));
   }
 
   void consumeError(Error error) {
-    state = state.copyWith(errorMessage: null);
+    state = state.copyWith(error: null);
   }
 }
