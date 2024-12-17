@@ -82,10 +82,10 @@ class TravelPlanComment extends _$TravelPlanComment {
 
   void startEditingComment(int commentId, String content) {
     final prevState = state.value;
-    if (prevState == null || prevState.editingCommentId != null) return;
+    if (prevState == null) return;
 
     state = AsyncValue.data(
-        prevState.copyWith(content: content, editingCommentId: commentId));
+        prevState.copyWith(editingCommentId: commentId, content: content));
   }
 
   void cancelEditingComment() {
@@ -93,7 +93,7 @@ class TravelPlanComment extends _$TravelPlanComment {
     if (prevState == null || prevState.editingCommentId == null) return;
 
     state = AsyncValue.data(
-        prevState.copyWith(content: '', editingCommentId: null));
+        prevState.copyWith(content: null, editingCommentId: null));
   }
 
   Future<void> deleteComment(int commentId) async {
@@ -125,6 +125,10 @@ class TravelPlanComment extends _$TravelPlanComment {
       return TravelPlanCommentModel.listFromJson(response);
     });
 
-    state = AsyncValue.data(prevState.copyWith(comments: updatedComments));
+    state = AsyncValue.data(prevState.copyWith(
+        editingCommentId: prevState.editingCommentId == commentId
+            ? null
+            : prevState.editingCommentId,
+        comments: updatedComments));
   }
 }
