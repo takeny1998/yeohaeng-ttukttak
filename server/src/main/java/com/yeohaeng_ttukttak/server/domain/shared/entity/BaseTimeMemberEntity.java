@@ -2,6 +2,8 @@ package com.yeohaeng_ttukttak.server.domain.shared.entity;
 
 import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
 import jakarta.persistence.*;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @MappedSuperclass
@@ -10,12 +12,12 @@ public abstract class BaseTimeMemberEntity extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by")
-    @CreatedByMember
+    @CreatedBy
     private Member createdBy;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "last_modified_by")
-    @LastModifiedByMember
+    @LastModifiedBy
     private Member lastModifiedBy;
 
     public Member createdBy() {
