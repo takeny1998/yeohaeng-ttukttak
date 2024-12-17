@@ -3,77 +3,143 @@ import 'dart:ui';
 import 'package:application_new/common/exception/business_exception.dart';
 import 'package:application_new/common/exception/dto/server_fail_model.dart';
 import 'package:application_new/common/exception/server_exception.dart';
+import 'package:application_new/common/http/dto/http_method.dart';
 import 'package:application_new/common/http/dto/server_response.dart';
-import 'package:application_new/common/log/logger.dart';
-import 'package:dio/dio.dart';
-import 'package:easy_localization/easy_localization.dart';
-
-import '../exception/network_exception.dart';
+import 'package:application_new/common/http/http_communicable.dart';
+import 'package:application_new/feature/authentication/model/auth_model.dart';
+import 'package:application_new/feature/authentication/repository/auth_repository.dart';
+import 'package:application_new/feature/authentication/service/auth_service.dart';
 
 final class HttpService {
-  final Dio _dio;
-  final Locale _locale;
-  final String? _baseUrl;
+  final Locale locale;
+  final String? baseUrl;
 
-  HttpService({required Dio dio, required Locale locale, String? baseUrl})
-      : _dio = dio,
-        _locale = locale,
-        _baseUrl = baseUrl;
+  final HttpCommunicable httpClient;
+  final AuthRepository authRepository;
+
+  HttpService({
+    required this.httpClient,
+    required this.locale,
+    required this.authRepository,
+    this.baseUrl,
+  });
 
   Future<Map<String, dynamic>> request(
-    String method,
+    HttpMethod method,
     String uri, {
-    Map<String, dynamic>? queryParams,
-    Map<String, dynamic>? data,
-    String? authorization,
+    ServerRequestOptions? options,
   }) async {
-    final header = {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Accept-Language': _locale.languageCode
+    final Map<String, String> headers = {
+      'Accept-Language': locale.languageCode,
     };
 
-    if (authorization != null) {
-      header['Authorization'] = 'Bearer $authorization';
-    }
+    if (options == null || options.authorize == true) {
+      final authModel = await authRepository.find();
 
-    try {
-      final response = await _dio.request(
-        _baseUrl != null ? _baseUrl + uri : uri,
-        queryParameters: queryParams,
-        data: data,
-        options: Options(
-          method: method,
-          headers: header,
-        ),
-      );
-
-      final serverResponse = ServerResponse.fromJson(response.data);
-
-      return serverResponse.when(
-          success: (data) => data,
-          fail: (data) {
-            throw ServerFailException(
-              errors: List.of(data['errors'])
-                  .map((json) => ServerFailModel.fromJson(json))
-                  .toList(),
-            );
-          },
-          error: (code, message) {
-            throw ServerErrorException(code: code, message: message);
-          });
-    } on DioException catch (e) {
-      final response = e.response;
-      logger.e('[HttpService.request] exception = $e');
-
-      if (response == null) {
-        throw NetworkException(
-            statusMessage: e.message,
-            requestUri: e.requestOptions.uri,
-            requestMethod: e.requestOptions.method);
+      if (authModel == null) {
+        throw AuthorizationException();
       }
 
-      throw NetworkException.fromResponse(response);
+      final isExpired = authModel.expiresAt.isBefore(DateTime.now());
+
+      final accessToken = isExpired
+          ? await _renewAuth(authModel.refreshToken)
+          : authModel.accessToken;
+
+      headers['Authorization'] = 'Bearer $accessToken';
     }
+
+    final requestFn = switch (method) {
+      HttpMethod.get => httpClient.get,
+      HttpMethod.post => httpClient.post,
+      HttpMethod.patch => httpClient.patch,
+      HttpMethod.put => httpClient.put,
+      HttpMethod.delete => httpClient.delete,
+    };
+
+    final data = await requestFn(
+      baseUrl != null ? baseUrl! + uri : uri,
+      options: HttpRequestOptions(
+        headers: headers,
+        data: options?.data,
+        queryParameters: options?.queryParameters,
+      ),
+    );
+
+    final serverResponse = ServerResponse.fromJson(data);
+
+    return serverResponse.when(
+        success: (data) => data,
+        fail: (data) {
+          final errors = List.of(data['errors'])
+              .map((json) => ServerFailModel.fromJson(json))
+              .toList();
+
+          // 인증 관련 에러인 경우 비즈니스 예외로 변환한다.
+          for (final error in errors) {
+            if (error.code == 'AUTHORIZATION_FAIL') {
+              throw AuthorizationException();
+            }
+          }
+
+          throw ServerFailException(errors: errors);
+        },
+        error: (code, message) {
+          throw ServerErrorException(code: code, message: message);
+        });
   }
+
+  Future<String> _renewAuth(String refreshToken) async {
+    final authResponse = await request(HttpMethod.post, '/auth/renew',
+        options: ServerRequestOptions(
+          data: {'refreshToken': refreshToken},
+          authorize: false,
+        ));
+
+    final renewedAuthModel = AuthModel.fromResponse(authResponse);
+    await authRepository.save(renewedAuthModel);
+
+    return renewedAuthModel.accessToken;
+  }
+
+  Future<Map<String, dynamic>> get(
+    String uri, {
+    ServerRequestOptions? options,
+  }) =>
+      request(HttpMethod.get, uri, options: options);
+
+  Future<Map<String, dynamic>> post(
+    String uri, {
+    ServerRequestOptions? options,
+  }) =>
+      request(HttpMethod.post, uri, options: options);
+
+  Future<Map<String, dynamic>> patch(
+    String uri, {
+    ServerRequestOptions? options,
+  }) =>
+      request(HttpMethod.patch, uri, options: options);
+
+  Future<Map<String, dynamic>> put(
+    String uri, {
+    ServerRequestOptions? options,
+  }) =>
+      request(HttpMethod.put, uri, options: options);
+
+  Future<Map<String, dynamic>> delete(
+    String uri, {
+    ServerRequestOptions? options,
+  }) =>
+      request(HttpMethod.delete, uri, options: options);
+}
+
+final class ServerRequestOptions {
+  final Map<String, dynamic>? data;
+
+  final Map<String, dynamic>? queryParameters;
+
+  final bool authorize;
+
+  ServerRequestOptions(
+      {this.data, this.queryParameters, this.authorize = true});
 }

@@ -1,3 +1,4 @@
+import 'package:application_new/common/http/http_service.dart';
 import 'package:application_new/common/http/http_service_provider.dart';
 import 'package:application_new/domain/geography/geography_provider.dart';
 import 'package:application_new/domain/place/place_model.dart';
@@ -85,15 +86,13 @@ class CityPlacePois extends _$CityPlacePois {
   Future<(List<PlaceMetricModel>, bool)> _fetch() async {
     final httpService = ref.read(httpServiceProvider);
 
-    final Map<String, dynamic> queryParams = {
-      'cityId': cityId,
-      'pageNumber': _pageNumber,
-      'pageSize': _pageSize,
-      'sortType': sortType.name,
-    };
-
-    final response = await httpService.request('GET', '/api/v2/places/pois',
-        queryParams: queryParams);
+    final response = await httpService.get('/places/pois',
+        options: ServerRequestOptions(queryParameters: {
+          'cityId': cityId,
+          'pageNumber': _pageNumber,
+          'pageSize': _pageSize,
+          'sortType': sortType.name,
+        }));
 
     final placeMetrics = List.of(response['places'])
         .map((e) => PlaceMetricModel.fromJson(e))

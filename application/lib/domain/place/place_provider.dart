@@ -7,7 +7,7 @@ part 'place_provider.g.dart';
 @Riverpod(keepAlive: true)
 Future<PlaceModel> place(PlaceRef ref, int id) async {
   final response =
-      await ref.watch(httpServiceProvider).request('GET', '/api/v2/places/$id');
+      await ref.watch(httpServiceProvider).get('/places/$id');
 
   return PlaceModel.fromJson(response['place']);
 }

@@ -1,3 +1,4 @@
+import 'package:application_new/common/http/http_service.dart';
 import 'package:application_new/common/http/http_service_provider.dart';
 import 'package:application_new/common/loading/async_loading_provider.dart';
 import 'package:application_new/domain/travel/travel_model.dart';
@@ -92,10 +93,8 @@ class TravelCreate extends _$TravelCreate {
     final formModel = TravelFormModel.fromState(state);
 
     await ref.read(asyncLoadingProvider.notifier).guard(() async {
-      final authModel = await ref.read(authServiceProvider).find();
-      final response = await ref.read(httpServiceProvider).request(
-          'POST', '/api/v2/travels',
-          authorization: authModel.accessToken, data: formModel.toMap());
+      final response = await ref.read(httpServiceProvider).post('/travels',
+          options: ServerRequestOptions(data: formModel.toMap()));
 
       return TravelModel.fromJson(response['travel']);
     });

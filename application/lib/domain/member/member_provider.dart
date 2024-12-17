@@ -6,9 +6,7 @@ part 'member_provider.g.dart';
 
 @Riverpod(keepAlive: true)
 Future<MemberModel> member(MemberRef ref, String id) async {
-  final response = await ref
-      .watch(httpServiceProvider)
-      .request('GET', '/api/v2/members/$id'); 
+  final response = await ref.watch(httpServiceProvider).get('/members/$id');
 
   return MemberModel.fromJson(response['member']);
 }

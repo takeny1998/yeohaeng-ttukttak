@@ -1,3 +1,4 @@
+import 'package:application_new/common/http/http_service.dart';
 import 'package:application_new/common/http/http_service_provider.dart';
 import 'package:application_new/common/loading/async_loading_provider.dart';
 import 'package:application_new/domain/travel/travel_plan/travel_plan_model.dart';
@@ -19,9 +20,8 @@ class TravelPlanManage extends _$TravelPlanManage {
   }
 
   void _init() async {
-    final response = await ref
-        .watch(httpServiceProvider)
-        .request('GET', '/api/v2/travels/$travelId/plans');
+    final response =
+        await ref.watch(httpServiceProvider).get('/travels/$travelId/plans');
 
     final travel = await ref.watch(travelProvider(travelId).future);
 
@@ -68,26 +68,23 @@ class TravelPlanManage extends _$TravelPlanManage {
   }
 
   Future<void> move(TravelPlanModel from, int order) async {
-
     state = state?.copyWith(draggingIndex: null);
 
     if (state == null) return;
 
     final newPlans =
         await ref.read(asyncLoadingProvider.notifier).guard(() async {
-      final auth = await ref.read(authServiceProvider).find();
-
       final selectedDate = state!.selectedDate;
 
-      final response = await ref.read(httpServiceProvider).request(
-        'PATCH',
-        '/api/v2/travels/$travelId/plans/${from.id}',
-        authorization: auth.accessToken,
-        data: {
-          'orderOfVisit': order,
-          'willVisitOn': selectedDate.toIso8601String(),
-        },
-      );
+      final response = await ref
+          .read(httpServiceProvider)
+          .patch('/travels/$travelId/plans/${from.id}',
+              options: ServerRequestOptions(
+                data: {
+                  'orderOfVisit': order,
+                  'willVisitOn': selectedDate.toIso8601String(),
+                },
+              ));
 
       return TravelPlanModel.listFromJson(response);
     });
@@ -99,13 +96,9 @@ class TravelPlanManage extends _$TravelPlanManage {
     if (state == null) return;
 
     await ref.read(asyncLoadingProvider.notifier).guard(() async {
-      final auth = await ref.read(authServiceProvider).find();
-
-      await ref.read(httpServiceProvider).request(
-            'DELETE',
-            '/api/v2/travels/$travelId/plans/${plan.id}',
-            authorization: auth.accessToken,
-          );
+      await ref
+          .read(httpServiceProvider)
+          .delete('travels/$travelId/plans/${plan.id}');
     });
 
     final newPlans = List.of(state!.plans)..remove(plan);
@@ -116,16 +109,15 @@ class TravelPlanManage extends _$TravelPlanManage {
     var loadingNotifier = ref.read(asyncLoadingProvider.notifier);
 
     final newPlans = await loadingNotifier.guard(() async {
-      final auth = await ref.read(authServiceProvider).find();
-      final response = await ref.read(httpServiceProvider).request(
-        'POST',
-        '/api/v2/travels/$travelId/plans',
-        authorization: auth.accessToken,
-        data: {
-          'placeId': placeId,
-          'dayOfTravel': dayOfTravel,
-        },
-      );
+      final response = await ref.read(httpServiceProvider).post(
+            '/travels/$travelId/plans',
+            options: ServerRequestOptions(
+              data: {
+                'placeId': placeId,
+                'dayOfTravel': dayOfTravel,
+              },
+            ),
+          );
 
       return TravelPlanModel.listFromJson(response);
     });

@@ -2,6 +2,7 @@ import 'dart:ffi';
 
 import 'package:application_new/common/exception/business_exception.dart';
 import 'package:application_new/common/exception/server_exception.dart';
+import 'package:application_new/common/http/http_service.dart';
 import 'package:application_new/common/http/http_service_provider.dart';
 import 'package:application_new/common/loading/async_loading_provider.dart';
 import 'package:application_new/common/translation/translation_service.dart';
@@ -19,7 +20,7 @@ class TravelPlanComment extends _$TravelPlanComment {
   Future<TravelPlanCommentState> build(int travelId, int planId) async {
     final response = await ref
         .watch(httpServiceProvider)
-        .request('GET', '/api/v2/travels/$travelId/plans/$planId/comments');
+        .get( '/travels/$travelId/plans/$planId/comments');
 
     final comments = TravelPlanCommentModel.listFromJson(response);
 
@@ -45,13 +46,12 @@ class TravelPlanComment extends _$TravelPlanComment {
 
   Future<List<TravelPlanCommentModel>> _createComment(String content) async {
     final httpService = ref.read(httpServiceProvider);
-    final AuthModel(:accessToken) = await ref.read(authServiceProvider).find();
 
-    final response = await httpService.request(
-      'POST',
-      '/api/v2/travels/$travelId/plans/$planId/comments',
-      authorization: accessToken,
-      data: {'content': content},
+    final response = await httpService.post(
+      '/travels/$travelId/plans/$planId/comments',
+      options: ServerRequestOptions(
+        data: {'content': content},
+      ),
     );
     return TravelPlanCommentModel.listFromJson(response);
   }
@@ -59,13 +59,12 @@ class TravelPlanComment extends _$TravelPlanComment {
   Future<List<TravelPlanCommentModel>> _editComment(
       int commentId, String content) async {
     final httpService = ref.read(httpServiceProvider);
-    final AuthModel(:accessToken) = await ref.read(authServiceProvider).find();
 
-    final response = await httpService.request(
-      'PATCh',
-      '/api/v2/travels/$travelId/plans/$planId/comments/${commentId}',
-      authorization: accessToken,
-      data: {'content': content},
+    final response = await httpService.patch(
+      '/travels/$travelId/plans/$planId/comments/$commentId',
+      options: ServerRequestOptions(
+        data: {'content': content},
+      )
     );
     return TravelPlanCommentModel.listFromJson(response);
   }
@@ -115,12 +114,8 @@ class TravelPlanComment extends _$TravelPlanComment {
     final updatedComments = await loadingNotifier.guard(() async {
       final httpService = ref.read(httpServiceProvider);
 
-      final AuthModel(:accessToken) =
-          await ref.read(authServiceProvider).find();
-
-      final response = await httpService.request('DELETE',
-          '/api/v2/travels/$travelId/plans/$planId/comments/$commentId',
-          authorization: accessToken);
+      final response = await httpService.delete(
+          '/travels/$travelId/plans/$planId/comments/$commentId');
 
       return TravelPlanCommentModel.listFromJson(response);
     });
