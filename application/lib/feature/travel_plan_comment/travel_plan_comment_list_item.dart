@@ -32,20 +32,15 @@ class TravelPlanCommentListItem extends ConsumerWidget {
 
     final member = ref.watch(memberProvider(comment.createdBy)).value;
 
-    String agoLabel = ' · ';
+    String agoLabel = ' · ${timeago.format(
+      comment.createdAt,
+      locale: context.locale.languageCode,
+    )}';
 
     if (comment.lastModifiedAt != null) {
-      agoLabel += '${timeago.format(
-        comment.lastModifiedAt!,
-        locale: context.locale.languageCode,
-      )} (${tr.from('edited')})';
-    } else {
-      agoLabel += timeago.format(
-        comment.createdAt,
-        locale: context.locale.languageCode,
-      );
+      agoLabel += '(${tr.from('edited')})';
     }
-
+    
     return ListTile(
       contentPadding: EdgeInsets.zero,
       leading: CircleAvatar(
