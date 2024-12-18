@@ -1,5 +1,5 @@
 
-class Constants {
+final class Constants {
 
   Constants._();
 

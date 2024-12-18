@@ -6,7 +6,7 @@ part of 'geo_json_repository.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$geoJsonRepositoryHash() => r'c8292ac1c2541cbe40a14e6e5812403b96ca3ebc';
+String _$geoJsonRepositoryHash() => r'622023c9f373fc242954c3cb28c495a1f6715520';
 
 /// See also [geoJsonRepository].
 @ProviderFor(geoJsonRepository)

@@ -16,9 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$GeographySelectState {
-  int? get selectedStateId => throw _privateConstructorUsedError;
-  int? get selectedCityId => throw _privateConstructorUsedError;
-  List<GeoJsonModel> get geoJsons => throw _privateConstructorUsedError;
+  int? get selectedId => throw _privateConstructorUsedError;
 
   /// Create a copy of GeographySelectState
   /// with the given fields replaced by the non-null parameter values.
@@ -33,8 +31,7 @@ abstract class $GeographySelectStateCopyWith<$Res> {
           $Res Function(GeographySelectState) then) =
       _$GeographySelectStateCopyWithImpl<$Res, GeographySelectState>;
   @useResult
-  $Res call(
-      {int? selectedStateId, int? selectedCityId, List<GeoJsonModel> geoJsons});
+  $Res call({int? selectedId});
 }
 
 /// @nodoc
@@ -53,45 +50,34 @@ class _$GeographySelectStateCopyWithImpl<$Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? selectedStateId = freezed,
-    Object? selectedCityId = freezed,
-    Object? geoJsons = null,
+    Object? selectedId = freezed,
   }) {
     return _then(_value.copyWith(
-      selectedStateId: freezed == selectedStateId
-          ? _value.selectedStateId
-          : selectedStateId // ignore: cast_nullable_to_non_nullable
+      selectedId: freezed == selectedId
+          ? _value.selectedId
+          : selectedId // ignore: cast_nullable_to_non_nullable
               as int?,
-      selectedCityId: freezed == selectedCityId
-          ? _value.selectedCityId
-          : selectedCityId // ignore: cast_nullable_to_non_nullable
-              as int?,
-      geoJsons: null == geoJsons
-          ? _value.geoJsons
-          : geoJsons // ignore: cast_nullable_to_non_nullable
-              as List<GeoJsonModel>,
     ) as $Val);
   }
 }
 
 /// @nodoc
-abstract class _$$GeographySelectStateImplCopyWith<$Res>
+abstract class _$$ProvinceSelectStateImplCopyWith<$Res>
     implements $GeographySelectStateCopyWith<$Res> {
-  factory _$$GeographySelectStateImplCopyWith(_$GeographySelectStateImpl value,
-          $Res Function(_$GeographySelectStateImpl) then) =
-      __$$GeographySelectStateImplCopyWithImpl<$Res>;
+  factory _$$ProvinceSelectStateImplCopyWith(_$ProvinceSelectStateImpl value,
+          $Res Function(_$ProvinceSelectStateImpl) then) =
+      __$$ProvinceSelectStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {int? selectedStateId, int? selectedCityId, List<GeoJsonModel> geoJsons});
+  $Res call({int? selectedId});
 }
 
 /// @nodoc
-class __$$GeographySelectStateImplCopyWithImpl<$Res>
-    extends _$GeographySelectStateCopyWithImpl<$Res, _$GeographySelectStateImpl>
-    implements _$$GeographySelectStateImplCopyWith<$Res> {
-  __$$GeographySelectStateImplCopyWithImpl(_$GeographySelectStateImpl _value,
-      $Res Function(_$GeographySelectStateImpl) _then)
+class __$$ProvinceSelectStateImplCopyWithImpl<$Res>
+    extends _$GeographySelectStateCopyWithImpl<$Res, _$ProvinceSelectStateImpl>
+    implements _$$ProvinceSelectStateImplCopyWith<$Res> {
+  __$$ProvinceSelectStateImplCopyWithImpl(_$ProvinceSelectStateImpl _value,
+      $Res Function(_$ProvinceSelectStateImpl) _then)
       : super(_value, _then);
 
   /// Create a copy of GeographySelectState
@@ -99,97 +85,63 @@ class __$$GeographySelectStateImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? selectedStateId = freezed,
-    Object? selectedCityId = freezed,
-    Object? geoJsons = null,
+    Object? selectedId = freezed,
   }) {
-    return _then(_$GeographySelectStateImpl(
-      selectedStateId: freezed == selectedStateId
-          ? _value.selectedStateId
-          : selectedStateId // ignore: cast_nullable_to_non_nullable
+    return _then(_$ProvinceSelectStateImpl(
+      selectedId: freezed == selectedId
+          ? _value.selectedId
+          : selectedId // ignore: cast_nullable_to_non_nullable
               as int?,
-      selectedCityId: freezed == selectedCityId
-          ? _value.selectedCityId
-          : selectedCityId // ignore: cast_nullable_to_non_nullable
-              as int?,
-      geoJsons: null == geoJsons
-          ? _value._geoJsons
-          : geoJsons // ignore: cast_nullable_to_non_nullable
-              as List<GeoJsonModel>,
     ));
   }
 }
 
 /// @nodoc
 
-class _$GeographySelectStateImpl implements _GeographySelectState {
-  const _$GeographySelectStateImpl(
-      {this.selectedStateId,
-      this.selectedCityId,
-      required final List<GeoJsonModel> geoJsons})
-      : _geoJsons = geoJsons;
+class _$ProvinceSelectStateImpl implements _ProvinceSelectState {
+  const _$ProvinceSelectStateImpl({this.selectedId});
 
   @override
-  final int? selectedStateId;
-  @override
-  final int? selectedCityId;
-  final List<GeoJsonModel> _geoJsons;
-  @override
-  List<GeoJsonModel> get geoJsons {
-    if (_geoJsons is EqualUnmodifiableListView) return _geoJsons;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_geoJsons);
-  }
+  final int? selectedId;
 
   @override
   String toString() {
-    return 'GeographySelectState(selectedStateId: $selectedStateId, selectedCityId: $selectedCityId, geoJsons: $geoJsons)';
+    return 'GeographySelectState(selectedId: $selectedId)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$GeographySelectStateImpl &&
-            (identical(other.selectedStateId, selectedStateId) ||
-                other.selectedStateId == selectedStateId) &&
-            (identical(other.selectedCityId, selectedCityId) ||
-                other.selectedCityId == selectedCityId) &&
-            const DeepCollectionEquality().equals(other._geoJsons, _geoJsons));
+            other is _$ProvinceSelectStateImpl &&
+            (identical(other.selectedId, selectedId) ||
+                other.selectedId == selectedId));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, selectedStateId, selectedCityId,
-      const DeepCollectionEquality().hash(_geoJsons));
+  int get hashCode => Object.hash(runtimeType, selectedId);
 
   /// Create a copy of GeographySelectState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$GeographySelectStateImplCopyWith<_$GeographySelectStateImpl>
-      get copyWith =>
-          __$$GeographySelectStateImplCopyWithImpl<_$GeographySelectStateImpl>(
-              this, _$identity);
+  _$$ProvinceSelectStateImplCopyWith<_$ProvinceSelectStateImpl> get copyWith =>
+      __$$ProvinceSelectStateImplCopyWithImpl<_$ProvinceSelectStateImpl>(
+          this, _$identity);
 }
 
-abstract class _GeographySelectState implements GeographySelectState {
-  const factory _GeographySelectState(
-      {final int? selectedStateId,
-      final int? selectedCityId,
-      required final List<GeoJsonModel> geoJsons}) = _$GeographySelectStateImpl;
+abstract class _ProvinceSelectState implements GeographySelectState {
+  const factory _ProvinceSelectState({final int? selectedId}) =
+      _$ProvinceSelectStateImpl;
 
   @override
-  int? get selectedStateId;
-  @override
-  int? get selectedCityId;
-  @override
-  List<GeoJsonModel> get geoJsons;
+  int? get selectedId;
 
   /// Create a copy of GeographySelectState
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$GeographySelectStateImplCopyWith<_$GeographySelectStateImpl>
-      get copyWith => throw _privateConstructorUsedError;
+  _$$ProvinceSelectStateImplCopyWith<_$ProvinceSelectStateImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }

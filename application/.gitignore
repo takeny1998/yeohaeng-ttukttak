@@ -43,4 +43,4 @@ app.*.map.json
 /android/app/release
 
 # GeoJson Asset Data
-/assets/geojsons
+/assets/geo_jsons
