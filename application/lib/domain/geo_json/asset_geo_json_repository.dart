@@ -17,7 +17,7 @@ final class AssetGeoJsonRepository implements GeoJsonRepository {
     Future<void> loadProvinces() async {
       await _loadMetaData();
 
-      if (_provinces == null) return;
+      if (_provinces != null) return;
       final futures = List.of(_metadata!['states']).map((asset) async =>
           GeoJsonProvinceModel(
               id: asset['id'], geoJson: await _loadJson(asset)));
