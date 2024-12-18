@@ -13,8 +13,9 @@ import 'geography_select_state.dart';
 class GeographySelectView extends ConsumerStatefulWidget {
 
   final GeoJsonModel geoJson;
+  final void Function(int id) onSelect;
 
-  const GeographySelectView({super.key, required this.geoJson});
+  const GeographySelectView({super.key, required this.geoJson, required this.onSelect});
 
   @override
   ConsumerState createState() => _StateSelectViewState();
@@ -102,6 +103,9 @@ class _StateSelectViewState extends ConsumerState<GeographySelectView> {
                     .selectProvince(id);
               },
             ),
+            FilledButton(onPressed: selectedId != null ? () {
+              widget.onSelect(selectedId!);
+            } : null, child: const Text('선택'))
           ],
         )
       ],
