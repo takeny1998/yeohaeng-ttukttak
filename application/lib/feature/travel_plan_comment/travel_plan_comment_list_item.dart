@@ -38,7 +38,7 @@ class TravelPlanCommentListItem extends ConsumerWidget {
     )}';
 
     if (comment.lastModifiedAt != null) {
-      agoLabel += '(${tr.from('Edited')})';
+      agoLabel += ' (${tr.from('Edited')})';
     }
 
     return ListTile(

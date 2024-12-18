@@ -25,7 +25,6 @@ class ActionSheet extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final tr = ref.watch(translationServiceProvider);
-    final colorScheme = Theme.of(context).colorScheme;
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
@@ -35,7 +34,7 @@ class ActionSheet extends ConsumerWidget {
         ActionSheetGroupItem(items: [
           ActionSheetItem(
               title: tr.from('Close'),
-              onAction: Navigator.of(context).pop)
+              onAction: () {})
         ]),
         SizedBox(height: MediaQuery.of(context).padding.bottom),
       ],
