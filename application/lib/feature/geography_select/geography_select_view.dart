@@ -4,9 +4,9 @@ import 'dart:math';
 import 'package:application_new/core/translation/translation_service.dart';
 import 'package:application_new/domain/geo_json/geo_json_model.dart';
 import 'package:application_new/domain/geography/geography_model.dart';
+import 'package:application_new/domain/geography/geography_provider.dart';
 import 'package:application_new/feature/geography_select/components/geography_select_button.dart';
 import 'package:application_new/feature/geography_select/polygon_util.dart';
-import 'package:extended_wrap/extended_wrap.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_geojson/flutter_map_geojson.dart';
@@ -19,11 +19,20 @@ import 'geography_select_state.dart';
 class GeographySelectView extends ConsumerStatefulWidget {
   final int id;
 
-  final FutureOr<void> Function(int id) onSelect;
+  final FutureOr<void> Function(GeographyModel model) onSelect;
   final VoidCallback? onCancel;
 
+  final Iterable<GeographyModel> selectedChildren;
+
+  final bool isUnSelectable;
+
   const GeographySelectView(
-      {super.key, required this.id, required this.onSelect, this.onCancel});
+      {super.key,
+      required this.id,
+      required this.onSelect,
+      required this.selectedChildren,
+      this.onCancel,
+      this.isUnSelectable = true});
 
   @override
   ConsumerState createState() => _StateSelectViewState();
@@ -45,13 +54,13 @@ class _StateSelectViewState extends ConsumerState<GeographySelectView> {
   void initState() {
     Future.microtask(() async {
       await onMapReadyCompleter.future;
-      hitNotifier.addListener(() {
+      hitNotifier.addListener(() async {
         final hitId = hitNotifier.value?.hitValues.lastOrNull;
         if (hitId == null) return;
 
-        ref
-            .read(geographySelectProvider(widget.id).notifier)
-            .active(hitId as int);
+        final child = await ref.read(geographyProvider(hitId as int).future);
+
+        ref.read(geographySelectProvider(widget.id).notifier).active(child);
       });
     });
     super.initState();
@@ -133,16 +142,15 @@ class _StateSelectViewState extends ConsumerState<GeographySelectView> {
     return asyncState.when(
         data: (state) {
           final GeographySelectState(
-            :activeId,
+            :activeChild,
             :model,
             :children,
-            :selectIdList
           ) = state;
           if (polygons == null) {
             init(model, children);
           }
-          readyActivePolygon(activeId);
-          readySelectPolygon(selectIdList);
+          readyActivePolygon(activeChild?.id);
+          readySelectPolygon(widget.selectedChildren.map((child) => child.id));
 
           return Scaffold(
             body: Padding(
@@ -165,8 +173,8 @@ class _StateSelectViewState extends ConsumerState<GeographySelectView> {
 
                 return Consumer(builder: (context, ref, child) {
                   ref.listen(geographySelectProvider(widget.id), (prev, next) {
-                    final activeId = next.value?.activeId;
-                    if (prev?.value?.activeId == activeId) return;
+                    final activeId = next.value?.activeChild?.id;
+                    if (prev?.value?.activeChild?.id == activeId) return;
                     if (activeId == null) return;
 
                     int index = 0;
@@ -243,14 +251,14 @@ class _StateSelectViewState extends ConsumerState<GeographySelectView> {
                                           width: buttonWidth,
                                           height: buttonHeight,
                                           label: child.shortName,
-                                          isActive: child.id == activeId,
-                                          isSelected:
-                                              selectIdList.contains(child.id),
+                                          isActive: child.id == activeChild?.id,
+                                          isSelected: widget.selectedChildren
+                                              .contains(child),
                                           onPressed: () => ref
                                               .read(geographySelectProvider(
                                                       widget.id)
                                                   .notifier)
-                                              .active(child.id))
+                                              .active(child))
                                   ],
                                 ),
                               ),
@@ -275,18 +283,14 @@ class _StateSelectViewState extends ConsumerState<GeographySelectView> {
                   const SizedBox(width: 8.0),
                   Expanded(
                       child: FilledButton(
-                          onPressed: activeId != null
-                              ? () async {
-                                  await widget.onSelect(activeId);
-                                  ref
-                                      .read(geographySelectProvider(widget.id)
-                                          .notifier)
-                                      .select(activeId);
-                                }
+                          onPressed: activeChild != null
+                              ? () => widget.onSelect(activeChild)
                               : null,
-                          child: Text(selectIdList.contains(activeId)
-                              ? tr.from('Unselect')
-                              : tr.from('Select')))),
+                          child: Text(
+                              widget.selectedChildren.contains(activeChild) &&
+                                      widget.isUnSelectable
+                                  ? tr.from('Unselect')
+                                  : tr.from('Select')))),
                 ],
               ),
             ),

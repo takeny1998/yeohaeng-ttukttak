@@ -1,3 +1,4 @@
+import 'package:application_new/domain/geography/geography_model.dart';
 import 'package:application_new/feature/geography_select/province_city_select_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -10,13 +11,21 @@ class ProvinceCitySelect extends _$ProvinceCitySelect {
     return const ProvinceCitySelectState();
   }
 
-  void selectProvince(int? provinceId) {
-    if (state.selectedProvinceId == provinceId) return;
-    state = state.copyWith(selectedProvinceId: provinceId);
+  void selectProvince(int id) {
+    if (state.selectedProvinceId == id) return;
+    state = state.copyWith(selectedProvinceId: id);
   }
 
-  void selectCity(int? cityId) {
-    if (state.selectedCityId == cityId) return;
-    state = state.copyWith(selectedCityId: cityId);
+  void selectCity(CityModel city) {
+    final selectCities = List.of(state.selectedCities);
+
+    if (selectCities.contains(city)) {
+      selectCities.remove(city);
+    } else {
+      selectCities.add(city);
+    }
+
+    state = state.copyWith(selectedCities: selectCities);
   }
+
 }

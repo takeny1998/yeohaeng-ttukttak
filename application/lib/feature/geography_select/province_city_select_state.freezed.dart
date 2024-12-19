@@ -17,7 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$ProvinceCitySelectState {
   int? get selectedProvinceId => throw _privateConstructorUsedError;
-  int? get selectedCityId => throw _privateConstructorUsedError;
+  List<CityModel> get selectedCities => throw _privateConstructorUsedError;
 
   /// Create a copy of ProvinceCitySelectState
   /// with the given fields replaced by the non-null parameter values.
@@ -32,7 +32,7 @@ abstract class $ProvinceCitySelectStateCopyWith<$Res> {
           $Res Function(ProvinceCitySelectState) then) =
       _$ProvinceCitySelectStateCopyWithImpl<$Res, ProvinceCitySelectState>;
   @useResult
-  $Res call({int? selectedProvinceId, int? selectedCityId});
+  $Res call({int? selectedProvinceId, List<CityModel> selectedCities});
 }
 
 /// @nodoc
@@ -52,17 +52,17 @@ class _$ProvinceCitySelectStateCopyWithImpl<$Res,
   @override
   $Res call({
     Object? selectedProvinceId = freezed,
-    Object? selectedCityId = freezed,
+    Object? selectedCities = null,
   }) {
     return _then(_value.copyWith(
       selectedProvinceId: freezed == selectedProvinceId
           ? _value.selectedProvinceId
           : selectedProvinceId // ignore: cast_nullable_to_non_nullable
               as int?,
-      selectedCityId: freezed == selectedCityId
-          ? _value.selectedCityId
-          : selectedCityId // ignore: cast_nullable_to_non_nullable
-              as int?,
+      selectedCities: null == selectedCities
+          ? _value.selectedCities
+          : selectedCities // ignore: cast_nullable_to_non_nullable
+              as List<CityModel>,
     ) as $Val);
   }
 }
@@ -76,7 +76,7 @@ abstract class _$$ProvinceCitySelectStateImplCopyWith<$Res>
       __$$ProvinceCitySelectStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int? selectedProvinceId, int? selectedCityId});
+  $Res call({int? selectedProvinceId, List<CityModel> selectedCities});
 }
 
 /// @nodoc
@@ -95,17 +95,17 @@ class __$$ProvinceCitySelectStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? selectedProvinceId = freezed,
-    Object? selectedCityId = freezed,
+    Object? selectedCities = null,
   }) {
     return _then(_$ProvinceCitySelectStateImpl(
       selectedProvinceId: freezed == selectedProvinceId
           ? _value.selectedProvinceId
           : selectedProvinceId // ignore: cast_nullable_to_non_nullable
               as int?,
-      selectedCityId: freezed == selectedCityId
-          ? _value.selectedCityId
-          : selectedCityId // ignore: cast_nullable_to_non_nullable
-              as int?,
+      selectedCities: null == selectedCities
+          ? _value._selectedCities
+          : selectedCities // ignore: cast_nullable_to_non_nullable
+              as List<CityModel>,
     ));
   }
 }
@@ -114,16 +114,24 @@ class __$$ProvinceCitySelectStateImplCopyWithImpl<$Res>
 
 class _$ProvinceCitySelectStateImpl implements _ProvinceCitySelectState {
   const _$ProvinceCitySelectStateImpl(
-      {this.selectedProvinceId, this.selectedCityId});
+      {this.selectedProvinceId,
+      final List<CityModel> selectedCities = const []})
+      : _selectedCities = selectedCities;
 
   @override
   final int? selectedProvinceId;
+  final List<CityModel> _selectedCities;
   @override
-  final int? selectedCityId;
+  @JsonKey()
+  List<CityModel> get selectedCities {
+    if (_selectedCities is EqualUnmodifiableListView) return _selectedCities;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_selectedCities);
+  }
 
   @override
   String toString() {
-    return 'ProvinceCitySelectState(selectedProvinceId: $selectedProvinceId, selectedCityId: $selectedCityId)';
+    return 'ProvinceCitySelectState(selectedProvinceId: $selectedProvinceId, selectedCities: $selectedCities)';
   }
 
   @override
@@ -133,13 +141,13 @@ class _$ProvinceCitySelectStateImpl implements _ProvinceCitySelectState {
             other is _$ProvinceCitySelectStateImpl &&
             (identical(other.selectedProvinceId, selectedProvinceId) ||
                 other.selectedProvinceId == selectedProvinceId) &&
-            (identical(other.selectedCityId, selectedCityId) ||
-                other.selectedCityId == selectedCityId));
+            const DeepCollectionEquality()
+                .equals(other._selectedCities, _selectedCities));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, selectedProvinceId, selectedCityId);
+  int get hashCode => Object.hash(runtimeType, selectedProvinceId,
+      const DeepCollectionEquality().hash(_selectedCities));
 
   /// Create a copy of ProvinceCitySelectState
   /// with the given fields replaced by the non-null parameter values.
@@ -154,12 +162,12 @@ class _$ProvinceCitySelectStateImpl implements _ProvinceCitySelectState {
 abstract class _ProvinceCitySelectState implements ProvinceCitySelectState {
   const factory _ProvinceCitySelectState(
       {final int? selectedProvinceId,
-      final int? selectedCityId}) = _$ProvinceCitySelectStateImpl;
+      final List<CityModel> selectedCities}) = _$ProvinceCitySelectStateImpl;
 
   @override
   int? get selectedProvinceId;
   @override
-  int? get selectedCityId;
+  List<CityModel> get selectedCities;
 
   /// Create a copy of ProvinceCitySelectState
   /// with the given fields replaced by the non-null parameter values.

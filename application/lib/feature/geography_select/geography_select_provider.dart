@@ -1,4 +1,5 @@
 import 'package:application_new/domain/geo_json/geo_json_repository.dart';
+import 'package:application_new/domain/geography/geography_model.dart';
 import 'package:application_new/domain/geography/geography_provider.dart';
 import 'package:application_new/feature/geography_select/geography_select_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -22,25 +23,10 @@ class GeographySelect extends _$GeographySelect {
     return GeographySelectState(model: model, children: children);
   }
 
-  void active(int id) {
+  void active(GeographyModel child) {
     final prevState = state.value;
-    if (prevState == null || prevState.activeId == id) return;
+    if (prevState == null || prevState.activeChild == child) return;
 
-    state = AsyncValue.data(prevState.copyWith(activeId: id));
-  }
-
-  void select(int id) {
-    final prevState = state.value;
-    if (prevState == null) return;
-
-    final selectIdList = List.of(prevState.selectIdList);
-
-    if (selectIdList.contains(id)) {
-      selectIdList.remove(id);
-    } else {
-      selectIdList.add(id);
-    }
-
-    state = AsyncValue.data(prevState.copyWith(selectIdList: selectIdList));
+    state = AsyncValue.data(prevState.copyWith(activeChild: child));
   }
 }

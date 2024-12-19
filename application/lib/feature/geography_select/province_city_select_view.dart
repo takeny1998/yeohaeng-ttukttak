@@ -1,4 +1,5 @@
 import 'package:application_new/core/translation/translation_service.dart';
+import 'package:application_new/domain/geography/geography_model.dart';
 import 'package:application_new/domain/geography/geography_provider.dart';
 import 'package:application_new/feature/geography_select/geography_select_provider.dart';
 import 'package:application_new/feature/geography_select/geography_select_view.dart';
@@ -26,21 +27,27 @@ class ProvinceCitySelectView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final ProvinceCitySelectState(:selectedProvinceId) =
+    final tr = ref.watch(translationServiceProvider);
+
+    final ProvinceCitySelectState(:selectedCities, :selectedProvinceId) =
         ref.watch(provinceCitySelectProvider);
 
-    final tr = ref.watch(translationServiceProvider);
+    final Iterable<int> idSet = selectedCities.map((city) => city.parentId);
+
+    final geographies = ref.watch(geographiesProvider).value;
+
+    final selectedProvinces = geographies
+            ?.where((geography) => idSet.contains(geography.id))
+            .toList() ??
+        [];
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        AnimatedSwitcher(
-          duration: const Duration(milliseconds: 300),
-          child: Container(
-            key: ValueKey<int?>(selectedProvinceId),
-            width: double.maxFinite,
-            padding: const EdgeInsets.symmetric(horizontal: 24.0),
-            child: Consumer(builder: (context, ref, child) {
+        Row(
+          children: [
+            const SizedBox(width: 24.0),
+            Consumer(builder: (context, ref, child) {
               const textStyle =
                   TextStyle(fontWeight: FontWeight.w800, fontSize: 21.0);
 
@@ -54,7 +61,17 @@ class ProvinceCitySelectView extends ConsumerWidget {
 
               return Text(province?.name ?? '', style: textStyle);
             }),
-          ),
+            const Expanded(child: SizedBox(width: 8.0)),
+            IconButton.filledTonal(
+                onPressed: () {},
+                icon: Badge(
+                    isLabelVisible: true,
+                    label: Text('${selectedCities.length}'),
+                    offset: const Offset(12.0, -8.0),
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    child: const Icon(Icons.shopping_cart_outlined))),
+            const SizedBox(width: 24.0),
+          ],
         ),
         const SizedBox(height: 16.0),
         Expanded(
@@ -63,35 +80,29 @@ class ProvinceCitySelectView extends ConsumerWidget {
             controller: pageController,
             children: [
               GeographySelectView(
-                  id: 0,
-                  onSelect: (id) {
+                  id: countryId,
+                  selectedChildren: selectedProvinces,
+                  isUnSelectable: false,
+                  onSelect: (model) {
                     ref
                         .read(provinceCitySelectProvider.notifier)
-                        .selectProvince(id);
+                        .selectProvince(model.id);
                     nextPage();
                   }),
               SizedBox(
-                width: double.maxFinite,
-                height: double.maxFinite,
                 child: selectedProvinceId != null
                     ? GeographySelectView(
+                        selectedChildren: selectedCities,
                         id: selectedProvinceId,
-                        onSelect: (id) {
-                          ref
-                              .read(provinceCitySelectProvider.notifier)
-                              .selectCity(id);
-                        },
+                        onSelect: (model) => model.mapOrNull(
+                            city: (city) => ref
+                                .read(provinceCitySelectProvider.notifier)
+                                .selectCity(city)),
                         onCancel: () {
-                          ref
-                              .read(provinceCitySelectProvider.notifier)
-                              .selectCity(null);
-                          ref
-                              .read(provinceCitySelectProvider.notifier)
-                              .selectProvince(null);
                           previousPage();
                         },
                       )
-                    : null,
+                    : const SizedBox(),
               )
             ],
           ),
