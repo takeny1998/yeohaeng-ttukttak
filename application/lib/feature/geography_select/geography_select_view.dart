@@ -32,7 +32,7 @@ class _StateSelectViewState extends ConsumerState<GeographySelectView> {
   final MapController mapController = MapController();
   final PageController pageController = PageController();
 
-  Polygon? activePolygon;
+  Iterable<Polygon>? activePolygons;
   Iterable<Polygon>? polygons;
 
   @override
@@ -60,17 +60,16 @@ class _StateSelectViewState extends ConsumerState<GeographySelectView> {
   void readyActivePolygon(int? selectedId) {
     if (polygons == null || selectedId == null) return;
 
-    final polygon =
-        polygons?.where((e) => e.hitValue == selectedId).firstOrNull;
+    final foundPolygons = polygons?.where((e) => e.hitValue == selectedId);
 
-    if (polygon == null) return;
+    if (foundPolygons == null) return;
 
     final colorScheme = Theme.of(context).colorScheme;
-    activePolygon = PolygonUtil.copyWith(
-      polygon,
-      borderColor: colorScheme.primary,
-      color: colorScheme.primaryContainer,
-    );
+    activePolygons = foundPolygons.map((polygon) => PolygonUtil.copyWith(
+          polygon,
+          borderColor: colorScheme.primary,
+          color: colorScheme.primaryContainer,
+        ));
   }
 
   @override
@@ -124,9 +123,13 @@ class _StateSelectViewState extends ConsumerState<GeographySelectView> {
                             ),
                             children: [
                               if (polygons != null)
-                                PolygonLayer(polygons: polygons!.toList()),
-                              if (activePolygon != null)
-                                PolygonLayer(polygons: [activePolygon!]),
+                                PolygonLayer(
+                                    simplificationTolerance: 0.0,
+                                    polygons: polygons!.toList()),
+                              if (activePolygons != null)
+                                PolygonLayer(
+                                    simplificationTolerance: 0.0,
+                                    polygons: activePolygons!.toList()),
                             ]),
                       ),
                     ),
@@ -161,11 +164,10 @@ class _StateSelectViewState extends ConsumerState<GeographySelectView> {
                                                 activeId == child.id
                                                     ? colorScheme.primaryFixed
                                                     : null,
-                                            
                                             side: BorderSide(
                                                 width: 0.5,
-                                                color:
-                                                    colorScheme.surfaceContainerHighest),
+                                                color: colorScheme
+                                                    .surfaceContainerHighest),
                                             shape:
                                                 const BeveledRectangleBorder(),
                                           ),
