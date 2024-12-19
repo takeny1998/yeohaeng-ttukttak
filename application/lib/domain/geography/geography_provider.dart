@@ -1,34 +1,38 @@
 import 'package:application_new/common/http/http_service_provider.dart';
-import 'package:application_new/common/util/iterable_util.dart';
+
 import 'package:application_new/domain/geography/geography_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'geography_provider.g.dart';
 
 @Riverpod(keepAlive: true)
-Future<(List<CityModel>, List<RegionModel>)> geography(GeographyRef ref) async {
+Future<List<GeographyModel>> geographies(GeographiesRef ref) async {
   final response = await ref.watch(httpServiceProvider).get('/geographies');
-
-  return (
-    GeographyModel.citiesFromJson(response),
-    GeographyModel.regionsFromJson(response)
-  );
+  return GeographyModel.listFromJson(response);
 }
 
 @riverpod
-CityModel? city(CityRef ref, int id) {
-  final geography = ref.watch(geographyProvider).value;
-  if (geography == null) return null;
-
-  final (cities, _) = geography;
-  return IterableUtil.firstWhereOrNull(cities, (city) => city.id == id);
+Future<GeographyModel> geography(GeographyRef ref, int id) async {
+  final geographies = await ref.watch(geographiesProvider.future);
+  return geographies.where((e) => e.id == id).first;
 }
 
 @riverpod
-RegionModel? region(RegionRef ref, int id) {
-  final geography = ref.watch(geographyProvider).value;
-  if (geography == null) return null;
+Future<CityModel> city(CityRef ref, int id) async {
+  final geographies = await ref.watch(geographiesProvider.future);
 
-  final (_, regions) = geography;
-  return IterableUtil.firstWhereOrNull(regions, (region) => region.id == id);
+  return geographies
+      .whereType<CityModel>()
+      .where((e) => e.id == id)
+      .first;
+}
+
+@riverpod
+Future<ProvinceModel> province(ProvinceRef ref, int id) async {
+  final geographies = await ref.watch(geographiesProvider.future);
+
+  return geographies
+      .whereType<ProvinceModel>()
+      .where((e) => e.id == id)
+      .first;
 }

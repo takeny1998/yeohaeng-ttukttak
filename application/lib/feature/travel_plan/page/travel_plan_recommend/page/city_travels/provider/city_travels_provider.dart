@@ -21,7 +21,7 @@ class CityTravels extends _$CityTravels {
   @override
   CityTravelsState? build(int travelId, int cityId) {
     final travel = ref.watch(travelProvider(travelId)).value;
-    final city = ref.watch(cityProvider(cityId));
+    final city = ref.watch(cityProvider(cityId)).value;
 
     if (travel == null || city == null) return null;
 

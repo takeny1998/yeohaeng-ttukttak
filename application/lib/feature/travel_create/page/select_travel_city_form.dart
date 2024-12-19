@@ -34,11 +34,11 @@ class _SelectTravelCityFormState extends ConsumerState<SelectTravelCityForm> {
     final TravelCreateState(cities: selectedCities, region: selectedRegion) =
         ref.watch(travelCreateProvider);
 
-    final geography = ref.watch(geographyProvider).value;
+    // final geography = ref.watch(geographyProvider).value;
+    //
+    // if (geography == null) return const LoadingPage();
 
-    if (geography == null) return const LoadingPage();
-
-    final (cities, regions) = geography;
+    final (cities, regions) = ([], []);
 
     final colorScheme = Theme.of(context).colorScheme;
 
@@ -72,7 +72,7 @@ class _SelectTravelCityFormState extends ConsumerState<SelectTravelCityForm> {
                 final foundCity = await showSearch(
                     context: context,
                     delegate:
-                        CitySearchDelegate(cities: cities, regions: regions));
+                        CitySearchDelegate(cities: [], regions:[]));
 
                 if (foundCity == null || selectedCities.contains(foundCity)) {
                   return;
