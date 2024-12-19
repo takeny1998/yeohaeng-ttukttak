@@ -9,7 +9,7 @@ class GeographySelectState with _$GeographySelectState {
 
   const factory GeographySelectState({
     required GeoJsonModel model,
-    required List<GeographyModel> options,
+    required List<GeographyModel> children,
     int? activeId,
   }) = _ProvinceSelectState;
 

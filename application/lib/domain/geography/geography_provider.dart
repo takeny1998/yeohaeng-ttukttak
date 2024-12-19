@@ -8,6 +8,7 @@ part 'geography_provider.g.dart';
 @Riverpod(keepAlive: true)
 Future<List<GeographyModel>> geographies(GeographiesRef ref) async {
   final response = await ref.watch(httpServiceProvider).get('/geographies');
+
   return GeographyModel.listFromJson(response);
 }
 

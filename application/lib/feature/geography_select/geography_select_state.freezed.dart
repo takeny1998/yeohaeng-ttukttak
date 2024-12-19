@@ -17,7 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$GeographySelectState {
   GeoJsonModel get model => throw _privateConstructorUsedError;
-  List<GeographyModel> get options => throw _privateConstructorUsedError;
+  List<GeographyModel> get children => throw _privateConstructorUsedError;
   int? get activeId => throw _privateConstructorUsedError;
 
   /// Create a copy of GeographySelectState
@@ -33,7 +33,7 @@ abstract class $GeographySelectStateCopyWith<$Res> {
           $Res Function(GeographySelectState) then) =
       _$GeographySelectStateCopyWithImpl<$Res, GeographySelectState>;
   @useResult
-  $Res call({GeoJsonModel model, List<GeographyModel> options, int? activeId});
+  $Res call({GeoJsonModel model, List<GeographyModel> children, int? activeId});
 
   $GeoJsonModelCopyWith<$Res> get model;
 }
@@ -55,7 +55,7 @@ class _$GeographySelectStateCopyWithImpl<$Res,
   @override
   $Res call({
     Object? model = null,
-    Object? options = null,
+    Object? children = null,
     Object? activeId = freezed,
   }) {
     return _then(_value.copyWith(
@@ -63,9 +63,9 @@ class _$GeographySelectStateCopyWithImpl<$Res,
           ? _value.model
           : model // ignore: cast_nullable_to_non_nullable
               as GeoJsonModel,
-      options: null == options
-          ? _value.options
-          : options // ignore: cast_nullable_to_non_nullable
+      children: null == children
+          ? _value.children
+          : children // ignore: cast_nullable_to_non_nullable
               as List<GeographyModel>,
       activeId: freezed == activeId
           ? _value.activeId
@@ -93,7 +93,7 @@ abstract class _$$ProvinceSelectStateImplCopyWith<$Res>
       __$$ProvinceSelectStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({GeoJsonModel model, List<GeographyModel> options, int? activeId});
+  $Res call({GeoJsonModel model, List<GeographyModel> children, int? activeId});
 
   @override
   $GeoJsonModelCopyWith<$Res> get model;
@@ -113,7 +113,7 @@ class __$$ProvinceSelectStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? model = null,
-    Object? options = null,
+    Object? children = null,
     Object? activeId = freezed,
   }) {
     return _then(_$ProvinceSelectStateImpl(
@@ -121,9 +121,9 @@ class __$$ProvinceSelectStateImplCopyWithImpl<$Res>
           ? _value.model
           : model // ignore: cast_nullable_to_non_nullable
               as GeoJsonModel,
-      options: null == options
-          ? _value._options
-          : options // ignore: cast_nullable_to_non_nullable
+      children: null == children
+          ? _value._children
+          : children // ignore: cast_nullable_to_non_nullable
               as List<GeographyModel>,
       activeId: freezed == activeId
           ? _value.activeId
@@ -138,18 +138,18 @@ class __$$ProvinceSelectStateImplCopyWithImpl<$Res>
 class _$ProvinceSelectStateImpl implements _ProvinceSelectState {
   const _$ProvinceSelectStateImpl(
       {required this.model,
-      required final List<GeographyModel> options,
+      required final List<GeographyModel> children,
       this.activeId})
-      : _options = options;
+      : _children = children;
 
   @override
   final GeoJsonModel model;
-  final List<GeographyModel> _options;
+  final List<GeographyModel> _children;
   @override
-  List<GeographyModel> get options {
-    if (_options is EqualUnmodifiableListView) return _options;
+  List<GeographyModel> get children {
+    if (_children is EqualUnmodifiableListView) return _children;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_options);
+    return EqualUnmodifiableListView(_children);
   }
 
   @override
@@ -157,7 +157,7 @@ class _$ProvinceSelectStateImpl implements _ProvinceSelectState {
 
   @override
   String toString() {
-    return 'GeographySelectState(model: $model, options: $options, activeId: $activeId)';
+    return 'GeographySelectState(model: $model, children: $children, activeId: $activeId)';
   }
 
   @override
@@ -166,14 +166,14 @@ class _$ProvinceSelectStateImpl implements _ProvinceSelectState {
         (other.runtimeType == runtimeType &&
             other is _$ProvinceSelectStateImpl &&
             (identical(other.model, model) || other.model == model) &&
-            const DeepCollectionEquality().equals(other._options, _options) &&
+            const DeepCollectionEquality().equals(other._children, _children) &&
             (identical(other.activeId, activeId) ||
                 other.activeId == activeId));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, model,
-      const DeepCollectionEquality().hash(_options), activeId);
+      const DeepCollectionEquality().hash(_children), activeId);
 
   /// Create a copy of GeographySelectState
   /// with the given fields replaced by the non-null parameter values.
@@ -188,13 +188,13 @@ class _$ProvinceSelectStateImpl implements _ProvinceSelectState {
 abstract class _ProvinceSelectState implements GeographySelectState {
   const factory _ProvinceSelectState(
       {required final GeoJsonModel model,
-      required final List<GeographyModel> options,
+      required final List<GeographyModel> children,
       final int? activeId}) = _$ProvinceSelectStateImpl;
 
   @override
   GeoJsonModel get model;
   @override
-  List<GeographyModel> get options;
+  List<GeographyModel> get children;
   @override
   int? get activeId;
 

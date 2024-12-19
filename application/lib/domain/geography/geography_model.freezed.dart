@@ -33,13 +33,10 @@ GeographyModel _$GeographyModelFromJson(Map<String, dynamic> json) {
 mixin _$GeographyModel {
   int get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
-  int get parentId => throw _privateConstructorUsedError;
   String get shortName => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(
-            int id, String name, int parentId, String shortName)
-        country,
+    required TResult Function(int id, String name, String shortName) country,
     required TResult Function(int id, String name, int parentId,
             String shortName, ImageModel insignia)
         province,
@@ -50,8 +47,7 @@ mixin _$GeographyModel {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(int id, String name, int parentId, String shortName)?
-        country,
+    TResult? Function(int id, String name, String shortName)? country,
     TResult? Function(int id, String name, int parentId, String shortName,
             ImageModel insignia)?
         province,
@@ -62,8 +58,7 @@ mixin _$GeographyModel {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(int id, String name, int parentId, String shortName)?
-        country,
+    TResult Function(int id, String name, String shortName)? country,
     TResult Function(int id, String name, int parentId, String shortName,
             ImageModel insignia)?
         province,
@@ -112,7 +107,7 @@ abstract class $GeographyModelCopyWith<$Res> {
           GeographyModel value, $Res Function(GeographyModel) then) =
       _$GeographyModelCopyWithImpl<$Res, GeographyModel>;
   @useResult
-  $Res call({int id, String name, int parentId, String shortName});
+  $Res call({int id, String name, String shortName});
 }
 
 /// @nodoc
@@ -132,7 +127,6 @@ class _$GeographyModelCopyWithImpl<$Res, $Val extends GeographyModel>
   $Res call({
     Object? id = null,
     Object? name = null,
-    Object? parentId = null,
     Object? shortName = null,
   }) {
     return _then(_value.copyWith(
@@ -144,10 +138,6 @@ class _$GeographyModelCopyWithImpl<$Res, $Val extends GeographyModel>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      parentId: null == parentId
-          ? _value.parentId
-          : parentId // ignore: cast_nullable_to_non_nullable
-              as int,
       shortName: null == shortName
           ? _value.shortName
           : shortName // ignore: cast_nullable_to_non_nullable
@@ -164,7 +154,7 @@ abstract class _$$CountryModelImplCopyWith<$Res>
       __$$CountryModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int id, String name, int parentId, String shortName});
+  $Res call({int id, String name, String shortName});
 }
 
 /// @nodoc
@@ -182,7 +172,6 @@ class __$$CountryModelImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? name = null,
-    Object? parentId = null,
     Object? shortName = null,
   }) {
     return _then(_$CountryModelImpl(
@@ -194,10 +183,6 @@ class __$$CountryModelImplCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      parentId: null == parentId
-          ? _value.parentId
-          : parentId // ignore: cast_nullable_to_non_nullable
-              as int,
       shortName: null == shortName
           ? _value.shortName
           : shortName // ignore: cast_nullable_to_non_nullable
@@ -212,7 +197,6 @@ class _$CountryModelImpl implements CountryModel {
   const _$CountryModelImpl(
       {required this.id,
       required this.name,
-      required this.parentId,
       required this.shortName,
       final String? $type})
       : $type = $type ?? '0';
@@ -225,8 +209,6 @@ class _$CountryModelImpl implements CountryModel {
   @override
   final String name;
   @override
-  final int parentId;
-  @override
   final String shortName;
 
   @JsonKey(name: 'level')
@@ -234,7 +216,7 @@ class _$CountryModelImpl implements CountryModel {
 
   @override
   String toString() {
-    return 'GeographyModel.country(id: $id, name: $name, parentId: $parentId, shortName: $shortName)';
+    return 'GeographyModel.country(id: $id, name: $name, shortName: $shortName)';
   }
 
   @override
@@ -244,15 +226,13 @@ class _$CountryModelImpl implements CountryModel {
             other is _$CountryModelImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
-            (identical(other.parentId, parentId) ||
-                other.parentId == parentId) &&
             (identical(other.shortName, shortName) ||
                 other.shortName == shortName));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, name, parentId, shortName);
+  int get hashCode => Object.hash(runtimeType, id, name, shortName);
 
   /// Create a copy of GeographyModel
   /// with the given fields replaced by the non-null parameter values.
@@ -265,9 +245,7 @@ class _$CountryModelImpl implements CountryModel {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(
-            int id, String name, int parentId, String shortName)
-        country,
+    required TResult Function(int id, String name, String shortName) country,
     required TResult Function(int id, String name, int parentId,
             String shortName, ImageModel insignia)
         province,
@@ -275,14 +253,13 @@ class _$CountryModelImpl implements CountryModel {
             String shortName, ImageModel insignia)
         city,
   }) {
-    return country(id, name, parentId, shortName);
+    return country(id, name, shortName);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(int id, String name, int parentId, String shortName)?
-        country,
+    TResult? Function(int id, String name, String shortName)? country,
     TResult? Function(int id, String name, int parentId, String shortName,
             ImageModel insignia)?
         province,
@@ -290,14 +267,13 @@ class _$CountryModelImpl implements CountryModel {
             ImageModel insignia)?
         city,
   }) {
-    return country?.call(id, name, parentId, shortName);
+    return country?.call(id, name, shortName);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(int id, String name, int parentId, String shortName)?
-        country,
+    TResult Function(int id, String name, String shortName)? country,
     TResult Function(int id, String name, int parentId, String shortName,
             ImageModel insignia)?
         province,
@@ -307,7 +283,7 @@ class _$CountryModelImpl implements CountryModel {
     required TResult orElse(),
   }) {
     if (country != null) {
-      return country(id, name, parentId, shortName);
+      return country(id, name, shortName);
     }
     return orElse();
   }
@@ -358,7 +334,6 @@ abstract class CountryModel implements GeographyModel {
   const factory CountryModel(
       {required final int id,
       required final String name,
-      required final int parentId,
       required final String shortName}) = _$CountryModelImpl;
 
   factory CountryModel.fromJson(Map<String, dynamic> json) =
@@ -368,8 +343,6 @@ abstract class CountryModel implements GeographyModel {
   int get id;
   @override
   String get name;
-  @override
-  int get parentId;
   @override
   String get shortName;
 
@@ -518,9 +491,7 @@ class _$ProvinceModelImpl implements ProvinceModel {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(
-            int id, String name, int parentId, String shortName)
-        country,
+    required TResult Function(int id, String name, String shortName) country,
     required TResult Function(int id, String name, int parentId,
             String shortName, ImageModel insignia)
         province,
@@ -534,8 +505,7 @@ class _$ProvinceModelImpl implements ProvinceModel {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(int id, String name, int parentId, String shortName)?
-        country,
+    TResult? Function(int id, String name, String shortName)? country,
     TResult? Function(int id, String name, int parentId, String shortName,
             ImageModel insignia)?
         province,
@@ -549,8 +519,7 @@ class _$ProvinceModelImpl implements ProvinceModel {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(int id, String name, int parentId, String shortName)?
-        country,
+    TResult Function(int id, String name, String shortName)? country,
     TResult Function(int id, String name, int parentId, String shortName,
             ImageModel insignia)?
         province,
@@ -622,7 +591,6 @@ abstract class ProvinceModel implements GeographyModel {
   int get id;
   @override
   String get name;
-  @override
   int get parentId;
   @override
   String get shortName;
@@ -773,9 +741,7 @@ class _$CityModelImpl implements CityModel {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(
-            int id, String name, int parentId, String shortName)
-        country,
+    required TResult Function(int id, String name, String shortName) country,
     required TResult Function(int id, String name, int parentId,
             String shortName, ImageModel insignia)
         province,
@@ -789,8 +755,7 @@ class _$CityModelImpl implements CityModel {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(int id, String name, int parentId, String shortName)?
-        country,
+    TResult? Function(int id, String name, String shortName)? country,
     TResult? Function(int id, String name, int parentId, String shortName,
             ImageModel insignia)?
         province,
@@ -804,8 +769,7 @@ class _$CityModelImpl implements CityModel {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(int id, String name, int parentId, String shortName)?
-        country,
+    TResult Function(int id, String name, String shortName)? country,
     TResult Function(int id, String name, int parentId, String shortName,
             ImageModel insignia)?
         province,
@@ -877,7 +841,6 @@ abstract class CityModel implements GeographyModel {
   int get id;
   @override
   String get name;
-  @override
   int get parentId;
   @override
   String get shortName;

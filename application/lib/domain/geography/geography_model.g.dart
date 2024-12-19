@@ -10,7 +10,6 @@ _$CountryModelImpl _$$CountryModelImplFromJson(Map<String, dynamic> json) =>
     _$CountryModelImpl(
       id: (json['id'] as num).toInt(),
       name: json['name'] as String,
-      parentId: (json['parentId'] as num).toInt(),
       shortName: json['shortName'] as String,
       $type: json['level'] as String?,
     );
@@ -19,7 +18,6 @@ Map<String, dynamic> _$$CountryModelImplToJson(_$CountryModelImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
-      'parentId': instance.parentId,
       'shortName': instance.shortName,
       'level': instance.$type,
     };

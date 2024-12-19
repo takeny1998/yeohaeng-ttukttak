@@ -67,6 +67,7 @@ dependencies:
   intrinsic_size_builder: ^2.0.2
   timeago: ^3.7.0
   flutter_map_geojson: ^1.0.8
+  smooth_page_indicator: ^1.2.0+3
 
 dev_dependencies:
   flutter_test:

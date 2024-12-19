@@ -10,7 +10,6 @@ sealed class GeographyModel with _$GeographyModel {
   const factory GeographyModel.country({
     required int id,
     required String name,
-    required int parentId,
     required String shortName,
   }) = CountryModel;
 
@@ -33,7 +32,9 @@ sealed class GeographyModel with _$GeographyModel {
   }) = CityModel;
 
   factory GeographyModel.fromJson(Map<String, dynamic> json) =>
-      _$GeographyModelFromJson(json);
+      _$GeographyModelFromJson(Map.from(json)
+        ..remove('level')
+        ..addAll({'level': json['level'] as String}));
 
   static List<GeographyModel> listFromJson(Map<String, dynamic> json) =>
       List.of(json['geographies'])

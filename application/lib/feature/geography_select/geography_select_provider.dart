@@ -11,10 +11,16 @@ class GeographySelect extends _$GeographySelect {
   @override
   FutureOr<GeographySelectState> build(int id) async {
     final model = await ref.watch(geoJsonRepositoryProvider).findById(id);
+    final geographies = await ref.watch(geographiesProvider.future);
 
-    ref.watch(geographyProvider);
+    final children = geographies
+        .where((e) => e.map(
+            country: (_) => false,
+            province: (province) => province.parentId == id,
+            city: (city) => city.parentId == id))
+        .toList();
 
-    return GeographySelectState(model: model);
+    return GeographySelectState(model: model, children: children);
   }
 
   void active(int id) {
@@ -23,5 +29,4 @@ class GeographySelect extends _$GeographySelect {
 
     state = AsyncValue.data(prevState.copyWith(activeId: id));
   }
-
 }

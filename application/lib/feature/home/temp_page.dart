@@ -9,7 +9,10 @@ class TempPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(),
-      body: SafeArea(child: ProvinceCitySelectView(countryId: 0)),
+      body: SafeArea(child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 24.0),
+        child: ProvinceCitySelectView(countryId: 0),
+      )),
     );
   }
 }
