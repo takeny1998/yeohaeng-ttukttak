@@ -34,7 +34,7 @@ sealed class GeographyModel with _$GeographyModel {
   factory GeographyModel.fromJson(Map<String, dynamic> json) =>
       _$GeographyModelFromJson(Map.from(json)
         ..remove('level')
-        ..addAll({'level': json['level'] as String}));
+        ..addAll({'level': (json['level'] as int).toString()}));
 
   static List<GeographyModel> listFromJson(Map<String, dynamic> json) =>
       List.of(json['geographies'])
