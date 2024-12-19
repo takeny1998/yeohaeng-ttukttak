@@ -9,45 +9,26 @@ import 'geo_json_model.dart';
 final class AssetGeoJsonRepository implements GeoJsonRepository {
   static Json? _metadata;
 
-  static GeoJsonCountryModel? _country;
-  static List<GeoJsonProvinceModel>? _provinces;
+  static List<GeoJsonModel>? _assets;
 
   @override
-  Future<GeoJsonProvinceModel> findProvinceById(int provinceId) async {
-    Future<void> loadProvinces() async {
-      await _loadMetaData();
-
-      if (_provinces != null) return;
-      final futures = List.of(_metadata!['states']).map((asset) async =>
-          GeoJsonProvinceModel(
-              id: asset['id'], geoJson: await _loadJson(asset)));
-
-      _provinces = await Future.wait(futures);
+  Future<GeoJsonModel> findById(int provinceId) async {
+    if (_assets == null) {
+      await _loadAssets();
     }
 
-    if (_provinces == null) {
-      await loadProvinces();
-    }
-
-    return _provinces!.where((province) => province.id == provinceId).first;
+    return _assets!.where((province) => province.id == provinceId).first;
   }
 
-  @override
-  Future<GeoJsonCountryModel> getCountry() async {
-    Future<void> loadCountry() async {
-      await _loadMetaData();
+  Future<void> _loadAssets() async {
+    await _loadMetaData();
 
-      if (_country != null) return;
-      final asset = List.of(_metadata!['countries']).first;
+    if (_assets != null) return;
+    final futures = List.of(_metadata!['assets']).map((asset) async =>
+        GeoJsonModel(
+            id: asset['id'], geoJson: await _loadJson(asset)));
 
-      _country = GeoJsonCountryModel(geoJson: await _loadJson(asset));
-    }
-
-    if (_country == null) {
-      await loadCountry();
-    }
-
-    return _country!;
+    _assets = await Future.wait(futures);
   }
 
   Future<void> _loadMetaData() async {

@@ -6,10 +6,7 @@ import 'asset_geo_json_repository.dart';
 part 'geo_json_repository.g.dart';
 
 abstract interface class GeoJsonRepository {
-
-  Future<GeoJsonCountryModel> getCountry();
-
-  Future<GeoJsonProvinceModel> findProvinceById(int provinceId);
+  Future<GeoJsonModel> findById(int id);
 }
 
 @riverpod

@@ -16,45 +16,8 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$GeoJsonModel {
+  int get id => throw _privateConstructorUsedError;
   Map<String, dynamic> get geoJson => throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(Map<String, dynamic> geoJson) country,
-    required TResult Function(int id, Map<String, dynamic> geoJson) province,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(Map<String, dynamic> geoJson)? country,
-    TResult? Function(int id, Map<String, dynamic> geoJson)? province,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(Map<String, dynamic> geoJson)? country,
-    TResult Function(int id, Map<String, dynamic> geoJson)? province,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(GeoJsonCountryModel value) country,
-    required TResult Function(GeoJsonProvinceModel value) province,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(GeoJsonCountryModel value)? country,
-    TResult? Function(GeoJsonProvinceModel value)? province,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(GeoJsonCountryModel value)? country,
-    TResult Function(GeoJsonProvinceModel value)? province,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
 
   /// Create a copy of GeoJsonModel
   /// with the given fields replaced by the non-null parameter values.
@@ -69,7 +32,7 @@ abstract class $GeoJsonModelCopyWith<$Res> {
           GeoJsonModel value, $Res Function(GeoJsonModel) then) =
       _$GeoJsonModelCopyWithImpl<$Res, GeoJsonModel>;
   @useResult
-  $Res call({Map<String, dynamic> geoJson});
+  $Res call({int id, Map<String, dynamic> geoJson});
 }
 
 /// @nodoc
@@ -87,9 +50,14 @@ class _$GeoJsonModelCopyWithImpl<$Res, $Val extends GeoJsonModel>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? geoJson = null,
   }) {
     return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
       geoJson: null == geoJson
           ? _value.geoJson
           : geoJson // ignore: cast_nullable_to_non_nullable
@@ -99,178 +67,22 @@ class _$GeoJsonModelCopyWithImpl<$Res, $Val extends GeoJsonModel>
 }
 
 /// @nodoc
-abstract class _$$GeoJsonCountryModelImplCopyWith<$Res>
+abstract class _$$GeoJsonModelImplCopyWith<$Res>
     implements $GeoJsonModelCopyWith<$Res> {
-  factory _$$GeoJsonCountryModelImplCopyWith(_$GeoJsonCountryModelImpl value,
-          $Res Function(_$GeoJsonCountryModelImpl) then) =
-      __$$GeoJsonCountryModelImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({Map<String, dynamic> geoJson});
-}
-
-/// @nodoc
-class __$$GeoJsonCountryModelImplCopyWithImpl<$Res>
-    extends _$GeoJsonModelCopyWithImpl<$Res, _$GeoJsonCountryModelImpl>
-    implements _$$GeoJsonCountryModelImplCopyWith<$Res> {
-  __$$GeoJsonCountryModelImplCopyWithImpl(_$GeoJsonCountryModelImpl _value,
-      $Res Function(_$GeoJsonCountryModelImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of GeoJsonModel
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? geoJson = null,
-  }) {
-    return _then(_$GeoJsonCountryModelImpl(
-      geoJson: null == geoJson
-          ? _value._geoJson
-          : geoJson // ignore: cast_nullable_to_non_nullable
-              as Map<String, dynamic>,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$GeoJsonCountryModelImpl extends GeoJsonCountryModel {
-  const _$GeoJsonCountryModelImpl({required final Map<String, dynamic> geoJson})
-      : _geoJson = geoJson,
-        super._();
-
-  final Map<String, dynamic> _geoJson;
-  @override
-  Map<String, dynamic> get geoJson {
-    if (_geoJson is EqualUnmodifiableMapView) return _geoJson;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableMapView(_geoJson);
-  }
-
-  @override
-  String toString() {
-    return 'GeoJsonModel.country(geoJson: $geoJson)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$GeoJsonCountryModelImpl &&
-            const DeepCollectionEquality().equals(other._geoJson, _geoJson));
-  }
-
-  @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(_geoJson));
-
-  /// Create a copy of GeoJsonModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$GeoJsonCountryModelImplCopyWith<_$GeoJsonCountryModelImpl> get copyWith =>
-      __$$GeoJsonCountryModelImplCopyWithImpl<_$GeoJsonCountryModelImpl>(
-          this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(Map<String, dynamic> geoJson) country,
-    required TResult Function(int id, Map<String, dynamic> geoJson) province,
-  }) {
-    return country(geoJson);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(Map<String, dynamic> geoJson)? country,
-    TResult? Function(int id, Map<String, dynamic> geoJson)? province,
-  }) {
-    return country?.call(geoJson);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(Map<String, dynamic> geoJson)? country,
-    TResult Function(int id, Map<String, dynamic> geoJson)? province,
-    required TResult orElse(),
-  }) {
-    if (country != null) {
-      return country(geoJson);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(GeoJsonCountryModel value) country,
-    required TResult Function(GeoJsonProvinceModel value) province,
-  }) {
-    return country(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(GeoJsonCountryModel value)? country,
-    TResult? Function(GeoJsonProvinceModel value)? province,
-  }) {
-    return country?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(GeoJsonCountryModel value)? country,
-    TResult Function(GeoJsonProvinceModel value)? province,
-    required TResult orElse(),
-  }) {
-    if (country != null) {
-      return country(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class GeoJsonCountryModel extends GeoJsonModel {
-  const factory GeoJsonCountryModel(
-          {required final Map<String, dynamic> geoJson}) =
-      _$GeoJsonCountryModelImpl;
-  const GeoJsonCountryModel._() : super._();
-
-  @override
-  Map<String, dynamic> get geoJson;
-
-  /// Create a copy of GeoJsonModel
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$GeoJsonCountryModelImplCopyWith<_$GeoJsonCountryModelImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$GeoJsonProvinceModelImplCopyWith<$Res>
-    implements $GeoJsonModelCopyWith<$Res> {
-  factory _$$GeoJsonProvinceModelImplCopyWith(_$GeoJsonProvinceModelImpl value,
-          $Res Function(_$GeoJsonProvinceModelImpl) then) =
-      __$$GeoJsonProvinceModelImplCopyWithImpl<$Res>;
+  factory _$$GeoJsonModelImplCopyWith(
+          _$GeoJsonModelImpl value, $Res Function(_$GeoJsonModelImpl) then) =
+      __$$GeoJsonModelImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({int id, Map<String, dynamic> geoJson});
 }
 
 /// @nodoc
-class __$$GeoJsonProvinceModelImplCopyWithImpl<$Res>
-    extends _$GeoJsonModelCopyWithImpl<$Res, _$GeoJsonProvinceModelImpl>
-    implements _$$GeoJsonProvinceModelImplCopyWith<$Res> {
-  __$$GeoJsonProvinceModelImplCopyWithImpl(_$GeoJsonProvinceModelImpl _value,
-      $Res Function(_$GeoJsonProvinceModelImpl) _then)
+class __$$GeoJsonModelImplCopyWithImpl<$Res>
+    extends _$GeoJsonModelCopyWithImpl<$Res, _$GeoJsonModelImpl>
+    implements _$$GeoJsonModelImplCopyWith<$Res> {
+  __$$GeoJsonModelImplCopyWithImpl(
+      _$GeoJsonModelImpl _value, $Res Function(_$GeoJsonModelImpl) _then)
       : super(_value, _then);
 
   /// Create a copy of GeoJsonModel
@@ -281,7 +93,7 @@ class __$$GeoJsonProvinceModelImplCopyWithImpl<$Res>
     Object? id = null,
     Object? geoJson = null,
   }) {
-    return _then(_$GeoJsonProvinceModelImpl(
+    return _then(_$GeoJsonModelImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -296,11 +108,10 @@ class __$$GeoJsonProvinceModelImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$GeoJsonProvinceModelImpl extends GeoJsonProvinceModel {
-  const _$GeoJsonProvinceModelImpl(
+class _$GeoJsonModelImpl implements _GeoJsonModel {
+  const _$GeoJsonModelImpl(
       {required this.id, required final Map<String, dynamic> geoJson})
-      : _geoJson = geoJson,
-        super._();
+      : _geoJson = geoJson;
 
   @override
   final int id;
@@ -314,14 +125,14 @@ class _$GeoJsonProvinceModelImpl extends GeoJsonProvinceModel {
 
   @override
   String toString() {
-    return 'GeoJsonModel.province(id: $id, geoJson: $geoJson)';
+    return 'GeoJsonModel(id: $id, geoJson: $geoJson)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$GeoJsonProvinceModelImpl &&
+            other is _$GeoJsonModelImpl &&
             (identical(other.id, id) || other.id == id) &&
             const DeepCollectionEquality().equals(other._geoJson, _geoJson));
   }
@@ -335,81 +146,16 @@ class _$GeoJsonProvinceModelImpl extends GeoJsonProvinceModel {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$GeoJsonProvinceModelImplCopyWith<_$GeoJsonProvinceModelImpl>
-      get copyWith =>
-          __$$GeoJsonProvinceModelImplCopyWithImpl<_$GeoJsonProvinceModelImpl>(
-              this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(Map<String, dynamic> geoJson) country,
-    required TResult Function(int id, Map<String, dynamic> geoJson) province,
-  }) {
-    return province(id, geoJson);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(Map<String, dynamic> geoJson)? country,
-    TResult? Function(int id, Map<String, dynamic> geoJson)? province,
-  }) {
-    return province?.call(id, geoJson);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(Map<String, dynamic> geoJson)? country,
-    TResult Function(int id, Map<String, dynamic> geoJson)? province,
-    required TResult orElse(),
-  }) {
-    if (province != null) {
-      return province(id, geoJson);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(GeoJsonCountryModel value) country,
-    required TResult Function(GeoJsonProvinceModel value) province,
-  }) {
-    return province(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(GeoJsonCountryModel value)? country,
-    TResult? Function(GeoJsonProvinceModel value)? province,
-  }) {
-    return province?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(GeoJsonCountryModel value)? country,
-    TResult Function(GeoJsonProvinceModel value)? province,
-    required TResult orElse(),
-  }) {
-    if (province != null) {
-      return province(this);
-    }
-    return orElse();
-  }
+  _$$GeoJsonModelImplCopyWith<_$GeoJsonModelImpl> get copyWith =>
+      __$$GeoJsonModelImplCopyWithImpl<_$GeoJsonModelImpl>(this, _$identity);
 }
 
-abstract class GeoJsonProvinceModel extends GeoJsonModel {
-  const factory GeoJsonProvinceModel(
-          {required final int id,
-          required final Map<String, dynamic> geoJson}) =
-      _$GeoJsonProvinceModelImpl;
-  const GeoJsonProvinceModel._() : super._();
+abstract class _GeoJsonModel implements GeoJsonModel {
+  const factory _GeoJsonModel(
+      {required final int id,
+      required final Map<String, dynamic> geoJson}) = _$GeoJsonModelImpl;
 
+  @override
   int get id;
   @override
   Map<String, dynamic> get geoJson;
@@ -418,6 +164,6 @@ abstract class GeoJsonProvinceModel extends GeoJsonModel {
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$GeoJsonProvinceModelImplCopyWith<_$GeoJsonProvinceModelImpl>
-      get copyWith => throw _privateConstructorUsedError;
+  _$$GeoJsonModelImplCopyWith<_$GeoJsonModelImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }

@@ -6,7 +6,7 @@ part of 'geography_select_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$geographySelectHash() => r'98fd643aed30e5640ba336b02ee652817d6c5fd8';
+String _$geographySelectHash() => r'5a0f214302fe10af55ea0068aba0cb6c9c89220c';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -30,11 +30,11 @@ class _SystemHash {
 }
 
 abstract class _$GeographySelect
-    extends BuildlessAutoDisposeNotifier<GeographySelectState> {
-  late final GeoJsonModel geoJson;
+    extends BuildlessAutoDisposeAsyncNotifier<GeographySelectState> {
+  late final int id;
 
-  GeographySelectState build(
-    GeoJsonModel geoJson,
+  FutureOr<GeographySelectState> build(
+    int id,
   );
 }
 
@@ -43,16 +43,16 @@ abstract class _$GeographySelect
 const geographySelectProvider = GeographySelectFamily();
 
 /// See also [GeographySelect].
-class GeographySelectFamily extends Family<GeographySelectState> {
+class GeographySelectFamily extends Family<AsyncValue<GeographySelectState>> {
   /// See also [GeographySelect].
   const GeographySelectFamily();
 
   /// See also [GeographySelect].
   GeographySelectProvider call(
-    GeoJsonModel geoJson,
+    int id,
   ) {
     return GeographySelectProvider(
-      geoJson,
+      id,
     );
   }
 
@@ -61,7 +61,7 @@ class GeographySelectFamily extends Family<GeographySelectState> {
     covariant GeographySelectProvider provider,
   ) {
     return call(
-      provider.geoJson,
+      provider.id,
     );
   }
 
@@ -81,13 +81,13 @@ class GeographySelectFamily extends Family<GeographySelectState> {
 }
 
 /// See also [GeographySelect].
-class GeographySelectProvider extends AutoDisposeNotifierProviderImpl<
+class GeographySelectProvider extends AutoDisposeAsyncNotifierProviderImpl<
     GeographySelect, GeographySelectState> {
   /// See also [GeographySelect].
   GeographySelectProvider(
-    GeoJsonModel geoJson,
+    int id,
   ) : this._internal(
-          () => GeographySelect()..geoJson = geoJson,
+          () => GeographySelect()..id = id,
           from: geographySelectProvider,
           name: r'geographySelectProvider',
           debugGetCreateSourceHash:
@@ -97,7 +97,7 @@ class GeographySelectProvider extends AutoDisposeNotifierProviderImpl<
           dependencies: GeographySelectFamily._dependencies,
           allTransitiveDependencies:
               GeographySelectFamily._allTransitiveDependencies,
-          geoJson: geoJson,
+          id: id,
         );
 
   GeographySelectProvider._internal(
@@ -107,17 +107,17 @@ class GeographySelectProvider extends AutoDisposeNotifierProviderImpl<
     required super.allTransitiveDependencies,
     required super.debugGetCreateSourceHash,
     required super.from,
-    required this.geoJson,
+    required this.id,
   }) : super.internal();
 
-  final GeoJsonModel geoJson;
+  final int id;
 
   @override
-  GeographySelectState runNotifierBuild(
+  FutureOr<GeographySelectState> runNotifierBuild(
     covariant GeographySelect notifier,
   ) {
     return notifier.build(
-      geoJson,
+      id,
     );
   }
 
@@ -126,50 +126,50 @@ class GeographySelectProvider extends AutoDisposeNotifierProviderImpl<
     return ProviderOverride(
       origin: this,
       override: GeographySelectProvider._internal(
-        () => create()..geoJson = geoJson,
+        () => create()..id = id,
         from: from,
         name: null,
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
-        geoJson: geoJson,
+        id: id,
       ),
     );
   }
 
   @override
-  AutoDisposeNotifierProviderElement<GeographySelect, GeographySelectState>
+  AutoDisposeAsyncNotifierProviderElement<GeographySelect, GeographySelectState>
       createElement() {
     return _GeographySelectProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is GeographySelectProvider && other.geoJson == geoJson;
+    return other is GeographySelectProvider && other.id == id;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, geoJson.hashCode);
+    hash = _SystemHash.combine(hash, id.hashCode);
 
     return _SystemHash.finish(hash);
   }
 }
 
 mixin GeographySelectRef
-    on AutoDisposeNotifierProviderRef<GeographySelectState> {
-  /// The parameter `geoJson` of this provider.
-  GeoJsonModel get geoJson;
+    on AutoDisposeAsyncNotifierProviderRef<GeographySelectState> {
+  /// The parameter `id` of this provider.
+  int get id;
 }
 
 class _GeographySelectProviderElement
-    extends AutoDisposeNotifierProviderElement<GeographySelect,
+    extends AutoDisposeAsyncNotifierProviderElement<GeographySelect,
         GeographySelectState> with GeographySelectRef {
   _GeographySelectProviderElement(super.provider);
 
   @override
-  GeoJsonModel get geoJson => (origin as GeographySelectProvider).geoJson;
+  int get id => (origin as GeographySelectProvider).id;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

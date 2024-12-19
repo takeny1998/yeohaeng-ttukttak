@@ -11,11 +11,13 @@ import 'geography_select_provider.dart';
 import 'geography_select_state.dart';
 
 class GeographySelectView extends ConsumerStatefulWidget {
+  final int id;
 
-  final GeoJsonModel geoJson;
   final void Function(int id) onSelect;
+  final VoidCallback? onCancel;
 
-  const GeographySelectView({super.key, required this.geoJson, required this.onSelect});
+  const GeographySelectView(
+      {super.key, required this.id, required this.onSelect, this.onCancel});
 
   @override
   ConsumerState createState() => _StateSelectViewState();
@@ -26,7 +28,7 @@ class _StateSelectViewState extends ConsumerState<GeographySelectView> {
 
   final MapController mapController = MapController();
 
-  Polygon? selectedPolygon;
+  Polygon? activePolygon;
   Iterable<Polygon>? polygons;
 
   @override
@@ -42,8 +44,7 @@ class _StateSelectViewState extends ConsumerState<GeographySelectView> {
 
     polygons = parser.polygons;
 
-    final points =
-        polygons?.map((e) => e.points).expand((e) => e).toList();
+    final points = polygons?.map((e) => e.points).expand((e) => e).toList();
 
     if (points != null) {
       await onMapReadyCompleter.future;
@@ -51,7 +52,7 @@ class _StateSelectViewState extends ConsumerState<GeographySelectView> {
     }
   }
 
-  void readySelectedPolygon(int? selectedId) {
+  void readyActivePolygon(int? selectedId) {
     if (polygons == null || selectedId == null) return;
 
     final polygon =
@@ -60,7 +61,7 @@ class _StateSelectViewState extends ConsumerState<GeographySelectView> {
     if (polygon == null) return;
 
     final colorScheme = Theme.of(context).colorScheme;
-    selectedPolygon = PolygonUtil.copyWith(
+    activePolygon = PolygonUtil.copyWith(
       polygon,
       borderColor: colorScheme.primary,
       color: colorScheme.primaryContainer,
@@ -69,46 +70,50 @@ class _StateSelectViewState extends ConsumerState<GeographySelectView> {
 
   @override
   Widget build(BuildContext context) {
-    final geoJson = widget.geoJson;
-    final state = ref.watch(geographySelectProvider(geoJson));
+    final asyncState = ref.watch(geographySelectProvider(widget.id));
 
-    final GeographySelectState(:selectedId) = state;
-    if (polygons == null) {
-      init(geoJson);
-    }
-    readySelectedPolygon(selectedId);
-
-    return Column(
-      children: [
-        Expanded(
-          child: FlutterMap(
-              mapController: mapController,
-              options: MapOptions(
-                  onMapReady: () => onMapReadyCompleter.complete()),
-              children: [
-                if (polygons != null)
-                  PolygonLayer(polygons: polygons!.toList()),
-                if (selectedPolygon != null)
-                  PolygonLayer(polygons: [selectedPolygon!]),
-              ]),
-        ),
-        Column(
-          children: [
-            TextField(
-              onSubmitted: (string) {
-                final id = int.tryParse(string);
-                if (id == null) return;
-                ref
-                    .read(geographySelectProvider(geoJson).notifier)
-                    .selectProvince(id);
-              },
-            ),
-            FilledButton(onPressed: selectedId != null ? () {
-              widget.onSelect(selectedId!);
-            } : null, child: const Text('선택'))
-          ],
-        )
-      ],
-    );
+    return asyncState.when(
+        data: (state) {
+          final GeographySelectState(:activeId, :model) = state;
+          if (polygons == null) {
+            init(model);
+          }
+          readyActivePolygon(activeId);
+          return Column(
+            children: [
+              Expanded(
+                child: IgnorePointer(
+                  child: FlutterMap(
+                      mapController: mapController,
+                      options: MapOptions(
+                        onMapReady: () => onMapReadyCompleter.complete(),
+                      ),
+                      children: [
+                        if (polygons != null)
+                          PolygonLayer(polygons: polygons!.toList()),
+                        if (activePolygon != null)
+                          PolygonLayer(polygons: [activePolygon!]),
+                      ]),
+                ),
+              ),
+              Row(
+                children: [
+                  Expanded(
+                      child: OutlinedButton(
+                          onPressed: widget.onCancel, child: Text('이전'))),
+                  const SizedBox(width: 16.0),
+                  Expanded(
+                      child: FilledButton(
+                          onPressed: activeId != null
+                              ? () => widget.onSelect(activeId)
+                              : null,
+                          child: Text('선택'))),
+                ],
+              )
+            ],
+          );
+        },
+        error: (error, _) => throw error,
+        loading: () => const Center(child: CircularProgressIndicator()));
   }
 }

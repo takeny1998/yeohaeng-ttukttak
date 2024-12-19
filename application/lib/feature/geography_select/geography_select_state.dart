@@ -1,4 +1,5 @@
 import 'package:application_new/domain/geo_json/geo_json_model.dart';
+import 'package:application_new/domain/geography/geography_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'geography_select_state.freezed.dart';
@@ -7,7 +8,9 @@ part 'geography_select_state.freezed.dart';
 class GeographySelectState with _$GeographySelectState {
 
   const factory GeographySelectState({
-    int? selectedId,
+    required GeoJsonModel model,
+    required List<GeographyModel> options,
+    int? activeId,
   }) = _ProvinceSelectState;
 
 }
