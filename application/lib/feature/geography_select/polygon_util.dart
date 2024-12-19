@@ -36,6 +36,7 @@ final class PolygonUtil {
     Polygon<T> polygon, {
     Color? borderColor,
     Color? color,
+    TextStyle? labelStyle,
   }) =>
       Polygon<T>(
           hitValue: polygon.hitValue,
@@ -43,5 +44,8 @@ final class PolygonUtil {
           holePointsList: polygon.holePointsList,
           borderColor: borderColor ?? polygon.borderColor,
           color: color ?? polygon.color,
+          labelStyle: polygon.labelStyle.merge(labelStyle),
+          label: polygon.label,
+          labelPlacement: polygon.labelPlacement,
           borderStrokeWidth: 2.0);
 }

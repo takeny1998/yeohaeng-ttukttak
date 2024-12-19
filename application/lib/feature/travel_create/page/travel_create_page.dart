@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../provider/travel_create_provider.dart';
+import 'travel_city_select_view.dart';
 
 class TravelCreatePage extends ConsumerStatefulWidget {
   const TravelCreatePage({super.key});
@@ -56,11 +57,19 @@ class _CreateTravelPageState extends ConsumerState<TravelCreatePage> {
     return Scaffold(
       body: PageView(
           physics: const NeverScrollableScrollPhysics(),
-          controller: pageController, children: const [
-        SelectTravelDateForm(),
-        SelectTravelDetailForm(),
-        SelectTravelCityForm()
+          controller: pageController, children: [
+        const SelectTravelDateForm(),
+        const SelectTravelDetailForm(),
+        TravelCitySelectView(onCancel: previousPage),
       ]),
+    );
+  }
+
+  void previousPage() {
+
+    pageController.previousPage(
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.ease,
     );
   }
 }

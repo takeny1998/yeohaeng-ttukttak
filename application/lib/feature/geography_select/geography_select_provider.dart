@@ -1,5 +1,3 @@
-import 'package:application_new/common/util/iterable_util.dart';
-import 'package:application_new/domain/geo_json/geo_json_model.dart';
 import 'package:application_new/domain/geo_json/geo_json_repository.dart';
 import 'package:application_new/domain/geography/geography_provider.dart';
 import 'package:application_new/feature/geography_select/geography_select_state.dart';
@@ -29,5 +27,20 @@ class GeographySelect extends _$GeographySelect {
     if (prevState == null || prevState.activeId == id) return;
 
     state = AsyncValue.data(prevState.copyWith(activeId: id));
+  }
+
+  void select(int id) {
+    final prevState = state.value;
+    if (prevState == null) return;
+
+    final selectIdList = List.of(prevState.selectIdList);
+
+    if (selectIdList.contains(id)) {
+      selectIdList.remove(id);
+    } else {
+      selectIdList.add(id);
+    }
+
+    state = AsyncValue.data(prevState.copyWith(selectIdList: selectIdList));
   }
 }
