@@ -2,9 +2,7 @@ package com.yeohaeng_ttukttak.server.domain.geography.entity;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import lombok.ToString;
 
 @Entity
-@DiscriminatorValue("2")
-@ToString
-public final class City extends Geography { }
+@DiscriminatorValue("1")
+public final class Province extends Geography { }
