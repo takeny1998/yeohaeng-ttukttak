@@ -16,6 +16,7 @@ A network error occurred. Please try again later.: 네트워크 연결에 문제
 
 Back to the main page: 메인 페이지로
 
+Cancel: 취소
 Close: 닫기
 Comment: 댓글
 Comment by {}: '{}님의 댓글'
@@ -60,6 +61,7 @@ Retry: 다시 시도하기
 
 Save: 저장하기
 Share invitation link: 초대 링크 공유하기
+Select: 선택
 Sort By: 정렬 조건
 
 The invitation link expire after 30 minutes.: 초대 링크는 30분 후에 만료되요.

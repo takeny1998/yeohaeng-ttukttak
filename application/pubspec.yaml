@@ -90,7 +90,7 @@ flutter:
     - assets/translations/
     - assets/geo_jsons/
     - assets/geo_jsons/countries/
-    - assets/geo_jsons/states/
+    - assets/geo_jsons/provinces/
 
 fonts:
   - family: Noto Sans

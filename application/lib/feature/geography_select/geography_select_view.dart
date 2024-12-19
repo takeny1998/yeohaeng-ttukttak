@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:application_new/core/translation/translation_service.dart';
 import 'package:application_new/domain/geo_json/geo_json_model.dart';
+import 'package:application_new/domain/geography/geography_model.dart';
 import 'package:application_new/feature/geography_select/polygon_util.dart';
 import 'package:extended_wrap/extended_wrap.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +30,7 @@ class GeographySelectView extends ConsumerStatefulWidget {
 
 class _StateSelectViewState extends ConsumerState<GeographySelectView> {
   final Completer<void> onMapReadyCompleter = Completer();
+  final LayerHitNotifier hitNotifier = ValueNotifier(null);
 
   final MapController mapController = MapController();
   final PageController pageController = PageController();
@@ -36,15 +39,33 @@ class _StateSelectViewState extends ConsumerState<GeographySelectView> {
   Iterable<Polygon>? polygons;
 
   @override
+  void initState() {
+    Future.microtask(() async {
+      await onMapReadyCompleter.future;
+      hitNotifier.addListener(() {
+        final hitId = hitNotifier.value?.hitValues.lastOrNull;
+        if (hitId == null) return;
+
+        ref
+            .read(geographySelectProvider(widget.id).notifier)
+            .active(hitId as int);
+      });
+    });
+    super.initState();
+  }
+
+  @override
   void dispose() {
     mapController.dispose();
     pageController.dispose();
+    hitNotifier.dispose();
     super.dispose();
   }
 
-  void init(GeoJsonModel geoJson) async {
+  void init(GeoJsonModel geoJson, Iterable<GeographyModel> children) async {
     final parser = GeoJsonParser(
-      polygonCreationCallback: PolygonUtil.createPolygonCallback(context),
+      polygonCreationCallback: PolygonUtil.createPolygonCallback(
+          context, (id) => children.where((e) => e.id == id).first.shortName),
     )..parseGeoJson(geoJson.geoJson);
 
     polygons = parser.polygons;
@@ -72,32 +93,45 @@ class _StateSelectViewState extends ConsumerState<GeographySelectView> {
         ));
   }
 
+  void movePage(int targetIndex) {
+      final curtIndex = pageController.page!.toInt();
+
+      if (curtIndex == targetIndex) return;
+
+      final mills =
+          ((targetIndex - curtIndex).abs()) * 250;
+
+      pageController.animateToPage(targetIndex,
+          duration: Duration(milliseconds: mills),
+          curve: Curves.easeInOut);
+  }
+
   @override
   Widget build(BuildContext context) {
     final asyncState = ref.watch(geographySelectProvider(widget.id));
+    final tr = ref.watch(translationServiceProvider);
+
     final colorScheme = Theme.of(context).colorScheme;
 
     return asyncState.when(
         data: (state) {
           final GeographySelectState(:activeId, :model, :children) = state;
           if (polygons == null) {
-            init(model);
+            init(model, children);
           }
           readyActivePolygon(activeId);
 
           return Scaffold(
             body: Padding(
-              padding: const EdgeInsets.only(top: 24.0, bottom: 8.0),
+              padding: const EdgeInsets.only(top: 24.0, bottom: 16.0),
               child: LayoutBuilder(builder: (context, constraints) {
                 const double buttonWidth = 120.0;
                 const double buttonHeight = 56.0;
 
-                const double gapHeight = 24.0;
                 const double indicatorHeight = 48.0;
 
-                final maxHeight =
-                    (constraints.maxHeight - gapHeight - indicatorHeight);
-                final int usableHeight = (maxHeight * 0.33).floor();
+                final maxHeight = (constraints.maxHeight - indicatorHeight);
+                final int usableHeight = (maxHeight * 0.25).floor();
 
                 final int columnCount =
                     min((constraints.maxWidth / buttonWidth).floor(), 5);
@@ -106,15 +140,32 @@ class _StateSelectViewState extends ConsumerState<GeographySelectView> {
                 final int itemsPerPage = rowCount * columnCount;
                 final int pageCount = (children.length / itemsPerPage).ceil();
 
-                return Column(
-                  children: [
-                    SizedBox(
-                      width: constraints.maxWidth,
-                      height: maxHeight - usableHeight,
-                      child: IgnorePointer(
+                return Consumer(builder: (context, ref, child) {
+                  ref.listen(geographySelectProvider(widget.id), (prev, next) {
+                    final activeId = next.value?.activeId;
+                    if (prev?.value?.activeId == activeId) return;
+                    if (activeId == null) return;
+
+                    int index = 0;
+
+                    for (int i = 0; i < children.length; i ++) {
+                      if (children[i].id != activeId) continue;
+                      index = i;
+                      break;
+                    }
+                    movePage((index / itemsPerPage).floor());
+                  });
+
+                  return Column(
+                    children: [
+                      SizedBox(
+                        width: constraints.maxWidth,
+                        height: maxHeight - usableHeight,
                         child: FlutterMap(
                             mapController: mapController,
                             options: MapOptions(
+                              interactionOptions: const InteractionOptions(
+                                  flags: InteractiveFlag.none),
                               backgroundColor: colorScheme.surface,
                               onMapReady: () {
                                 if (onMapReadyCompleter.isCompleted) return;
@@ -122,94 +173,82 @@ class _StateSelectViewState extends ConsumerState<GeographySelectView> {
                               },
                             ),
                             children: [
-                              if (polygons != null)
-                                PolygonLayer(
-                                    simplificationTolerance: 0.0,
-                                    polygons: polygons!.toList()),
-                              if (activePolygons != null)
-                                PolygonLayer(
-                                    simplificationTolerance: 0.0,
-                                    polygons: activePolygons!.toList()),
+                              PolygonLayer(
+                                  hitNotifier: hitNotifier,
+                                  simplificationTolerance: 0.0,
+                                  polygons: [
+                                    ...?polygons,
+                                    ...?activePolygons,
+                                  ]),
                             ]),
                       ),
-                    ),
-                    const SizedBox(height: gapHeight),
-                    Container(
-                      width: constraints.maxWidth,
-                      height: usableHeight.toDouble(),
-                      constraints: const BoxConstraints(maxWidth: 480.0),
-                      child: PageView(
-                        controller: pageController,
-                        physics: const ClampingScrollPhysics(),
-                        children: [
-                          for (int i = 0; i < pageCount; i++)
-                            Center(
-                              child: Wrap(
-                                runAlignment: WrapAlignment.start,
-                                spacing: -0.5,
-                                runSpacing: -0.5,
-                                children: [
-                                  for (final child in children.sublist(
-                                      (itemsPerPage * i),
-                                      min((itemsPerPage * i) + itemsPerPage,
-                                          children.length)))
-                                    SizedBox(
-                                      width: buttonWidth,
-                                      height: buttonHeight,
-                                      child: OutlinedButton(
-                                          style: OutlinedButton.styleFrom(
-                                            visualDensity:
-                                                VisualDensity.compact,
-                                            backgroundColor:
-                                                activeId == child.id
-                                                    ? colorScheme.primaryFixed
-                                                    : null,
-                                            side: BorderSide(
-                                                width: 0.5,
-                                                color: colorScheme
-                                                    .surfaceContainerHighest),
-                                            shape:
-                                                const BeveledRectangleBorder(),
-                                          ),
-                                          onPressed: () => ref
-                                              .read(geographySelectProvider(
-                                                      widget.id)
-                                                  .notifier)
-                                              .active(child.id),
-                                          child: Text(child.shortName)),
-                                    )
-                                ],
-                              ),
-                            ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
+                      SizedBox(
                         width: constraints.maxWidth,
                         height: indicatorHeight,
                         child: Center(
-                            child: SmoothPageIndicator(
-                                controller: pageController, // PageController
-                                count: pageCount,
-                                effect: WormEffect(
-                                  dotColor: colorScheme.primaryContainer,
-                                  activeDotColor: colorScheme.primary,
-                                ), // your preferred effect
-                                onDotClicked: (targetIndex) {
-                                  final curtIndex =
-                                      pageController.page!.toInt();
-
-                                  if (curtIndex == targetIndex) return;
-
-                                  final mills =
-                                      ((targetIndex - curtIndex).abs()) * 250;
-
-                                  pageController.animateToPage(targetIndex,
-                                      duration: Duration(milliseconds: mills),
-                                      curve: Curves.easeInOut);
-                                })))
-                  ],
-                );
+                          child: SmoothPageIndicator(
+                              controller: pageController, // PageController
+                              count: pageCount,
+                              effect: WormEffect(
+                                dotColor: colorScheme.surfaceContainerHighest,
+                                activeDotColor: colorScheme.primary,
+                              ), // your preferred effect
+                              onDotClicked: movePage),
+                        ),
+                      ),
+                      Container(
+                        width: constraints.maxWidth,
+                        height: usableHeight.toDouble(),
+                        constraints: const BoxConstraints(maxWidth: 480.0),
+                        child: PageView(
+                          controller: pageController,
+                          physics: const ClampingScrollPhysics(),
+                          children: [
+                            for (int i = 0; i < pageCount; i++)
+                              Center(
+                                child: Wrap(
+                                  runAlignment: WrapAlignment.start,
+                                  spacing: -0.5,
+                                  runSpacing: -0.5,
+                                  children: [
+                                    for (final child in children.sublist(
+                                        (itemsPerPage * i),
+                                        min((itemsPerPage * i) + itemsPerPage,
+                                            children.length)))
+                                      SizedBox(
+                                        width: buttonWidth,
+                                        height: buttonHeight,
+                                        child: OutlinedButton(
+                                            style: OutlinedButton.styleFrom(
+                                              visualDensity:
+                                                  VisualDensity.compact,
+                                              backgroundColor:
+                                                  activeId == child.id
+                                                      ? colorScheme.primaryFixed
+                                                      : null,
+                                              side: BorderSide(
+                                                  width: 0.5,
+                                                  color: colorScheme
+                                                      .surfaceContainerHighest),
+                                              shape:
+                                                  const BeveledRectangleBorder(),
+                                            ),
+                                            onPressed: () => ref
+                                                .read(geographySelectProvider(
+                                                        widget.id)
+                                                    .notifier)
+                                                .active(child.id),
+                                            child: Text(child.shortName)),
+                                      )
+                                  ],
+                                ),
+                              ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  );
+                });
               }),
             ),
             bottomNavigationBar: Container(
@@ -221,14 +260,14 @@ class _StateSelectViewState extends ConsumerState<GeographySelectView> {
                     Expanded(
                         child: OutlinedButton(
                             onPressed: widget.onCancel,
-                            child: const Text('이전'))),
+                            child: Text(tr.from('Cancel')))),
                   const SizedBox(width: 8.0),
                   Expanded(
                       child: FilledButton(
                           onPressed: activeId != null
                               ? () => widget.onSelect(activeId)
                               : null,
-                          child: const Text('선택'))),
+                          child: Text(tr.from('Select')))),
                 ],
               ),
             ),
