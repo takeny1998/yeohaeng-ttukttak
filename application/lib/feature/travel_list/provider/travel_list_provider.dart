@@ -15,16 +15,8 @@ class TravelList extends _$TravelList {
 
   void _init() async {
     final httpService = ref.read(httpServiceProvider);
-    final authService = ref.read(authServiceProvider);
-
-    final authModel = await authService.find();
-
-    final response = await httpService.request(
-        'GET', '/api/v2/travels/members/me',
-        authorization: authModel.accessToken);
+    final response = await httpService.get('/travels/members/me');
 
     state = TravelListModel.fromJson(response);
-
-
   }
 }

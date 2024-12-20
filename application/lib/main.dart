@@ -3,8 +3,10 @@ import 'dart:ui';
 
 import 'package:application_new/common/event/event.dart';
 import 'package:application_new/common/exception/exception_handler.dart';
+import 'package:application_new/common/http/http_service_provider.dart';
 import 'package:application_new/common/loading/async_loading_provider.dart';
 import 'package:application_new/common/session/session_provider.dart';
+import 'package:application_new/domain/member/member_model.dart';
 import 'package:application_new/feature/authentication/service/auth_service_provider.dart';
 import 'package:application_new/feature/locale/locale_provider.dart';
 import 'package:application_new/shared/theme/my_chip_theme.dart';
@@ -88,10 +90,8 @@ class _MyAppState extends ConsumerState<MyApp> {
   }
 
   FutureOr<void> autoLogin() async {
-    final authService = ref.read(authServiceProvider);
     final sessionNotifier = ref.read(sessionProvider.notifier);
-
-    final member = await authService.login();
+    final member = await ref.read(authServiceProvider).login();
     sessionNotifier.updateLoginMember(member);
   }
 
