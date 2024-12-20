@@ -1,13 +1,13 @@
 import 'package:application_new/core/translation/translation_service.dart';
 import 'package:application_new/domain/geography/geography_model.dart';
 import 'package:application_new/domain/geography/geography_provider.dart';
-import 'package:application_new/feature/geography_select/geography_select_provider.dart';
 import 'package:application_new/feature/geography_select/geography_select_view.dart';
 import 'package:application_new/feature/geography_select/province_city_select_provider.dart';
 import 'package:application_new/feature/geography_select/province_city_select_state.dart';
-import 'package:extended_wrap/extended_wrap.dart';
+import 'package:application_new/feature/geography_select/selected_cities_list_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:badges/badges.dart' as badges;
 
 class ProvinceCitySelectView extends ConsumerWidget {
   final int countryId;
@@ -29,17 +29,22 @@ class ProvinceCitySelectView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final tr = ref.watch(translationServiceProvider);
 
-    final ProvinceCitySelectState(:selectedCities, :selectedProvinceId) =
-        ref.watch(provinceCitySelectProvider);
+    final state = ref.watch(provinceCitySelectProvider);
 
-    final Iterable<int> idSet = selectedCities.map((city) => city.parentId);
+    final ProvinceCitySelectState(:selectedCities, :activeProvince) = state;
 
-    final geographies = ref.watch(geographiesProvider).value;
+    final colorScheme = Theme.of(context).colorScheme;
+    final badgeLabelStyle = TextStyle(
+      color: colorScheme.onPrimary,
+      fontSize: 12.0,
+      fontWeight: FontWeight.w700,
+    );
 
-    final selectedProvinces = geographies
-            ?.where((geography) => idSet.contains(geography.id))
-            .toList() ??
-        [];
+    ref.listen(provinceCitySelectProvider, (prev, next) {
+      if (prev?.selectedCities == next.selectedCities) return;
+
+      SelectedCitiesListSheet.showSheet(context, state: next);
+    });
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -51,24 +56,30 @@ class ProvinceCitySelectView extends ConsumerWidget {
               const textStyle =
                   TextStyle(fontWeight: FontWeight.w800, fontSize: 21.0);
 
-              if (selectedProvinceId == null) {
+              if (activeProvince == null) {
                 return Text(tr.from('Please select a province.'),
                     style: textStyle);
               }
 
               final province =
-                  ref.watch(provinceProvider(selectedProvinceId)).value;
+                  ref.watch(provinceProvider(activeProvince.id)).value;
 
               return Text(province?.name ?? '', style: textStyle);
             }),
             const Expanded(child: SizedBox(width: 8.0)),
             IconButton.filledTonal(
-                onPressed: () {},
-                icon: Badge(
-                    isLabelVisible: true,
-                    label: Text('${selectedCities.length}'),
-                    offset: const Offset(12.0, -8.0),
-                    backgroundColor: Theme.of(context).colorScheme.primary,
+                onPressed: () =>
+                    SelectedCitiesListSheet.showSheet(context, state: state),
+                icon: badges.Badge(
+                    badgeAnimation: const badges.BadgeAnimation.scale(),
+                    position:
+                        badges.BadgePosition.topEnd(top: -16.0, end: -12.0),
+                    badgeContent: Text('${selectedCities.length}',
+                        style: badgeLabelStyle),
+                    badgeStyle: badges.BadgeStyle(
+                      badgeColor: colorScheme.primary,
+                      padding: const EdgeInsets.all(6.0),
+                    ),
                     child: const Icon(Icons.shopping_cart_outlined))),
             const SizedBox(width: 24.0),
           ],
@@ -81,19 +92,20 @@ class ProvinceCitySelectView extends ConsumerWidget {
             children: [
               GeographySelectView(
                   id: countryId,
-                  selectedChildren: selectedProvinces,
+                  selectedChildren: selectedCities.mapToReference(),
                   isUnSelectable: false,
                   onSelect: (model) {
-                    ref
-                        .read(provinceCitySelectProvider.notifier)
-                        .selectProvince(model.id);
+                    model.mapOrNull(province: (province) =>
+                        ref
+                            .read(provinceCitySelectProvider.notifier)
+                            .activeProvince(province));
                     nextPage();
                   }),
               SizedBox(
-                child: selectedProvinceId != null
+                child: activeProvince != null
                     ? GeographySelectView(
-                        selectedChildren: selectedCities,
-                        id: selectedProvinceId,
+                        selectedChildren: selectedCities.mapToEntity(),
+                        id: activeProvince.id,
                         onSelect: (model) => model.mapOrNull(
                             city: (city) => ref
                                 .read(provinceCitySelectProvider.notifier)
