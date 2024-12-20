@@ -28,12 +28,13 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
 
-  FlutterError.onError = (details) => handleException(details.exception, details.stack);
+  FlutterError.onError =
+      (details) => handleException(details.exception, details.stack);
   PlatformDispatcher.instance.onError = handleException;
 
   const korean = Locale.fromSubtags(languageCode: 'ko');
   const english = Locale.fromSubtags(languageCode: 'en');
-  
+
   timeago.setLocaleMessages('ko', timeago.KoMessages());
 
   runApp(EasyLocalization(
@@ -68,7 +69,7 @@ class _MyAppState extends ConsumerState<MyApp> {
 
     eventController.stream.listen((event) {
       switch (event) {
-        case MessageEvent(:final message, :final onCancel):
+        case MessageEvent(:final message, :final onActionRef):
           final ThemeData(:colorScheme) = Theme.of(themeKey.currentContext!);
 
           messengerKey.currentState?.hideCurrentSnackBar();
@@ -77,10 +78,14 @@ class _MyAppState extends ConsumerState<MyApp> {
                 backgroundColor: colorScheme.primaryContainer,
                 content: Text(message,
                     style: TextStyle(
-                        color: colorScheme.primary,
+                        color: colorScheme.onSurface,
                         fontWeight: FontWeight.w600)),
-                action: onCancel != null
-                    ? SnackBarAction(label: '취소', onPressed: onCancel)
+                action: onActionRef != null
+                    ? SnackBarAction(
+                        backgroundColor: colorScheme.surface,
+                        textColor: colorScheme.onSurface,
+                        label: onActionRef.entity,
+                        onPressed: onActionRef.reference)
                     : null),
           );
       }

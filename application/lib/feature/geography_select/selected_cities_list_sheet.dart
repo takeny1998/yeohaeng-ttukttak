@@ -1,5 +1,6 @@
 import 'package:application_new/core/translation/translation_service.dart';
 import 'package:application_new/domain/geography/geography_model.dart';
+import 'package:application_new/feature/geography_select/geography_select_provider.dart';
 import 'package:application_new/feature/geography_select/province_city_select_provider.dart';
 import 'package:application_new/feature/geography_select/province_city_select_state.dart';
 import 'package:application_new/shared/dto/reference.dart';
@@ -44,7 +45,16 @@ class SelectedCitiesListSheet extends ConsumerWidget {
 
           return ListTile(
             onTap: () {
-              Navigator.of(context).pop(cityRef);
+              final notifier = ref.read(provinceCitySelectProvider.notifier);
+
+              // 최초 선택된 도시 값 반영을 위해 invalidate 수행
+              notifier.activeCity(cityRef.entity);
+              ref.invalidate(geographySelectProvider(cityRef.reference.id));
+
+              notifier.activeProvince(cityRef.reference);
+              notifier.selectProvince(cityRef.reference);
+
+              Navigator.of(context).pop();
             },
             contentPadding: const EdgeInsets.symmetric(horizontal: 24.0),
             leading: CircleAvatar(

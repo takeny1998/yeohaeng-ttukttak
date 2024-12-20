@@ -6,6 +6,7 @@
 '{} comments': 댓글 {}개
 '{} has been added to plan successfully.': '{}이(가) 일정에 추가되었습니다.'
 '{} has been removed from plan successfully.': '{}이(가) 일정에서 제거되었습니다.'
+'{} has been selected.': '{}이(가) 선택되었습니다.'
 
 Add to your plan: 일정에 추가하기
 Age group: 연령대
@@ -81,6 +82,8 @@ You can invite participants by sharing this link.: 초대 링크를 공유해 �
 You can plan the travel with participants.: 일행과 함께 여행 계획을 짤 수 있어요.
 
 Unselect: 선택 해제
+
+View: 보기
 
 enum:
   TravelCompanionType:

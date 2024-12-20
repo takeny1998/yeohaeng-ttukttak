@@ -1,3 +1,4 @@
+import 'package:application_new/common/event/event.dart';
 import 'package:application_new/common/util/iterable_util.dart';
 import 'package:application_new/core/translation/translation_service.dart';
 import 'package:application_new/domain/geography/geography_model.dart';
@@ -27,20 +28,6 @@ class ProvinceCitySelectView extends ConsumerWidget {
         duration: const Duration(milliseconds: 300), curve: Curves.easeIn);
   }
 
-  void handleSelectSheet(
-      BuildContext context,
-      WidgetRef ref, ProvinceCitySelectState state) async {
-
-    final reference = await SelectedCitiesListSheet.showSheet(context, state: state);
-
-    if (reference == null) return;
-    final notifier = ref.read(provinceCitySelectProvider.notifier);
-
-    notifier.activeCity(reference.entity);
-    notifier.activeProvince(reference.reference);
-    nextPage();
-  }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final tr = ref.watch(translationServiceProvider);
@@ -48,6 +35,7 @@ class ProvinceCitySelectView extends ConsumerWidget {
     final state = ref.watch(provinceCitySelectProvider);
 
     final ProvinceCitySelectState(
+    :selectProvince,
       :selectedCities,
       :activeProvince,
       :activeCity
@@ -61,11 +49,23 @@ class ProvinceCitySelectView extends ConsumerWidget {
     );
 
     ref.listen(provinceCitySelectProvider, (prev, next) {
-      final prevCityCount = prev?.selectedCities.length ?? 0;
-      final cityCount = next.selectedCities.length;
+      final changedCity = (next.selectedCities.mapToEntity().toSet())
+          .difference((prev?.selectedCities.mapToEntity().toSet() ?? {}))
+          .firstOrNull;
 
-      if (cityCount > prevCityCount) {
-        handleSelectSheet(context, ref, next);
+      if (changedCity != null) {
+        eventController.add(MessageEvent(
+            tr.from('{} has been selected.', args: [changedCity.name]),
+            onActionRef: Reference(
+                entity: tr.from('View'),
+                reference: () {
+                  SelectedCitiesListSheet.showSheet(context, state: next);
+                })));
+      }
+
+      if (prev?.selectProvince != next.selectProvince) {
+        if (next.selectProvince != null) nextPage();
+        else previousPage();
       }
     });
 
@@ -79,20 +79,17 @@ class ProvinceCitySelectView extends ConsumerWidget {
               const textStyle =
                   TextStyle(fontWeight: FontWeight.w800, fontSize: 21.0);
 
-              if (activeProvince == null) {
+              if (selectProvince == null) {
                 return Text(tr.from('Please select a province.'),
                     style: textStyle);
               }
 
-              final province =
-                  ref.watch(provinceProvider(activeProvince.id)).value;
-
-              return Text(province?.name ?? '', style: textStyle);
+              return Text(selectProvince.name ?? '', style: textStyle);
             }),
             const Expanded(child: SizedBox(width: 8.0)),
             IconButton.filledTonal(
                 onPressed: () =>
-                    handleSelectSheet(context, ref, state),
+                    SelectedCitiesListSheet.showSheet(context, state: state),
                 icon: badges.Badge(
                     badgeAnimation: const badges.BadgeAnimation.scale(),
                     position:
@@ -119,24 +116,28 @@ class ProvinceCitySelectView extends ConsumerWidget {
                   initialActiveChild: activeProvince,
                   isUnSelectable: false,
                   onSelect: (model) {
-                    model.mapOrNull(
-                        province: (province) => ref
-                            .read(provinceCitySelectProvider.notifier)
-                            .activeProvince(province));
-                    nextPage();
+                    final notifier =
+                        ref.read(provinceCitySelectProvider.notifier);
+
+                    model.mapOrNull(province: (province) {
+                      notifier.activeProvince(province);
+                      notifier.selectProvince(province);
+                    });
                   }),
               SizedBox(
-                child: activeProvince != null
+                child: selectProvince != null
                     ? GeographySelectView(
                         selectedChildren: selectedCities.mapToEntity(),
-                        id: activeProvince.id,
+                        id: selectProvince.id,
                         initialActiveChild: activeCity,
                         onSelect: (model) => model.mapOrNull(
                             city: (city) => ref
                                 .read(provinceCitySelectProvider.notifier)
                                 .selectCity(city)),
                         onCancel: () {
-                          previousPage();
+                          ref
+                              .read(provinceCitySelectProvider.notifier)
+                              .selectProvince(null);
                         },
                       )
                     : const SizedBox(),

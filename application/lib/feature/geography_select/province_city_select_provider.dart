@@ -26,6 +26,11 @@ class ProvinceCitySelect extends _$ProvinceCitySelect {
     state = state.copyWith(activeCity: city);
   }
 
+  void selectProvince(ProvinceModel? province) {
+    if (state.selectProvince == province) return;
+    state = state.copyWith(selectProvince: province);
+  }
+
   void selectCity(CityModel city) async {
     final selectedCities = state.selectedCities;
 

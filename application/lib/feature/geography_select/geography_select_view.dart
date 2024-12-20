@@ -135,7 +135,6 @@ class _StateSelectViewState extends ConsumerState<GeographySelectView> {
     await onPageViewReadyCompleter.future;
 
     final curtIndex = pageController.page!.toInt();
-
     if (curtIndex == targetIndex) return;
 
     final mills = ((targetIndex - curtIndex).abs()) * 250;
