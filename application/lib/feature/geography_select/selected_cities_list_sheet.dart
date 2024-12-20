@@ -1,6 +1,8 @@
 import 'package:application_new/core/translation/translation_service.dart';
+import 'package:application_new/domain/geography/geography_model.dart';
 import 'package:application_new/feature/geography_select/province_city_select_provider.dart';
 import 'package:application_new/feature/geography_select/province_city_select_state.dart';
+import 'package:application_new/shared/dto/reference.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -9,7 +11,7 @@ class SelectedCitiesListSheet extends ConsumerWidget {
 
   const SelectedCitiesListSheet._({required this.state});
 
-  static void showSheet(
+  static Future<Reference<CityModel, ProvinceModel>?> showSheet(
     BuildContext context, {
     required ProvinceCitySelectState state,
   }) =>
@@ -41,6 +43,9 @@ class SelectedCitiesListSheet extends ConsumerWidget {
           final cityRef = selectedCities.get(index);
 
           return ListTile(
+            onTap: () {
+              Navigator.of(context).pop(cityRef);
+            },
             contentPadding: const EdgeInsets.symmetric(horizontal: 24.0),
             leading: CircleAvatar(
               radius: 16.0,

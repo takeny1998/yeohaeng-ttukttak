@@ -1,3 +1,4 @@
+import 'package:application_new/common/util/iterable_util.dart';
 import 'package:application_new/core/translation/translation_service.dart';
 import 'package:application_new/domain/geography/geography_model.dart';
 import 'package:application_new/domain/geography/geography_provider.dart';
@@ -5,6 +6,7 @@ import 'package:application_new/feature/geography_select/geography_select_view.d
 import 'package:application_new/feature/geography_select/province_city_select_provider.dart';
 import 'package:application_new/feature/geography_select/province_city_select_state.dart';
 import 'package:application_new/feature/geography_select/selected_cities_list_sheet.dart';
+import 'package:application_new/shared/dto/reference.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:badges/badges.dart' as badges;
@@ -25,13 +27,31 @@ class ProvinceCitySelectView extends ConsumerWidget {
         duration: const Duration(milliseconds: 300), curve: Curves.easeIn);
   }
 
+  void handleSelectSheet(
+      BuildContext context,
+      WidgetRef ref, ProvinceCitySelectState state) async {
+
+    final reference = await SelectedCitiesListSheet.showSheet(context, state: state);
+
+    if (reference == null) return;
+    final notifier = ref.read(provinceCitySelectProvider.notifier);
+
+    notifier.activeCity(reference.entity);
+    notifier.activeProvince(reference.reference);
+    nextPage();
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final tr = ref.watch(translationServiceProvider);
 
     final state = ref.watch(provinceCitySelectProvider);
 
-    final ProvinceCitySelectState(:selectedCities, :activeProvince) = state;
+    final ProvinceCitySelectState(
+      :selectedCities,
+      :activeProvince,
+      :activeCity
+    ) = state;
 
     final colorScheme = Theme.of(context).colorScheme;
     final badgeLabelStyle = TextStyle(
@@ -41,9 +61,12 @@ class ProvinceCitySelectView extends ConsumerWidget {
     );
 
     ref.listen(provinceCitySelectProvider, (prev, next) {
-      if (prev?.selectedCities == next.selectedCities) return;
+      final prevCityCount = prev?.selectedCities.length ?? 0;
+      final cityCount = next.selectedCities.length;
 
-      SelectedCitiesListSheet.showSheet(context, state: next);
+      if (cityCount > prevCityCount) {
+        handleSelectSheet(context, ref, next);
+      }
     });
 
     return Column(
@@ -69,7 +92,7 @@ class ProvinceCitySelectView extends ConsumerWidget {
             const Expanded(child: SizedBox(width: 8.0)),
             IconButton.filledTonal(
                 onPressed: () =>
-                    SelectedCitiesListSheet.showSheet(context, state: state),
+                    handleSelectSheet(context, ref, state),
                 icon: badges.Badge(
                     badgeAnimation: const badges.BadgeAnimation.scale(),
                     position:
@@ -93,10 +116,11 @@ class ProvinceCitySelectView extends ConsumerWidget {
               GeographySelectView(
                   id: countryId,
                   selectedChildren: selectedCities.mapToReference(),
+                  initialActiveChild: activeProvince,
                   isUnSelectable: false,
                   onSelect: (model) {
-                    model.mapOrNull(province: (province) =>
-                        ref
+                    model.mapOrNull(
+                        province: (province) => ref
                             .read(provinceCitySelectProvider.notifier)
                             .activeProvince(province));
                     nextPage();
@@ -106,6 +130,7 @@ class ProvinceCitySelectView extends ConsumerWidget {
                     ? GeographySelectView(
                         selectedChildren: selectedCities.mapToEntity(),
                         id: activeProvince.id,
+                        initialActiveChild: activeCity,
                         onSelect: (model) => model.mapOrNull(
                             city: (city) => ref
                                 .read(provinceCitySelectProvider.notifier)

@@ -1,5 +1,6 @@
 import 'package:application_new/domain/geography/geography_model.dart';
 import 'package:application_new/domain/geography/geography_provider.dart';
+import 'package:application_new/feature/geography_select/geography_select_provider.dart';
 import 'package:application_new/feature/geography_select/province_city_select_state.dart';
 import 'package:application_new/shared/dto/reference.dart';
 import 'package:application_new/shared/dto/reference_iterable.dart';
@@ -17,6 +18,12 @@ class ProvinceCitySelect extends _$ProvinceCitySelect {
   void activeProvince(ProvinceModel? province) {
     if (state.activeProvince == province) return;
     state = state.copyWith(activeProvince: province);
+  }
+
+  void activeCity(CityModel? city) {
+    if (state.activeCity == city || city == null) return;
+
+    state = state.copyWith(activeCity: city);
   }
 
   void selectCity(CityModel city) async {
