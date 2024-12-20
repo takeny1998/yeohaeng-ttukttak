@@ -6,22 +6,21 @@ part of 'geography_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$geographyHash() => r'66814bbb8a37dff094ccc1e2deac88bb126453fb';
+String _$geographiesHash() => r'b239d2d10bb614253bfaaa070785ec3dbfb4c770';
 
-/// See also [geography].
-@ProviderFor(geography)
-final geographyProvider =
-    FutureProvider<(List<CityModel>, List<RegionModel>)>.internal(
-  geography,
-  name: r'geographyProvider',
+/// See also [geographies].
+@ProviderFor(geographies)
+final geographiesProvider = FutureProvider<List<GeographyModel>>.internal(
+  geographies,
+  name: r'geographiesProvider',
   debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$geographyHash,
+      const bool.fromEnvironment('dart.vm.product') ? null : _$geographiesHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef GeographyRef = FutureProviderRef<(List<CityModel>, List<RegionModel>)>;
-String _$cityHash() => r'1b37c5dd634a185a4e276b9a0740d7441ca27508';
+typedef GeographiesRef = FutureProviderRef<List<GeographyModel>>;
+String _$geographyHash() => r'bfa663d47daa3965d5fab7ccc1f282f941d84e15';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -44,12 +43,139 @@ class _SystemHash {
   }
 }
 
+/// See also [geography].
+@ProviderFor(geography)
+const geographyProvider = GeographyFamily();
+
+/// See also [geography].
+class GeographyFamily extends Family<AsyncValue<GeographyModel>> {
+  /// See also [geography].
+  const GeographyFamily();
+
+  /// See also [geography].
+  GeographyProvider call(
+    int id,
+  ) {
+    return GeographyProvider(
+      id,
+    );
+  }
+
+  @override
+  GeographyProvider getProviderOverride(
+    covariant GeographyProvider provider,
+  ) {
+    return call(
+      provider.id,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'geographyProvider';
+}
+
+/// See also [geography].
+class GeographyProvider extends AutoDisposeFutureProvider<GeographyModel> {
+  /// See also [geography].
+  GeographyProvider(
+    int id,
+  ) : this._internal(
+          (ref) => geography(
+            ref as GeographyRef,
+            id,
+          ),
+          from: geographyProvider,
+          name: r'geographyProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$geographyHash,
+          dependencies: GeographyFamily._dependencies,
+          allTransitiveDependencies: GeographyFamily._allTransitiveDependencies,
+          id: id,
+        );
+
+  GeographyProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.id,
+  }) : super.internal();
+
+  final int id;
+
+  @override
+  Override overrideWith(
+    FutureOr<GeographyModel> Function(GeographyRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: GeographyProvider._internal(
+        (ref) => create(ref as GeographyRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        id: id,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<GeographyModel> createElement() {
+    return _GeographyProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is GeographyProvider && other.id == id;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, id.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin GeographyRef on AutoDisposeFutureProviderRef<GeographyModel> {
+  /// The parameter `id` of this provider.
+  int get id;
+}
+
+class _GeographyProviderElement
+    extends AutoDisposeFutureProviderElement<GeographyModel> with GeographyRef {
+  _GeographyProviderElement(super.provider);
+
+  @override
+  int get id => (origin as GeographyProvider).id;
+}
+
+String _$cityHash() => r'0c13ec8dc884a24050f3e373104cbea839f64c77';
+
 /// See also [city].
 @ProviderFor(city)
 const cityProvider = CityFamily();
 
 /// See also [city].
-class CityFamily extends Family<CityModel?> {
+class CityFamily extends Family<AsyncValue<CityModel>> {
   /// See also [city].
   const CityFamily();
 
@@ -87,7 +213,7 @@ class CityFamily extends Family<CityModel?> {
 }
 
 /// See also [city].
-class CityProvider extends AutoDisposeProvider<CityModel?> {
+class CityProvider extends AutoDisposeFutureProvider<CityModel> {
   /// See also [city].
   CityProvider(
     int id,
@@ -119,7 +245,7 @@ class CityProvider extends AutoDisposeProvider<CityModel?> {
 
   @override
   Override overrideWith(
-    CityModel? Function(CityRef provider) create,
+    FutureOr<CityModel> Function(CityRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -136,7 +262,7 @@ class CityProvider extends AutoDisposeProvider<CityModel?> {
   }
 
   @override
-  AutoDisposeProviderElement<CityModel?> createElement() {
+  AutoDisposeFutureProviderElement<CityModel> createElement() {
     return _CityProviderElement(this);
   }
 
@@ -154,12 +280,12 @@ class CityProvider extends AutoDisposeProvider<CityModel?> {
   }
 }
 
-mixin CityRef on AutoDisposeProviderRef<CityModel?> {
+mixin CityRef on AutoDisposeFutureProviderRef<CityModel> {
   /// The parameter `id` of this provider.
   int get id;
 }
 
-class _CityProviderElement extends AutoDisposeProviderElement<CityModel?>
+class _CityProviderElement extends AutoDisposeFutureProviderElement<CityModel>
     with CityRef {
   _CityProviderElement(super.provider);
 
@@ -167,29 +293,29 @@ class _CityProviderElement extends AutoDisposeProviderElement<CityModel?>
   int get id => (origin as CityProvider).id;
 }
 
-String _$regionHash() => r'844b5da146babf7c6159a54f3fc5bd5d91c3589a';
+String _$provinceHash() => r'e7bc289e30a42a651ed2fc3ec2684224a364d470';
 
-/// See also [region].
-@ProviderFor(region)
-const regionProvider = RegionFamily();
+/// See also [province].
+@ProviderFor(province)
+const provinceProvider = ProvinceFamily();
 
-/// See also [region].
-class RegionFamily extends Family<RegionModel?> {
-  /// See also [region].
-  const RegionFamily();
+/// See also [province].
+class ProvinceFamily extends Family<AsyncValue<ProvinceModel>> {
+  /// See also [province].
+  const ProvinceFamily();
 
-  /// See also [region].
-  RegionProvider call(
+  /// See also [province].
+  ProvinceProvider call(
     int id,
   ) {
-    return RegionProvider(
+    return ProvinceProvider(
       id,
     );
   }
 
   @override
-  RegionProvider getProviderOverride(
-    covariant RegionProvider provider,
+  ProvinceProvider getProviderOverride(
+    covariant ProvinceProvider provider,
   ) {
     return call(
       provider.id,
@@ -208,31 +334,31 @@ class RegionFamily extends Family<RegionModel?> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'regionProvider';
+  String? get name => r'provinceProvider';
 }
 
-/// See also [region].
-class RegionProvider extends AutoDisposeProvider<RegionModel?> {
-  /// See also [region].
-  RegionProvider(
+/// See also [province].
+class ProvinceProvider extends AutoDisposeFutureProvider<ProvinceModel> {
+  /// See also [province].
+  ProvinceProvider(
     int id,
   ) : this._internal(
-          (ref) => region(
-            ref as RegionRef,
+          (ref) => province(
+            ref as ProvinceRef,
             id,
           ),
-          from: regionProvider,
-          name: r'regionProvider',
+          from: provinceProvider,
+          name: r'provinceProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$regionHash,
-          dependencies: RegionFamily._dependencies,
-          allTransitiveDependencies: RegionFamily._allTransitiveDependencies,
+                  : _$provinceHash,
+          dependencies: ProvinceFamily._dependencies,
+          allTransitiveDependencies: ProvinceFamily._allTransitiveDependencies,
           id: id,
         );
 
-  RegionProvider._internal(
+  ProvinceProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -246,12 +372,12 @@ class RegionProvider extends AutoDisposeProvider<RegionModel?> {
 
   @override
   Override overrideWith(
-    RegionModel? Function(RegionRef provider) create,
+    FutureOr<ProvinceModel> Function(ProvinceRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
-      override: RegionProvider._internal(
-        (ref) => create(ref as RegionRef),
+      override: ProvinceProvider._internal(
+        (ref) => create(ref as ProvinceRef),
         from: from,
         name: null,
         dependencies: null,
@@ -263,13 +389,13 @@ class RegionProvider extends AutoDisposeProvider<RegionModel?> {
   }
 
   @override
-  AutoDisposeProviderElement<RegionModel?> createElement() {
-    return _RegionProviderElement(this);
+  AutoDisposeFutureProviderElement<ProvinceModel> createElement() {
+    return _ProvinceProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is RegionProvider && other.id == id;
+    return other is ProvinceProvider && other.id == id;
   }
 
   @override
@@ -281,17 +407,17 @@ class RegionProvider extends AutoDisposeProvider<RegionModel?> {
   }
 }
 
-mixin RegionRef on AutoDisposeProviderRef<RegionModel?> {
+mixin ProvinceRef on AutoDisposeFutureProviderRef<ProvinceModel> {
   /// The parameter `id` of this provider.
   int get id;
 }
 
-class _RegionProviderElement extends AutoDisposeProviderElement<RegionModel?>
-    with RegionRef {
-  _RegionProviderElement(super.provider);
+class _ProvinceProviderElement
+    extends AutoDisposeFutureProviderElement<ProvinceModel> with ProvinceRef {
+  _ProvinceProviderElement(super.provider);
 
   @override
-  int get id => (origin as RegionProvider).id;
+  int get id => (origin as ProvinceProvider).id;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

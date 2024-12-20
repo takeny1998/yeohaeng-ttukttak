@@ -1,4 +1,4 @@
-import 'package:application_new/common/translation/translation_service.dart';
+import 'package:application_new/core/translation/translation_service.dart';
 import 'package:application_new/common/util/date_util.dart';
 import 'package:application_new/feature/travel_create/component/bottom_action_button.dart';
 import 'package:application_new/feature/travel_create/provider/travel_create_state.dart';
@@ -32,7 +32,7 @@ class SelectTravelDateForm extends ConsumerWidget {
           child: Container(
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.fromLTRB(24, 0, 24, 16),
-            child: Text(tr.from('when_will_you_travel'),
+            child: Text(tr.from('When will you travel?'),
                 style: textTheme.titleLarge
                     ?.copyWith(fontWeight: FontWeight.w600)),
           ),
@@ -73,13 +73,13 @@ class SelectTravelDateForm extends ConsumerWidget {
       final nights = endedOn.difference(startedOn).inDays;
 
       if (nights == 0) {
-        return tr.from('start_day_trip', args: [format.date(startedOn)]);
+        return tr.from('{} (day trip)', args: [format.date(startedOn)]);
       }
 
-      return tr.from('start_and_end_number_days',
+      return tr.from('{} - {} ({} days)',
           args: [format.date(startedOn), format.date(endedOn), '$nights', '${nights + 1}']);
     }
 
-    return tr.from('please_select_travel_period');
+    return tr.from('Please select a travel period');
   }
 }

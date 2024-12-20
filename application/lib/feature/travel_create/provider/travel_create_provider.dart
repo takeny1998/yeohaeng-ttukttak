@@ -71,7 +71,7 @@ class TravelCreate extends _$TravelCreate {
     }
   }
 
-  void selectRegion(RegionModel? region) {
+  void selectRegion(ProvinceModel? region) {
     if (state.region == region) return;
 
     state = state.copyWith(

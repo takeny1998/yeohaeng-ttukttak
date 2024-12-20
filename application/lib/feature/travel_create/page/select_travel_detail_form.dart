@@ -1,4 +1,4 @@
-import 'package:application_new/common/translation/translation_service.dart';
+import 'package:application_new/core/translation/translation_service.dart';
 import 'package:application_new/feature/travel_create/component/bottom_action_button.dart';
 import 'package:application_new/shared/theme/my_chip_theme.dart';
 import 'package:application_new/domain/travel/travel_model.dart';
@@ -48,9 +48,9 @@ class SelectTravelDetailForm extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(tr.from('who_will_you_travel_with'), style: titleStyle),
+              Text(tr.from('Who will you travel with?'), style: titleStyle),
               Text(
-                tr.from('select_at_least_number_up_to_number',
+                tr.from('(Select at least {}, up to {})',
                     args: ['1', '3']),
                 style: subTitleStyle,
               ),
@@ -72,9 +72,9 @@ class SelectTravelDetailForm extends ConsumerWidget {
                 ],
               ),
               const SizedBox(height: 48),
-              Text(tr.from('what_purpose_of_your_trip'), style: titleStyle),
+              Text(tr.from("What's the purpose of your trip?"), style: titleStyle),
               Text(
-                  tr.from('select_at_least_number_up_to_number',
+                  tr.from('(Select at least {}, up to {})',
                       args: ['1', '5']),
                   style: subTitleStyle),
               const SizedBox(height: 16),
@@ -103,8 +103,8 @@ class SelectTravelDetailForm extends ConsumerWidget {
               : null,
           child: Text(
             areSelected
-                ? tr.from('next')
-                : tr.from('please_check_all_of_boxes'),
+                ? tr.from('Next')
+                : tr.from('Please check all of the boxes.'),
             style: buttonTextStyle,
           ),
         ),

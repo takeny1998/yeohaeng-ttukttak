@@ -1,5 +1,5 @@
 
-import 'package:application_new/common/translation/easy_local_tranlation_service.dart';
+import 'easy_local_tranlation_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'translation_service.g.dart';

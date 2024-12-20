@@ -1,6 +1,6 @@
 import 'package:application_new/common/session/session_model.dart';
 import 'package:application_new/common/session/session_provider.dart';
-import 'package:application_new/common/translation/translation_service.dart';
+import 'package:application_new/core/translation/translation_service.dart';
 import 'package:application_new/domain/member/member_model.dart';
 import 'package:application_new/domain/member/member_provider.dart';
 import 'package:application_new/domain/travel/travel_model.dart';
@@ -27,10 +27,10 @@ class TravelMemberListItem extends ConsumerWidget {
 
     String name = member?.nickname ?? '';
     String description =
-        tr.from(member?.uuid == leader?.uuid ? 'leader' : 'member');
+        tr.from(member?.uuid == leader?.uuid ? 'Leader' : 'Member');
 
     if (member?.uuid == me?.uuid) {
-      description += ' · ${tr.from('me')}';
+      description += ' · ${tr.from('Me')}';
     }
 
     return ListTile(

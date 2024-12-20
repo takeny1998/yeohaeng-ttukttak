@@ -1,5 +1,5 @@
 import 'package:application_new/common/event/event.dart';
-import 'package:application_new/common/translation/translation_service.dart';
+import 'package:application_new/core/translation/translation_service.dart';
 import 'package:application_new/feature/travel_create/page/select_travel_city_form.dart';
 import 'package:application_new/feature/travel_create/page/select_travel_date_form.dart';
 import 'package:application_new/feature/travel_create/page/select_travel_detail_form.dart';
@@ -39,7 +39,7 @@ class _CreateTravelPageState extends ConsumerState<TravelCreatePage> {
       final tr = ref.read(translationServiceProvider);
 
       if (next.isSubmitted) {
-        eventController.add(MessageEvent(tr.from('travel_has_been_created_successfully')));
+        eventController.add(MessageEvent(tr.from('The travel has been created successfully.')));
         context.pop();
       }
 
@@ -61,6 +61,14 @@ class _CreateTravelPageState extends ConsumerState<TravelCreatePage> {
         SelectTravelDetailForm(),
         SelectTravelCityForm()
       ]),
+    );
+  }
+
+  void previousPage() {
+
+    pageController.previousPage(
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.ease,
     );
   }
 }

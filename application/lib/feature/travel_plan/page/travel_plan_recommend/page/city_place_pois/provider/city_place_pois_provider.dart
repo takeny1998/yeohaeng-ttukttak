@@ -19,7 +19,7 @@ class CityPlacePois extends _$CityPlacePois {
   @override
   CityPlacePoisState? build(int travelId, int cityId, PlaceSortType sortType) {
     final travel = ref.watch(travelProvider(travelId)).value;
-    final city = ref.watch(cityProvider(cityId));
+    final city = ref.watch(cityProvider(cityId)).value;
 
     if (city == null || travel == null) return null;
 

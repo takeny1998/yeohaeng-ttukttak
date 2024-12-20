@@ -1,4 +1,4 @@
-import 'package:application_new/common/translation/translation_service.dart';
+import 'package:application_new/core/translation/translation_service.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_recommend/component/travel_info_item.dart';
 import 'package:application_new/domain/travel/travel_model.dart';
 import 'package:flutter/material.dart';
@@ -55,7 +55,7 @@ class TravelItem extends ConsumerWidget {
                         textStyle: const TextStyle(
                             fontSize: 12.0, fontWeight: FontWeight.w600),
                         backgroundColor: colorScheme.surface),
-                    child: Text(tr.from('read_travelogues')))),
+                    child: Text(tr.from('Read travelogues')))),
             const SizedBox(width: 8.0),
             Expanded(
               flex: 1,
@@ -66,7 +66,7 @@ class TravelItem extends ConsumerWidget {
                     backgroundColor: colorScheme.surface),
                 onPressed: () {},
                 icon: const Icon(Icons.bookmark_outline, size: 18.0),
-                label: Text(tr.from('save')),
+                label: Text(tr.from('Save')),
               ),
             ),
           ]),

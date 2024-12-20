@@ -1,4 +1,4 @@
-import 'package:application_new/common/translation/translation_service.dart';
+import 'package:application_new/core/translation/translation_service.dart';
 import 'package:application_new/shared/component/action_sheet_group_item.dart';
 import 'package:application_new/shared/component/action_sheet_item.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +25,6 @@ class ActionSheet extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final tr = ref.watch(translationServiceProvider);
-    final colorScheme = Theme.of(context).colorScheme;
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
@@ -35,7 +34,7 @@ class ActionSheet extends ConsumerWidget {
         ActionSheetGroupItem(items: [
           ActionSheetItem(
               title: tr.from('Close'),
-              onAction: Navigator.of(context).pop)
+              onAction: () {})
         ]),
         SizedBox(height: MediaQuery.of(context).padding.bottom),
       ],

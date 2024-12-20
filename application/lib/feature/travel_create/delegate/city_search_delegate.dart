@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 final class CitySearchDelegate extends SearchDelegate<CityModel> {
   final List<CityModel> cities;
-  final List<RegionModel> regions;
+  final List<ProvinceModel> regions;
 
   List<CityModel> selectedCities = [];
 

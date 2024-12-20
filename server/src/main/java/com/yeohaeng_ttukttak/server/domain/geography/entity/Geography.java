@@ -17,7 +17,7 @@ import static lombok.AccessLevel.PROTECTED;
 @NoArgsConstructor(access = PROTECTED)
 @DiscriminatorColumn(name = "level", discriminatorType = DiscriminatorType.INTEGER)
 @Inheritance(strategy = SINGLE_TABLE)
-public abstract class Geography {
+public class Geography {
 
     @Id
     private Long id;
@@ -27,7 +27,7 @@ public abstract class Geography {
     private int level;
 
     @NotNull
-    @Column(insertable = false, updatable = false)
+    @Column(insertable=false, updatable=false)
     private int codeStart;
 
     @NotNull
@@ -42,14 +42,19 @@ public abstract class Geography {
     @JoinColumn(name = "parent_id")
     private Geography parent;
 
-    @OneToMany(mappedBy = "parent")
-    private List<Geography> children = new ArrayList<>();
-
     @OneToOne(mappedBy = "geography")
     private GeographyInsigniaImage insignia;
 
+    private String shortName;
+
+    private String shortNameEng;
+
     public Long id() {
         return id;
+    }
+
+    public String shortName(Locale locale) {
+        return LocaleUtil.find(locale, shortName, shortNameEng, shortName);
     }
 
     public String name(Locale locale) {
@@ -58,10 +63,6 @@ public abstract class Geography {
 
     public int level() {
         return level;
-    }
-
-    public List<Geography> children() {
-        return children;
     }
 
     public Geography parent() {

@@ -66,6 +66,8 @@ dependencies:
   share_plus_platform_interface: ^5.0.1
   intrinsic_size_builder: ^2.0.2
   timeago: ^3.7.0
+  flutter_map_geojson: ^1.0.8
+  smooth_page_indicator: ^1.2.0+3
 
 dev_dependencies:
   flutter_test:
@@ -86,6 +88,9 @@ flutter:
   uses-material-design: true
   assets:
     - assets/translations/
+    - assets/geo_jsons/
+    - assets/geo_jsons/countries/
+    - assets/geo_jsons/provinces/
 
 fonts:
   - family: Noto Sans

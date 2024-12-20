@@ -23,7 +23,7 @@ mixin _$TravelCreateState {
       throw _privateConstructorUsedError;
   List<TravelMotivationType> get motivationTypes =>
       throw _privateConstructorUsedError;
-  RegionModel? get region => throw _privateConstructorUsedError;
+  ProvinceModel? get region => throw _privateConstructorUsedError;
   List<CityModel> get cities => throw _privateConstructorUsedError;
   bool get isSubmitted => throw _privateConstructorUsedError;
 
@@ -46,7 +46,7 @@ abstract class $TravelCreateStateCopyWith<$Res> {
       DateTime? endedOn,
       List<TravelCompanionType> companionTypes,
       List<TravelMotivationType> motivationTypes,
-      RegionModel? region,
+      ProvinceModel? region,
       List<CityModel> cities,
       bool isSubmitted});
 }
@@ -99,7 +99,7 @@ class _$TravelCreateStateCopyWithImpl<$Res, $Val extends TravelCreateState>
       region: freezed == region
           ? _value.region
           : region // ignore: cast_nullable_to_non_nullable
-              as RegionModel?,
+              as ProvinceModel?,
       cities: null == cities
           ? _value.cities
           : cities // ignore: cast_nullable_to_non_nullable
@@ -126,7 +126,7 @@ abstract class _$$TravelCreateStateImplCopyWith<$Res>
       DateTime? endedOn,
       List<TravelCompanionType> companionTypes,
       List<TravelMotivationType> motivationTypes,
-      RegionModel? region,
+      ProvinceModel? region,
       List<CityModel> cities,
       bool isSubmitted});
 }
@@ -177,7 +177,7 @@ class __$$TravelCreateStateImplCopyWithImpl<$Res>
       region: freezed == region
           ? _value.region
           : region // ignore: cast_nullable_to_non_nullable
-              as RegionModel?,
+              as ProvinceModel?,
       cities: null == cities
           ? _value._cities
           : cities // ignore: cast_nullable_to_non_nullable
@@ -232,7 +232,7 @@ class _$TravelCreateStateImpl implements _TravelCreateState {
   }
 
   @override
-  final RegionModel? region;
+  final ProvinceModel? region;
   final List<CityModel> _cities;
   @override
   @JsonKey()
@@ -300,7 +300,7 @@ abstract class _TravelCreateState implements TravelCreateState {
       final DateTime? endedOn,
       final List<TravelCompanionType> companionTypes,
       final List<TravelMotivationType> motivationTypes,
-      final RegionModel? region,
+      final ProvinceModel? region,
       final List<CityModel> cities,
       final bool isSubmitted}) = _$TravelCreateStateImpl;
 
@@ -315,7 +315,7 @@ abstract class _TravelCreateState implements TravelCreateState {
   @override
   List<TravelMotivationType> get motivationTypes;
   @override
-  RegionModel? get region;
+  ProvinceModel? get region;
   @override
   List<CityModel> get cities;
   @override

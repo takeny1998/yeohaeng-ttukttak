@@ -1,6 +1,7 @@
 import 'package:application_new/common/loading/async_loading_provider.dart';
 
 import 'package:application_new/feature/authentication/page/login_provider.dart';
+import 'package:application_new/feature/home/temp_page.dart';
 import 'package:application_new/feature/profile/profile_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -33,18 +34,22 @@ class HomePage extends ConsumerWidget {
                     }),
                 child: const Text('로딩')),
             TextButton(
+                onPressed: () => Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) => TempPage())),
+                child: const Text('맵')),
+            TextButton(
                 onPressed: () => context.push('/travels/create'),
                 child: const Text('여행 생성')),
             TextButton(
                 onPressed: () => context.push('/travels'),
                 child: const Text('여행 목록')),
             TextField(
-              decoration: const InputDecoration(hintText: '여행 상세 조회'),
-              onSubmitted: (text) {
-                final id = int.tryParse(text);
-                if (id == null) return;
-                context.push('/travels/$id');
-              }),
+                decoration: const InputDecoration(hintText: '여행 상세 조회'),
+                onSubmitted: (text) {
+                  final id = int.tryParse(text);
+                  if (id == null) return;
+                  context.push('/travels/$id');
+                }),
             TextField(
                 decoration: const InputDecoration(hintText: '여행 초대 페이지'),
                 onSubmitted: (text) {

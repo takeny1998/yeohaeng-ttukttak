@@ -1,137 +1,85 @@
+'(Select at least {}, up to {})': (최소 {}개, 최대 {}개 선택 가능)
 
-what_city_will_you_travel: 어느 도시로 여행을 떠나시나요?
-please_select_at_least_one_city: 최소 1개의 도시를 선택해 주세요.
-number_of_cities_selected: '도시 {}개 선택됨'
+'{} (day trip)': '{} (당일치기)'
+'{} - {} ({} days)': '{} - {} ({}박 {}일)'
+'{} Cities Selected': '도시 {}개 선택됨'
+'{} comments': 댓글 {}개
+'{} has been added to plan successfully.': '{}이(가) 일정에 추가되었습니다.'
+'{} has been removed from plan successfully.': '{}이(가) 일정에서 제거되었습니다.'
 
-when_will_you_travel: 언제 여행을 떠나시나요?
-please_select_travel_period: 여행 기간을 선택해 주세요.
-start_day_trip: '{} (당일치기)'
-start_and_end_number_days: '{} - {} ({}박 {}일)'
+Add to your plan: 일정에 추가하기
+Age group: 연령대
+All: 전체
+An Error Occurred: 에러가 발생했습니다.
+An unknown error has occurred. Please try again later.: 알 수 없는 오류가 발생했습니다. 잠시 후 다시 시도해주세요.
+A network error occurred. Please try again later.: 네트워크 연결에 문제가 발생했습니다. 잠시 후 다시 시도해주세요.
 
-who_will_you_travel_with: 누구와 함께 여행할 예정인가요?
-select_at_least_number_up_to_number: (최소 {}개, 최대 {}개 선택 가능)
-what_purpose_of_your_trip: 여행 목적은 무엇인가요?
-please_check_all_of_boxes: 모든 사항을 선택해 주세요.
+Back to the main page: 메인 페이지로
 
-all: 전체
-next: 다음으로
-travel_has_been_created_successfully: 여행이 성공적으로 생성되었습니다.
-
-sort_by: 정렬 조건
-
-invite_new_participant: 새 일행 초대하기
-share_link_to_invite: • 초대 링크를 공유해 일행을 초대할 수 있어요.
-link_expires_after_30_min: • 초대 링크는 30분 후에 만료되요.
-can_plan_with_participants: • 일행과 함께 여행 계획을 짤 수 있어요.
-share_invitation_link: 초대 링크 공유하기
-
-save: 저장하기
-read_travelogues: 여행기 읽기
-add_to_your_plan: 일정에 추가하기
-
-list_of_recommend:
-  nature: "자연 속에서 힐링을,\n추천하는 자연 관광지 모음"
-  tourism: "여행의 묘미는 핫플에서,\n추천 관광 명소 모음"
-  culture: "교양있는 당신을 위해,\n추천하는 문화시설 모음"
-  commerce: "여행은 역시 플렉스!\n추천하는 상업시설 모음"
-  transport: "편리한 이동을 위해!\n교통시설 목록"
-  dining: "오늘 뭐 먹지? 추천하는\n식당/카페 목록"
-  lodging: "편안한 휴식이 필요하신가요?\n추천 숙소 목록"
-
-pois_in_city_name: '{}의 관광 명소 목록'
-read_more: 더 보기
-
-travelogues_in_city_name: '{}의 여행기 목록'
-
-place_has_been_added_to_plan: '{}이(가) 일정에 추가되었습니다.'
-place_has_been_removed_to_plan: '{}이(가) 일정에서 제거되었습니다.'
-network_error_occurred: 네트워크 연결에 문제가 발생했습니다. 잠시 후 다시 시도해주세요.
-unknown_error_occurred: 알 수 없는 오류가 발생했습니다. 잠시 후 다시 시도해주세요.
-you_have_joined_in_travel_name: '{}에 참여했습니다.'
-
-retry: 다시 시도하기
-leave: 떠나기
-kick: 추방하기
-
-edit_profile: 프로필 수정
-travel_participants: 여행 일행
-please_log_in: 로그인해 주세요.
-please_enter_nickname: 닉네임을 입력해 주세요.
-
-gender: 성별
-age_group: 연령대
-nickname: 닉네임
-edit_complete: 수정 완료
-
-leader: 팀 리더
-member: 팀원
-me: 나
-an_error_occurred: 에러가 발생했습니다.
-back_to_main_page: 메인 페이지로
-
-profile_has_been_edited: 프로필이 성공적으로 수정되었습니다.
-number_more_comments: '{}개 댓글 더보기'
-comment_by_member: '{}님의 댓글'
-number_of_comment: 댓글 {}개
-please_enter_a_comment: 댓글 내용을 입력해 주세요.
-
-Comment: 댓글
-Edit comment: 댓글 수정하기
-Delete comment: 댓글 삭제하기
-Report comment: 댓글 신고하기
+Cancel: 취소
 Close: 닫기
+Comment: 댓글
+Comment by {}: '{}님의 댓글'
+Complete: 완료
+
+Delete comment: 댓글 삭제하기
+
+Edit comment: 댓글 수정하기
+Edit profile: 프로필 수정
+Edited: 수정됨
+
+Gender: 성별
+
+Invite new participant: 새 일행 초대
+
+Kick: 추방하기
+Korea: 대한민국
+
+Leader: 팀 리더
+Leave: 떠나기
+
+Me: 나
+Member: 팀원
+
+Next: 다음으로
+Nickname: 닉네임
 No comments found to delete: 삭제할 댓글을 찾을 수 없습니다.
 
-edited: 수정됨
+Please check all of the boxes.: 모든 사항을 선택해 주세요.
+Please enter a comment.: 댓글 내용을 입력해 주세요.
+Please enter a nickname.: 닉네임을 입력해 주세요.
+Please Log in.: 로그인해 주세요.
+Please select a travel period: 여행 기간을 선택해 주세요.
+Please select at least one city: 최소 1개의 도시를 선택해 주세요.
+Please select a province.: 지역을 선택해 주세요.
+Point of interests in {}: '{}의 관광 명소 목록'
 
-widget:
-  VisitListItem:
-    ask_reason: 이곳을 방문한 이유는 무엇인가요?
+Read More: 더 보기
+Read travelogues: 여행기 읽기
+Report comment: 댓글 신고하기
+Retry: 다시 시도하기
 
-  VisitRatingItem:
-    ask_satisfaction: 이번 방문에 만족하셨나요?
-    ask_revisit: 다시 방문하고 싶으신가요?
-    ask_recommend: 다른 사람에게 방문을 추천하고 싶으신가요?
+Save: 저장하기
+Share invitation link: 초대 링크 공유하기
+Select: 선택
+Sort By: 정렬 조건
 
-    rating:
-      satisfaction:
-        1: 기대에 한참 못 미치는 경험이예요.
-        2: 전반적으로 만족스럽지 않았어요.
-        3: 나쁘지도 좋지도 않은 평범한 경험이예요.
-        4: 전반적으로 좋은 경험이었고 만족해요.
-        5: 기대 이상으로 훌륭한 경험이에요!
+The invitation link expire after 30 minutes.: 초대 링크는 30분 후에 만료되요.
+The profile was updated successfully.: 프로필이 성공적으로 수정되었습니다.
+The travel has been created successfully.: 여행이 성공적으로 생성되었습니다.
+Travel participants: 여행 일행
+Travelogues in a {}: '{}의 여행기 목록'
 
-      revisit:
-        1: 다시 방문할 의향이 전혀 없어요.
-        2: 별로 마음에 들지 않아서, 다른 곳을 찾아볼 거예요.
-        3: 다시 방문할 수도 있지만, 고민해봐야 할 것 같아요.
-        4: 좋은 점이 많아서 다시 오고 싶어요.
-        5: 꼭 다시 방문하고 싶어요!
+What cities will you travel?: 어느 도시로 여행을 떠나시나요?
+What's the purpose of your trip?: 여행 목적은 무엇인가요?
+When will you travel?: 언제 여행을 떠나시나요?
+Who will you travel with?: 누구와 함께 여행할 예정인가요?
 
-      recommend:
-        1: 기대 이하였어요. 절대 추천하지 않을 거예요.
-        2: 나쁘진 않았지만, 다른 장소를 추천하고 싶어요.
-        3: 괜찮았지만, 특별한 점은 없어요. 시간이 된다면 가볼 만해요.
-        4: 좋은 경험이었어요. 추천할만 해요.
-        5: 반드시 가봐야 할 곳이예요! 꼭 추천하고 싶어요.
+You've joined in {}: '{}에 참여했습니다.'
+You can invite participants by sharing this link.: 초대 링크를 공유해 일행을 초대할 수 있어요.
+You can plan the travel with participants.: 일행과 함께 여행 계획을 짤 수 있어요.
 
-message:
-  visit_added: "{place_name}이(가) 일정에 추가되었습니다."
-  travel_plan_item_removed: "{place_name}이(가) 일정에서 제거되었습니다."
-  travel_plan_edited: 여행 계획이 성공적으로 수정되었습니다.
-  network_exception: 네트워크 연결에 문제가 발생했습니다. 잠시 후 다시 시도해주세요.
-  unchecked_exception: 알 수 없는 오류가 발생했습니다. 잠시 후 다시 시도해주세요.
-  joined_travel_successfully: "성공적으로 {travel_name}에 참여했습니다."
-
-korea: 대한민국
-
-null: ''
-
-word:
-  travel: 여행
-  reset_camera: 카메라 초기화
-  to_next: 다음으로
-  me: 본인
+Unselect: 선택 해제
 
 enum:
   TravelCompanionType:

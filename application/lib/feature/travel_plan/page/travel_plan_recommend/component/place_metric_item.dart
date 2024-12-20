@@ -1,4 +1,4 @@
-import 'package:application_new/common/translation/translation_service.dart';
+import 'package:application_new/core/translation/translation_service.dart';
 import 'package:application_new/common/util/string_extension.dart';
 import 'package:application_new/shared/component/outlined_icon_button.dart';
 import 'package:application_new/shared/component/small_chip.dart';
@@ -70,7 +70,7 @@ class PlaceMetricItem extends ConsumerWidget {
               style: buttonStyle,
               icon: const Icon(Icons.add_location_alt_outlined,
                   size: 18.0),
-              label: Text(tr.from('add_to_your_plan'))),
+              label: Text(tr.from('Add to your plan'))),
         ),
         const SizedBox(width: 8.0),
         const OutlinedIconButton(

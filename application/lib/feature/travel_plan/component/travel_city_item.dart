@@ -27,7 +27,7 @@ class TravelCityItem extends ConsumerWidget {
     final regionStyle =
         textTheme.labelMedium?.copyWith(color: colorScheme.surfaceTint);
 
-    final region = ref.watch(regionProvider(city.regionId));
+    final province = ref.watch(provinceProvider(city.parentId)).value;
 
     final backgroundColor =
         isSelected ? colorScheme.primaryContainer : colorScheme.surface;
@@ -57,7 +57,7 @@ class TravelCityItem extends ConsumerWidget {
               ),
               const SizedBox(height: 6.0),
               Text(city.name, style: cityStyle),
-              Text(region?.name ?? '', style: regionStyle),
+              Text(province?.name ?? '', style: regionStyle),
             ]),
           ),
         ),

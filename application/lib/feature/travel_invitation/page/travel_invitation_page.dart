@@ -1,7 +1,7 @@
 import 'package:application_new/common/event/event.dart';
 import 'package:application_new/common/loading/loading_page.dart';
 import 'package:application_new/common/router/router_provider.dart';
-import 'package:application_new/common/translation/translation_service.dart';
+import 'package:application_new/core/translation/translation_service.dart';
 import 'package:application_new/common/util/translation_util.dart';
 import 'package:application_new/domain/travel/travel_provider.dart';
 import 'package:application_new/feature/travel_invitation/page/travel_invitation_provider.dart';
@@ -29,7 +29,7 @@ class TravelInvitationPage extends ConsumerWidget {
           final tr = ref.read(translationServiceProvider);
 
           eventController.add(MessageEvent(tr.from(
-              'you_have_joined_in_travel_name',
+              "You've joined in {}",
               args: [travel.formattedName])));
 
           goRouter.replace('/travels/$travelId');

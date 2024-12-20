@@ -1,7 +1,6 @@
 import 'package:application_new/common/session/error_model.dart';
-import 'package:application_new/common/translation/translation_service.dart';
+import 'package:application_new/core/translation/translation_service.dart';
 import 'package:application_new/common/util/string_extension.dart';
-import 'package:application_new/common/util/translation_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -31,7 +30,7 @@ class ErrorPage extends ConsumerWidget {
                   child: const Icon(Icons.warning_amber_rounded, size: 32.0),
                 ),
                 const SizedBox(height: 16.0),
-                Text(tr.from('an_error_occurred'),
+                Text(tr.from('An Error Occurred'),
                     style: const TextStyle(
                       fontSize: 24.0,
                       fontWeight: FontWeight.w600,
@@ -46,7 +45,7 @@ class ErrorPage extends ConsumerWidget {
                 FilledButton.tonalIcon(
                     onPressed: () => context.go('/'),
                     icon: const Icon(Icons.home_outlined),
-                    label: Text(tr.from('back_to_main_page'))),
+                    label: Text(tr.from('Back to the main page'))),
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.05,
                 ),

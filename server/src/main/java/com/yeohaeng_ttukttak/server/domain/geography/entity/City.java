@@ -5,6 +5,6 @@ import jakarta.persistence.Entity;
 import lombok.ToString;
 
 @Entity
-@DiscriminatorValue("1")
+@DiscriminatorValue("2")
 @ToString
 public final class City extends Geography { }

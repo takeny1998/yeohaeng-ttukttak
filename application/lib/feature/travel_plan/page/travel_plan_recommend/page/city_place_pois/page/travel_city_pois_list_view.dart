@@ -4,7 +4,7 @@ import 'package:application_new/domain/travel/travel_model.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_recommend/page/city_place_pois/provider/city_place_pois_provider.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_recommend/page/city_place_pois/provider/city_place_pois_state.dart';
 import 'package:application_new/shared/component/sliver_infinite_list_indicator.dart';
-import 'package:application_new/shared/util/constants.dart';
+import 'package:application_new/shared/dto/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

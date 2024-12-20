@@ -5,7 +5,7 @@ import 'package:application_new/common/exception/server_exception.dart';
 import 'package:application_new/common/http/http_service.dart';
 import 'package:application_new/common/http/http_service_provider.dart';
 import 'package:application_new/common/loading/async_loading_provider.dart';
-import 'package:application_new/common/translation/translation_service.dart';
+import 'package:application_new/core/translation/translation_service.dart';
 import 'package:application_new/domain/travel/travel_plan/travel_plan_comment_model.dart';
 import 'package:application_new/feature/authentication/model/auth_model.dart';
 import 'package:application_new/feature/authentication/service/auth_service_provider.dart';

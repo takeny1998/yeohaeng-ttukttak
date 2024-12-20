@@ -1,5 +1,5 @@
 import 'package:application_new/common/event/event.dart';
-import 'package:application_new/common/translation/translation_service.dart';
+import 'package:application_new/core/translation/translation_service.dart';
 import 'package:application_new/domain/place/place_model.dart';
 import 'package:application_new/domain/travel/travel_model.dart';
 import 'package:application_new/domain/travel_visit/travel_visit_model.dart';
@@ -90,7 +90,7 @@ class _TravelPlanAddViewState extends ConsumerState<TravelPlanAddView> {
 
                   final message = ref
                       .read(translationServiceProvider)
-                      .from('place_has_been_added_to_plan', args: [place.name]);
+                      .from('{} has been added to plan successfully.', args: [place.name]);
 
                   eventController.add(MessageEvent(message));
                   navigator.pop();

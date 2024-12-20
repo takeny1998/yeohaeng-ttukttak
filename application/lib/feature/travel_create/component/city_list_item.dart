@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CityListItem extends ConsumerWidget {
-  final RegionModel region;
+  final ProvinceModel region;
   final CityModel city;
   final bool isSelected;
   final VoidCallback onSelect;
