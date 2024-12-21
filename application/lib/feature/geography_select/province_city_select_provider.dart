@@ -1,5 +1,8 @@
 import 'package:application_new/domain/geography/geography_model.dart';
+import 'package:application_new/domain/geography/geography_provider.dart';
+import 'package:application_new/feature/geography_select/geography_select_provider.dart';
 import 'package:application_new/feature/geography_select/province_city_select_state.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'province_city_select_provider.g.dart';
@@ -8,24 +11,33 @@ part 'province_city_select_provider.g.dart';
 class ProvinceCitySelect extends _$ProvinceCitySelect {
   @override
   ProvinceCitySelectState build() {
+
+    ref.onDispose(() {
+      ref.invalidate(geographySelectProvider);
+    });
+
     return const ProvinceCitySelectState();
   }
 
-  void selectProvince(int id) {
-    if (state.selectedProvinceId == id) return;
-    state = state.copyWith(selectedProvinceId: id);
+  void activeProvince(ProvinceModel? province) {
+    if (state.activeProvince == province) return;
+    state = state.copyWith(activeProvince: province);
   }
 
-  void selectCity(CityModel city) {
-    final selectCities = List.of(state.selectedCities);
+  void selectProvince(ProvinceModel? province) {
+    if (state.selectProvince == province) return;
+    state = state.copyWith(selectProvince: province);
+  }
 
-    if (selectCities.contains(city)) {
-      selectCities.remove(city);
-    } else {
-      selectCities.add(city);
+  void selectCity(CityModel city) async {
+    final selectedCities = state.selectedCities;
+
+    if (selectedCities.contains(city)) {
+      state = state.copyWith(selectedCities: selectedCities.remove(city));
+      return;
     }
 
-    state = state.copyWith(selectedCities: selectCities);
+    final province = await ref.watch(provinceProvider(city.parentId).future);
+    state = state.copyWith(selectedCities: selectedCities.add(city, province));
   }
-
 }

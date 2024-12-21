@@ -6,7 +6,7 @@ part of 'geography_select_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$geographySelectHash() => r'4a70a2baec9f2843862907c613f7d23e90a536f6';
+String _$geographySelectHash() => r'22730a1170f2d10fd398c07442ad1fdaa626b909';
 
 /// Copied from Dart SDK
 class _SystemHash {

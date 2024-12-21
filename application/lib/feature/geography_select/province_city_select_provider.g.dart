@@ -7,7 +7,7 @@ part of 'province_city_select_provider.dart';
 // **************************************************************************
 
 String _$provinceCitySelectHash() =>
-    r'05c400e7582020494999cd9249823bcda0ed9ff0';
+    r'c11d51fb586223db79d121a2a41a21d06dd71341';
 
 /// See also [ProvinceCitySelect].
 @ProviderFor(ProvinceCitySelect)
