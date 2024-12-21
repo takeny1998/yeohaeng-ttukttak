@@ -17,7 +17,6 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$ProvinceCitySelectState {
   ProvinceModel? get activeProvince => throw _privateConstructorUsedError;
-  CityModel? get activeCity => throw _privateConstructorUsedError;
   ProvinceModel? get selectProvince => throw _privateConstructorUsedError;
   ReferenceIterable<CityModel, ProvinceModel> get selectedCities =>
       throw _privateConstructorUsedError;
@@ -37,7 +36,6 @@ abstract class $ProvinceCitySelectStateCopyWith<$Res> {
   @useResult
   $Res call(
       {ProvinceModel? activeProvince,
-      CityModel? activeCity,
       ProvinceModel? selectProvince,
       ReferenceIterable<CityModel, ProvinceModel> selectedCities});
 }
@@ -59,7 +57,6 @@ class _$ProvinceCitySelectStateCopyWithImpl<$Res,
   @override
   $Res call({
     Object? activeProvince = freezed,
-    Object? activeCity = freezed,
     Object? selectProvince = freezed,
     Object? selectedCities = null,
   }) {
@@ -68,10 +65,6 @@ class _$ProvinceCitySelectStateCopyWithImpl<$Res,
           ? _value.activeProvince
           : activeProvince // ignore: cast_nullable_to_non_nullable
               as ProvinceModel?,
-      activeCity: freezed == activeCity
-          ? _value.activeCity
-          : activeCity // ignore: cast_nullable_to_non_nullable
-              as CityModel?,
       selectProvince: freezed == selectProvince
           ? _value.selectProvince
           : selectProvince // ignore: cast_nullable_to_non_nullable
@@ -95,7 +88,6 @@ abstract class _$$ProvinceCitySelectStateImplCopyWith<$Res>
   @useResult
   $Res call(
       {ProvinceModel? activeProvince,
-      CityModel? activeCity,
       ProvinceModel? selectProvince,
       ReferenceIterable<CityModel, ProvinceModel> selectedCities});
 }
@@ -116,7 +108,6 @@ class __$$ProvinceCitySelectStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? activeProvince = freezed,
-    Object? activeCity = freezed,
     Object? selectProvince = freezed,
     Object? selectedCities = null,
   }) {
@@ -125,10 +116,6 @@ class __$$ProvinceCitySelectStateImplCopyWithImpl<$Res>
           ? _value.activeProvince
           : activeProvince // ignore: cast_nullable_to_non_nullable
               as ProvinceModel?,
-      activeCity: freezed == activeCity
-          ? _value.activeCity
-          : activeCity // ignore: cast_nullable_to_non_nullable
-              as CityModel?,
       selectProvince: freezed == selectProvince
           ? _value.selectProvince
           : selectProvince // ignore: cast_nullable_to_non_nullable
@@ -146,14 +133,11 @@ class __$$ProvinceCitySelectStateImplCopyWithImpl<$Res>
 class _$ProvinceCitySelectStateImpl implements _ProvinceCitySelectState {
   const _$ProvinceCitySelectStateImpl(
       {this.activeProvince,
-      this.activeCity,
       this.selectProvince,
       this.selectedCities = const ReferenceIterable()});
 
   @override
   final ProvinceModel? activeProvince;
-  @override
-  final CityModel? activeCity;
   @override
   final ProvinceModel? selectProvince;
   @override
@@ -162,7 +146,7 @@ class _$ProvinceCitySelectStateImpl implements _ProvinceCitySelectState {
 
   @override
   String toString() {
-    return 'ProvinceCitySelectState(activeProvince: $activeProvince, activeCity: $activeCity, selectProvince: $selectProvince, selectedCities: $selectedCities)';
+    return 'ProvinceCitySelectState(activeProvince: $activeProvince, selectProvince: $selectProvince, selectedCities: $selectedCities)';
   }
 
   @override
@@ -173,8 +157,6 @@ class _$ProvinceCitySelectStateImpl implements _ProvinceCitySelectState {
             const DeepCollectionEquality()
                 .equals(other.activeProvince, activeProvince) &&
             const DeepCollectionEquality()
-                .equals(other.activeCity, activeCity) &&
-            const DeepCollectionEquality()
                 .equals(other.selectProvince, selectProvince) &&
             (identical(other.selectedCities, selectedCities) ||
                 other.selectedCities == selectedCities));
@@ -184,7 +166,6 @@ class _$ProvinceCitySelectStateImpl implements _ProvinceCitySelectState {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(activeProvince),
-      const DeepCollectionEquality().hash(activeCity),
       const DeepCollectionEquality().hash(selectProvince),
       selectedCities);
 
@@ -201,15 +182,12 @@ class _$ProvinceCitySelectStateImpl implements _ProvinceCitySelectState {
 abstract class _ProvinceCitySelectState implements ProvinceCitySelectState {
   const factory _ProvinceCitySelectState(
           {final ProvinceModel? activeProvince,
-          final CityModel? activeCity,
           final ProvinceModel? selectProvince,
           final ReferenceIterable<CityModel, ProvinceModel> selectedCities}) =
       _$ProvinceCitySelectStateImpl;
 
   @override
   ProvinceModel? get activeProvince;
-  @override
-  CityModel? get activeCity;
   @override
   ProvinceModel? get selectProvince;
   @override

@@ -35,10 +35,9 @@ class ProvinceCitySelectView extends ConsumerWidget {
     final state = ref.watch(provinceCitySelectProvider);
 
     final ProvinceCitySelectState(
-    :selectProvince,
+      :selectProvince,
       :selectedCities,
       :activeProvince,
-      :activeCity
     ) = state;
 
     final colorScheme = Theme.of(context).colorScheme;
@@ -64,30 +63,28 @@ class ProvinceCitySelectView extends ConsumerWidget {
       }
 
       if (prev?.selectProvince != next.selectProvince) {
-        if (next.selectProvince != null) nextPage();
-        else previousPage();
+        if (next.selectProvince != null) {
+          nextPage();
+        } else {
+          previousPage();
+        }
       }
     });
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            const SizedBox(width: 24.0),
-            Consumer(builder: (context, ref, child) {
-              const textStyle =
-                  TextStyle(fontWeight: FontWeight.w800, fontSize: 21.0);
-
-              if (selectProvince == null) {
-                return Text(tr.from('Please select a province.'),
-                    style: textStyle);
-              }
-
-              return Text(selectProvince.name ?? '', style: textStyle);
-            }),
-            const Expanded(child: SizedBox(width: 8.0)),
-            IconButton.filledTonal(
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: Text(
+          selectProvince == null
+              ? tr.from('Please select a province.')
+              : selectProvince.name,
+          style: const TextStyle(fontSize: 20.0),
+        ),
+        shape: const Border(),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 16.0),
+            child: IconButton.filledTonal(
                 onPressed: () =>
                     SelectedCitiesListSheet.showSheet(context, state: state),
                 icon: badges.Badge(
@@ -101,51 +98,53 @@ class ProvinceCitySelectView extends ConsumerWidget {
                       padding: const EdgeInsets.all(6.0),
                     ),
                     child: const Icon(Icons.shopping_cart_outlined))),
-            const SizedBox(width: 24.0),
-          ],
-        ),
-        const SizedBox(height: 16.0),
-        Expanded(
-          child: PageView(
-            physics: const NeverScrollableScrollPhysics(),
-            controller: pageController,
-            children: [
-              GeographySelectView(
-                  id: countryId,
-                  selectedChildren: selectedCities.mapToReference(),
-                  initialActiveChild: activeProvince,
-                  isUnSelectable: false,
-                  onSelect: (model) {
-                    final notifier =
-                        ref.read(provinceCitySelectProvider.notifier);
-
-                    model.mapOrNull(province: (province) {
-                      notifier.activeProvince(province);
-                      notifier.selectProvince(province);
-                    });
-                  }),
-              SizedBox(
-                child: selectProvince != null
-                    ? GeographySelectView(
-                        selectedChildren: selectedCities.mapToEntity(),
-                        id: selectProvince.id,
-                        initialActiveChild: activeCity,
-                        onSelect: (model) => model.mapOrNull(
-                            city: (city) => ref
-                                .read(provinceCitySelectProvider.notifier)
-                                .selectCity(city)),
-                        onCancel: () {
-                          ref
-                              .read(provinceCitySelectProvider.notifier)
-                              .selectProvince(null);
-                        },
-                      )
-                    : const SizedBox(),
-              )
-            ],
           ),
-        ),
-      ],
+        ],
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          const SizedBox(height: 16.0),
+          Expanded(
+            child: PageView(
+              physics: const NeverScrollableScrollPhysics(),
+              controller: pageController,
+              children: [
+                GeographySelectView(
+                    id: countryId,
+                    selectedChildren: selectedCities.mapToReference(),
+                    isUnSelectable: false,
+                    onSelect: (model) {
+                      final notifier =
+                          ref.read(provinceCitySelectProvider.notifier);
+
+                      model.mapOrNull(province: (province) {
+                        notifier.activeProvince(province);
+                        notifier.selectProvince(province);
+                      });
+                    }),
+                SizedBox(
+                  child: selectProvince != null
+                      ? GeographySelectView(
+                          selectedChildren: selectedCities.mapToEntity(),
+                          id: selectProvince.id,
+                          onSelect: (model) => model.mapOrNull(
+                              city: (city) => ref
+                                  .read(provinceCitySelectProvider.notifier)
+                                  .selectCity(city)),
+                          onCancel: () {
+                            ref
+                                .read(provinceCitySelectProvider.notifier)
+                                .selectProvince(null);
+                          },
+                        )
+                      : const SizedBox(),
+                )
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

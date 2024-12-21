@@ -1,3 +1,4 @@
+import 'package:application_new/common/util/riverpod_extensions.dart';
 import 'package:application_new/domain/geo_json/geo_json_repository.dart';
 import 'package:application_new/domain/geography/geography_model.dart';
 import 'package:application_new/domain/geography/geography_provider.dart';
@@ -10,6 +11,8 @@ part 'geography_select_provider.g.dart';
 class GeographySelect extends _$GeographySelect {
   @override
   FutureOr<GeographySelectState> build(int id) async {
+    ref.cacheFor(const Duration(minutes: 30));
+
     final model = await ref.watch(geoJsonRepositoryProvider).findById(id);
     final geographies = await ref.watch(geographiesProvider.future);
 

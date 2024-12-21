@@ -22,7 +22,6 @@ class GeographySelectView extends ConsumerStatefulWidget {
   final FutureOr<void> Function(GeographyModel model) onSelect;
   final VoidCallback? onCancel;
 
-  final GeographyModel? initialActiveChild;
   final Iterable<GeographyModel> selectedChildren;
 
   final bool isUnSelectable;
@@ -32,7 +31,6 @@ class GeographySelectView extends ConsumerStatefulWidget {
       required this.id,
       required this.onSelect,
       required this.selectedChildren,
-        this.initialActiveChild,
       this.onCancel,
       this.isUnSelectable = true});
 
@@ -160,9 +158,8 @@ class _StateSelectViewState extends ConsumerState<GeographySelectView> {
           if (polygons == null) {
             init(model, children);
           }
-          final curtActiveChild = activeChild ?? widget.initialActiveChild;
 
-          readyActivePolygon(curtActiveChild?.id);
+          readyActivePolygon(activeChild?.id);
           readySelectPolygon(widget.selectedChildren.map((child) => child.id));
 
           return Scaffold(
@@ -185,8 +182,8 @@ class _StateSelectViewState extends ConsumerState<GeographySelectView> {
                 final int pageCount = (children.length / itemsPerPage).ceil();
 
 
-                if (curtActiveChild != null) {
-                  final index = children.indexOf(curtActiveChild);
+                if (activeChild != null) {
+                  final index = children.indexOf(activeChild);
 
                   movePage((index / itemsPerPage).floor());
                 }
@@ -255,7 +252,7 @@ class _StateSelectViewState extends ConsumerState<GeographySelectView> {
                                         width: buttonWidth,
                                         height: buttonHeight,
                                         label: child.shortName,
-                                        isActive: child == curtActiveChild,
+                                        isActive: child == activeChild,
                                         isSelected: widget.selectedChildren
                                             .contains(child),
                                         onPressed: () => ref
@@ -286,8 +283,8 @@ class _StateSelectViewState extends ConsumerState<GeographySelectView> {
                   const SizedBox(width: 8.0),
                   Expanded(
                       child: FilledButton(
-                          onPressed: curtActiveChild != null
-                              ? () => widget.onSelect(curtActiveChild)
+                          onPressed: activeChild != null
+                              ? () => widget.onSelect(activeChild)
                               : null,
                           child: Text(
                               widget.selectedChildren.contains(activeChild) &&

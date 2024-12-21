@@ -9,7 +9,6 @@ part 'province_city_select_state.freezed.dart';
 class ProvinceCitySelectState with _$ProvinceCitySelectState {
   const factory ProvinceCitySelectState({
     ProvinceModel? activeProvince,
-    CityModel? activeCity,
     ProvinceModel? selectProvince,
     @Default(ReferenceIterable())
     ReferenceIterable<CityModel, ProvinceModel> selectedCities,

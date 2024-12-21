@@ -48,8 +48,8 @@ class SelectedCitiesListSheet extends ConsumerWidget {
               final notifier = ref.read(provinceCitySelectProvider.notifier);
 
               // 최초 선택된 도시 값 반영을 위해 invalidate 수행
-              notifier.activeCity(cityRef.entity);
-              ref.invalidate(geographySelectProvider(cityRef.reference.id));
+              ref.read(geographySelectProvider(cityRef.reference.id).notifier)
+              .active(cityRef.entity);
 
               notifier.activeProvince(cityRef.reference);
               notifier.selectProvince(cityRef.reference);
