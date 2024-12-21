@@ -145,7 +145,7 @@ class _TravelPlanMangeListViewState
             ])),
         Align(
           alignment: Alignment.topCenter,
-          child: DragTarget<TravelVisitWithPlaceModel>(
+          child: DragTarget<TravelPlanModel>(
             builder: (context, accepted, rejected) => Container(
               height: 40,
               width: double.infinity,
@@ -156,7 +156,7 @@ class _TravelPlanMangeListViewState
         ),
         Align(
           alignment: Alignment.bottomCenter,
-          child: DragTarget<TravelVisitWithPlaceModel>(
+          child: DragTarget<TravelPlanModel>(
             builder: (context, accepted, rejected) => Container(
               height: 40,
               width: double.infinity,
