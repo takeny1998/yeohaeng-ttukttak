@@ -97,6 +97,8 @@ class _MyAppState extends ConsumerState<MyApp> {
   FutureOr<void> autoLogin() async {
     final sessionNotifier = ref.read(sessionProvider.notifier);
     final member = await ref.read(authServiceProvider).login();
+    if (member == null) return;
+
     sessionNotifier.updateLoginMember(member);
   }
 

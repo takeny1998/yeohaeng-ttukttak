@@ -36,17 +36,15 @@ final class HttpService {
     if (options == null || options.authorize == true) {
       final authModel = await authRepository.find();
 
-      if (authModel == null) {
-        throw AuthorizationException();
+      if (authModel != null) {
+        final isExpired = authModel.expiresAt.isBefore(DateTime.now());
+
+        final accessToken = isExpired
+            ? await _renewAuth(authModel.refreshToken)
+            : authModel.accessToken;
+
+        headers['Authorization'] = 'Bearer $accessToken';
       }
-
-      final isExpired = authModel.expiresAt.isBefore(DateTime.now());
-
-      final accessToken = isExpired
-          ? await _renewAuth(authModel.refreshToken)
-          : authModel.accessToken;
-
-      headers['Authorization'] = 'Bearer $accessToken';
     }
 
     final requestFn = switch (method) {

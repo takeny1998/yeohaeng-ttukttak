@@ -1,4 +1,5 @@
 import 'package:application_new/core/translation/translation_service.dart';
+import 'package:application_new/feature/authentication/repository/auth_repository_provider.dart';
 import 'package:application_new/main.dart';
 import 'package:uuid/v4.dart';
 
@@ -73,6 +74,7 @@ bool handleException(Object error, StackTrace? stack) {
 
 void invalidateAuthorization() {
   final sessionNotifier = providerContainer.read(sessionProvider.notifier);
+  providerContainer.read(authRepositoryProvider).delete();
   sessionNotifier.updateLoginMember(null);
 }
 

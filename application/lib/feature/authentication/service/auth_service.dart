@@ -18,7 +18,7 @@ final class AuthService {
     required String authorizationCode,
   }) async {
     final authResponse = await _httpService.post("/auth/login",
-        options: ServerRequestOptions(data: {
+        options: ServerRequestOptions(authorize: false, data: {
           "provider": provider,
           "authorizationCode": authorizationCode,
         }));
@@ -29,7 +29,9 @@ final class AuthService {
     return _findMember();
   }
 
-  Future<MemberModel> login() async {
+  Future<MemberModel?> login() async {
+    final auth = await _authRepository.find();
+    if (auth == null) return null;
     return _findMember();
   }
 
