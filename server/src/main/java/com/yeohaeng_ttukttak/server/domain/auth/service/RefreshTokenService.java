@@ -1,6 +1,7 @@
 package com.yeohaeng_ttukttak.server.domain.auth.service;
 
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.AuthorizationFailException;
+import com.yeohaeng_ttukttak.server.common.util.StringUtil;
 import com.yeohaeng_ttukttak.server.domain.auth.RefreshTokenProperties;
 import com.yeohaeng_ttukttak.server.domain.auth.entity.RefreshToken;
 import com.yeohaeng_ttukttak.server.domain.auth.repository.RefreshTokenRepository;
@@ -20,7 +21,7 @@ public class RefreshTokenService {
     private final RefreshTokenRepository repository;
 
     public String create(String userId) {
-        final String refreshToken = UUID.randomUUID().toString();
+        final String refreshToken = StringUtil.createShortUUID();
         long expirationSeconds = properties.expiration().getSeconds();
 
         repository.save(new RefreshToken(
@@ -46,7 +47,7 @@ public class RefreshTokenService {
         final boolean isUsedBefore = existToken.expiredAt() != null;
         if (isUsedBefore) {
             // TODO: Refresh Token이 재사용 됨, 모든 토큰을 무효화 시킨다.
-            repository.findAllByUserId(existToken.memberId()).forEach(this::revoke);
+            repository.findAllByMemberId(existToken.memberId()).forEach(this::revoke);
             throw new AuthorizationFailException();
         }
 
