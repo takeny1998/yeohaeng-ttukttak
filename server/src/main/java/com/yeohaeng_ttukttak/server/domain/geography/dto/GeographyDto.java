@@ -11,7 +11,7 @@ import java.util.Objects;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public record GeographyDto(
         Long id,
-        Integer level,
+        String level,
         Long parentId,
         String name,
         String shortName,
@@ -31,7 +31,7 @@ public record GeographyDto(
 
         return new GeographyDto(
                 geography.id(),
-                geography.level(),
+                String.valueOf(geography.level()),
                 parentId,
                 geography.name(locale),
                 geography.shortName(locale),

@@ -10,14 +10,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SelectedCitiesListSheet extends ConsumerWidget {
   final ProvinceCitySelectState state;
+  final void Function(List<CityModel> selectedCities) onConfirm;
 
-  const SelectedCitiesListSheet._({required this.state});
+  const SelectedCitiesListSheet._(
+      {required this.state, required this.onConfirm});
 
-  static Future<Reference<CityModel, ProvinceModel>?> showSheet(
+  static Future<bool?> showSheet(
     BuildContext context, {
     required ProvinceCitySelectState state,
+    required Function(List<CityModel> selectedCities) onConfirm,
   }) =>
-      showModalBottomSheet(
+      showModalBottomSheet<bool>(
         context: context,
         useSafeArea: true,
         showDragHandle: true,
@@ -26,7 +29,8 @@ class SelectedCitiesListSheet extends ConsumerWidget {
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(top: Radius.circular(8.0)),
         ),
-        builder: (context) => SelectedCitiesListSheet._(state: state),
+        builder: (context) =>
+            SelectedCitiesListSheet._(state: state, onConfirm: onConfirm),
       );
 
   @override
@@ -105,7 +109,9 @@ class SelectedCitiesListSheet extends ConsumerWidget {
                   top: BorderSide(color: colorScheme.surfaceContainerHighest))),
           padding: const EdgeInsets.fromLTRB(24.0, 16.0, 24.0, 0.0),
           child: FilledButton(
-              onPressed: isAnyCitySelected ? () {} : null,
+              onPressed: isAnyCitySelected
+                  ? () => onConfirm(selectedCities.mapToEntity().toList())
+                  : null,
               child: Text(tr.from('Confirm'))),
         ),
       ),

@@ -40,7 +40,7 @@ class _CreateTravelPageState extends ConsumerState<TravelCreatePage> {
 
       if (next.isSubmitted) {
         eventController.add(MessageEvent(tr.from('The travel has been created successfully.')));
-        context.pop();
+        context.go('/');
       }
 
       final curtPageNumber = pageController.page?.toInt();

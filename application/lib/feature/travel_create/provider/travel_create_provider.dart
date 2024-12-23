@@ -57,18 +57,8 @@ class TravelCreate extends _$TravelCreate {
     }
   }
 
-  void selectCity(CityModel city) {
-    final cities = state.cities;
-    final isExist = cities.contains(city);
-
-    if (isExist) {
-      state = state.copyWith(cities: [
-        for (final e in cities)
-          if (e != city) e
-      ]);
-    } else {
-      state = state.copyWith(cities: [...cities, city]);
-    }
+  void selectCities(List<CityModel> cities) {
+    state = state.copyWith(cities: [...state.cities, ...cities]);
   }
 
   void selectRegion(ProvinceModel? region) {

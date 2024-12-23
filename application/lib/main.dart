@@ -6,6 +6,7 @@ import 'package:application_new/common/exception/exception_handler.dart';
 import 'package:application_new/common/http/http_service_provider.dart';
 import 'package:application_new/common/loading/async_loading_provider.dart';
 import 'package:application_new/common/session/session_provider.dart';
+import 'package:application_new/core/message/message_util.dart';
 import 'package:application_new/domain/member/member_model.dart';
 import 'package:application_new/feature/authentication/service/auth_service_provider.dart';
 import 'package:application_new/feature/locale/locale_provider.dart';
@@ -22,6 +23,7 @@ import 'common/router/router_provider.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 final messengerKey = GlobalKey<ScaffoldMessengerState>();
+final GlobalKey themeKey = GlobalKey();
 final providerContainer = ProviderContainer();
 
 void main() async {
@@ -59,7 +61,6 @@ class MyApp extends ConsumerStatefulWidget {
 }
 
 class _MyAppState extends ConsumerState<MyApp> {
-  final GlobalKey themeKey = GlobalKey();
 
   @override
   void initState() {
@@ -69,25 +70,8 @@ class _MyAppState extends ConsumerState<MyApp> {
 
     eventController.stream.listen((event) {
       switch (event) {
-        case MessageEvent(:final message, :final onActionRef):
-          final ThemeData(:colorScheme) = Theme.of(themeKey.currentContext!);
-
-          messengerKey.currentState?.hideCurrentSnackBar();
-          messengerKey.currentState?.showSnackBar(
-            SnackBar(
-                backgroundColor: colorScheme.primaryContainer,
-                content: Text(message,
-                    style: TextStyle(
-                        color: colorScheme.onSurface,
-                        fontWeight: FontWeight.w600)),
-                action: onActionRef != null
-                    ? SnackBarAction(
-                        backgroundColor: colorScheme.surface,
-                        textColor: colorScheme.onSurface,
-                        label: onActionRef.entity,
-                        onPressed: onActionRef.reference)
-                    : null),
-          );
+        case MessageEvent():
+          MessageUtil.showRootSnackBar(event);
       }
     });
 

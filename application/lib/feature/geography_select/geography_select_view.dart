@@ -19,7 +19,7 @@ import 'geography_select_state.dart';
 class GeographySelectView extends ConsumerStatefulWidget {
   final int id;
 
-  final FutureOr<void> Function(GeographyModel model) onSelect;
+  final FutureOr<void> Function(GeographyModel model, BuildContext context) onSelect;
   final VoidCallback? onCancel;
 
   final Iterable<GeographyModel> selectedChildren;
@@ -269,30 +269,6 @@ class _StateSelectViewState extends ConsumerState<GeographySelectView> {
                   ],
                 );
               }),
-            ),
-            bottomNavigationBar: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (widget.onCancel != null)
-                    Expanded(
-                        child: OutlinedButton(
-                            onPressed: widget.onCancel,
-                            child: Text(tr.from('Cancel')))),
-                  const SizedBox(width: 8.0),
-                  Expanded(
-                      child: FilledButton(
-                          onPressed: activeChild != null
-                              ? () => widget.onSelect(activeChild)
-                              : null,
-                          child: Text(
-                              widget.selectedChildren.contains(activeChild) &&
-                                      widget.isUnSelectable
-                                  ? tr.from('Unselect')
-                                  : tr.from('Select')))),
-                ],
-              ),
             ),
           );
         },
