@@ -37,7 +37,6 @@ class ProvinceCitySelectView extends ConsumerWidget {
     final ProvinceCitySelectState(
       :selectProvince,
       :selectedCities,
-      :activeProvince,
     ) = state;
 
     final colorScheme = Theme.of(context).colorScheme;
@@ -117,9 +116,7 @@ class ProvinceCitySelectView extends ConsumerWidget {
                     onSelect: (model) {
                       final notifier =
                           ref.read(provinceCitySelectProvider.notifier);
-
                       model.mapOrNull(province: (province) {
-                        notifier.activeProvince(province);
                         notifier.selectProvince(province);
                       });
                     }),

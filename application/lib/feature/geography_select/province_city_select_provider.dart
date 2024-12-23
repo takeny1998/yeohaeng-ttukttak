@@ -19,11 +19,6 @@ class ProvinceCitySelect extends _$ProvinceCitySelect {
     return const ProvinceCitySelectState();
   }
 
-  void activeProvince(ProvinceModel? province) {
-    if (state.activeProvince == province) return;
-    state = state.copyWith(activeProvince: province);
-  }
-
   void selectProvince(ProvinceModel? province) {
     if (state.selectProvince == province) return;
     state = state.copyWith(selectProvince: province);

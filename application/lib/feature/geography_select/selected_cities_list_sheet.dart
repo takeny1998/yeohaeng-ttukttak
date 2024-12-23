@@ -1,3 +1,4 @@
+import 'package:application_new/common/event/event.dart';
 import 'package:application_new/core/translation/translation_service.dart';
 import 'package:application_new/domain/geography/geography_model.dart';
 import 'package:application_new/feature/geography_select/geography_select_provider.dart';
@@ -35,53 +36,77 @@ class SelectedCitiesListSheet extends ConsumerWidget {
 
     final tr = ref.watch(translationServiceProvider);
 
+    final isAnyCitySelected = selectedCities.length > 0;
     return Scaffold(
-      body: ListView.builder(
-        padding: const EdgeInsets.only(bottom: 24.0),
-        physics: const ClampingScrollPhysics(),
-        itemCount: selectedCities.length,
-        itemBuilder: (context, index) {
-          final cityRef = selectedCities.get(index);
+      body: isAnyCitySelected
+          ? ListView.builder(
+              padding: const EdgeInsets.only(bottom: 24.0),
+              physics: const ClampingScrollPhysics(),
+              itemCount: selectedCities.length,
+              itemBuilder: (context, index) {
+                final cityRef = selectedCities.get(index);
 
-          return ListTile(
-            onTap: () {
-              final notifier = ref.read(provinceCitySelectProvider.notifier);
+                return ListTile(
+                  onTap: () {
+                    final notifier =
+                        ref.read(provinceCitySelectProvider.notifier);
+                    final childNotifier = ref.read(
+                        geographySelectProvider(cityRef.reference.id).notifier);
 
-              // 최초 선택된 도시 값 반영을 위해 invalidate 수행
-              ref.read(geographySelectProvider(cityRef.reference.id).notifier)
-              .active(cityRef.entity);
+                    childNotifier.active(cityRef.entity);
+                    notifier.selectProvince(cityRef.reference);
 
-              notifier.activeProvince(cityRef.reference);
-              notifier.selectProvince(cityRef.reference);
+                    Navigator.of(context).pop();
+                  },
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 24.0),
+                  leading: CircleAvatar(
+                    radius: 16.0,
+                    backgroundColor: colorScheme.surfaceContainer,
+                    child: Text('${index + 1}',
+                        style: const TextStyle(fontWeight: FontWeight.w800)),
+                  ),
+                  title: Text(
+                    cityRef.entity.name,
+                    style: const TextStyle(fontWeight: FontWeight.w600),
+                  ),
+                  subtitle: Text(cityRef.reference.name),
+                  trailing: IconButton(
+                      onPressed: () {
+                        final notifier =
+                            ref.read(provinceCitySelectProvider.notifier);
 
-              Navigator.of(context).pop();
-            },
-            contentPadding: const EdgeInsets.symmetric(horizontal: 24.0),
-            leading: CircleAvatar(
-              radius: 16.0,
-              backgroundColor: colorScheme.surfaceContainer,
-              child: Text('${index + 1}',
-                  style: const TextStyle(fontWeight: FontWeight.w800)),
-            ),
-            title: Text(
-              cityRef.entity.name,
-              style: const TextStyle(fontWeight: FontWeight.w600),
-            ),
-            subtitle: Text(cityRef.reference.name),
-            trailing: IconButton(
-                onPressed: () {},
-                icon: Icon(color: colorScheme.error, Icons.delete_outlined)),
-          );
-        },
-      ),
+                        notifier.selectCity(cityRef.entity);
+                        notifier.selectProvince(null);
+
+                        eventController.add(MessageEvent(tr.from(
+                            '{} has been deselected.',
+                            args: [cityRef.entity.name])));
+
+                        Navigator.of(context).pop();
+                      },
+                      icon: Icon(
+                          color: colorScheme.error, Icons.delete_outlined)),
+                );
+              },
+            )
+          : Container(
+              alignment: Alignment.center,
+              padding: const EdgeInsets.all(24.0),
+              child: Text(
+                tr.from("You haven't selected any cities yet."),
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                    fontWeight: FontWeight.w600, fontSize: 16.0),
+              )),
       bottomNavigationBar: SafeArea(
         child: Container(
           decoration: BoxDecoration(
               border: Border(
                   top: BorderSide(color: colorScheme.surfaceContainerHighest))),
           padding: const EdgeInsets.fromLTRB(24.0, 16.0, 24.0, 0.0),
-          child:
-              FilledButton(onPressed: () {}, child: Text(tr.from('Confirm'))),
+          child: FilledButton(
+              onPressed: isAnyCitySelected ? () {} : null,
+              child: Text(tr.from('Confirm'))),
         ),
       ),
     );
