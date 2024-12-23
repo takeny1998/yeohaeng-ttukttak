@@ -1,11 +1,14 @@
+import 'package:application_new/domain/geography/geography_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class GeographySelectButton extends ConsumerWidget {
   final double width, height;
-  final String label;
+
+  final GeographyModel geography;
 
   final VoidCallback onPressed;
+  final void Function(GeographyModel geography) onSelect;
 
   final bool isActive, isSelected;
 
@@ -13,10 +16,11 @@ class GeographySelectButton extends ConsumerWidget {
     super.key,
     required this.width,
     required this.height,
-    required this.label,
+    required this.geography,
     required this.isActive,
     required this.isSelected,
     required this.onPressed,
+    required this.onSelect
   });
 
   @override
@@ -49,8 +53,13 @@ class GeographySelectButton extends ConsumerWidget {
                 color: borderColor ?? colorScheme.surfaceContainerHighest),
             shape: const BeveledRectangleBorder(),
           ),
-          onPressed: onPressed,
-          child: Text(label)),
+          onPressed: () {
+            if (isActive) {
+              onSelect(geography);
+            }
+            onPressed();
+          },
+          child: Text(geography.shortName)),
     );
   }
 }

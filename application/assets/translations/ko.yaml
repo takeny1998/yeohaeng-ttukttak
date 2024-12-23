@@ -17,6 +17,7 @@ An unknown error has occurred. Please try again later.: 알 수 없는 오류가
 A network error occurred. Please try again later.: 네트워크 연결에 문제가 발생했습니다. 잠시 후 다시 시도해주세요.
 
 Back to the main page: 메인 페이지로
+Back to the page: 이전 페이지로
 
 Cancel: 취소
 Close: 닫기
@@ -56,6 +57,7 @@ Please select a travel period: 여행 기간을 선택해 주세요.
 Please select at least one city: 최소 1개의 도시를 선택해 주세요.
 Please select a province.: 지역을 선택해 주세요.
 Point of interests in {}: '{}의 관광 명소 목록'
+Previous: 이전으로
 
 Read More: 더 보기
 Read travelogues: 여행기 읽기

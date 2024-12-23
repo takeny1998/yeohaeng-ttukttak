@@ -63,162 +63,105 @@ class ProvinceCitySelectView extends ConsumerWidget {
 
     final isProvinceSelected = selectProvince != null;
 
-    final ProvinceModel? activeProvince = ref
-        .watch(geographySelectProvider(0))
-        .value
-        ?.activeChild
-        ?.mapOrNull(province: (e) => e);
+    ref.listen(provinceCitySelectProvider, (prev, next) {
+      final changedCity = (next.selectedCities.mapToEntity().toSet())
+          .difference((prev?.selectedCities.mapToEntity().toSet() ?? {}))
+          .firstOrNull;
 
-    final CityModel? activeCity = isProvinceSelected
-        ? ref
-            .watch(geographySelectProvider(selectProvince.id))
-            .value
-            ?.activeChild
-            ?.mapOrNull(city: (e) => e)
-        : null;
+      if (changedCity != null) {
+        MessageUtil.showSnackBar(
+            context,
+            MessageEvent(
+                tr.from('{} has been selected.', args: [changedCity.name]),
+                onActionRef: Reference(
+                    entity: tr.from('View'),
+                    reference: () {
+                      SelectedCitiesListSheet.showSheet(context,
+                          state: next, onConfirm: onConfirm);
+                    })));
+      }
+    });
 
-
-    return ScaffoldMessenger(
-      child: Scaffold(
-        body: Consumer(builder: (context, ref, child) {
-          ref.listen(provinceCitySelectProvider, (prev, next) {
-            final changedCity = (next.selectedCities.mapToEntity().toSet())
-                .difference((prev?.selectedCities.mapToEntity().toSet() ?? {}))
-                .firstOrNull;
-        
-            if (changedCity != null) {
-              MessageUtil.showSnackBar(
-                  context,
-                  MessageEvent(
-                      tr.from('{} has been selected.', args: [changedCity.name]),
-                      onActionRef: Reference(
-                          entity: tr.from('View'),
-                          reference: () {
-                            SelectedCitiesListSheet.showSheet(context,
-                                state: next, onConfirm: onConfirm);
-                          })));
-            }
-          });
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.start,
+    return Scaffold(
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          const SizedBox(height: 24.0),
+          Row(
             children: [
-              Row(
-                children: [
-                  const SizedBox(width: 24.0),
-                  Text(
-                    selectProvince == null
-                        ? tr.from('Please select a province.')
-                        : selectProvince.name,
-                    style: const TextStyle(
-                        fontSize: 20.0, fontWeight: FontWeight.w600),
-                  ),
-                  const Expanded(child: SizedBox(width: 8.0)),
-                  IconButton.filledTonal(
-                      onPressed: () => SelectedCitiesListSheet.showSheet(context,
-                          state: state, onConfirm: onConfirm),
-                      icon: badges.Badge(
-                          badgeAnimation: const badges.BadgeAnimation.scale(),
-                          position:
-                              badges.BadgePosition.topEnd(top: -16.0, end: -12.0),
-                          badgeContent: Text('${selectedCities.length}',
-                              style: badgeLabelStyle),
-                          badgeStyle: badges.BadgeStyle(
-                            badgeColor: colorScheme.primary,
-                            padding: const EdgeInsets.all(6.0),
-                          ),
-                          child: const Icon(Icons.shopping_cart_outlined))),
-                  const SizedBox(width: 24.0),
-                ],
+              const SizedBox(width: 24.0),
+              Text(
+                selectProvince == null
+                    ? tr.from('Please select a province.')
+                    : selectProvince.name,
+                style:
+                const TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600),
               ),
-              const SizedBox(height: 16.0),
-              Expanded(
-                child: PageView(
-                  physics: const NeverScrollableScrollPhysics(),
-                  controller: pageController,
-                  children: [
-                    GeographySelectView(
-                        id: countryId,
-                        selectedChildren: selectedCities.mapToReference(),
-                        isUnSelectable: false,
-                        onSelect: (model, _) {
-                          final notifier =
-                              ref.read(provinceCitySelectProvider.notifier);
-                          model.mapOrNull(province: (province) {
-                            notifier.selectProvince(province);
-                          });
-                        }),
-                    SizedBox(
-                      child: isProvinceSelected
-                          ? GeographySelectView(
-                              selectedChildren: selectedCities.mapToEntity(),
-                              id: selectProvince.id,
-                              onSelect: (model, context) =>
-                                  model.mapOrNull(city: (city) {
-                                if (!selectedCities.contains(city)) {}
-        
-                                ref
-                                    .read(provinceCitySelectProvider.notifier)
-                                    .selectCity(city);
-                                return null;
-                              }),
-                              onCancel: () {
-                                ref
-                                    .read(provinceCitySelectProvider.notifier)
-                                    .selectProvince(null);
-                              },
-                            )
-                          : const SizedBox(),
-                    )
-                  ],
-                ),
-              ),
-              const SizedBox(height: 24.0),
-            ],
-          );
-        }),
-        bottomNavigationBar: Container(
-          padding: const EdgeInsets.fromLTRB(24.0, 16.0, 24.0, 0.0),
-          decoration: BoxDecoration(
-              border: Border(
-                  top: BorderSide(color: colorScheme.surfaceContainerHighest))),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Expanded(
-                  child: OutlinedButton(
-                      onPressed: isProvinceSelected
-                          ? () {
-                              ref
-                                  .read(provinceCitySelectProvider.notifier)
-                                  .selectProvince(null);
-                              previousPage();
-                            }
-                          : null,
-                      child: Text(tr.from('Cancel')))),
-              const SizedBox(width: 8.0),
-              Expanded(
-                  child: FilledButton(
-                      onPressed: () {
-                        final notifier =
-                            ref.read(provinceCitySelectProvider.notifier);
-      
-                        if (!isProvinceSelected) {
-                          notifier.selectProvince(activeProvince);
-                          return nextPage();
-                        }
-      
-                        if (activeCity == null) return;
-      
-                        notifier.selectCity(activeCity);
-                      },
-                      child: Text(activeCity != null &&
-                              selectedCities.contains(activeCity) &&
-                              isProvinceSelected
-                          ? tr.from('Unselect')
-                          : tr.from('Select')))),
+              const Expanded(child: SizedBox(width: 8.0)),
+              IconButton.filledTonal(
+                  onPressed: () => SelectedCitiesListSheet.showSheet(context,
+                      state: state, onConfirm: onConfirm),
+                  icon: badges.Badge(
+                      badgeAnimation: const badges.BadgeAnimation.scale(),
+                      position:
+                      badges.BadgePosition.topEnd(top: -16.0, end: -12.0),
+                      badgeContent: Text('${selectedCities.length}',
+                          style: badgeLabelStyle),
+                      badgeStyle: badges.BadgeStyle(
+                        badgeColor: colorScheme.primary,
+                        padding: const EdgeInsets.all(6.0),
+                      ),
+                      child: const Icon(Icons.shopping_cart_outlined))),
+              const SizedBox(width: 24.0),
             ],
           ),
-        ),
+          const SizedBox(height: 16.0),
+          Expanded(
+            child: PageView(
+              physics: const NeverScrollableScrollPhysics(),
+              controller: pageController,
+              children: [
+                GeographySelectView(
+                    id: countryId,
+                    selectedChildren: selectedCities.mapToReference(),
+                    onSelect: (model) {
+                      final notifier =
+                      ref.read(provinceCitySelectProvider.notifier);
+                      model.mapOrNull(province: (province) {
+                        notifier.selectProvince(province);
+                        nextPage();
+                      });
+                    }),
+                SizedBox(
+                  child: isProvinceSelected
+                      ? GeographySelectView(
+                    selectedChildren: selectedCities.mapToEntity(),
+                    id: selectProvince.id,
+                    onSelect: (geography) => geography.mapOrNull(
+                        city: (city) => ref
+                            .read(provinceCitySelectProvider.notifier)
+                            .selectCity(city)),
+                  )
+                      : const SizedBox(),
+                )
+              ],
+            ),
+          ),
+          Center(
+              child: OutlinedButton(
+                  onPressed: isProvinceSelected
+                      ? () {
+                    ref
+                        .read(provinceCitySelectProvider.notifier)
+                        .selectProvince(null);
+                    previousPage();
+                  }
+                      : null,
+                  child:
+                  Text(tr.from('Back to the page')))),
+
+          const SizedBox(height: 24.0),
+        ],
       ),
     );
   }

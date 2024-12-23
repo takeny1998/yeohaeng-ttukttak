@@ -113,7 +113,7 @@ class _MyAppState extends ConsumerState<MyApp> {
                   key: themeKey,
                   child: Stack(
                     children: [
-                      widget!,
+                      ScaffoldMessenger(child: widget!),
                       if (isLoading)
                         Positioned.fill(
                             child: Container(

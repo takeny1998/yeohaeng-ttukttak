@@ -4,6 +4,7 @@ import 'package:application_new/domain/geography/geography_model.dart';
 import 'package:application_new/feature/geography_select/geography_select_provider.dart';
 import 'package:application_new/feature/geography_select/province_city_select_provider.dart';
 import 'package:application_new/feature/geography_select/province_city_select_state.dart';
+import 'package:application_new/shared/component/safe_bottom_view.dart';
 import 'package:application_new/shared/dto/reference.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -102,19 +103,9 @@ class SelectedCitiesListSheet extends ConsumerWidget {
                 style: const TextStyle(
                     fontWeight: FontWeight.w600, fontSize: 16.0),
               )),
-      bottomNavigationBar: SafeArea(
-        child: Container(
-          decoration: BoxDecoration(
-              border: Border(
-                  top: BorderSide(color: colorScheme.surfaceContainerHighest))),
-          padding: const EdgeInsets.fromLTRB(24.0, 16.0, 24.0, 0.0),
-          child: FilledButton(
-              onPressed: isAnyCitySelected
-                  ? () => onConfirm(selectedCities.mapToEntity().toList())
-                  : null,
-              child: Text(tr.from('Confirm'))),
-        ),
-      ),
+      bottomNavigationBar: SafeBottomView(child: FilledButton(
+          onPressed:  Navigator.of(context).pop,
+          child: Text(tr.from('Close')))),
     );
   }
 }

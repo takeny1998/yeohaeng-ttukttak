@@ -18,7 +18,7 @@ class TravelCreatePage extends ConsumerStatefulWidget {
 
 class _CreateTravelPageState extends ConsumerState<TravelCreatePage> {
   final PageController pageController = PageController(
-    keepPage: false,
+    initialPage: 0,
   );
 
   @override
@@ -35,11 +35,11 @@ class _CreateTravelPageState extends ConsumerState<TravelCreatePage> {
   @override
   Widget build(BuildContext context) {
     ref.listen(travelCreateProvider, (prev, next) {
-
       final tr = ref.read(translationServiceProvider);
 
       if (next.isSubmitted) {
-        eventController.add(MessageEvent(tr.from('The travel has been created successfully.')));
+        eventController.add(
+            MessageEvent(tr.from('The travel has been created successfully.')));
         context.go('/');
       }
 
@@ -56,19 +56,12 @@ class _CreateTravelPageState extends ConsumerState<TravelCreatePage> {
     return Scaffold(
       body: PageView(
           physics: const NeverScrollableScrollPhysics(),
-          controller: pageController, children: const [
-        SelectTravelDateForm(),
-        SelectTravelDetailForm(),
-        SelectTravelCityForm()
-      ]),
-    );
-  }
-
-  void previousPage() {
-
-    pageController.previousPage(
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.ease,
+          controller: pageController,
+          children: [
+            SelectTravelDateForm(pageController),
+            SelectTravelCityForm(pageController),
+            SelectTravelDetailForm(),
+          ]),
     );
   }
 }
