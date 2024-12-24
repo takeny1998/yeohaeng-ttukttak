@@ -61,11 +61,11 @@ public class TravelNameService {
                 .map(province -> province.shortName(locale))
                 .collect(Collectors.joining(", "));
 
-        if (Objects.equals(locale, Locale.KOREAN)) {
-            return new TravelName(String.format("%s %s", generatedName, " 여행"));
+        if (Objects.equals(locale, Locale.ENGLISH)) {
+            return new TravelName(String.format("%s %s", "Travel to", generatedName));
         }
 
-        return new TravelName(String.format("%s %s", "Travel to ", generatedName));
+        return new TravelName(String.format("%s %s", generatedName, "여행"));
     }
 
 }
