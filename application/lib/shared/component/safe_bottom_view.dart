@@ -9,12 +9,13 @@ class SafeBottomView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final ColorScheme(:surfaceContainerHighest) = Theme.of(context).colorScheme;
+    final ColorScheme(:surfaceContainerHighest, :surface) = Theme.of(context).colorScheme;
 
     return SafeArea(
       child: Container(
         padding: const EdgeInsets.fromLTRB(24.0, 16.0, 24.0, 0.0),
         decoration: BoxDecoration(
+          color: surface,
             border: Border(
                 top: BorderSide(color: surfaceContainerHighest))),
         child: child

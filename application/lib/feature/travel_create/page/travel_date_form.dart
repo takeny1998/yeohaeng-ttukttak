@@ -2,6 +2,7 @@ import 'package:application_new/core/translation/translation_service.dart';
 import 'package:application_new/common/util/date_util.dart';
 import 'package:application_new/feature/travel_create/component/bottom_action_button.dart';
 import 'package:application_new/feature/travel_create/provider/travel_create_state.dart';
+import 'package:application_new/shared/component/content_top_app_bar.dart';
 import 'package:application_new/shared/component/paged_form_bottom_control_view.dart';
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:flutter/material.dart';
@@ -9,10 +10,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../provider/travel_create_provider.dart';
 
-class SelectTravelDateForm extends ConsumerWidget {
+class TravelDateForm extends ConsumerWidget {
   final PageController pageController;
 
-  SelectTravelDateForm(this.pageController, {super.key});
+  const TravelDateForm(this.pageController, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -31,20 +32,14 @@ class SelectTravelDateForm extends ConsumerWidget {
       appBar: AppBar(shape: const Border()),
       body: Column(
         children: [
-          Container(
-            width: double.maxFinite,
-            padding: const EdgeInsets.fromLTRB(24.0, 8.0, 24.0, 16.0),
-            decoration: BoxDecoration(
-              border: Border(bottom: BorderSide(color: surfaceContainerHighest))
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(tr.from('When will you travel?'),
-                    style: const TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600)),
-                Text(formatInputtedDate(tr, startedOn, endedOn))
-              ],),
-          ),
+          ContentTopAppBar(child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(tr.from('When will you travel?'),
+                  style: const TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600)),
+              Text(formatInputtedDate(tr, startedOn, endedOn)),
+              const SizedBox(height: 8.0),
+            ],)),
           const SizedBox(height: 8.0),
           Expanded(
             child: Padding(

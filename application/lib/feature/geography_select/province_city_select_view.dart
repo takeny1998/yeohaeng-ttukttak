@@ -9,6 +9,7 @@ import 'package:application_new/feature/geography_select/geography_select_view.d
 import 'package:application_new/feature/geography_select/province_city_select_provider.dart';
 import 'package:application_new/feature/geography_select/province_city_select_state.dart';
 import 'package:application_new/feature/geography_select/selected_cities_list_sheet.dart';
+import 'package:application_new/shared/component/content_top_app_bar.dart';
 import 'package:application_new/shared/dto/reference.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -16,10 +17,9 @@ import 'package:badges/badges.dart' as badges;
 
 class ProvinceCitySelectView extends ConsumerWidget {
   final int countryId;
-  final void Function(List<CityModel> selectedCities) onConfirm;
 
   ProvinceCitySelectView(
-      {super.key, required this.countryId, required this.onConfirm});
+      {super.key, required this.countryId});
 
   final PageController pageController = PageController();
 
@@ -44,9 +44,9 @@ class ProvinceCitySelectView extends ConsumerWidget {
       :selectedCities,
     ) = state;
 
-    final colorScheme = Theme.of(context).colorScheme;
+    final ColorScheme(:onPrimary, :primary, :surfaceContainerHighest) = Theme.of(context).colorScheme;
     final badgeLabelStyle = TextStyle(
-      color: colorScheme.onPrimary,
+      color: onPrimary,
       fontSize: 12.0,
       fontWeight: FontWeight.w700,
     );
@@ -76,20 +76,21 @@ class ProvinceCitySelectView extends ConsumerWidget {
                 onActionRef: Reference(
                     entity: tr.from('View'),
                     reference: () {
-                      SelectedCitiesListSheet.showSheet(context,
-                          state: next, onConfirm: onConfirm);
+                      SelectedCitiesListSheet.showSheet(context, state: next);
                     })));
       }
     });
 
     return Scaffold(
+      appBar: AppBar(
+        shape: const Border(),
+      ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          const SizedBox(height: 24.0),
-          Row(
+          ContentTopAppBar(child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const SizedBox(width: 24.0),
               Text(
                 selectProvince == null
                     ? tr.from('Please select a province.')
@@ -97,10 +98,8 @@ class ProvinceCitySelectView extends ConsumerWidget {
                 style:
                 const TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600),
               ),
-              const Expanded(child: SizedBox(width: 8.0)),
               IconButton.filledTonal(
-                  onPressed: () => SelectedCitiesListSheet.showSheet(context,
-                      state: state, onConfirm: onConfirm),
+                  onPressed: () => SelectedCitiesListSheet.showSheet(context, state: state),
                   icon: badges.Badge(
                       badgeAnimation: const badges.BadgeAnimation.scale(),
                       position:
@@ -108,13 +107,12 @@ class ProvinceCitySelectView extends ConsumerWidget {
                       badgeContent: Text('${selectedCities.length}',
                           style: badgeLabelStyle),
                       badgeStyle: badges.BadgeStyle(
-                        badgeColor: colorScheme.primary,
+                        badgeColor: primary,
                         padding: const EdgeInsets.all(6.0),
                       ),
                       child: const Icon(Icons.shopping_cart_outlined))),
-              const SizedBox(width: 24.0),
             ],
-          ),
+          )),
           const SizedBox(height: 16.0),
           Expanded(
             child: PageView(

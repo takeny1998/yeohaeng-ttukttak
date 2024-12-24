@@ -11,15 +11,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SelectedCitiesListSheet extends ConsumerWidget {
   final ProvinceCitySelectState state;
-  final void Function(List<CityModel> selectedCities) onConfirm;
 
-  const SelectedCitiesListSheet._(
-      {required this.state, required this.onConfirm});
+  const SelectedCitiesListSheet._({required this.state});
 
   static Future<bool?> showSheet(
     BuildContext context, {
     required ProvinceCitySelectState state,
-    required Function(List<CityModel> selectedCities) onConfirm,
   }) =>
       showModalBottomSheet<bool>(
         context: context,
@@ -31,7 +28,7 @@ class SelectedCitiesListSheet extends ConsumerWidget {
           borderRadius: BorderRadius.vertical(top: Radius.circular(8.0)),
         ),
         builder: (context) =>
-            SelectedCitiesListSheet._(state: state, onConfirm: onConfirm),
+            SelectedCitiesListSheet._(state: state),
       );
 
   @override
@@ -42,6 +39,7 @@ class SelectedCitiesListSheet extends ConsumerWidget {
     final tr = ref.watch(translationServiceProvider);
 
     final isAnyCitySelected = selectedCities.length > 0;
+
     return Scaffold(
       body: isAnyCitySelected
           ? ListView.builder(
