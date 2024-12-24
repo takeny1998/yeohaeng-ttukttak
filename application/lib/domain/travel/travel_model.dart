@@ -15,6 +15,7 @@ class TravelModel with _$TravelModel {
 
   const factory TravelModel({
     required int id,
+    required String name,
     required DateTime startedOn,
     required DateTime endedOn,
     required String memberId,
@@ -29,39 +30,6 @@ class TravelModel with _$TravelModel {
   String get formattedDate =>
       DateUtil.formatRange(DateTimeRange(start: startedOn, end: endedOn));
 
-  String get formattedName {
-    return '${cities.map((city) => city.name).join(' · ')}';
-  }
-}
-
-@freezed
-class TravelFormModel with _$TravelFormModel {
-  const TravelFormModel._();
-
-  const factory TravelFormModel({
-    required DateTime? startedOn,
-    required DateTime? endedOn,
-    required Iterable<TravelMotivationType> motivationTypes,
-    required Iterable<TravelCompanionType> companionTypes,
-    required Iterable<CityModel> cities,
-  }) = _TravelFormModel;
-
-  factory TravelFormModel.fromState(TravelCreateState state) => TravelFormModel(
-      startedOn: state.startedOn,
-      endedOn: state.endedOn,
-      motivationTypes: state.motivationTypes,
-      companionTypes: state.companionTypes,
-      cities: state.cities);
-
-  Map<String, dynamic> toMap() => {
-        'date': {
-          'startedOn': startedOn?.toIso8601String(),
-          'endedOn': endedOn?.toIso8601String(),
-        },
-        'companionTypes': companionTypes.map((e) => e.name).toList(),
-        'motivationTypes': motivationTypes.map((e) => e.name).toList(),
-        'cities': cities,
-      };
 }
 
 @freezed

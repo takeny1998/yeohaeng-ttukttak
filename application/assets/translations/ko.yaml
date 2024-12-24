@@ -7,6 +7,7 @@
 '{} has been added to plan successfully.': '{}이(가) 일정에 추가되었습니다.'
 '{} has been removed from plan successfully.': '{}이(가) 일정에서 제거되었습니다.'
 '{} has been selected.': '{}이(가) 선택되었습니다.'
+'{} has been deselected.': '{}이(가) 선택 해제되었습니다.'
 
 Add to your plan: 일정에 추가하기
 Age group: 연령대
@@ -16,6 +17,7 @@ An unknown error has occurred. Please try again later.: 알 수 없는 오류가
 A network error occurred. Please try again later.: 네트워크 연결에 문제가 발생했습니다. 잠시 후 다시 시도해주세요.
 
 Back to the main page: 메인 페이지로
+Back to the page: 이전 페이지로
 
 Cancel: 취소
 Close: 닫기
@@ -29,6 +31,17 @@ Delete comment: 댓글 삭제하기
 Edit comment: 댓글 수정하기
 Edit profile: 프로필 수정
 Edited: 수정됨
+
+For adventure: 일상적인 환경 및 역할에서의 탈출, 지루함 탈피
+For rest: 쉴 수 있는 기회, 육체 피로 해결 및 정신적인 휴식
+For friendship: 여행 동반자와의 친밀감 및 유대감 증진
+For selfReflection: 진정한 자아 찾기 또는 자신을 되돌아볼 기회 찾기
+For socialNetwork: SNS 사진 등록 등 과시
+For fitness: 운동, 건강 증진 및 충전
+For newExperiences: 새로운 경험 추구
+For education: 역사 탐방, 문화적 경험 등 교육적 동기
+For special: 특별한 목적(칠순여행, 신혼여행, 수학여행 등)
+For other: 기타
 
 Gender: 성별
 
@@ -47,14 +60,18 @@ Next: 다음으로
 Nickname: 닉네임
 No comments found to delete: 삭제할 댓글을 찾을 수 없습니다.
 
+Optional: 선택 사항
+
 Please check all of the boxes.: 모든 사항을 선택해 주세요.
 Please enter a comment.: 댓글 내용을 입력해 주세요.
+Please enter a name of travel.: 여행의 이름을 입력해 주세요.
 Please enter a nickname.: 닉네임을 입력해 주세요.
 Please Log in.: 로그인해 주세요.
 Please select a travel period: 여행 기간을 선택해 주세요.
 Please select at least one city: 최소 1개의 도시를 선택해 주세요.
 Please select a province.: 지역을 선택해 주세요.
 Point of interests in {}: '{}의 관광 명소 목록'
+Previous: 이전으로
 
 Read More: 더 보기
 Read travelogues: 여행기 읽기
@@ -65,10 +82,12 @@ Save: 저장하기
 Share invitation link: 초대 링크 공유하기
 Select: 선택
 Sort By: 정렬 조건
+Submit: 제출하기
 
 The invitation link expire after 30 minutes.: 초대 링크는 30분 후에 만료되요.
 The profile was updated successfully.: 프로필이 성공적으로 수정되었습니다.
 The travel has been created successfully.: 여행이 성공적으로 생성되었습니다.
+Travel of {}: '{} 여행'
 Travel participants: 여행 일행
 Travelogues in a {}: '{}의 여행기 목록'
 
@@ -76,10 +95,23 @@ What cities will you travel?: 어느 도시로 여행을 떠나시나요?
 What's the purpose of your trip?: 여행 목적은 무엇인가요?
 When will you travel?: 언제 여행을 떠나시나요?
 Who will you travel with?: 누구와 함께 여행할 예정인가요?
+With spouse: 배우자와 함께
+With children: 자녀와 함께
+With parents: 부모님과 함께
+With grandparents: 조부모님과 함께
+With siblings: 형제와 함께
+With relatives: 친척과 함께
+With friends: 친구와 함께
+With lover: 연인과 함께
+With colleagues: 동료와 함꼐
+With members: 회원과 함께
+With others: 기타
 
 You've joined in {}: '{}에 참여했습니다.'
 You can invite participants by sharing this link.: 초대 링크를 공유해 일행을 초대할 수 있어요.
 You can plan the travel with participants.: 일행과 함께 여행 계획을 짤 수 있어요.
+You can select up to {}.: 최대 {}개까지 선택 가능합니다.
+You haven't selected any cities yet.: 아직 도시를 선택하지 않으셨습니다.
 
 Unselect: 선택 해제
 

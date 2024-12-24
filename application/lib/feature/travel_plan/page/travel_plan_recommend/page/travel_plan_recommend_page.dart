@@ -59,7 +59,7 @@ class _TravelPlanRecommendPageState
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(travel.formattedName),
+        title: Text(travel.name),
         bottom: PreferredSize(
             preferredSize: const Size.fromHeight(64),
             child: Column(

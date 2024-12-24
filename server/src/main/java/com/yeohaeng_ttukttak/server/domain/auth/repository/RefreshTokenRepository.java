@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface RefreshTokenRepository extends CrudRepository<RefreshToken, String> {
 
-    List<RefreshToken> findAllByUserId(String userId);
+    List<RefreshToken> findAllByMemberId(String memberId);
 
 }

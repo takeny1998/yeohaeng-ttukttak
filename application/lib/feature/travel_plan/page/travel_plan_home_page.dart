@@ -45,7 +45,7 @@ class _TravelPlanHomePageState extends ConsumerState<TravelPlanHomePage> {
                 24.0),
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(travel.formattedName, style: headerStyle),
+              Text(travel.name, style: headerStyle),
               Text('${owner?.nickname ?? ''}님의 여행',
                   style: TextStyle(
                       fontSize: 13.5, color: colorScheme.onSurfaceVariant)),

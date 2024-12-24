@@ -19,20 +19,15 @@ import 'geography_select_state.dart';
 class GeographySelectView extends ConsumerStatefulWidget {
   final int id;
 
-  final FutureOr<void> Function(GeographyModel model) onSelect;
-  final VoidCallback? onCancel;
+  final void Function(GeographyModel) onSelect;
 
   final Iterable<GeographyModel> selectedChildren;
-
-  final bool isUnSelectable;
 
   const GeographySelectView(
       {super.key,
       required this.id,
       required this.onSelect,
-      required this.selectedChildren,
-      this.onCancel,
-      this.isUnSelectable = true});
+      required this.selectedChildren,});
 
   @override
   ConsumerState createState() => _StateSelectViewState();
@@ -119,7 +114,6 @@ class _StateSelectViewState extends ConsumerState<GeographySelectView> {
 
     final foundPolygons = polygons!.where(
         (polygon) => selectedItems.any((item) => item == polygon.hitValue));
-    ;
 
     final colorScheme = Theme.of(context).colorScheme;
     selectPolygons = foundPolygons.map((polygon) => PolygonUtil.copyWith(
@@ -144,7 +138,6 @@ class _StateSelectViewState extends ConsumerState<GeographySelectView> {
   @override
   Widget build(BuildContext context) {
     final asyncState = ref.watch(geographySelectProvider(widget.id));
-    final tr = ref.watch(translationServiceProvider);
 
     final colorScheme = Theme.of(context).colorScheme;
 
@@ -162,138 +155,113 @@ class _StateSelectViewState extends ConsumerState<GeographySelectView> {
           readyActivePolygon(activeChild?.id);
           readySelectPolygon(widget.selectedChildren.map((child) => child.id));
 
-          return Scaffold(
-            body: Padding(
-              padding: const EdgeInsets.only(top: 24.0, bottom: 16.0),
-              child: LayoutBuilder(builder: (context, constraints) {
-                const double buttonWidth = 120.0;
-                const double buttonHeight = 56.0;
+          return Padding(
+            padding: const EdgeInsets.only(top: 24.0, bottom: 16.0),
+            child: LayoutBuilder(builder: (context, constraints) {
+              const double buttonWidth = 120.0;
+              const double buttonHeight = 56.0;
 
-                const double indicatorHeight = 48.0;
+              const double indicatorHeight = 48.0;
 
-                final maxHeight = (constraints.maxHeight - indicatorHeight);
-                final int usableHeight = (maxHeight * 0.25).floor();
+              final maxHeight = (constraints.maxHeight - indicatorHeight);
+              final int usableHeight = (maxHeight * 0.25).floor();
 
-                final int columnCount =
-                    min((constraints.maxWidth / buttonWidth).floor(), 5);
-                final int rowCount = (usableHeight / buttonHeight).floor();
+              final int columnCount =
+              min((constraints.maxWidth / buttonWidth).floor(), 5);
+              final int rowCount = (usableHeight / buttonHeight).floor();
 
-                final int itemsPerPage = rowCount * columnCount;
-                final int pageCount = (children.length / itemsPerPage).ceil();
+              final int itemsPerPage = rowCount * columnCount;
+              final int pageCount = (children.length / itemsPerPage).ceil();
 
 
-                if (activeChild != null) {
-                  final index = children.indexOf(activeChild);
+              if (activeChild != null) {
+                final index = children.indexOf(activeChild);
 
-                  movePage((index / itemsPerPage).floor());
-                }
+                movePage((index / itemsPerPage).floor());
+              }
 
-                return Column(
-                  children: [
-                    SizedBox(
-                      width: constraints.maxWidth,
-                      height: maxHeight - usableHeight,
-                      child: FlutterMap(
-                          mapController: mapController,
-                          options: MapOptions(
-                            interactionOptions: const InteractionOptions(
-                                flags: InteractiveFlag.none),
-                            backgroundColor: colorScheme.surface,
-                            onMapReady: () {
-                              if (onMapReadyCompleter.isCompleted) return;
-                              onMapReadyCompleter.complete();
-                            },
-                          ),
-                          children: [
-                            PolygonLayer(
-                                hitNotifier: hitNotifier,
-                                simplificationTolerance: 0.0,
-                                polygons: [
-                                  ...?polygons,
-                                  ...?selectPolygons,
-                                  ...?activePolygons,
-                                ]),
-                          ]),
-                    ),
-                    SizedBox(
-                      width: constraints.maxWidth,
-                      height: indicatorHeight,
-                      child: Center(
-                        child: SmoothPageIndicator(
-                            controller: pageController, // PageController
-                            count: pageCount,
-                            effect: WormEffect(
-                              dotColor: colorScheme.surfaceContainerHighest,
-                              activeDotColor: colorScheme.primary,
-                            ), // your preferred effect
-                            onDotClicked: movePage),
-                      ),
-                    ),
-                    Container(
-                      width: constraints.maxWidth,
-                      height: usableHeight.toDouble(),
-                      constraints: const BoxConstraints(maxWidth: 480.0),
-                      child: PageView(
-                        controller: pageController,
-                        physics: const ClampingScrollPhysics(),
-                        children: [
-                          for (int i = 0; i < pageCount; i++)
-                            Center(
-                              child: Wrap(
-                                runAlignment: WrapAlignment.start,
-                                spacing: -0.5,
-                                runSpacing: -0.5,
-                                children: [
-                                  for (final child in children.sublist(
-                                      (itemsPerPage * i),
-                                      min((itemsPerPage * i) + itemsPerPage,
-                                          children.length)))
-                                    GeographySelectButton(
-                                        width: buttonWidth,
-                                        height: buttonHeight,
-                                        label: child.shortName,
-                                        isActive: child == activeChild,
-                                        isSelected: widget.selectedChildren
-                                            .contains(child),
-                                        onPressed: () => ref
-                                            .read(geographySelectProvider(
-                                                    widget.id)
-                                                .notifier)
-                                            .active(child))
-                                ],
-                              ),
-                            ),
-                        ],
-                      ),
-                    ),
-                  ],
-                );
-              }),
-            ),
-            bottomNavigationBar: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
+              return Column(
                 children: [
-                  if (widget.onCancel != null)
-                    Expanded(
-                        child: OutlinedButton(
-                            onPressed: widget.onCancel,
-                            child: Text(tr.from('Cancel')))),
-                  const SizedBox(width: 8.0),
-                  Expanded(
-                      child: FilledButton(
-                          onPressed: activeChild != null
-                              ? () => widget.onSelect(activeChild)
-                              : null,
-                          child: Text(
-                              widget.selectedChildren.contains(activeChild) &&
-                                      widget.isUnSelectable
-                                  ? tr.from('Unselect')
-                                  : tr.from('Select')))),
+                  SizedBox(
+                    width: constraints.maxWidth,
+                    height: maxHeight - usableHeight,
+                    child: FlutterMap(
+                        mapController: mapController,
+                        options: MapOptions(
+                          interactionOptions: const InteractionOptions(
+                              flags: InteractiveFlag.none),
+                          backgroundColor: colorScheme.surface,
+                          onMapReady: () {
+                            if (onMapReadyCompleter.isCompleted) return;
+                            onMapReadyCompleter.complete();
+                          },
+                        ),
+                        children: [
+                          PolygonLayer(
+                              hitNotifier: hitNotifier,
+                              simplificationTolerance: 0.0,
+                              polygons: [
+                                ...?polygons,
+                                ...?selectPolygons,
+                                ...?activePolygons,
+                              ]),
+                        ]),
+                  ),
+                  SizedBox(
+                    width: constraints.maxWidth,
+                    height: indicatorHeight,
+                    child: Center(
+                      child: SmoothPageIndicator(
+                          controller: pageController, // PageController
+                          count: pageCount,
+                          effect: WormEffect(
+                            dotColor: colorScheme.surfaceContainerHighest,
+                            activeDotColor: colorScheme.primary,
+                          ), // your preferred effect
+                          onDotClicked: movePage),
+                    ),
+                  ),
+                  Container(
+                    width: constraints.maxWidth,
+                    height: usableHeight.toDouble(),
+                    constraints: const BoxConstraints(maxWidth: 480.0),
+                    child: PageView(
+                      controller: pageController,
+                      physics: const ClampingScrollPhysics(),
+                      children: [
+                        for (int i = 0; i < pageCount; i++)
+                          Center(
+                            child: Wrap(
+                              runAlignment: WrapAlignment.start,
+                              spacing: -0.5,
+                              runSpacing: -0.5,
+                              children: [
+                                for (final child in children.sublist(
+                                    (itemsPerPage * i),
+                                    min((itemsPerPage * i) + itemsPerPage,
+                                        children.length)))
+                                  GeographySelectButton(
+                                      geography: child,
+                                      width: buttonWidth,
+                                      height: buttonHeight,
+                                      isActive: child == activeChild,
+                                      isSelected: widget.selectedChildren
+                                          .contains(child),
+                                      onSelect: widget.onSelect,
+                                      onPressed: () => ref
+                                          .read(geographySelectProvider(
+                                          widget.id)
+                                          .notifier)
+                                          .active(child))
+                              ],
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
                 ],
-              ),
-            ),
+              );
+            }),
           );
         },
         error: (error, _) => throw error,

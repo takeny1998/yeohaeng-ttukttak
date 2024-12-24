@@ -11,7 +11,6 @@ class TempPage extends ConsumerWidget {
       appBar: AppBar(),
       body: SafeArea(child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 24.0),
-        child: ProvinceCitySelectView(countryId: 0),
       )),
     );
   }

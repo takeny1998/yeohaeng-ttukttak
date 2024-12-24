@@ -2,6 +2,7 @@ package com.yeohaeng_ttukttak.server.domain.travel.entity;
 
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.AccessDeniedFailException;
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundFailException;
+import com.yeohaeng_ttukttak.server.common.util.LocalDateUtil;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.City;
 import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
 import com.yeohaeng_ttukttak.server.domain.place.entity.Place;
@@ -9,6 +10,7 @@ import com.yeohaeng_ttukttak.server.domain.shared.entity.BaseTimeMemberEntity;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.CompanionType;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.MotivationType;
 import com.yeohaeng_ttukttak.server.domain.travel.exception.AlreadyJoinedTravelFailException;
+import com.yeohaeng_ttukttak.server.domain.travel_name.TravelName;
 import com.yeohaeng_ttukttak.server.domain.travel_plan.TravelPlan;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -25,6 +27,9 @@ public class Travel extends BaseTimeMemberEntity {
 
     @Id @GeneratedValue
     private Long id;
+
+    @Embedded
+    private TravelName name;
 
     private LocalDate startedOn;
 
@@ -46,13 +51,19 @@ public class Travel extends BaseTimeMemberEntity {
     @OneToMany(mappedBy = "travel", cascade = { CascadeType.PERSIST, CascadeType.MERGE }, orphanRemoval = true)
     private List<TravelParticipant> participants = new ArrayList<>();
 
-    public Travel(LocalDate startedOn, LocalDate endedOn) {
+    public Travel(TravelName name, LocalDate startedOn, LocalDate endedOn) {
+        this.name = name;
+
         this.startedOn = startedOn;
         this.endedOn = endedOn;
     }
 
     public Long id() {
         return id;
+    }
+
+    public String name() {
+        return name.name();
     }
 
     public LocalDate startedOn() {

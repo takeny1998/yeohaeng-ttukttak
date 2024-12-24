@@ -25,7 +25,7 @@ class TravelInfoItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(travel.formattedName,
+              Text(travel.name,
                   style: travelNameStyle, overflow: TextOverflow.ellipsis),
               Text(travel.formattedDate, style: travelDateStyle),
             ])

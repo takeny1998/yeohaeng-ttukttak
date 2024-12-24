@@ -16,7 +16,6 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$ProvinceCitySelectState {
-  ProvinceModel? get activeProvince => throw _privateConstructorUsedError;
   ProvinceModel? get selectProvince => throw _privateConstructorUsedError;
   ReferenceIterable<CityModel, ProvinceModel> get selectedCities =>
       throw _privateConstructorUsedError;
@@ -35,8 +34,7 @@ abstract class $ProvinceCitySelectStateCopyWith<$Res> {
       _$ProvinceCitySelectStateCopyWithImpl<$Res, ProvinceCitySelectState>;
   @useResult
   $Res call(
-      {ProvinceModel? activeProvince,
-      ProvinceModel? selectProvince,
+      {ProvinceModel? selectProvince,
       ReferenceIterable<CityModel, ProvinceModel> selectedCities});
 }
 
@@ -56,15 +54,10 @@ class _$ProvinceCitySelectStateCopyWithImpl<$Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? activeProvince = freezed,
     Object? selectProvince = freezed,
     Object? selectedCities = null,
   }) {
     return _then(_value.copyWith(
-      activeProvince: freezed == activeProvince
-          ? _value.activeProvince
-          : activeProvince // ignore: cast_nullable_to_non_nullable
-              as ProvinceModel?,
       selectProvince: freezed == selectProvince
           ? _value.selectProvince
           : selectProvince // ignore: cast_nullable_to_non_nullable
@@ -87,8 +80,7 @@ abstract class _$$ProvinceCitySelectStateImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {ProvinceModel? activeProvince,
-      ProvinceModel? selectProvince,
+      {ProvinceModel? selectProvince,
       ReferenceIterable<CityModel, ProvinceModel> selectedCities});
 }
 
@@ -107,15 +99,10 @@ class __$$ProvinceCitySelectStateImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? activeProvince = freezed,
     Object? selectProvince = freezed,
     Object? selectedCities = null,
   }) {
     return _then(_$ProvinceCitySelectStateImpl(
-      activeProvince: freezed == activeProvince
-          ? _value.activeProvince
-          : activeProvince // ignore: cast_nullable_to_non_nullable
-              as ProvinceModel?,
       selectProvince: freezed == selectProvince
           ? _value.selectProvince
           : selectProvince // ignore: cast_nullable_to_non_nullable
@@ -132,12 +119,8 @@ class __$$ProvinceCitySelectStateImplCopyWithImpl<$Res>
 
 class _$ProvinceCitySelectStateImpl implements _ProvinceCitySelectState {
   const _$ProvinceCitySelectStateImpl(
-      {this.activeProvince,
-      this.selectProvince,
-      this.selectedCities = const ReferenceIterable()});
+      {this.selectProvince, this.selectedCities = const ReferenceIterable()});
 
-  @override
-  final ProvinceModel? activeProvince;
   @override
   final ProvinceModel? selectProvince;
   @override
@@ -146,7 +129,7 @@ class _$ProvinceCitySelectStateImpl implements _ProvinceCitySelectState {
 
   @override
   String toString() {
-    return 'ProvinceCitySelectState(activeProvince: $activeProvince, selectProvince: $selectProvince, selectedCities: $selectedCities)';
+    return 'ProvinceCitySelectState(selectProvince: $selectProvince, selectedCities: $selectedCities)';
   }
 
   @override
@@ -155,19 +138,14 @@ class _$ProvinceCitySelectStateImpl implements _ProvinceCitySelectState {
         (other.runtimeType == runtimeType &&
             other is _$ProvinceCitySelectStateImpl &&
             const DeepCollectionEquality()
-                .equals(other.activeProvince, activeProvince) &&
-            const DeepCollectionEquality()
                 .equals(other.selectProvince, selectProvince) &&
             (identical(other.selectedCities, selectedCities) ||
                 other.selectedCities == selectedCities));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(activeProvince),
-      const DeepCollectionEquality().hash(selectProvince),
-      selectedCities);
+  int get hashCode => Object.hash(runtimeType,
+      const DeepCollectionEquality().hash(selectProvince), selectedCities);
 
   /// Create a copy of ProvinceCitySelectState
   /// with the given fields replaced by the non-null parameter values.
@@ -181,13 +159,10 @@ class _$ProvinceCitySelectStateImpl implements _ProvinceCitySelectState {
 
 abstract class _ProvinceCitySelectState implements ProvinceCitySelectState {
   const factory _ProvinceCitySelectState(
-          {final ProvinceModel? activeProvince,
-          final ProvinceModel? selectProvince,
+          {final ProvinceModel? selectProvince,
           final ReferenceIterable<CityModel, ProvinceModel> selectedCities}) =
       _$ProvinceCitySelectStateImpl;
 
-  @override
-  ProvinceModel? get activeProvince;
   @override
   ProvinceModel? get selectProvince;
   @override

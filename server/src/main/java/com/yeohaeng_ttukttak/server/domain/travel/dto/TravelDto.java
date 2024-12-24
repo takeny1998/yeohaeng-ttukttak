@@ -10,6 +10,7 @@ import java.util.List;
 
 public record TravelDto(
         Long id,
+        String name,
         LocalDate startedOn,
         LocalDate endedOn,
         String memberId,
@@ -22,6 +23,7 @@ public record TravelDto(
 
         return new TravelDto(
                 travel.id(),
+                travel.name(),
                 travel.startedOn(),
                 travel.endedOn(),
                 travel.createdBy().uuid(),

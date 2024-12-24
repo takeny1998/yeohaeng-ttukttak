@@ -16,6 +16,11 @@ class TravelCreate extends _$TravelCreate {
     return const TravelCreateState();
   }
 
+  void enterName(String? name) {
+    if (state.name == name) return;
+    state = state.copyWith(name: name);
+  }
+
   void selectDate(DateTime? startedOn, DateTime? endedOn) {
     if (startedOn == null || endedOn == null) {
       return;
@@ -57,18 +62,8 @@ class TravelCreate extends _$TravelCreate {
     }
   }
 
-  void selectCity(CityModel city) {
-    final cities = state.cities;
-    final isExist = cities.contains(city);
-
-    if (isExist) {
-      state = state.copyWith(cities: [
-        for (final e in cities)
-          if (e != city) e
-      ]);
-    } else {
-      state = state.copyWith(cities: [...cities, city]);
-    }
+  void selectCities(List<CityModel> cities) {
+    state = state.copyWith(cities: [...state.cities, ...cities]);
   }
 
   void selectRegion(ProvinceModel? region) {
@@ -89,16 +84,37 @@ class TravelCreate extends _$TravelCreate {
     state = state.copyWith(pageNumber: state.pageNumber + 1);
   }
 
-  void submit() async {
-    final formModel = TravelFormModel.fromState(state);
+  Future<TravelModel> submit() async {
+    final TravelCreateState(
+    :name,
+      :startedOn,
+      :endedOn,
+      :companionTypes,
+      :motivationTypes,
+      :cities
+    ) = state;
 
-    await ref.read(asyncLoadingProvider.notifier).guard(() async {
+    final travel = await ref.read(asyncLoadingProvider.notifier).guard(() async {
       final response = await ref.read(httpServiceProvider).post('/travels',
-          options: ServerRequestOptions(data: formModel.toMap()));
+          options: ServerRequestOptions(data: {
+            'date': {
+              'startedOn': startedOn?.toIso8601String(),
+              'endedOn': endedOn?.toIso8601String(),
+            },
+            'name': name,
+            'companionTypes': companionTypes.map((e) => e.name).toList(),
+            'motivationTypes': motivationTypes.map((e) => e.name).toList(),
+            'cities': cities,
+          }));
 
       return TravelModel.fromJson(response['travel']);
     });
-
-    state = state.copyWith(isSubmitted: true);
+    return travel;
   }
+
+  void setFieldErrors(Map<String, String> fieldErrors) {
+    if (state.fieldErrors == fieldErrors) return;
+    state = state.copyWith(fieldErrors: fieldErrors);
+  }
+
 }
