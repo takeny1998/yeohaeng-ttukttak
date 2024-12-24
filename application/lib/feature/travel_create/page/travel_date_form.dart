@@ -24,8 +24,6 @@ class TravelDateForm extends ConsumerWidget {
     final lastDate = firstDate.add(const Duration(days: 365));
 
     final isDateSelected = startedOn != null && endedOn != null;
-
-    final ColorScheme(:surfaceContainerHighest) = Theme.of(context).colorScheme;
     final tr = ref.watch(translationServiceProvider);
 
     return Scaffold(

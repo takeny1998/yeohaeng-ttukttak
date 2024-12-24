@@ -24,7 +24,7 @@ class TravelListPage extends ConsumerWidget {
 
           return ListTile(
           onTap: () => context.push('/travels/${travel.id}'),
-          title: Text(travel.formattedName),
+          title: Text(travel.name),
         );
         }, ),
     );

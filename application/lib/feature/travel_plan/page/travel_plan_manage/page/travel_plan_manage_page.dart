@@ -51,7 +51,7 @@ class TravelPlanManagePage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        title: Text(travel.formattedName),
+        title: Text(travel.name),
         systemOverlayStyle: SystemUiOverlayStyle.dark,
       ),
       body: LayoutBuilder(builder: (context, constraints) {

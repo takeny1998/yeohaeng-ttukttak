@@ -21,6 +21,7 @@ TravelModel _$TravelModelFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$TravelModel {
   int get id => throw _privateConstructorUsedError;
+  String get name => throw _privateConstructorUsedError;
   DateTime get startedOn => throw _privateConstructorUsedError;
   DateTime get endedOn => throw _privateConstructorUsedError;
   String get memberId => throw _privateConstructorUsedError;
@@ -48,6 +49,7 @@ abstract class $TravelModelCopyWith<$Res> {
   @useResult
   $Res call(
       {int id,
+      String name,
       DateTime startedOn,
       DateTime endedOn,
       String memberId,
@@ -72,6 +74,7 @@ class _$TravelModelCopyWithImpl<$Res, $Val extends TravelModel>
   @override
   $Res call({
     Object? id = null,
+    Object? name = null,
     Object? startedOn = null,
     Object? endedOn = null,
     Object? memberId = null,
@@ -84,6 +87,10 @@ class _$TravelModelCopyWithImpl<$Res, $Val extends TravelModel>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
       startedOn: null == startedOn
           ? _value.startedOn
           : startedOn // ignore: cast_nullable_to_non_nullable
@@ -122,6 +129,7 @@ abstract class _$$TravelModelImplCopyWith<$Res>
   @useResult
   $Res call(
       {int id,
+      String name,
       DateTime startedOn,
       DateTime endedOn,
       String memberId,
@@ -144,6 +152,7 @@ class __$$TravelModelImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
+    Object? name = null,
     Object? startedOn = null,
     Object? endedOn = null,
     Object? memberId = null,
@@ -156,6 +165,10 @@ class __$$TravelModelImplCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
       startedOn: null == startedOn
           ? _value.startedOn
           : startedOn // ignore: cast_nullable_to_non_nullable
@@ -189,6 +202,7 @@ class __$$TravelModelImplCopyWithImpl<$Res>
 class _$TravelModelImpl extends _TravelModel {
   const _$TravelModelImpl(
       {required this.id,
+      required this.name,
       required this.startedOn,
       required this.endedOn,
       required this.memberId,
@@ -205,6 +219,8 @@ class _$TravelModelImpl extends _TravelModel {
 
   @override
   final int id;
+  @override
+  final String name;
   @override
   final DateTime startedOn;
   @override
@@ -237,7 +253,7 @@ class _$TravelModelImpl extends _TravelModel {
 
   @override
   String toString() {
-    return 'TravelModel(id: $id, startedOn: $startedOn, endedOn: $endedOn, memberId: $memberId, companionTypes: $companionTypes, motivationTypes: $motivationTypes, cities: $cities)';
+    return 'TravelModel(id: $id, name: $name, startedOn: $startedOn, endedOn: $endedOn, memberId: $memberId, companionTypes: $companionTypes, motivationTypes: $motivationTypes, cities: $cities)';
   }
 
   @override
@@ -246,6 +262,7 @@ class _$TravelModelImpl extends _TravelModel {
         (other.runtimeType == runtimeType &&
             other is _$TravelModelImpl &&
             (identical(other.id, id) || other.id == id) &&
+            (identical(other.name, name) || other.name == name) &&
             (identical(other.startedOn, startedOn) ||
                 other.startedOn == startedOn) &&
             (identical(other.endedOn, endedOn) || other.endedOn == endedOn) &&
@@ -263,6 +280,7 @@ class _$TravelModelImpl extends _TravelModel {
   int get hashCode => Object.hash(
       runtimeType,
       id,
+      name,
       startedOn,
       endedOn,
       memberId,
@@ -289,6 +307,7 @@ class _$TravelModelImpl extends _TravelModel {
 abstract class _TravelModel extends TravelModel {
   const factory _TravelModel(
       {required final int id,
+      required final String name,
       required final DateTime startedOn,
       required final DateTime endedOn,
       required final String memberId,
@@ -302,6 +321,8 @@ abstract class _TravelModel extends TravelModel {
 
   @override
   int get id;
+  @override
+  String get name;
   @override
   DateTime get startedOn;
   @override
@@ -320,232 +341,6 @@ abstract class _TravelModel extends TravelModel {
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$TravelModelImplCopyWith<_$TravelModelImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-mixin _$TravelFormModel {
-  DateTime? get startedOn => throw _privateConstructorUsedError;
-  DateTime? get endedOn => throw _privateConstructorUsedError;
-  Iterable<TravelMotivationType> get motivationTypes =>
-      throw _privateConstructorUsedError;
-  Iterable<TravelCompanionType> get companionTypes =>
-      throw _privateConstructorUsedError;
-  Iterable<CityModel> get cities => throw _privateConstructorUsedError;
-
-  /// Create a copy of TravelFormModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  $TravelFormModelCopyWith<TravelFormModel> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $TravelFormModelCopyWith<$Res> {
-  factory $TravelFormModelCopyWith(
-          TravelFormModel value, $Res Function(TravelFormModel) then) =
-      _$TravelFormModelCopyWithImpl<$Res, TravelFormModel>;
-  @useResult
-  $Res call(
-      {DateTime? startedOn,
-      DateTime? endedOn,
-      Iterable<TravelMotivationType> motivationTypes,
-      Iterable<TravelCompanionType> companionTypes,
-      Iterable<CityModel> cities});
-}
-
-/// @nodoc
-class _$TravelFormModelCopyWithImpl<$Res, $Val extends TravelFormModel>
-    implements $TravelFormModelCopyWith<$Res> {
-  _$TravelFormModelCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of TravelFormModel
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? startedOn = freezed,
-    Object? endedOn = freezed,
-    Object? motivationTypes = null,
-    Object? companionTypes = null,
-    Object? cities = null,
-  }) {
-    return _then(_value.copyWith(
-      startedOn: freezed == startedOn
-          ? _value.startedOn
-          : startedOn // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      endedOn: freezed == endedOn
-          ? _value.endedOn
-          : endedOn // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      motivationTypes: null == motivationTypes
-          ? _value.motivationTypes
-          : motivationTypes // ignore: cast_nullable_to_non_nullable
-              as Iterable<TravelMotivationType>,
-      companionTypes: null == companionTypes
-          ? _value.companionTypes
-          : companionTypes // ignore: cast_nullable_to_non_nullable
-              as Iterable<TravelCompanionType>,
-      cities: null == cities
-          ? _value.cities
-          : cities // ignore: cast_nullable_to_non_nullable
-              as Iterable<CityModel>,
-    ) as $Val);
-  }
-}
-
-/// @nodoc
-abstract class _$$TravelFormModelImplCopyWith<$Res>
-    implements $TravelFormModelCopyWith<$Res> {
-  factory _$$TravelFormModelImplCopyWith(_$TravelFormModelImpl value,
-          $Res Function(_$TravelFormModelImpl) then) =
-      __$$TravelFormModelImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call(
-      {DateTime? startedOn,
-      DateTime? endedOn,
-      Iterable<TravelMotivationType> motivationTypes,
-      Iterable<TravelCompanionType> companionTypes,
-      Iterable<CityModel> cities});
-}
-
-/// @nodoc
-class __$$TravelFormModelImplCopyWithImpl<$Res>
-    extends _$TravelFormModelCopyWithImpl<$Res, _$TravelFormModelImpl>
-    implements _$$TravelFormModelImplCopyWith<$Res> {
-  __$$TravelFormModelImplCopyWithImpl(
-      _$TravelFormModelImpl _value, $Res Function(_$TravelFormModelImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of TravelFormModel
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? startedOn = freezed,
-    Object? endedOn = freezed,
-    Object? motivationTypes = null,
-    Object? companionTypes = null,
-    Object? cities = null,
-  }) {
-    return _then(_$TravelFormModelImpl(
-      startedOn: freezed == startedOn
-          ? _value.startedOn
-          : startedOn // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      endedOn: freezed == endedOn
-          ? _value.endedOn
-          : endedOn // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      motivationTypes: null == motivationTypes
-          ? _value.motivationTypes
-          : motivationTypes // ignore: cast_nullable_to_non_nullable
-              as Iterable<TravelMotivationType>,
-      companionTypes: null == companionTypes
-          ? _value.companionTypes
-          : companionTypes // ignore: cast_nullable_to_non_nullable
-              as Iterable<TravelCompanionType>,
-      cities: null == cities
-          ? _value.cities
-          : cities // ignore: cast_nullable_to_non_nullable
-              as Iterable<CityModel>,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$TravelFormModelImpl extends _TravelFormModel {
-  const _$TravelFormModelImpl(
-      {required this.startedOn,
-      required this.endedOn,
-      required this.motivationTypes,
-      required this.companionTypes,
-      required this.cities})
-      : super._();
-
-  @override
-  final DateTime? startedOn;
-  @override
-  final DateTime? endedOn;
-  @override
-  final Iterable<TravelMotivationType> motivationTypes;
-  @override
-  final Iterable<TravelCompanionType> companionTypes;
-  @override
-  final Iterable<CityModel> cities;
-
-  @override
-  String toString() {
-    return 'TravelFormModel(startedOn: $startedOn, endedOn: $endedOn, motivationTypes: $motivationTypes, companionTypes: $companionTypes, cities: $cities)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$TravelFormModelImpl &&
-            (identical(other.startedOn, startedOn) ||
-                other.startedOn == startedOn) &&
-            (identical(other.endedOn, endedOn) || other.endedOn == endedOn) &&
-            const DeepCollectionEquality()
-                .equals(other.motivationTypes, motivationTypes) &&
-            const DeepCollectionEquality()
-                .equals(other.companionTypes, companionTypes) &&
-            const DeepCollectionEquality().equals(other.cities, cities));
-  }
-
-  @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      startedOn,
-      endedOn,
-      const DeepCollectionEquality().hash(motivationTypes),
-      const DeepCollectionEquality().hash(companionTypes),
-      const DeepCollectionEquality().hash(cities));
-
-  /// Create a copy of TravelFormModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$TravelFormModelImplCopyWith<_$TravelFormModelImpl> get copyWith =>
-      __$$TravelFormModelImplCopyWithImpl<_$TravelFormModelImpl>(
-          this, _$identity);
-}
-
-abstract class _TravelFormModel extends TravelFormModel {
-  const factory _TravelFormModel(
-      {required final DateTime? startedOn,
-      required final DateTime? endedOn,
-      required final Iterable<TravelMotivationType> motivationTypes,
-      required final Iterable<TravelCompanionType> companionTypes,
-      required final Iterable<CityModel> cities}) = _$TravelFormModelImpl;
-  const _TravelFormModel._() : super._();
-
-  @override
-  DateTime? get startedOn;
-  @override
-  DateTime? get endedOn;
-  @override
-  Iterable<TravelMotivationType> get motivationTypes;
-  @override
-  Iterable<TravelCompanionType> get companionTypes;
-  @override
-  Iterable<CityModel> get cities;
-
-  /// Create a copy of TravelFormModel
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$TravelFormModelImplCopyWith<_$TravelFormModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 

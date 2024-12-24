@@ -6,6 +6,7 @@ import 'package:application_new/feature/travel_create/page/travel_city_form.dart
 import 'package:application_new/feature/travel_create/page/travel_date_form.dart';
 import 'package:application_new/feature/travel_create/page/travel_companion_type_form.dart';
 import 'package:application_new/feature/travel_create/page/travel_motivation_type_form.dart';
+import 'package:application_new/feature/travel_create/page/travel_name_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -41,16 +42,6 @@ class _CreateTravelPageState extends ConsumerState<TravelCreatePage> {
       notifier.selectCities(next.selectedCities.mapToEntity().toList());
     });
 
-    ref.listen(travelCreateProvider, (prev, next) {
-      final tr = ref.read(translationServiceProvider);
-
-      if (next.isSubmitted) {
-        MessageUtil.showSnackBar(context,
-            MessageEvent(tr.from('The travel has been created successfully.')));
-        context.go('/');
-      }
-    });
-
     return Scaffold(
       body: PageView(
           physics: const NeverScrollableScrollPhysics(),
@@ -59,7 +50,8 @@ class _CreateTravelPageState extends ConsumerState<TravelCreatePage> {
             TravelDateForm(pageController),
             TravelCityForm(pageController),
             TravelCompanionTypeForm(pageController),
-            TravelMotivationTypeForm(pageController)
+            TravelMotivationTypeForm(pageController),
+            TravelNameForm(pageController),
           ]),
     );
   }

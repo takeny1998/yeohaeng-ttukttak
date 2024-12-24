@@ -92,12 +92,6 @@ class TravelMotivationTypeForm extends ConsumerWidget {
             ],
           ),
           bottomNavigationBar: PagedFormBottomControlView(
-              hasNextPage: false,
-              onSubmit: () {
-                ref
-                    .read(travelCreateProvider.notifier)
-                    .submit();
-              },
               isInputted: motivationTypes.isNotEmpty,
               controller: pageController)),
     );
