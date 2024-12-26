@@ -42,7 +42,7 @@ public class TravelController {
                 request.motivationTypes(),
                 request.companionTypes());
 
-        final TravelDto travelDto = findTravelService.findById(createdId);
+        final TravelDto travelDto = travelService.findById(createdId);
 
         return new ServerResponse<>(new CreateTravelResponse(travelDto));
     }

@@ -3,6 +3,8 @@ package com.yeohaeng_ttukttak.server.domain.travel_name;
 import com.yeohaeng_ttukttak.server.common.util.StringUtil;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.City;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.Province;
+import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
+import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelCity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -61,10 +63,10 @@ public class TravelNameService {
                 .collect(Collectors.joining(", "));
 
         if (Objects.equals(locale, Locale.ENGLISH)) {
-            return new TravelName(String.format("%s %s", "Travel to", generatedName));
+            return new TravelName(String.format("%s %s", "Travel to", generatedName), true);
         }
 
-        return new TravelName(String.format("%s %s", generatedName, "여행"));
+        return new TravelName(String.format("%s %s", generatedName, "여행"), true);
     }
 
     /**
@@ -79,7 +81,7 @@ public class TravelNameService {
             return new TravelName(String.format("%s#%s", "Travel", shortUUID));
         }
 
-        return new TravelName(String.format("%s#%s", "여행", shortUUID));
+        return new TravelName(String.format("%s#%s", "여행", shortUUID), true);
     }
 
 }

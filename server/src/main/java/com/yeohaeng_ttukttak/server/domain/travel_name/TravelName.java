@@ -14,11 +14,22 @@ public class TravelName {
 
     private String name;
 
+    private boolean isGenerated;
+
     TravelName(String name) {
+        this(name, false);
+    }
+
+    TravelName(String name, boolean isGenerated) {
         this.name = name;
+        this.isGenerated = isGenerated;
     }
 
     public String name() {
         return name;
+    }
+
+    public boolean isGenerated() {
+        return isGenerated;
     }
 }
