@@ -1,15 +1,12 @@
 package com.yeohaeng_ttukttak.server.common.exception.exception.fail;
-
 import com.yeohaeng_ttukttak.server.common.exception.interfaces.ArgumentException;
 
-public class EntityNotFoundFailException extends FailException implements ArgumentException {
-
-    static final String code = "ENTITY_NOT_FOUND_FAIL";
+public class EntityAlreadyAddedFailException extends FailException implements ArgumentException {
 
     private final Class<?> clazz;
 
-    public EntityNotFoundFailException(Class<?> clazz) {
-        super(code);
+    public EntityAlreadyAddedFailException(Class<?> clazz) {
+        super("ENTITY_ALREADY_ADDED_FAIL");
         this.clazz = clazz;
     }
 
@@ -17,5 +14,4 @@ public class EntityNotFoundFailException extends FailException implements Argume
     public Object[] args() {
         return new Object[] { clazz.getSimpleName() };
     }
-
 }

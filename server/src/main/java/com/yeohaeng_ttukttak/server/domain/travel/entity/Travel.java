@@ -1,7 +1,6 @@
 package com.yeohaeng_ttukttak.server.domain.travel.entity;
 
-import com.yeohaeng_ttukttak.server.common.exception.exception.fail.AccessDeniedFailException;
-import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundFailException;
+import com.yeohaeng_ttukttak.server.common.exception.exception.fail.*;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.City;
 import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
 import com.yeohaeng_ttukttak.server.domain.place.entity.Place;
@@ -9,8 +8,6 @@ import com.yeohaeng_ttukttak.server.domain.shared.entity.BaseTimeMemberEntity;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.CompanionType;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.MotivationType;
 import com.yeohaeng_ttukttak.server.domain.travel.exception.AlreadyJoinedTravelFailException;
-import com.yeohaeng_ttukttak.server.domain.travel.exception.CityAlreadyAddedTravelFailException;
-import com.yeohaeng_ttukttak.server.domain.travel.exception.TooManyTravelCityFailException;
 import com.yeohaeng_ttukttak.server.domain.travel_name.TravelName;
 import com.yeohaeng_ttukttak.server.domain.travel_plan.TravelPlan;
 import jakarta.persistence.*;
@@ -145,40 +142,63 @@ public class Travel extends BaseTimeMemberEntity {
      * @param memberId 사용자의 식별자
      * @param city 추가하려는 도시 엔티티
      * @throws AccessDeniedFailException 여행에 참가자 혹은 생성자가 아니면 발생한다.
-     * @throws CityAlreadyAddedTravelFailException 이미 여행에 추가된 경우 발생한다.
-     * @throws TooManyTravelCityFailException 10개 초과의 여행 도시를 추가하려는 경우 발생한다.
+     * @throws EntityAlreadyAddedFailException 이미 여행에 추가된 경우 발생한다.
+     * @throws TooManyEntityFailException 10개 초과의 여행 도시를 추가하려는 경우 발생한다.
      */
     public void addCity(String memberId, City city) {
         verifyModifyGrant(memberId);
 
         if (cities.size() == 10) {
-            throw new TooManyTravelCityFailException();
+            throw new TooManyEntityFailException(Class.class, 10);
         }
 
         final boolean isAlreadyExist = cities().stream()
                 .anyMatch(tc -> tc.city().equals(city));
 
         if (isAlreadyExist) {
-            throw new CityAlreadyAddedTravelFailException();
+            throw new EntityAlreadyAddedFailException(City.class);
         }
 
         cities().add(new TravelCity(this, city));
     }
 
-    public void addMotivation(MotivationType motivationType) {
+    /**
+     *
+     * @throws AccessDeniedFailException 여행에 참가자 혹은 생성자가 아니면 발생한다.
+     * @throws EntityAlreadyAddedFailException 이미 여행에 추가된 경우 발생한다.
+     * @throws TooManyEntityFailException 10개 초과의 여행 도시를 추가하려는 경우 발생한다.
+     */
+    public void addMotivation(String memberId, MotivationType motivationType) {
+        verifyModifyGrant(memberId);
+
+        if (motivations.size() == 5) {
+            throw new TooManyEntityFailException(MotivationType.class, 5);
+        }
+
         final boolean isAlreadyExist = motivations().stream()
                 .anyMatch(tm -> tm.type().equals(motivationType));
 
-        if (isAlreadyExist) return;
+        if (isAlreadyExist) {
+            throw new EntityAlreadyAddedFailException(MotivationType.class);
+        }
 
         motivations().add(new TravelMotivation(this, motivationType));
     }
 
-    public void addCompanion(CompanionType companionType) {
+    public void addCompanion(String memberId, CompanionType companionType) {
+
+        verifyModifyGrant(memberId);
+
+        if (companions.size() == 3) {
+            throw new TooManyEntityFailException(CompanionType.class, 3);
+        }
+
         final boolean isAlreadyExist = companions().stream()
                 .anyMatch(tc -> tc.type().equals(companionType));
 
-        if (isAlreadyExist) return;
+        if (isAlreadyExist) {
+            throw new EntityAlreadyAddedFailException(CompanionType.class);
+        }
 
         companions().add(new TravelCompanion(this, companionType));
     }

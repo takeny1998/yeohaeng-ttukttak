@@ -1,8 +1,8 @@
 package com.yeohaeng_ttukttak.server.common.exception.exception.fail;
 
-import com.yeohaeng_ttukttak.server.common.exception.interfaces.EntityTargetException;
+import com.yeohaeng_ttukttak.server.common.exception.interfaces.ArgumentException;
 
-public class AccessDeniedFailException extends FailException implements EntityTargetException {
+public class AccessDeniedFailException extends FailException implements ArgumentException {
 
     static final String code = "ACCESS_DENIED_FAIL";
 
@@ -14,8 +14,7 @@ public class AccessDeniedFailException extends FailException implements EntityTa
     }
 
     @Override
-    public Class<?> target() {
-        return target;
+    public Object[] args() {
+        return new Object[] { target.getSimpleName() };
     }
-
 }
