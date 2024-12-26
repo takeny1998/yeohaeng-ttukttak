@@ -8,7 +8,12 @@ import java.util.List;
 
 public interface TravelRepository extends JpaRepository<Travel, Long> {
 
-    @Query("SELECT t FROM Travel t WHERE t.createdBy.uuid = :memberId")
-    List<Travel> findAllByMemberId(String memberId);
+    @Query("SELECT t FROM Travel t " +
+            "LEFT JOIN t.participants tp " +
+            "LEFT JOIN tp.invitee tpm " +
+            "WHERE t.createdBy.uuid = :memberId " +
+            "      OR tpm.uuid = :memberId " +
+            "ORDER BY t.dates.startedOn ASC, t.dates.endedOn ASC, t.id ASC")
+    List<Travel> findAllMemberParticipated(String memberId);
 
 }
