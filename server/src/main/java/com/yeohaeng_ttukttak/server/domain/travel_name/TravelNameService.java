@@ -2,7 +2,6 @@ package com.yeohaeng_ttukttak.server.domain.travel_name;
 
 import com.yeohaeng_ttukttak.server.common.util.StringUtil;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.City;
-import com.yeohaeng_ttukttak.server.domain.geography.entity.Geography;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.Province;
 import org.springframework.stereotype.Service;
 
@@ -66,6 +65,21 @@ public class TravelNameService {
         }
 
         return new TravelName(String.format("%s %s", generatedName, "여행"));
+    }
+
+    /**
+     * 6글자 랜덤 식별자를 붙여 여행의 이름을 생성한다.
+     * @param locale 현재 요청의 로케일 정보
+     * @return 생성된 TravelName 엔티티
+     */
+    public TravelName generateDefaultName(Locale locale) {
+        final String shortUUID = StringUtil.createShortUUID().substring(0, 6);
+
+        if (Objects.equals(locale, Locale.ENGLISH)) {
+            return new TravelName(String.format("%s#%s", "Travel", shortUUID));
+        }
+
+        return new TravelName(String.format("%s#%s", "여행", shortUUID));
     }
 
 }

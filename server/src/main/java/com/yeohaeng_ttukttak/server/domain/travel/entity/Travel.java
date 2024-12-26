@@ -10,6 +10,7 @@ import com.yeohaeng_ttukttak.server.domain.shared.entity.BaseTimeMemberEntity;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.CompanionType;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.MotivationType;
 import com.yeohaeng_ttukttak.server.domain.travel.exception.AlreadyJoinedTravelFailException;
+import com.yeohaeng_ttukttak.server.domain.travel.exception.CityAlreadyAddedTravelFailException;
 import com.yeohaeng_ttukttak.server.domain.travel_name.TravelName;
 import com.yeohaeng_ttukttak.server.domain.travel_plan.TravelPlan;
 import jakarta.persistence.*;
@@ -53,7 +54,6 @@ public class Travel extends BaseTimeMemberEntity {
 
     public Travel(TravelName name, LocalDate startedOn, LocalDate endedOn) {
         this.name = name;
-
         this.startedOn = startedOn;
         this.endedOn = endedOn;
     }
@@ -120,11 +120,23 @@ public class Travel extends BaseTimeMemberEntity {
         }
     }
 
-    public void addCity(City city) {
+
+    /**
+     * 현재 여행 계획에 지정한 도시를 추가합니다.
+     * @param memberId 사용자의 식별자
+     * @param city 추가하려는 도시 엔티티
+     * @throws AccessDeniedFailException 여행에 참가자 혹은 생성자가 아니면 발생한다.
+     * @throws CityAlreadyAddedTravelFailException 이미 여행에 추가된 경우 발생한다.
+     */
+    public void addCity(String memberId, City city) {
+        verifyModifyGrant(memberId);
+
         final boolean isAlreadyExist = cities().stream()
                 .anyMatch(tc -> tc.city().equals(city));
 
-        if (isAlreadyExist) return;
+        if (isAlreadyExist) {
+            throw new CityAlreadyAddedTravelFailException();
+        }
 
         cities().add(new TravelCity(this, city));
     }

@@ -36,7 +36,6 @@ public class TravelService {
      * @param endedOn 여행의 종료 날짜
      * @param motivationTypes 선택된 여행 동기 리스트
      * @param companionTypes 선택된 동행 타입 리스트
-     * @param cityIds 선택된 도시 ID 리스트
      * @return 생성된 Travel 엔티티의 식별자
      */
     public Long create(
@@ -45,19 +44,13 @@ public class TravelService {
             LocalDate startedOn,
             LocalDate endedOn,
             List<MotivationType> motivationTypes,
-            List<CompanionType> companionTypes,
-            List<EntityReference<Long>> cityIds) {
-
-        final List<City> cities = geographyRepository
-                .findCitiesByIds(EntityReference.extractId(cityIds));
+            List<CompanionType> companionTypes) {
 
         final TravelName travelName = Objects.isNull(inputtedName)
-                ? nameService.generateDefaultName(locale, cities)
+                ? nameService.generateDefaultName(locale)
                 : nameService.validateInputName(inputtedName);
 
         final Travel travel = new Travel(travelName, startedOn, endedOn);
-
-        cities.forEach(travel::addCity);
         motivationTypes.forEach(travel::addMotivation);
         companionTypes.forEach(travel::addCompanion);
 
