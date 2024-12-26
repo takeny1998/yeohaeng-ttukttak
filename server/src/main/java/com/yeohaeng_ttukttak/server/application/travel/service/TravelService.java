@@ -77,6 +77,4 @@ public class TravelService {
 
         return TravelDto.of(travel);
     }
-
-
 }

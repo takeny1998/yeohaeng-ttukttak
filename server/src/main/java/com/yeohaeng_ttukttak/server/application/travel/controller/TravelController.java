@@ -1,7 +1,6 @@
 package com.yeohaeng_ttukttak.server.application.travel.controller;
 
 import com.yeohaeng_ttukttak.server.application.travel.controller.dto.*;
-import com.yeohaeng_ttukttak.server.application.travel.service.FindTravelService;
 import com.yeohaeng_ttukttak.server.application.travel.service.TravelService;
 import com.yeohaeng_ttukttak.server.common.aop.annotation.Authorization;
 import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
@@ -16,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Locale;
 
 @Slf4j
@@ -25,7 +25,6 @@ import java.util.Locale;
 public class TravelController {
 
     private final TravelService travelService;
-    private final FindTravelService findTravelService;
     private final TravelRepository travelRepository;
 
     @PostMapping
@@ -55,16 +54,6 @@ public class TravelController {
 
         return new ServerResponse<>(
                 new FindTravelResponse(TravelDto.of(foundTravel)));
-    }
-
-    @GetMapping("/members/me")
-    @Authorization
-    public ServerResponse<FindMyAllTravelResponse> findMyAll(
-            AuthenticationContext authorization) {
-
-       return new ServerResponse<>(
-               new FindMyAllTravelResponse(
-                       findTravelService.findByMember(authorization.uuid())));
     }
 
 }
