@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public record TravelPlanDto(
         Long id,
-        Integer orderOfVisit,
+        Integer orderOfPlan,
         Long placeId,
         LocalDate willVisitOn) {
 
