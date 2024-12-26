@@ -29,7 +29,7 @@ public class TravelPlanCommentService {
                 .findByIdAndTravelId(planId, travelId)
                 .orElseThrow(() -> new EntityNotFoundFailException(TravelPlan.class));
 
-        travelPlan.travel().verifyModifyGrant(writerId);
+        travelPlan.travel().verifyParticipantsOrCreator(writerId);
 
         final Comment comment = new Comment(content);
         commentRepository.save(comment);

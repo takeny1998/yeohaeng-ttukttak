@@ -20,10 +20,7 @@ import java.util.List;
 @Slf4j
 public class TravelPlanController {
 
-    private final CreateTravelPlanService createService;
-    private final FindTravelPlanService findService;
-    private final UpdateTravelPlanService updateService;
-    private final DeleteTravelPlanService deleteService;
+    private final TravelPlanService travelPlanService;
 
     @PostMapping
     @Authorization
@@ -32,37 +29,33 @@ public class TravelPlanController {
             @RequestBody CreateTravelPlanRequest request,
             AuthenticationContext authorization) {
 
-        createService.createOne(
-                travelId,
+        travelPlanService.create(
                 authorization.uuid(),
+                travelId,
                 request.placeId(),
                 request.dayOfTravel());
 
-        final List<TravelPlanDto> dtoList = findService.findAll(travelId);
-
-        return new ServerResponse<>(new TravelPlanListResponse(dtoList));
+        return responsePlanList(travelId);
     }
 
     @GetMapping
-    public ServerResponse<TravelPlanListResponse> find(
+    public ServerResponse<TravelPlanListResponse> findAll(
             @PathVariable Long travelId) {
-        List<TravelPlanDto> dtoList = findService.findAll(travelId);
-        return new ServerResponse<>(new TravelPlanListResponse(dtoList));
+        return responsePlanList(travelId);
     }
 
     @PatchMapping("/{planId}")
     @Authorization
-    public ServerResponse<TravelPlanListResponse> update(
+    public ServerResponse<TravelPlanListResponse> move(
             @PathVariable Long travelId,
             @PathVariable Long planId,
             @Valid @RequestBody UpdateTravelPlanRequest request,
-            AuthenticationContext authorization) {
+            AuthenticationContext context) {
 
-        updateService.call(request.toCommand(planId, travelId, authorization.uuid()));
+        travelPlanService.move(
+                context.uuid(), travelId, planId, request.orderOfPlan(), request.willVisitOn());
 
-        List<TravelPlanDto> dtoList = findService.findAll(travelId);
-
-        return new ServerResponse<>(new TravelPlanListResponse(dtoList));
+        return responsePlanList(travelId);
     }
 
     @DeleteMapping("/{planId}")
@@ -70,11 +63,15 @@ public class TravelPlanController {
     public ServerResponse<TravelPlanListResponse> delete(
             @PathVariable Long travelId,
             @PathVariable Long planId,
-            AuthenticationContext authorization) {
+            AuthenticationContext context) {
 
-        deleteService.deleteOne(travelId, planId, authorization.uuid());
-        final List<TravelPlanDto> dtoList = findService.findAll(travelId);
+        travelPlanService.delete(context.uuid(), travelId, planId);
 
+        return responsePlanList(travelId);
+    }
+
+    private ServerResponse<TravelPlanListResponse> responsePlanList(Long travelId) {
+        final List<TravelPlanDto> dtoList = travelPlanService.findAll(travelId);
         return new ServerResponse<>(new TravelPlanListResponse(dtoList));
     }
 
