@@ -1,6 +1,5 @@
 package com.yeohaeng_ttukttak.server.domain.travel.dto;
 
-import com.yeohaeng_ttukttak.server.domain.geography.dto.GeographyDto;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.CompanionType;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.MotivationType;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.*;
@@ -15,8 +14,7 @@ public record TravelDto(
         LocalDate endedOn,
         String memberId,
         List<CompanionType> companionTypes,
-        List<MotivationType> motivationTypes,
-        List<GeographyDto> cities
+        List<MotivationType> motivationTypes
 ) {
 
     public static TravelDto of(Travel travel) {
@@ -32,10 +30,6 @@ public record TravelDto(
                         .toList(),
                 travel.motivations().stream()
                         .map(TravelMotivation::type)
-                        .toList(),
-                travel.cities().stream()
-                        .map(TravelCity::city)
-                        .map(GeographyDto::of)
                         .toList()
         );
     }

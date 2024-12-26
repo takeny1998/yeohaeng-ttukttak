@@ -1,8 +1,6 @@
 package com.yeohaeng_ttukttak.server.domain.travel.entity;
 
-import com.yeohaeng_ttukttak.server.common.exception.exception.fail.AccessDeniedFailException;
-import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundFailException;
-import com.yeohaeng_ttukttak.server.common.util.LocalDateUtil;
+import com.yeohaeng_ttukttak.server.common.exception.exception.fail.*;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.City;
 import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
 import com.yeohaeng_ttukttak.server.domain.place.entity.Place;
@@ -31,9 +29,8 @@ public class Travel extends BaseTimeMemberEntity {
     @Embedded
     private TravelName name;
 
-    private LocalDate startedOn;
-
-    private LocalDate endedOn;
+    @Embedded
+    private TravelDates dates;
 
     @OneToMany(mappedBy = "travel", cascade = CascadeType.PERSIST)
     private List<TravelCity> cities = new ArrayList<>();
@@ -51,11 +48,38 @@ public class Travel extends BaseTimeMemberEntity {
     @OneToMany(mappedBy = "travel", cascade = { CascadeType.PERSIST, CascadeType.MERGE }, orphanRemoval = true)
     private List<TravelParticipant> participants = new ArrayList<>();
 
-    public Travel(TravelName name, LocalDate startedOn, LocalDate endedOn) {
-        this.name = name;
+    /**
+     * 새로운 여행을 생성합니다.
+     * @param name 여행 이름(TravelName) 엔티티
+     * @param dates 여행 날짜(TravelDates) 엔티티
+     * @param companionTypes 여행의 동반 타입 리스트
+     * @param motivationTypes 여행 동기 리스트
+     * @throws ArgumentNotInRangeFailException companionTypes 의 원소가 1개 이상 3개 이하가 아닌 경우
+     * @throws ArgumentNotInRangeFailException motivationTypes 의 원소가 1개 이상 5개 이하가 아닌 경우
+     */
+    public Travel(TravelName name, TravelDates dates, List<CompanionType> companionTypes, List<MotivationType> motivationTypes) {
 
-        this.startedOn = startedOn;
-        this.endedOn = endedOn;
+        this.name = name;
+        this.dates = dates;
+
+        if (companionTypes.isEmpty() || companionTypes.size() > 3) {
+            throw new ArgumentNotInRangeFailException("companionTypes", 1, 3);
+        }
+
+        this.companions = companionTypes
+                .stream()
+                .map(companionType -> new TravelCompanion(this, companionType))
+                .toList();
+
+
+        if (motivationTypes.isEmpty() || motivationTypes.size() > 5) {
+            throw new ArgumentNotInRangeFailException("motivationTypes", 1, 5);
+        }
+
+        this.motivations = motivationTypes
+                .stream()
+                .map(motivationType -> new TravelMotivation(this, motivationType))
+                .toList();
     }
 
     public Long id() {
@@ -67,11 +91,11 @@ public class Travel extends BaseTimeMemberEntity {
     }
 
     public LocalDate startedOn() {
-        return startedOn;
+        return dates.startedOn();
     }
 
     public LocalDate endedOn() {
-        return endedOn;
+        return dates.endedOn();
     }
 
     public List<TravelCompanion> companions() {
@@ -120,29 +144,90 @@ public class Travel extends BaseTimeMemberEntity {
         }
     }
 
-    public void addCity(City city) {
+    /**
+     * <pre>
+     * 아래와 같은 경우, 여행의 이름을 변경한다.
+     *   - 새로운 이름이 자동 생성되지 않은 경우
+     *   - 자동 생성된 이름을 대체하는 경우
+     * </pre>
+     * @param memberId 여행 이름을 변경할 회원의 ID
+     * @param newName 새로운 여행 이름 (null일 수 없음)
+     * @throws AccessDeniedFailException 여행에 참여하지 않은 사용자인 경우 발생한다.
+     */
+    public void rename(String memberId, TravelName newName) {
+        verifyModifyGrant(memberId);
+
+        boolean isCurrentNameGenerated = this.name.isGenerated();
+        boolean isNewNameGenerated = newName.isGenerated();
+
+        // 새로운 이름이 자동 생성되지 않거나, 현재 이름이 자동 생성된 경우
+        if (!isNewNameGenerated || isCurrentNameGenerated) {
+            this.name = newName;
+        }
+    }
+
+    /**
+     * 현재 여행 계획에 지정한 도시를 추가합니다.
+     * @param memberId 사용자의 식별자
+     * @param city 추가하려는 도시 엔티티
+     * @throws AccessDeniedFailException 여행에 참가자 혹은 생성자가 아니면 발생한다.
+     * @throws EntityAlreadyAddedFailException 이미 여행에 추가된 경우 발생한다.
+     * @throws TooManyEntityFailException 10개 초과의 여행 도시를 추가하려는 경우 발생한다.
+     */
+    public void addCity(String memberId, City city) {
+        verifyModifyGrant(memberId);
+
+        if (cities.size() == 10) {
+            throw new TooManyEntityFailException(Class.class, 10);
+        }
+
         final boolean isAlreadyExist = cities().stream()
                 .anyMatch(tc -> tc.city().equals(city));
 
-        if (isAlreadyExist) return;
+        if (isAlreadyExist) {
+            throw new EntityAlreadyAddedFailException(City.class);
+        }
 
         cities().add(new TravelCity(this, city));
     }
 
-    public void addMotivation(MotivationType motivationType) {
+    /**
+     *
+     * @throws AccessDeniedFailException 여행에 참가자 혹은 생성자가 아니면 발생한다.
+     * @throws EntityAlreadyAddedFailException 이미 여행에 추가된 경우 발생한다.
+     * @throws TooManyEntityFailException 10개 초과의 여행 도시를 추가하려는 경우 발생한다.
+     */
+    public void addMotivation(String memberId, MotivationType motivationType) {
+        verifyModifyGrant(memberId);
+
+        if (motivations.size() == 5) {
+            throw new TooManyEntityFailException(MotivationType.class, 5);
+        }
+
         final boolean isAlreadyExist = motivations().stream()
                 .anyMatch(tm -> tm.type().equals(motivationType));
 
-        if (isAlreadyExist) return;
+        if (isAlreadyExist) {
+            throw new EntityAlreadyAddedFailException(MotivationType.class);
+        }
 
         motivations().add(new TravelMotivation(this, motivationType));
     }
 
-    public void addCompanion(CompanionType companionType) {
+    public void addCompanion(String memberId, CompanionType companionType) {
+
+        verifyModifyGrant(memberId);
+
+        if (companions.size() == 3) {
+            throw new TooManyEntityFailException(CompanionType.class, 3);
+        }
+
         final boolean isAlreadyExist = companions().stream()
                 .anyMatch(tc -> tc.type().equals(companionType));
 
-        if (isAlreadyExist) return;
+        if (isAlreadyExist) {
+            throw new EntityAlreadyAddedFailException(CompanionType.class);
+        }
 
         companions().add(new TravelCompanion(this, companionType));
     }

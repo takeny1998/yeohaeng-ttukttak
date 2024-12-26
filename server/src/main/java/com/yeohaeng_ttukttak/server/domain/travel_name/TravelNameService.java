@@ -2,8 +2,9 @@ package com.yeohaeng_ttukttak.server.domain.travel_name;
 
 import com.yeohaeng_ttukttak.server.common.util.StringUtil;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.City;
-import com.yeohaeng_ttukttak.server.domain.geography.entity.Geography;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.Province;
+import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
+import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelCity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -62,10 +63,25 @@ public class TravelNameService {
                 .collect(Collectors.joining(", "));
 
         if (Objects.equals(locale, Locale.ENGLISH)) {
-            return new TravelName(String.format("%s %s", "Travel to", generatedName));
+            return new TravelName(String.format("%s %s", "Travel to", generatedName), true);
         }
 
-        return new TravelName(String.format("%s %s", generatedName, "여행"));
+        return new TravelName(String.format("%s %s", generatedName, "여행"), true);
+    }
+
+    /**
+     * 6글자 랜덤 식별자를 붙여 여행의 이름을 생성한다.
+     * @param locale 현재 요청의 로케일 정보
+     * @return 생성된 TravelName 엔티티
+     */
+    public TravelName generateDefaultName(Locale locale) {
+        final String shortUUID = StringUtil.createShortUUID().substring(0, 6);
+
+        if (Objects.equals(locale, Locale.ENGLISH)) {
+            return new TravelName(String.format("%s#%s", "Travel", shortUUID));
+        }
+
+        return new TravelName(String.format("%s#%s", "여행", shortUUID), true);
     }
 
 }

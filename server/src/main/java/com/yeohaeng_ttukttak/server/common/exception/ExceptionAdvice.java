@@ -7,13 +7,10 @@ import com.yeohaeng_ttukttak.server.common.exception.exception.error.ErrorExcept
 import com.yeohaeng_ttukttak.server.common.exception.exception.error.InternalServerErrorException;
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.FailException;
 import com.yeohaeng_ttukttak.server.common.exception.interfaces.ArgumentException;
-import com.yeohaeng_ttukttak.server.common.exception.interfaces.EntityTargetException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
-import org.springframework.validation.FieldError;
-import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -87,44 +84,11 @@ public class ExceptionAdvice {
     }
 
     private String getMessage(BaseException ex, Locale locale) {
-        final String targetName = getClassName(ex, locale);
-        final Object[] args = getArgs(ex);
+        final Object[] arguments = ex instanceof ArgumentException
+                ? ((ArgumentException) ex).args()
+                : null;
 
-        final List<Object> arguments = new ArrayList<>();
-
-        if (targetName != null) {
-            arguments.add(targetName);
-        }
-
-        if (args != null) {
-            arguments.addAll(Arrays.stream(args).toList());
-        }
-
-        return messageSource.getMessage(
-                ex.code(), !arguments.isEmpty() ? arguments.toArray() : null, locale);
-    }
-
-    private Object[] getArgs(BaseException ex) {
-        if (ex instanceof ArgumentException argumentException) {
-            return argumentException.args();
-        }
-        return null;
-    }
-
-    private String getClassName(BaseException ex, Locale locale) {
-
-        if (ex instanceof EntityTargetException entityTargetException) {
-            final String targetKey = String.format(
-                    "class.%s",
-                    entityTargetException.target().getSimpleName()
-            );
-
-            return messageSource.getMessage(
-                    targetKey,null, locale);
-        }
-
-        return null;
-
+        return messageSource.getMessage(ex.code(), arguments, locale);
     }
 
     private void logError(Exception ex, HttpServletRequest request) {

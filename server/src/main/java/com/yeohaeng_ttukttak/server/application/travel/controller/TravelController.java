@@ -37,13 +37,12 @@ public class TravelController {
         final Long createdId = travelService.create(
                 locale,
                 request.name(),
-                request.date().startedOn(),
-                request.date().endedOn(),
+                request.startedOn(),
+                request.endedOn(),
                 request.motivationTypes(),
-                request.companionTypes(),
-                request.cities());
+                request.companionTypes());
 
-        final TravelDto travelDto = findTravelService.findById(createdId);
+        final TravelDto travelDto = travelService.findById(createdId);
 
         return new ServerResponse<>(new CreateTravelResponse(travelDto));
     }
