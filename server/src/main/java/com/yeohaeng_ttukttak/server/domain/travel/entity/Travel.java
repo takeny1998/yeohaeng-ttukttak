@@ -1,6 +1,7 @@
 package com.yeohaeng_ttukttak.server.domain.travel.entity;
 
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.*;
+import com.yeohaeng_ttukttak.server.common.util.LocalDateUtil;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.City;
 import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
 import com.yeohaeng_ttukttak.server.domain.place.entity.Place;
@@ -54,8 +55,9 @@ public class Travel extends BaseTimeMemberEntity {
      * @param dates 여행 날짜(TravelDates) 엔티티
      * @param companionTypes 여행의 동반 타입 리스트
      * @param motivationTypes 여행 동기 리스트
-     * @throws ArgumentNotInRangeFailException companionTypes 의 원소가 1개 이상 3개 이하가 아닌 경우
-     * @throws ArgumentNotInRangeFailException motivationTypes 의 원소가 1개 이상 5개 이하가 아닌 경우
+     * @throws ArgumentNotInRangeFailException <br>
+     *          if (companionTypes 의 원소가 1개 이상 3개 이하가 아닌 경우) <br>
+     *          if (motivationTypes 의 원소가 1개 이상 5개 이하가 아닌 경우)
      */
     public Travel(TravelName name, TravelDates dates, List<CompanionType> companionTypes, List<MotivationType> motivationTypes) {
 
@@ -115,11 +117,11 @@ public class Travel extends BaseTimeMemberEntity {
     }
 
     /**
-     * 해당 여행 객체에 쓰기 권한이 있는지 검사한다.
+     * 해당 여행에 참여자 혹은 생성장니지 검증한다.
      * @param memberId 접근하려는 자의 식별자
      * @throws AccessDeniedFailException 권한이 없는 경우
      */
-    public void verifyModifyGrant(String memberId) {
+    public void verifyParticipantsOrCreator(String memberId) {
         final boolean isOwner = Objects.equals(createdBy().uuid(), memberId);
 
         final boolean isParticipant = participants.stream()
@@ -155,7 +157,7 @@ public class Travel extends BaseTimeMemberEntity {
      * @throws AccessDeniedFailException 여행에 참여하지 않은 사용자인 경우 발생한다.
      */
     public void rename(String memberId, TravelName newName) {
-        verifyModifyGrant(memberId);
+        verifyParticipantsOrCreator(memberId);
 
         boolean isCurrentNameGenerated = this.name.isGenerated();
         boolean isNewNameGenerated = newName.isGenerated();
@@ -175,7 +177,7 @@ public class Travel extends BaseTimeMemberEntity {
      * @throws TooManyEntityFailException 10개 초과의 여행 도시를 추가하려는 경우 발생한다.
      */
     public void addCity(String memberId, City city) {
-        verifyModifyGrant(memberId);
+        verifyParticipantsOrCreator(memberId);
 
         if (cities.size() == 10) {
             throw new TooManyEntityFailException(Class.class, 10);
@@ -189,47 +191,6 @@ public class Travel extends BaseTimeMemberEntity {
         }
 
         cities().add(new TravelCity(this, city));
-    }
-
-    /**
-     *
-     * @throws AccessDeniedFailException 여행에 참가자 혹은 생성자가 아니면 발생한다.
-     * @throws EntityAlreadyAddedFailException 이미 여행에 추가된 경우 발생한다.
-     * @throws TooManyEntityFailException 10개 초과의 여행 도시를 추가하려는 경우 발생한다.
-     */
-    public void addMotivation(String memberId, MotivationType motivationType) {
-        verifyModifyGrant(memberId);
-
-        if (motivations.size() == 5) {
-            throw new TooManyEntityFailException(MotivationType.class, 5);
-        }
-
-        final boolean isAlreadyExist = motivations().stream()
-                .anyMatch(tm -> tm.type().equals(motivationType));
-
-        if (isAlreadyExist) {
-            throw new EntityAlreadyAddedFailException(MotivationType.class);
-        }
-
-        motivations().add(new TravelMotivation(this, motivationType));
-    }
-
-    public void addCompanion(String memberId, CompanionType companionType) {
-
-        verifyModifyGrant(memberId);
-
-        if (companions.size() == 3) {
-            throw new TooManyEntityFailException(CompanionType.class, 3);
-        }
-
-        final boolean isAlreadyExist = companions().stream()
-                .anyMatch(tc -> tc.type().equals(companionType));
-
-        if (isAlreadyExist) {
-            throw new EntityAlreadyAddedFailException(CompanionType.class);
-        }
-
-        companions().add(new TravelCompanion(this, companionType));
     }
 
     /**
@@ -258,7 +219,7 @@ public class Travel extends BaseTimeMemberEntity {
      * @throws AccessDeniedFailException 대상 참여자를 쫒을 권한이 없는 경우 발생한다.
      */
     public void leaveParticipant(Member member, TravelParticipant participant) {
-        verifyModifyGrant(member.uuid());
+        verifyParticipantsOrCreator(member.uuid());
 
         final boolean isInvitedByKicker = Objects.equals(member.uuid(), participant.invitee().uuid());
         final boolean isMemberOwner = Objects.equals(member.uuid(), createdBy().uuid());
@@ -271,17 +232,26 @@ public class Travel extends BaseTimeMemberEntity {
     }
 
 
-    public void addPlan(
-//            String memberId,
-                        Place place, Integer dayOfTravel) {
-//
-//        final long totalDays = LocalDateUtil.getBetweenDays(startedOn, endedOn);
-//
-//        if (dayOfTravel < 0 || dayOfTravel >= totalDays) {
-//            throw new ArgumentNotInRangeFailException("dayOfTravel", 0, totalDays);
-//        }
-//
-//        verifyModifyGrant(memberId);
+    /**
+     * 지정한 여행에 새로운 계획을 생성합니다.
+     *
+     * @param memberId 접근하는 사용자의 식별자
+     * @param place 계획에 지정할 장소(Place) 엔티티
+     * @param dayOfTravel 계획을 수행할 일자
+     * @throws ArgumentNotInRangeFailException 여행 기간에 벗어나는 일자를 지정했을 경우 발생한다.
+     * @throws AccessDeniedFailException 여행에 참여한 사용자가 아닌 경우 발생한다.
+     */
+    public void addPlan(String memberId, Place place, Integer dayOfTravel) {
+
+        // 여행 날짜의 차를 구하고, 하루를 더해 총 여행 기간을 산출한다.
+        final long totalTravelDays = LocalDateUtil
+                .getBetweenDays(dates.startedOn(), dates.endedOn());
+
+        if (dayOfTravel < 0 || dayOfTravel >= totalTravelDays) {
+            throw new ArgumentNotInRangeFailException("dayOfTravel", 0, totalTravelDays);
+        }
+
+        verifyParticipantsOrCreator(memberId);
 
         int orderOfPlan = -1;
 
@@ -296,31 +266,67 @@ public class Travel extends BaseTimeMemberEntity {
 
         plans.add(plan);
     }
+    /**
+     * 여행 계획을 이동합니다.
+     *
+     * @param memberId 이동을 요청하는 사용자의 식별자
+     * @param travelPlan 이동할 계획 엔티티
+     * @param newOrderOfPlan 새로운 계획의 순서
+     * @param willVisitOn 방문할 예정일
+     * @throws AccessDeniedFailException 사용자가 변경 권한이 없는 경우 발생합니다.
+     * @throws ArgumentNotInRangeFailException 지정된 방문일이 여행 기간에 벗어나는 경우 발생합니다.
+     * @throws EntityNotFoundFailException 주어진 ID에 해당하는 여행 계획이 존재하지 않는 경우 발생합니다.
+     */
+    public void movePlan(
+            String memberId, TravelPlan travelPlan, Integer newOrderOfPlan, LocalDate willVisitOn) {
 
-    public void movePlan(Long visitId, Integer dayOfTravel, Integer orderOfVisit) {
-        final TravelPlan insertVisit = plans().stream()
-                .filter((visit -> Objects.equals(visit.id(), visitId)))
-                .findFirst()
-                .orElseThrow(() -> new EntityNotFoundFailException(TravelPlan.class));
+        verifyParticipantsOrCreator(memberId);
 
-        plans().remove(insertVisit);
-
-        for (TravelPlan visit : plans()) {
-            if (!Objects.equals(visit.dayOfTravel(), dayOfTravel)) continue;
-            if (visit.orderOfPlan() >= orderOfVisit) {
-                visit.setOrderOfPlan(visit.orderOfPlan() + 1);
-            }
+        // 지정된 방문일이 여행 기간 내에 있는지 검증
+        if (!LocalDateUtil.isInRange(willVisitOn, dates.startedOn(), dates.endedOn())) {
+            throw new ArgumentNotInRangeFailException("willVisitOn", dates.startedOn(), dates.endedOn());
         }
 
-        insertVisit.setOrderOfPlan(orderOfVisit)
-                .setDayOfTravel(dayOfTravel);
+        // 방문일에 대한 여행 일수 계산
+        final int newDayOfTravel =
+                (int) LocalDateUtil.getBetweenDays(dates.startedOn(), willVisitOn) - 1;
 
-        plans().add(insertVisit);
+        for (TravelPlan plan : plans) {
+            if (Objects.equals(plan.id(), travelPlan.id())) {
+                travelPlan.setOrderOfPlan(newOrderOfPlan)
+                        .setDayOfTravel(newDayOfTravel);
+                continue;
+            }
 
+            final boolean isInSameDay = Objects.equals(plan.dayOfTravel(), newDayOfTravel);
+
+            final Integer orderOfPlan = plan.orderOfPlan();
+
+            if (isInSameDay && orderOfPlan >= newOrderOfPlan) {
+                plan.setOrderOfPlan(orderOfPlan + 1);
+            }
+        }
     }
 
-    public void removeVisit(Long visitId) {
-        plans().removeIf(visit -> visit.id().equals(visitId));
+
+    /**
+     * 지정된 여행 계획을 삭제합니다.
+     *
+     * @param memberId 삭제를 요청하는 사용자의 식별자
+     * @param travelPlan 삭제할 여행 계획
+     * @throws AccessDeniedFailException 사용자가 여행 계획의 참여자 또는 생성자가 아닌 경우 발생합니다.
+     * @throws EntityNotFoundFailException 주어진 여행 계획이 존재하지 않는 경우 발생합니다.
+     */
+    public void deletePlan(String memberId, TravelPlan travelPlan) {
+        // 사용자가 참여자 또는 생성자인지 검증
+        verifyParticipantsOrCreator(memberId);
+
+        // 여행 계획을 삭제
+        if (!plans.contains(travelPlan)) {
+            throw new EntityNotFoundFailException(TravelPlan.class);
+        }
+
+        plans.remove(travelPlan);
     }
 
 }

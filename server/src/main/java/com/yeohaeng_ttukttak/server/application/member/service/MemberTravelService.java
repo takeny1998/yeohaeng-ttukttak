@@ -1,6 +1,5 @@
-package com.yeohaeng_ttukttak.server.application.travel.service;
+package com.yeohaeng_ttukttak.server.application.member.service;
 
-import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundFailException;
 import com.yeohaeng_ttukttak.server.domain.travel.dto.TravelDto;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
 import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelRepository;
@@ -12,34 +11,24 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
-public class FindTravelService {
+public class MemberTravelService {
 
     private final TravelRepository travelRepository;
 
-    public TravelDto findById(Long travelId) {
-        final Travel foundTravel = travelRepository
-                .findById(travelId)
-                .orElseThrow(() -> new EntityNotFoundFailException(Travel.class));
-
-        return TravelDto.of(foundTravel);
-    }
-
     /**
-     * 지정한 사용자의 모든 여행을 반환한다.
+     * 지정한 사용자가 참여한 모든 여행 시작일, 종료일, 식별자 오름차순으로 정렬해 반환한다.
      * @param memberId 조회할 사용자의 식별자
      * @return 해당 사용자의 모든 여행 객체
      */
-    public List<TravelDto> findByMember(String memberId) {
-
+    @Transactional(readOnly = true)
+    public List<TravelDto> findByMemberId(String memberId) {
         final List<Travel> travels = travelRepository
-                .findAllByMemberId(memberId);
+                .findAllMemberParticipated(memberId);
 
         return travels.stream()
                 .map(TravelDto::of)
                 .toList();
     }
-
 
 
 

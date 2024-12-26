@@ -1,4 +1,4 @@
-package com.yeohaeng_ttukttak.server.application.plan;
+package com.yeohaeng_ttukttak.server.application.travel_plan_comment;
 
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundFailException;
 import com.yeohaeng_ttukttak.server.domain.comment.Comment;
@@ -29,7 +29,7 @@ public class TravelPlanCommentService {
                 .findByIdAndTravelId(planId, travelId)
                 .orElseThrow(() -> new EntityNotFoundFailException(TravelPlan.class));
 
-        travelPlan.travel().verifyModifyGrant(writerId);
+        travelPlan.travel().verifyParticipantsOrCreator(writerId);
 
         final Comment comment = new Comment(content);
         commentRepository.save(comment);

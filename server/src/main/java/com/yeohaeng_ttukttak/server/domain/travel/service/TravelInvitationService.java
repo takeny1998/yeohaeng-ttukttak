@@ -26,7 +26,7 @@ public class TravelInvitationService {
      */
     @Transactional
     public String create(Travel travel, String invitorId) {
-        travel.verifyModifyGrant(invitorId);
+        travel.verifyParticipantsOrCreator(invitorId);
 
         final TravelInvitation invitation = repository.save(
                 new TravelInvitation(travel.id(), invitorId));
