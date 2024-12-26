@@ -54,11 +54,11 @@ public class TravelService {
                 ? nameService.generateDefaultName(locale)
                 : nameService.validateInputName(inputtedName);
 
-        final Travel travel =
-                new Travel(travelName, new TravelDates(startedOn, endedOn));
-
-        motivationTypes.forEach(travel::addMotivation);
-        companionTypes.forEach(travel::addCompanion);
+        final Travel travel = new Travel(
+                travelName,
+                new TravelDates(startedOn, endedOn),
+                companionTypes,
+                motivationTypes);
 
         final Travel savedTravel = travelRepository.save(travel);
 

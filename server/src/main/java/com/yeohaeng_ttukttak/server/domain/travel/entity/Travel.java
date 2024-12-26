@@ -48,9 +48,38 @@ public class Travel extends BaseTimeMemberEntity {
     @OneToMany(mappedBy = "travel", cascade = { CascadeType.PERSIST, CascadeType.MERGE }, orphanRemoval = true)
     private List<TravelParticipant> participants = new ArrayList<>();
 
-    public Travel(TravelName name, TravelDates dates) {
+    /**
+     * 새로운 여행을 생성합니다.
+     * @param name 여행 이름(TravelName) 엔티티
+     * @param dates 여행 날짜(TravelDates) 엔티티
+     * @param companionTypes 여행의 동반 타입 리스트
+     * @param motivationTypes 여행 동기 리스트
+     * @throws ArgumentNotInRangeFailException companionTypes 의 원소가 1개 이상 3개 이하가 아닌 경우
+     * @throws ArgumentNotInRangeFailException motivationTypes 의 원소가 1개 이상 5개 이하가 아닌 경우
+     */
+    public Travel(TravelName name, TravelDates dates, List<CompanionType> companionTypes, List<MotivationType> motivationTypes) {
+
         this.name = name;
         this.dates = dates;
+
+        if (companionTypes.isEmpty() || companionTypes.size() > 3) {
+            throw new ArgumentNotInRangeFailException("companionTypes", 1, 3);
+        }
+
+        this.companions = companionTypes
+                .stream()
+                .map(companionType -> new TravelCompanion(this, companionType))
+                .toList();
+
+
+        if (motivationTypes.isEmpty() || motivationTypes.size() > 5) {
+            throw new ArgumentNotInRangeFailException("motivationTypes", 1, 5);
+        }
+
+        this.motivations = motivationTypes
+                .stream()
+                .map(motivationType -> new TravelMotivation(this, motivationType))
+                .toList();
     }
 
     public Long id() {
