@@ -44,8 +44,8 @@ public class TravelPlan extends BaseTimeMemberEntity {
         return this;
     }
 
-    public TravelPlan setOrderOfPlan(Integer orderOfVisit) {
-        this.orderOfPlan = orderOfVisit;
+    public TravelPlan setOrderOfPlan(Integer orderOfPlan) {
+        this.orderOfPlan = orderOfPlan;
         return this;
     }
 

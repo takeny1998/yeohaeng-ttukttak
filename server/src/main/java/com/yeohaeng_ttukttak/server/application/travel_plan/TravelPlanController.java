@@ -2,7 +2,7 @@ package com.yeohaeng_ttukttak.server.application.travel_plan;
 
 import com.yeohaeng_ttukttak.server.application.travel_plan.dto.CreateTravelPlanRequest;
 import com.yeohaeng_ttukttak.server.application.travel_plan.dto.TravelPlanListResponse;
-import com.yeohaeng_ttukttak.server.application.travel_plan.dto.UpdateTravelPlanRequest;
+import com.yeohaeng_ttukttak.server.application.travel_plan.dto.MoveTravelPlanRequest;
 import com.yeohaeng_ttukttak.server.common.aop.annotation.Authorization;
 import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
 import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthenticationContext;
@@ -49,7 +49,7 @@ public class TravelPlanController {
     public ServerResponse<TravelPlanListResponse> move(
             @PathVariable Long travelId,
             @PathVariable Long planId,
-            @Valid @RequestBody UpdateTravelPlanRequest request,
+            @Valid @RequestBody MoveTravelPlanRequest request,
             AuthenticationContext context) {
 
         travelPlanService.move(

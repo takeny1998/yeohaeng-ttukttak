@@ -243,11 +243,12 @@ public class Travel extends BaseTimeMemberEntity {
      */
     public void addPlan(String memberId, Place place, Integer dayOfTravel) {
 
-        final long totalDays = LocalDateUtil.getBetweenDays(
-                dates.startedOn(), dates.endedOn());
+        // 여행 날짜의 차를 구하고, 하루를 더해 총 여행 기간을 산출한다.
+        final long totalTravelDays = LocalDateUtil
+                .getBetweenDays(dates.startedOn(), dates.endedOn());
 
-        if (dayOfTravel < 0 || dayOfTravel >= totalDays) {
-            throw new ArgumentNotInRangeFailException("dayOfTravel", 0, totalDays);
+        if (dayOfTravel < 0 || dayOfTravel >= totalTravelDays) {
+            throw new ArgumentNotInRangeFailException("dayOfTravel", 0, totalTravelDays);
         }
 
         verifyParticipantsOrCreator(memberId);
@@ -269,15 +270,15 @@ public class Travel extends BaseTimeMemberEntity {
      * 여행 계획을 이동합니다.
      *
      * @param memberId 이동을 요청하는 사용자의 식별자
-     * @param plan 이동할 계획 엔티티
-     * @param orderOfPlan 새로운 계획의 순서
+     * @param travelPlan 이동할 계획 엔티티
+     * @param newOrderOfPlan 새로운 계획의 순서
      * @param willVisitOn 방문할 예정일
      * @throws AccessDeniedFailException 사용자가 변경 권한이 없는 경우 발생합니다.
      * @throws ArgumentNotInRangeFailException 지정된 방문일이 여행 기간에 벗어나는 경우 발생합니다.
      * @throws EntityNotFoundFailException 주어진 ID에 해당하는 여행 계획이 존재하지 않는 경우 발생합니다.
      */
     public void movePlan(
-            String memberId, TravelPlan plan, Integer orderOfPlan, LocalDate willVisitOn) {
+            String memberId, TravelPlan travelPlan, Integer newOrderOfPlan, LocalDate willVisitOn) {
 
         verifyParticipantsOrCreator(memberId);
 
@@ -287,23 +288,24 @@ public class Travel extends BaseTimeMemberEntity {
         }
 
         // 방문일에 대한 여행 일수 계산
-        final int dayOfTravel = (int) LocalDateUtil.getBetweenDays(dates.startedOn(), willVisitOn);
+        final int newDayOfTravel =
+                (int) LocalDateUtil.getBetweenDays(dates.startedOn(), willVisitOn) - 1;
 
-        // 이동할 여행 계획 찾기
-        plans.remove(plan);
+        for (TravelPlan plan : plans) {
+            if (Objects.equals(plan.id(), travelPlan.id())) {
+                travelPlan.setOrderOfPlan(newOrderOfPlan)
+                        .setDayOfTravel(newDayOfTravel);
+                continue;
+            }
 
-        // 다른 계획들의 순서 업데이트
-        for (TravelPlan visit : plans) {
-            if (Objects.equals(visit.dayOfTravel(), dayOfTravel) && visit.orderOfPlan() >= orderOfPlan) {
-                visit.setOrderOfPlan(visit.orderOfPlan() + 1);
+            final boolean isInSameDay = Objects.equals(plan.dayOfTravel(), newDayOfTravel);
+
+            final Integer orderOfPlan = plan.orderOfPlan();
+
+            if (isInSameDay && orderOfPlan >= newOrderOfPlan) {
+                plan.setOrderOfPlan(orderOfPlan + 1);
             }
         }
-
-        // 이동할 계획의 속성 설정
-        plan.setOrderOfPlan(orderOfPlan)
-                .setDayOfTravel(dayOfTravel);
-
-        plans.add(plan);
     }
 
 
