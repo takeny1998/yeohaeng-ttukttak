@@ -7,6 +7,7 @@ part 'travel_create_state.freezed.dart';
 @freezed
 class TravelCreateState with _$TravelCreateState {
   const factory TravelCreateState({
+    String? name,
     @Default(0) int pageNumber,
     DateTime? startedOn,
     DateTime? endedOn,
@@ -14,6 +15,6 @@ class TravelCreateState with _$TravelCreateState {
     @Default([]) List<TravelMotivationType> motivationTypes,
     ProvinceModel? region,
     @Default([]) List<CityModel> cities,
-    @Default(false) bool isSubmitted,
+    @Default({}) Map<String, String> fieldErrors,
   }) = _TravelCreateState;
 }

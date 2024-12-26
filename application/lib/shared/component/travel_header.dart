@@ -24,7 +24,7 @@ class TravelHeader extends StatelessWidget {
           contentPadding: EdgeInsets.zero,
           titleTextStyle: titleStyle,
           title: Text(
-            _travel.formattedName,
+            _travel.name,
             overflow: TextOverflow.ellipsis,
           ),
           subtitle: Text(_travel.formattedDate),

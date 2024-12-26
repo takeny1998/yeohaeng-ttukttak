@@ -9,6 +9,7 @@ part of 'travel_model.dart';
 _$TravelModelImpl _$$TravelModelImplFromJson(Map<String, dynamic> json) =>
     _$TravelModelImpl(
       id: (json['id'] as num).toInt(),
+      name: json['name'] as String,
       startedOn: DateTime.parse(json['startedOn'] as String),
       endedOn: DateTime.parse(json['endedOn'] as String),
       memberId: json['memberId'] as String,
@@ -26,6 +27,7 @@ _$TravelModelImpl _$$TravelModelImplFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$$TravelModelImplToJson(_$TravelModelImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'name': instance.name,
       'startedOn': instance.startedOn.toIso8601String(),
       'endedOn': instance.endedOn.toIso8601String(),
       'memberId': instance.memberId,

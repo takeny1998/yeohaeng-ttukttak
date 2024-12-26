@@ -30,7 +30,7 @@ class TravelInvitationPage extends ConsumerWidget {
 
           eventController.add(MessageEvent(tr.from(
               "You've joined in {}",
-              args: [travel.formattedName])));
+              args: [travel.name])));
 
           goRouter.replace('/travels/$travelId');
         },

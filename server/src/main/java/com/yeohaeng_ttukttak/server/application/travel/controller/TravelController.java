@@ -1,8 +1,8 @@
 package com.yeohaeng_ttukttak.server.application.travel.controller;
 
 import com.yeohaeng_ttukttak.server.application.travel.controller.dto.*;
-import com.yeohaeng_ttukttak.server.application.travel.service.CreateTravelService;
 import com.yeohaeng_ttukttak.server.application.travel.service.FindTravelService;
+import com.yeohaeng_ttukttak.server.application.travel.service.TravelService;
 import com.yeohaeng_ttukttak.server.common.aop.annotation.Authorization;
 import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundFailException;
@@ -16,22 +16,32 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Locale;
+
 @Slf4j
 @RestController
 @RequestMapping("/api/v2/travels")
 @RequiredArgsConstructor
 public class TravelController {
 
-    private final CreateTravelService createTravelService;
+    private final TravelService travelService;
     private final FindTravelService findTravelService;
     private final TravelRepository travelRepository;
 
     @PostMapping
     @Authorization
     public ServerResponse<CreateTravelResponse> create(
+            Locale locale,
             @RequestBody @Valid CreateTravelRequest request) {
 
-        final Long createdId = createTravelService.call(request.toCommand());
+        final Long createdId = travelService.create(
+                locale,
+                request.name(),
+                request.date().startedOn(),
+                request.date().endedOn(),
+                request.motivationTypes(),
+                request.companionTypes(),
+                request.cities());
 
         final TravelDto travelDto = findTravelService.findById(createdId);
 

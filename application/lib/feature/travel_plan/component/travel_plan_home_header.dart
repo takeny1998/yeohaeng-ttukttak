@@ -52,7 +52,7 @@ class TravelPlanHomeHeader extends StatelessWidget {
               children: [
                 Text(travel.formattedDate, style: dateStyle),
                 const SizedBox(height: 2.0),
-                Text(travel.formattedName, style: nameStyle),
+                Text(travel.name, style: nameStyle),
                 const SizedBox(height: 16.0),
                 Text('여행 설명이 없습니다.', style: dateStyle),
                 const SizedBox(height: 16.0),

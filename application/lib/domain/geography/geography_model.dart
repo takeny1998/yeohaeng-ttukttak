@@ -1,3 +1,4 @@
+import 'package:application_new/shared/dto/types.dart';
 import 'package:application_new/shared/model/image_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -32,12 +33,11 @@ sealed class GeographyModel with _$GeographyModel {
   }) = CityModel;
 
   factory GeographyModel.fromJson(Map<String, dynamic> json) =>
-      _$GeographyModelFromJson(Map.from(json)
-        ..remove('level')
-        ..addAll({'level': (json['level'] as int).toString()}));
+      _$GeographyModelFromJson(json);
 
   static List<GeographyModel> listFromJson(Map<String, dynamic> json) =>
       List.of(json['geographies'])
           .map((e) => GeographyModel.fromJson(e))
           .toList();
 }
+
