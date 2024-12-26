@@ -6,6 +6,7 @@ import com.yeohaeng_ttukttak.server.domain.geography.repository.GeographyReposit
 import com.yeohaeng_ttukttak.server.domain.shared.entity.CompanionType;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.MotivationType;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
+import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelDates;
 import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelRepository;
 import com.yeohaeng_ttukttak.server.domain.travel_name.TravelName;
 import com.yeohaeng_ttukttak.server.domain.travel_name.TravelNameService;
@@ -26,7 +27,6 @@ public class TravelService {
     private final TravelNameService nameService;
 
     private final TravelRepository travelRepository;
-    private final GeographyRepository geographyRepository;
 
     /**
      * 새로운 여행을 생성합니다.
@@ -50,7 +50,9 @@ public class TravelService {
                 ? nameService.generateDefaultName(locale)
                 : nameService.validateInputName(inputtedName);
 
-        final Travel travel = new Travel(travelName, startedOn, endedOn);
+        final Travel travel =
+                new Travel(travelName, new TravelDates(startedOn, endedOn));
+
         motivationTypes.forEach(travel::addMotivation);
         companionTypes.forEach(travel::addCompanion);
 

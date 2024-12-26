@@ -2,7 +2,6 @@ package com.yeohaeng_ttukttak.server.domain.travel.entity;
 
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.AccessDeniedFailException;
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundFailException;
-import com.yeohaeng_ttukttak.server.common.util.LocalDateUtil;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.City;
 import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
 import com.yeohaeng_ttukttak.server.domain.place.entity.Place;
@@ -11,6 +10,7 @@ import com.yeohaeng_ttukttak.server.domain.shared.entity.CompanionType;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.MotivationType;
 import com.yeohaeng_ttukttak.server.domain.travel.exception.AlreadyJoinedTravelFailException;
 import com.yeohaeng_ttukttak.server.domain.travel.exception.CityAlreadyAddedTravelFailException;
+import com.yeohaeng_ttukttak.server.domain.travel.exception.TooManyTravelCityFailException;
 import com.yeohaeng_ttukttak.server.domain.travel_name.TravelName;
 import com.yeohaeng_ttukttak.server.domain.travel_plan.TravelPlan;
 import jakarta.persistence.*;
@@ -32,9 +32,8 @@ public class Travel extends BaseTimeMemberEntity {
     @Embedded
     private TravelName name;
 
-    private LocalDate startedOn;
-
-    private LocalDate endedOn;
+    @Embedded
+    private TravelDates dates;
 
     @OneToMany(mappedBy = "travel", cascade = CascadeType.PERSIST)
     private List<TravelCity> cities = new ArrayList<>();
@@ -52,10 +51,9 @@ public class Travel extends BaseTimeMemberEntity {
     @OneToMany(mappedBy = "travel", cascade = { CascadeType.PERSIST, CascadeType.MERGE }, orphanRemoval = true)
     private List<TravelParticipant> participants = new ArrayList<>();
 
-    public Travel(TravelName name, LocalDate startedOn, LocalDate endedOn) {
+    public Travel(TravelName name, TravelDates dates) {
         this.name = name;
-        this.startedOn = startedOn;
-        this.endedOn = endedOn;
+        this.dates = dates;
     }
 
     public Long id() {
@@ -67,11 +65,11 @@ public class Travel extends BaseTimeMemberEntity {
     }
 
     public LocalDate startedOn() {
-        return startedOn;
+        return dates.startedOn();
     }
 
     public LocalDate endedOn() {
-        return endedOn;
+        return dates.endedOn();
     }
 
     public List<TravelCompanion> companions() {
