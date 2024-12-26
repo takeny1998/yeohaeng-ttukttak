@@ -1,10 +1,8 @@
-package com.yeohaeng_ttukttak.server.application.travel.controller;
+package com.yeohaeng_ttukttak.server.application.travel_plan;
 
-import com.yeohaeng_ttukttak.server.application.travel.controller.dto.*;
-import com.yeohaeng_ttukttak.server.application.travel.service.CreateTravelPlanService;
-import com.yeohaeng_ttukttak.server.application.travel.service.DeleteTravelPlanService;
-import com.yeohaeng_ttukttak.server.application.travel.service.FindTravelPlanService;
-import com.yeohaeng_ttukttak.server.application.travel.service.UpdateTravelPlanService;
+import com.yeohaeng_ttukttak.server.application.travel_plan.dto.CreateTravelPlanRequest;
+import com.yeohaeng_ttukttak.server.application.travel_plan.dto.TravelPlanListResponse;
+import com.yeohaeng_ttukttak.server.application.travel_plan.dto.UpdateTravelPlanRequest;
 import com.yeohaeng_ttukttak.server.common.aop.annotation.Authorization;
 import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
 import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthenticationContext;

@@ -1,4 +1,4 @@
-package com.yeohaeng_ttukttak.server.application.plan;
+package com.yeohaeng_ttukttak.server.application.travel_plan_comment;
 
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundFailException;
 import com.yeohaeng_ttukttak.server.domain.comment.Comment;

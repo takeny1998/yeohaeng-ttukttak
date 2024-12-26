@@ -54,8 +54,9 @@ public class Travel extends BaseTimeMemberEntity {
      * @param dates 여행 날짜(TravelDates) 엔티티
      * @param companionTypes 여행의 동반 타입 리스트
      * @param motivationTypes 여행 동기 리스트
-     * @throws ArgumentNotInRangeFailException companionTypes 의 원소가 1개 이상 3개 이하가 아닌 경우
-     * @throws ArgumentNotInRangeFailException motivationTypes 의 원소가 1개 이상 5개 이하가 아닌 경우
+     * @throws ArgumentNotInRangeFailException <br>
+     *          if (companionTypes 의 원소가 1개 이상 3개 이하가 아닌 경우) <br>
+     *          if (motivationTypes 의 원소가 1개 이상 5개 이하가 아닌 경우)
      */
     public Travel(TravelName name, TravelDates dates, List<CompanionType> companionTypes, List<MotivationType> motivationTypes) {
 
@@ -189,47 +190,6 @@ public class Travel extends BaseTimeMemberEntity {
         }
 
         cities().add(new TravelCity(this, city));
-    }
-
-    /**
-     *
-     * @throws AccessDeniedFailException 여행에 참가자 혹은 생성자가 아니면 발생한다.
-     * @throws EntityAlreadyAddedFailException 이미 여행에 추가된 경우 발생한다.
-     * @throws TooManyEntityFailException 10개 초과의 여행 도시를 추가하려는 경우 발생한다.
-     */
-    public void addMotivation(String memberId, MotivationType motivationType) {
-        verifyModifyGrant(memberId);
-
-        if (motivations.size() == 5) {
-            throw new TooManyEntityFailException(MotivationType.class, 5);
-        }
-
-        final boolean isAlreadyExist = motivations().stream()
-                .anyMatch(tm -> tm.type().equals(motivationType));
-
-        if (isAlreadyExist) {
-            throw new EntityAlreadyAddedFailException(MotivationType.class);
-        }
-
-        motivations().add(new TravelMotivation(this, motivationType));
-    }
-
-    public void addCompanion(String memberId, CompanionType companionType) {
-
-        verifyModifyGrant(memberId);
-
-        if (companions.size() == 3) {
-            throw new TooManyEntityFailException(CompanionType.class, 3);
-        }
-
-        final boolean isAlreadyExist = companions().stream()
-                .anyMatch(tc -> tc.type().equals(companionType));
-
-        if (isAlreadyExist) {
-            throw new EntityAlreadyAddedFailException(CompanionType.class);
-        }
-
-        companions().add(new TravelCompanion(this, companionType));
     }
 
     /**
