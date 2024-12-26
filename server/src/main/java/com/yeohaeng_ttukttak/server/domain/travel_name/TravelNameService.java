@@ -3,8 +3,6 @@ package com.yeohaeng_ttukttak.server.domain.travel_name;
 import com.yeohaeng_ttukttak.server.common.util.StringUtil;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.City;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.Province;
-import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
-import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelCity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.yeohaeng_ttukttak.server.application.travel.controller.dto;
+package com.yeohaeng_ttukttak.server.application.travel_plan.dto;
 
 
 import jakarta.validation.constraints.NotNull;

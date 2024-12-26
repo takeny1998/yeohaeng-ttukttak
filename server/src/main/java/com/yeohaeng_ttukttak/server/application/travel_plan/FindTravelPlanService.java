@@ -1,27 +1,29 @@
-package com.yeohaeng_ttukttak.server.application.travel.service;
+package com.yeohaeng_ttukttak.server.application.travel_plan;
 
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundFailException;
+import com.yeohaeng_ttukttak.server.domain.travel_plan.TravelPlanDto;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
 import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
-public class DeleteTravelPlanService {
+public class FindTravelPlanService {
 
     private final TravelRepository travelRepository;
 
-    @Transactional
-    public void deleteOne(Long travelId, Long visitId, String memberId) {
-
+    @Transactional(readOnly = true)
+    public List<TravelPlanDto> findAll(Long travelId) {
         final Travel travel = travelRepository.findById(travelId)
                 .orElseThrow(() -> new EntityNotFoundFailException(Travel.class));
 
-        travel.verifyModifyGrant(memberId);
-
-        travel.removeVisit(visitId);
+        return travel.plans().stream()
+                .map((TravelPlanDto::of))
+                .toList();
     }
 
 }

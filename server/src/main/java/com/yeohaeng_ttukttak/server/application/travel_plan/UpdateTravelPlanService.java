@@ -1,4 +1,4 @@
-package com.yeohaeng_ttukttak.server.application.travel.service;
+package com.yeohaeng_ttukttak.server.application.travel_plan;
 
 import com.yeohaeng_ttukttak.server.application.travel.service.dto.UpdateTravelVisitCommand;
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.ArgumentNotInRangeFailException;

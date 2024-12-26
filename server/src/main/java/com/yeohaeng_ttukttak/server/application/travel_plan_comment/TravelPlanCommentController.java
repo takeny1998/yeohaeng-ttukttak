@@ -1,16 +1,14 @@
-package com.yeohaeng_ttukttak.server.application.plan;
+package com.yeohaeng_ttukttak.server.application.travel_plan_comment;
 
-import com.yeohaeng_ttukttak.server.application.plan.dto.CommentListResponse;
-import com.yeohaeng_ttukttak.server.application.plan.dto.EditCommentRequest;
-import com.yeohaeng_ttukttak.server.application.plan.dto.WriteCommentRequest;
+import com.yeohaeng_ttukttak.server.application.travel_plan_comment.dto.CommentListResponse;
+import com.yeohaeng_ttukttak.server.application.travel_plan_comment.dto.EditCommentRequest;
+import com.yeohaeng_ttukttak.server.application.travel_plan_comment.dto.WriteCommentRequest;
 import com.yeohaeng_ttukttak.server.common.aop.annotation.Authorization;
 import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
 import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthenticationContext;
 import com.yeohaeng_ttukttak.server.domain.comment.CommentDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

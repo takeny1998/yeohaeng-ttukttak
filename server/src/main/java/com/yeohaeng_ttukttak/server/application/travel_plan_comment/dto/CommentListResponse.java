@@ -1,4 +1,4 @@
-package com.yeohaeng_ttukttak.server.application.plan.dto;
+package com.yeohaeng_ttukttak.server.application.travel_plan_comment.dto;
 
 import com.yeohaeng_ttukttak.server.domain.comment.CommentDto;
 

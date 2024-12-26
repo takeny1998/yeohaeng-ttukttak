@@ -1,4 +1,4 @@
-package com.yeohaeng_ttukttak.server.application.travel.controller.dto;
+package com.yeohaeng_ttukttak.server.application.travel_plan.dto;
 
 import com.yeohaeng_ttukttak.server.domain.travel_plan.TravelPlanDto;
 
