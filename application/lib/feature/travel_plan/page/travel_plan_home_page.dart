@@ -61,9 +61,9 @@ class _TravelPlanHomePageState extends ConsumerState<TravelPlanHomePage> {
                       label: travel.companionTypes
                           .map((e) => TranslationUtil.enumValue(e))
                           .join(', ')),
-                  TravelInfoChip(
-                      avatar: Icons.place,
-                      label: travel.cities.map((e) => e.name).join(', ')),
+                  // TravelInfoChip(
+                  //     avatar: Icons.place,
+                  //     label: travel.cities.map((e) => e.name).join(', ')),
                   TravelInfoChip(
                       avatar: Icons.tag,
                       label: travel.motivationTypes

@@ -15,8 +15,7 @@ class TravelCityForm extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final TravelCreateState(:cities) =
-    ref.watch(travelCreateProvider);
+    final TravelCreateState(:cities) = ref.watch(travelCreateProvider);
 
     return Scaffold(
       body: ScaffoldMessenger(

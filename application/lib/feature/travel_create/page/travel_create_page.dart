@@ -36,10 +36,19 @@ class _CreateTravelPageState extends ConsumerState<TravelCreatePage> {
 
   @override
   Widget build(BuildContext context) {
+    final tr = ref.watch(translationServiceProvider);
+
     ref.listen(provinceCitySelectProvider, (prev, next) {
-      if (prev?.selectedCities == next.selectedCities) return;
+      final selectedCities = next.selectedCities;
+      if (prev?.selectedCities == selectedCities) return;
+
+      if (selectedCities.length > 10) {
+        MessageUtil.showSnackBar(context,
+            MessageEvent(tr.from('You can select up to {}.', args: ['${10}'])));
+      }
+
       final notifier = ref.read(travelCreateProvider.notifier);
-      notifier.selectCities(next.selectedCities.mapToEntity().toList());
+      notifier.selectCities(selectedCities.mapToEntity().toList());
     });
 
     return Scaffold(

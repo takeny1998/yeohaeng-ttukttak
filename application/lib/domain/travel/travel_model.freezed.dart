@@ -29,7 +29,6 @@ mixin _$TravelModel {
       throw _privateConstructorUsedError;
   List<TravelMotivationType> get motivationTypes =>
       throw _privateConstructorUsedError;
-  List<CityModel> get cities => throw _privateConstructorUsedError;
 
   /// Serializes this TravelModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -54,8 +53,7 @@ abstract class $TravelModelCopyWith<$Res> {
       DateTime endedOn,
       String memberId,
       List<TravelCompanionType> companionTypes,
-      List<TravelMotivationType> motivationTypes,
-      List<CityModel> cities});
+      List<TravelMotivationType> motivationTypes});
 }
 
 /// @nodoc
@@ -80,7 +78,6 @@ class _$TravelModelCopyWithImpl<$Res, $Val extends TravelModel>
     Object? memberId = null,
     Object? companionTypes = null,
     Object? motivationTypes = null,
-    Object? cities = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -111,10 +108,6 @@ class _$TravelModelCopyWithImpl<$Res, $Val extends TravelModel>
           ? _value.motivationTypes
           : motivationTypes // ignore: cast_nullable_to_non_nullable
               as List<TravelMotivationType>,
-      cities: null == cities
-          ? _value.cities
-          : cities // ignore: cast_nullable_to_non_nullable
-              as List<CityModel>,
     ) as $Val);
   }
 }
@@ -134,8 +127,7 @@ abstract class _$$TravelModelImplCopyWith<$Res>
       DateTime endedOn,
       String memberId,
       List<TravelCompanionType> companionTypes,
-      List<TravelMotivationType> motivationTypes,
-      List<CityModel> cities});
+      List<TravelMotivationType> motivationTypes});
 }
 
 /// @nodoc
@@ -158,7 +150,6 @@ class __$$TravelModelImplCopyWithImpl<$Res>
     Object? memberId = null,
     Object? companionTypes = null,
     Object? motivationTypes = null,
-    Object? cities = null,
   }) {
     return _then(_$TravelModelImpl(
       id: null == id
@@ -189,10 +180,6 @@ class __$$TravelModelImplCopyWithImpl<$Res>
           ? _value._motivationTypes
           : motivationTypes // ignore: cast_nullable_to_non_nullable
               as List<TravelMotivationType>,
-      cities: null == cities
-          ? _value._cities
-          : cities // ignore: cast_nullable_to_non_nullable
-              as List<CityModel>,
     ));
   }
 }
@@ -207,11 +194,9 @@ class _$TravelModelImpl extends _TravelModel {
       required this.endedOn,
       required this.memberId,
       required final List<TravelCompanionType> companionTypes,
-      required final List<TravelMotivationType> motivationTypes,
-      required final List<CityModel> cities})
+      required final List<TravelMotivationType> motivationTypes})
       : _companionTypes = companionTypes,
         _motivationTypes = motivationTypes,
-        _cities = cities,
         super._();
 
   factory _$TravelModelImpl.fromJson(Map<String, dynamic> json) =>
@@ -243,17 +228,9 @@ class _$TravelModelImpl extends _TravelModel {
     return EqualUnmodifiableListView(_motivationTypes);
   }
 
-  final List<CityModel> _cities;
-  @override
-  List<CityModel> get cities {
-    if (_cities is EqualUnmodifiableListView) return _cities;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_cities);
-  }
-
   @override
   String toString() {
-    return 'TravelModel(id: $id, name: $name, startedOn: $startedOn, endedOn: $endedOn, memberId: $memberId, companionTypes: $companionTypes, motivationTypes: $motivationTypes, cities: $cities)';
+    return 'TravelModel(id: $id, name: $name, startedOn: $startedOn, endedOn: $endedOn, memberId: $memberId, companionTypes: $companionTypes, motivationTypes: $motivationTypes)';
   }
 
   @override
@@ -271,8 +248,7 @@ class _$TravelModelImpl extends _TravelModel {
             const DeepCollectionEquality()
                 .equals(other._companionTypes, _companionTypes) &&
             const DeepCollectionEquality()
-                .equals(other._motivationTypes, _motivationTypes) &&
-            const DeepCollectionEquality().equals(other._cities, _cities));
+                .equals(other._motivationTypes, _motivationTypes));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -285,8 +261,7 @@ class _$TravelModelImpl extends _TravelModel {
       endedOn,
       memberId,
       const DeepCollectionEquality().hash(_companionTypes),
-      const DeepCollectionEquality().hash(_motivationTypes),
-      const DeepCollectionEquality().hash(_cities));
+      const DeepCollectionEquality().hash(_motivationTypes));
 
   /// Create a copy of TravelModel
   /// with the given fields replaced by the non-null parameter values.
@@ -306,14 +281,14 @@ class _$TravelModelImpl extends _TravelModel {
 
 abstract class _TravelModel extends TravelModel {
   const factory _TravelModel(
-      {required final int id,
-      required final String name,
-      required final DateTime startedOn,
-      required final DateTime endedOn,
-      required final String memberId,
-      required final List<TravelCompanionType> companionTypes,
-      required final List<TravelMotivationType> motivationTypes,
-      required final List<CityModel> cities}) = _$TravelModelImpl;
+          {required final int id,
+          required final String name,
+          required final DateTime startedOn,
+          required final DateTime endedOn,
+          required final String memberId,
+          required final List<TravelCompanionType> companionTypes,
+          required final List<TravelMotivationType> motivationTypes}) =
+      _$TravelModelImpl;
   const _TravelModel._() : super._();
 
   factory _TravelModel.fromJson(Map<String, dynamic> json) =
@@ -333,8 +308,6 @@ abstract class _TravelModel extends TravelModel {
   List<TravelCompanionType> get companionTypes;
   @override
   List<TravelMotivationType> get motivationTypes;
-  @override
-  List<CityModel> get cities;
 
   /// Create a copy of TravelModel
   /// with the given fields replaced by the non-null parameter values.

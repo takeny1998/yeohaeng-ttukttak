@@ -42,7 +42,7 @@ class _TravelPlanPageState extends ConsumerState<TravelPlanPage> {
 
     final TravelPlanState(:travel, :pageIndex, :cityIndex) = state;
 
-    final cityId = travel.cities[cityIndex].id;
+    // final cityId = travel.cities[cityIndex].id;
 
     return Scaffold(
       body: PageTransitionSwitcher(
@@ -55,7 +55,7 @@ class _TravelPlanPageState extends ConsumerState<TravelPlanPage> {
           key: ValueKey<int>(pageIndex),
           children: [
             TravelPlanHomePage(provider: travelPlanProvider(widget.travelId), state: state),
-            TravelPlanRecommendPage(travelId: widget.travelId, cityId: cityId),
+            TravelPlanRecommendPage(travelId: widget.travelId, cityId: 162),
             TravelPlanManagePage(travelId: widget.travelId),
             TravelPlanBookmarkPage(travelId: widget.travelId),
           ],

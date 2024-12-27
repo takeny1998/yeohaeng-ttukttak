@@ -73,13 +73,13 @@ class _TravelPlanRecommendPageState
                       spacing: 8.0,
                       children: [
                         const SizedBox(width: 16.0),
-                        for (int i = 0; i < travel.cities.length; i++)
-                          FilterChip(
-                              onSelected: (_) => ref
-                                  .read(travelPlanProvider(travelId).notifier)
-                                  .selectCity(i),
-                              label: Text(travel.cities[i].name),
-                              selected: travel.cities[i].id == cityId)
+                        // for (int i = 0; i < travel.cities.length; i++)
+                        //   FilterChip(
+                        //       onSelected: (_) => ref
+                        //           .read(travelPlanProvider(travelId).notifier)
+                        //           .selectCity(i),
+                        //       label: Text(travel.cities[i].name),
+                        //       selected: travel.cities[i].id == cityId)
                       ],
                     ),
                   ),

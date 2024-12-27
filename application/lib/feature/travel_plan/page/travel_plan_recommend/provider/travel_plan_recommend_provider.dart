@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:application_new/common/http/http_service.dart';
 import 'package:application_new/common/http/http_service_provider.dart';
 import 'package:application_new/common/util/iterable_util.dart';
+import 'package:application_new/domain/geography/geography_provider.dart';
 import 'package:application_new/feature/travel_plan/provider/travel_plan_provider.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_recommend/model/place_recommend_model.dart';
 import 'package:application_new/domain/place/place_model.dart';
@@ -26,13 +27,15 @@ class TravelPlanRecommend extends _$TravelPlanRecommend {
   @override
   TravelPlanRecommendState? build(int travelId, int cityId) {
     final state = ref.watch(travelPlanProvider(travelId));
+    final city = ref.watch(cityProvider(cityId)).value;
 
-    if (state == null) return null;
+    if (state == null || city == null) return null;
 
     _initTargets(state.travel);
+
     return TravelPlanRecommendState(
         travel: state.travel,
-        city: state.travel.cities.firstWhere((city) => city.id == cityId),
+        city: city,
         placeRecommends: [],
         hasNextPage: true,
         hasMoreTravel: true);

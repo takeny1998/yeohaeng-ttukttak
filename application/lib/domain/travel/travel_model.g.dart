@@ -19,9 +19,6 @@ _$TravelModelImpl _$$TravelModelImplFromJson(Map<String, dynamic> json) =>
       motivationTypes: (json['motivationTypes'] as List<dynamic>)
           .map((e) => $enumDecode(_$TravelMotivationTypeEnumMap, e))
           .toList(),
-      cities: (json['cities'] as List<dynamic>)
-          .map((e) => CityModel.fromJson(e as Map<String, dynamic>))
-          .toList(),
     );
 
 Map<String, dynamic> _$$TravelModelImplToJson(_$TravelModelImpl instance) =>
@@ -37,7 +34,6 @@ Map<String, dynamic> _$$TravelModelImplToJson(_$TravelModelImpl instance) =>
       'motivationTypes': instance.motivationTypes
           .map((e) => _$TravelMotivationTypeEnumMap[e]!)
           .toList(),
-      'cities': instance.cities,
     };
 
 const _$TravelCompanionTypeEnumMap = {
