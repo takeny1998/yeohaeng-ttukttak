@@ -21,7 +21,7 @@ TravelPlanModel _$TravelPlanModelFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$TravelPlanModel {
   int get id => throw _privateConstructorUsedError;
-  int get orderOfVisit => throw _privateConstructorUsedError;
+  int get orderOfPlan => throw _privateConstructorUsedError;
   int get placeId => throw _privateConstructorUsedError;
   DateTime get willVisitOn => throw _privateConstructorUsedError;
 
@@ -41,7 +41,7 @@ abstract class $TravelPlanModelCopyWith<$Res> {
           TravelPlanModel value, $Res Function(TravelPlanModel) then) =
       _$TravelPlanModelCopyWithImpl<$Res, TravelPlanModel>;
   @useResult
-  $Res call({int id, int orderOfVisit, int placeId, DateTime willVisitOn});
+  $Res call({int id, int orderOfPlan, int placeId, DateTime willVisitOn});
 }
 
 /// @nodoc
@@ -60,7 +60,7 @@ class _$TravelPlanModelCopyWithImpl<$Res, $Val extends TravelPlanModel>
   @override
   $Res call({
     Object? id = null,
-    Object? orderOfVisit = null,
+    Object? orderOfPlan = null,
     Object? placeId = null,
     Object? willVisitOn = null,
   }) {
@@ -69,9 +69,9 @@ class _$TravelPlanModelCopyWithImpl<$Res, $Val extends TravelPlanModel>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
-      orderOfVisit: null == orderOfVisit
-          ? _value.orderOfVisit
-          : orderOfVisit // ignore: cast_nullable_to_non_nullable
+      orderOfPlan: null == orderOfPlan
+          ? _value.orderOfPlan
+          : orderOfPlan // ignore: cast_nullable_to_non_nullable
               as int,
       placeId: null == placeId
           ? _value.placeId
@@ -93,7 +93,7 @@ abstract class _$$TravelPlanModelImplCopyWith<$Res>
       __$$TravelPlanModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int id, int orderOfVisit, int placeId, DateTime willVisitOn});
+  $Res call({int id, int orderOfPlan, int placeId, DateTime willVisitOn});
 }
 
 /// @nodoc
@@ -110,7 +110,7 @@ class __$$TravelPlanModelImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
-    Object? orderOfVisit = null,
+    Object? orderOfPlan = null,
     Object? placeId = null,
     Object? willVisitOn = null,
   }) {
@@ -119,9 +119,9 @@ class __$$TravelPlanModelImplCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
-      orderOfVisit: null == orderOfVisit
-          ? _value.orderOfVisit
-          : orderOfVisit // ignore: cast_nullable_to_non_nullable
+      orderOfPlan: null == orderOfPlan
+          ? _value.orderOfPlan
+          : orderOfPlan // ignore: cast_nullable_to_non_nullable
               as int,
       placeId: null == placeId
           ? _value.placeId
@@ -140,7 +140,7 @@ class __$$TravelPlanModelImplCopyWithImpl<$Res>
 class _$TravelPlanModelImpl implements _TravelPlanModel {
   const _$TravelPlanModelImpl(
       {required this.id,
-      required this.orderOfVisit,
+      required this.orderOfPlan,
       required this.placeId,
       required this.willVisitOn});
 
@@ -150,7 +150,7 @@ class _$TravelPlanModelImpl implements _TravelPlanModel {
   @override
   final int id;
   @override
-  final int orderOfVisit;
+  final int orderOfPlan;
   @override
   final int placeId;
   @override
@@ -158,7 +158,7 @@ class _$TravelPlanModelImpl implements _TravelPlanModel {
 
   @override
   String toString() {
-    return 'TravelPlanModel(id: $id, orderOfVisit: $orderOfVisit, placeId: $placeId, willVisitOn: $willVisitOn)';
+    return 'TravelPlanModel(id: $id, orderOfPlan: $orderOfPlan, placeId: $placeId, willVisitOn: $willVisitOn)';
   }
 
   @override
@@ -167,8 +167,8 @@ class _$TravelPlanModelImpl implements _TravelPlanModel {
         (other.runtimeType == runtimeType &&
             other is _$TravelPlanModelImpl &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.orderOfVisit, orderOfVisit) ||
-                other.orderOfVisit == orderOfVisit) &&
+            (identical(other.orderOfPlan, orderOfPlan) ||
+                other.orderOfPlan == orderOfPlan) &&
             (identical(other.placeId, placeId) || other.placeId == placeId) &&
             (identical(other.willVisitOn, willVisitOn) ||
                 other.willVisitOn == willVisitOn));
@@ -177,7 +177,7 @@ class _$TravelPlanModelImpl implements _TravelPlanModel {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, id, orderOfVisit, placeId, willVisitOn);
+      Object.hash(runtimeType, id, orderOfPlan, placeId, willVisitOn);
 
   /// Create a copy of TravelPlanModel
   /// with the given fields replaced by the non-null parameter values.
@@ -199,7 +199,7 @@ class _$TravelPlanModelImpl implements _TravelPlanModel {
 abstract class _TravelPlanModel implements TravelPlanModel {
   const factory _TravelPlanModel(
       {required final int id,
-      required final int orderOfVisit,
+      required final int orderOfPlan,
       required final int placeId,
       required final DateTime willVisitOn}) = _$TravelPlanModelImpl;
 
@@ -209,7 +209,7 @@ abstract class _TravelPlanModel implements TravelPlanModel {
   @override
   int get id;
   @override
-  int get orderOfVisit;
+  int get orderOfPlan;
   @override
   int get placeId;
   @override

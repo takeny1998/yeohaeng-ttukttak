@@ -58,7 +58,7 @@ class _TravelPlanMangeListViewState
                     return DragTarget<TravelPlanModel>(
                         onAcceptWithDetails: (detail) => ref
                             .read(widget.provider.notifier)
-                            .move(detail.data, plan.orderOfVisit),
+                            .move(detail.data, plan.orderOfPlan),
                         builder: (context, candidateData, rejectedData) {
                           return Column(
                             children: [
@@ -88,7 +88,7 @@ class _TravelPlanMangeListViewState
                   final lastPlan = plans.lastOrNull;
                   ref
                       .read(widget.provider.notifier)
-                      .move(detail.data, (lastPlan?.orderOfVisit ?? -1) + 1);
+                      .move(detail.data, (lastPlan?.orderOfPlan ?? -1) + 1);
                 }, builder: (context, candidateData, rejectedData) {
 
                   return Column(
