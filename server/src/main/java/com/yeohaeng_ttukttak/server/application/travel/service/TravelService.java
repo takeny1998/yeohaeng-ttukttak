@@ -1,6 +1,8 @@
 package com.yeohaeng_ttukttak.server.application.travel.service;
 
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundFailException;
+import com.yeohaeng_ttukttak.server.domain.geography.entity.City;
+import com.yeohaeng_ttukttak.server.domain.geography.repository.GeographyRepository;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.CompanionType;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.MotivationType;
 import com.yeohaeng_ttukttak.server.domain.travel.dto.TravelDto;
@@ -15,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +26,8 @@ public class TravelService {
     private final TravelNameService travelNameService;
 
     private final TravelRepository travelRepository;
+
+    private final GeographyRepository geographyRepository;
 
     /**
      * 새로운 여행을 생성합니다.
@@ -41,10 +46,19 @@ public class TravelService {
             LocalDate startedOn,
             LocalDate endedOn,
             List<MotivationType> motivationTypes,
-            List<CompanionType> companionTypes) {
+            List<CompanionType> companionTypes,
+            List<Long> cityIds) {
+
+        final List<City> cities = geographyRepository.findCitiesByIds(cityIds);
+
+        if (!Objects.equals(cities.size(), cityIds.size())) {
+            throw new EntityNotFoundFailException(City.class);
+        }
+
+        final TravelDates dates = new TravelDates(startedOn, endedOn);
 
         final Travel travel = new Travel(
-                new TravelDates(startedOn, endedOn), companionTypes, motivationTypes);
+                dates, cities, companionTypes, motivationTypes);
 
         travelNameService.initializeName(locale, travel, inputName);
 

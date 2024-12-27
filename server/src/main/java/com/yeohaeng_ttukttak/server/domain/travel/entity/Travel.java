@@ -52,14 +52,24 @@ public class Travel extends BaseTimeMemberEntity {
     /**
      * 새로운 여행을 생성합니다.
      * @param dates 여행 날짜(TravelDates) 엔티티
+     * @param cities 여행에서 들릴 도시 리스트
      * @param companionTypes 여행의 동반 타입 리스트
      * @param motivationTypes 여행 동기 리스트
      * @throws ArgumentNotInRangeFailException <br>
-     *          if (companionTypes 의 원소가 1개 이상 3개 이하가 아닌 경우) <br>
-     *          if (motivationTypes 의 원소가 1개 이상 5개 이하가 아닌 경우)
+     *          if (cities.size < 1 || cities.size > 10) <br>
+     *          if (companionTypes.size < 1 || companionTypes.size > 3) <br>
+     *          if (motivationTypes.size < 1 || motivationTypes.size > 5)
      */
-    public Travel( TravelDates dates, List<CompanionType> companionTypes, List<MotivationType> motivationTypes) {
+    public Travel(TravelDates dates, List<City> cities, List<CompanionType> companionTypes, List<MotivationType> motivationTypes) {
         this.dates = dates;
+
+        if (cities.isEmpty() || cities.size() > 10) {
+            throw new ArgumentNotInRangeFailException("cityIds", 1, 10);
+        }
+
+        this.cities = cities.stream()
+                .map(city -> new TravelCity(this, city))
+                .toList();
 
         if (companionTypes.isEmpty() || companionTypes.size() > 3) {
             throw new ArgumentNotInRangeFailException("companionTypes", 1, 3);

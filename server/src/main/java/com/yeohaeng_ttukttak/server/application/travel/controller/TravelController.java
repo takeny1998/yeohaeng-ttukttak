@@ -39,7 +39,8 @@ public class TravelController {
                 request.startedOn(),
                 request.endedOn(),
                 request.motivationTypes(),
-                request.companionTypes());
+                request.companionTypes(),
+                request.cityIds());
 
         final TravelDto travelDto = travelService.findById(createdId);
 
