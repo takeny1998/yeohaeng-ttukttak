@@ -8,6 +8,7 @@ import com.yeohaeng_ttukttak.server.domain.place.entity.Place;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.BaseTimeMemberEntity;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.CompanionType;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.MotivationType;
+import com.yeohaeng_ttukttak.server.domain.shared.entity.ParticipantStatistics;
 import com.yeohaeng_ttukttak.server.domain.travel.exception.AlreadyJoinedTravelFailException;
 import com.yeohaeng_ttukttak.server.domain.travel_name.TravelName;
 import com.yeohaeng_ttukttak.server.domain.travel_plan.TravelPlan;
@@ -33,6 +34,9 @@ public class Travel extends BaseTimeMemberEntity {
     @Embedded
     private TravelDates dates;
 
+    @Embedded
+    private ParticipantStatistics statistics;
+
     @OneToMany(mappedBy = "travel", cascade = CascadeType.PERSIST)
     private List<TravelCity> cities = new ArrayList<>();
 
@@ -49,6 +53,10 @@ public class Travel extends BaseTimeMemberEntity {
     @OneToMany(mappedBy = "travel", cascade = { CascadeType.PERSIST, CascadeType.MERGE }, orphanRemoval = true)
     private List<TravelParticipant> participants = new ArrayList<>();
 
+    public ParticipantStatistics statistics() {
+        return statistics;
+    }
+
     /**
      * 새로운 여행을 생성합니다.
      * @param dates 여행 날짜(TravelDates) 엔티티
@@ -60,7 +68,7 @@ public class Travel extends BaseTimeMemberEntity {
      *          if (companionTypes.size < 1 || companionTypes.size > 3) <br>
      *          if (motivationTypes.size < 1 || motivationTypes.size > 5)
      */
-    public Travel(TravelDates dates, List<City> cities, List<CompanionType> companionTypes, List<MotivationType> motivationTypes) {
+    public Travel(Member creator, TravelDates dates, List<City> cities, List<CompanionType> companionTypes, List<MotivationType> motivationTypes) {
         this.dates = dates;
 
         if (cities.isEmpty() || cities.size() > 10) {
@@ -89,6 +97,8 @@ public class Travel extends BaseTimeMemberEntity {
                 .stream()
                 .map(motivationType -> new TravelMotivation(this, motivationType))
                 .toList();
+
+        this.statistics = new ParticipantStatistics(creator, List.of());
     }
 
     public Long id() {
@@ -205,6 +215,7 @@ public class Travel extends BaseTimeMemberEntity {
         }
 
         participants.add(new TravelParticipant(this, invitee, inviter));
+        statistics.update(createdBy(), participants);
     }
 
     /**
@@ -224,8 +235,8 @@ public class Travel extends BaseTimeMemberEntity {
         }
 
         participants.remove(participant);
+        statistics.update(createdBy(), participants);
     }
-
 
     /**
      * 지정한 여행에 새로운 계획을 생성합니다.

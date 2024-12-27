@@ -36,7 +36,8 @@ public class TravelController {
     @PostMapping
     @Authorization
     public ServerResponse<TravelAndCityListDto> create(
-            @RequestBody @Valid CreateTravelRequest request) {
+            @RequestBody @Valid CreateTravelRequest request,
+            AuthenticationContext context) {
 
         final Locale locale = LocaleContextHolder.getLocale();
 
@@ -47,7 +48,8 @@ public class TravelController {
                 request.endedOn(),
                 request.motivationTypes(),
                 request.companionTypes(),
-                request.cityIds());
+                request.cityIds(),
+                context.uuid());
 
         final TravelDto travelDto = travelService.findById(createdId);
         final List<GeographyDto> cityDtoList = travelCityService.findCities(createdId);
