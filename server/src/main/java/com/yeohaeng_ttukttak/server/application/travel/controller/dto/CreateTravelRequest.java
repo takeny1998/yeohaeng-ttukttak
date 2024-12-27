@@ -11,6 +11,6 @@ public record CreateTravelRequest (
         String name,
         LocalDate startedOn,
         LocalDate endedOn,
-        @NotEmpty @Size(max = 3) List<CompanionType> companionTypes,
-        @NotEmpty @Size(max = 5) List<MotivationType> motivationTypes
+        List<CompanionType> companionTypes,
+        List<MotivationType> motivationTypes
 ) { }

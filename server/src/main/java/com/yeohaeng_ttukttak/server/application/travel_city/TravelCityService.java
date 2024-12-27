@@ -7,7 +7,6 @@ import com.yeohaeng_ttukttak.server.domain.geography.repository.GeographyReposit
 import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelCity;
 import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelRepository;
-import com.yeohaeng_ttukttak.server.domain.travel_name.TravelName;
 import com.yeohaeng_ttukttak.server.domain.travel_name.TravelNameService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -36,14 +35,7 @@ public class TravelCityService {
 
         travel.addCity(memberId, city);
 
-        final List<City> newCities = travel.cities().stream()
-                .map(TravelCity::city)
-                .toList();
-
-        final TravelName generatedDefaultName =
-                travelNameService.generateDefaultName(locale, newCities);
-
-        travel.rename(memberId, generatedDefaultName);
+        travelNameService.applyChangeToName(locale, travel);
     }
 
     @Transactional(readOnly = true)
