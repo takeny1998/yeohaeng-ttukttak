@@ -2,16 +2,20 @@ package com.yeohaeng_ttukttak.server.application.travel.controller;
 
 import com.yeohaeng_ttukttak.server.application.travel.controller.dto.*;
 import com.yeohaeng_ttukttak.server.application.travel.service.TravelService;
+import com.yeohaeng_ttukttak.server.application.travel_city.TravelCityService;
 import com.yeohaeng_ttukttak.server.common.aop.annotation.Authorization;
 import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundFailException;
 import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthenticationContext;
+import com.yeohaeng_ttukttak.server.domain.geography.dto.GeographyDto;
+import com.yeohaeng_ttukttak.server.domain.travel.dto.TravelAndCityListDto;
 import com.yeohaeng_ttukttak.server.domain.travel.dto.TravelDto;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
 import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,13 +29,16 @@ import java.util.Locale;
 public class TravelController {
 
     private final TravelService travelService;
+    private final TravelCityService travelCityService;
+
     private final TravelRepository travelRepository;
 
     @PostMapping
     @Authorization
-    public ServerResponse<CreateTravelResponse> create(
-            Locale locale,
+    public ServerResponse<TravelAndCityListDto> create(
             @RequestBody @Valid CreateTravelRequest request) {
+
+        final Locale locale = LocaleContextHolder.getLocale();
 
         final Long createdId = travelService.create(
                 locale,
@@ -43,8 +50,9 @@ public class TravelController {
                 request.cityIds());
 
         final TravelDto travelDto = travelService.findById(createdId);
+        final List<GeographyDto> cityDtoList = travelCityService.findCities(createdId);
 
-        return new ServerResponse<>(new CreateTravelResponse(travelDto));
+        return new ServerResponse<>(new TravelAndCityListDto(travelDto, cityDtoList));
     }
 
     @GetMapping("/{id}")

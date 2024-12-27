@@ -1,7 +1,7 @@
 package com.yeohaeng_ttukttak.server.application.travel_city;
 
 import com.yeohaeng_ttukttak.server.application.travel.service.TravelService;
-import com.yeohaeng_ttukttak.server.application.travel_city.dto.TravelAndCityListResponse;
+import com.yeohaeng_ttukttak.server.domain.travel.dto.TravelAndCityListDto;
 import com.yeohaeng_ttukttak.server.common.aop.annotation.Authorization;
 import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
 import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthenticationContext;
@@ -26,7 +26,7 @@ public class TravelCityController {
 
     @PostMapping("/{cityId}")
     @Authorization
-    public ServerResponse<TravelAndCityListResponse> addCity(
+    public ServerResponse<TravelAndCityListDto> addCity(
             @PathVariable Long travelId,
             @PathVariable Long cityId,
             AuthenticationContext context,
@@ -39,7 +39,7 @@ public class TravelCityController {
         final TravelDto travelDto = travelService.findById(travelId);
 
 
-        return new ServerResponse<>(new TravelAndCityListResponse(travelDto, cityDtoList));
+        return new ServerResponse<>(new TravelAndCityListDto(travelDto, cityDtoList));
     }
 
 }
