@@ -3,6 +3,7 @@ package com.yeohaeng_ttukttak.server.application.travel_city_attraction;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.dsl.*;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.yeohaeng_ttukttak.server.domain.geography.entity.City;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.Geography;
 import com.yeohaeng_ttukttak.server.domain.place.entity.Place;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
@@ -14,7 +15,10 @@ import java.util.List;
 
 import static com.yeohaeng_ttukttak.server.domain.place.entity.QPlace.place;
 import static com.yeohaeng_ttukttak.server.domain.travelogue.entity.QTravelogue.travelogue;
+import static com.yeohaeng_ttukttak.server.domain.travelogue.entity.QTravelogueCompanion.travelogueCompanion;
+import static com.yeohaeng_ttukttak.server.domain.travelogue.entity.QTravelogueMotivation.travelogueMotivation;
 import static com.yeohaeng_ttukttak.server.domain.travelogue.entity.QTravelogueVisit.travelogueVisit;
+
 @Repository
 @Slf4j
 @RequiredArgsConstructor
@@ -26,78 +30,56 @@ public class TravelCityAttractionRepository {
      * 여행 선호도와 지리적 데이터를 기반으로 명소를 추천합니다.
      *
      * @param travel 사용자의 여행 선호도.
-     * @param geography 추천을 위한 지리적 제약.
+     * @param city 추천을 위한 지리적 제약.
      */
-    public void recommend(Travel travel, Geography geography) {
-        final NumberExpression<Double> cosineSimilarity = calculateCosineSimilarity(travel);
+    public void recommend(Travel travel, City city) {
 
-        List<Tuple> result = queryFactory.select(place, cosineSimilarity)
+        final NumberExpression<Double> distExpr = calEuclideanDistance(travel);
+
+        final Double entireDistAvg = calEntireDistanceAvg(travel);
+
+        final NumberExpression<Double> bayesianDistAvgExpr =
+                calBayesianAvg(entireDistAvg, distExpr.sum(), travelogue.count());
+
+        List<Tuple> result = queryFactory.select(place, bayesianDistAvgExpr, distExpr.avg(), travelogue.count(), travelogue.countDistinct())
                 .from(place)
                 .join(place.visits, travelogueVisit)
                 .join(travelogueVisit.travelogue, travelogue)
-                .where(isInGeography(geography))
-                .orderBy(cosineSimilarity.desc())
-                .limit(10)
+                .leftJoin(travelogue.companions, travelogueCompanion)
+                .leftJoin(travelogue.motivations, travelogueMotivation)
+                .where(isInGeography(city))
+                .orderBy(bayesianDistAvgExpr.desc())
+                .groupBy(place)
                 .fetch();
 
         for (Tuple tuple : result) {
-            System.out.println("name=" + tuple.get(0, Place.class).name() + " similarity=" + tuple.get(1, Double.class));
+            System.out.println("name=" + tuple.get(0, Place.class).name()
+                    + " bayesianAvg=" + tuple.get(1, Double.class)
+                    + " distance=" + tuple.get(2, Double.class)
+                    + " count=" + tuple.get(3, Integer.class)
+                    + " countDistinct=" + tuple.get(4, Integer.class));
         }
     }
 
-    /**
-     * <p>
-     * 여행기와 사용자 여행의 코사인 유사도를 계산합니다.
-     * <pre>
-     * Cosine Similarity = (A · B) / (||A|| * ||B||)
-     * </pre>
-     *
-     * @param travel 사용자의 여행 선호도.
-     * @return 코사인 유사도를 나타내는 NumberExpression.
-     */
-    private NumberExpression<Double> calculateCosineSimilarity(Travel travel) {
-        NumberExpression<Double> dotProduct = calculateDotProduct(travel);
-        NumberExpression<Double> magnitude = calculateDMagnitude(travel);
-
-        return dotProduct.divide(magnitude);
+    private Double calEntireDistanceAvg(Travel travel) {
+        return queryFactory
+                .select(calEuclideanDistance(travel).avg())
+                .from(travelogue)
+                .fetchOne();
     }
 
-    /**
-     * <p>
-     * 통계 벡터의 내적을 계산합니다.
-     * <pre>
-     * A · B = (A1 * B1) + (A2 * B2)
-     * </pre>
-     *
-     * @param travel 사용자의 여행 선호도.
-     * @return 내적을 나타내는 NumberExpression.
-     */
-    private NumberExpression<Double> calculateDotProduct(Travel travel) {
-        return travelogue.statistics.ageGroupAvg.multiply(travel.statistics().ageGroupAvg())
-                .add(travelogue.statistics.genderAvg.multiply(travel.statistics().genderAvg()));
+    private NumberExpression<Double> calBayesianAvg(Double entireAvg,
+                                                    NumberExpression<Double> avgExpr,
+                                                    NumberExpression<Long> countExpr) {
+        final double C = 2.0;
+        return add(avgExpr, multiply(C, entireAvg))
+                .divide(countExpr.add(C));
     }
 
-    /**
-     * <p>
-     * 통계 벡터의 크기를 계산합니다.
-     * <pre>
-     * ||A|| = sqrt(A1^2 + A2^2)
-     * ||B|| = sqrt(B1^2 + B2^2)
-     * </pre>
-     *
-     * @param travel 사용자의 여행 선호도.
-     * @return 크기를 나타내는 NumberExpression.
-     */
-    private NumberExpression<Double> calculateDMagnitude(Travel travel) {
-        NumberExpression<Double> leftHand = add(
-                sqrt(squared(travelogue.statistics.genderAvg)),
-                sqrt(squared(travelogue.statistics.ageGroupAvg)));
 
-        NumberExpression<Double> rightHand = add(
-                sqrt(squared(travel.statistics().genderAvg())),
-                sqrt(squared(travel.statistics().ageGroupAvg())));
-
-        return multiply(leftHand, rightHand);
+    private NumberExpression<Double> calEuclideanDistance(Travel travel) {
+        return sqrt(add(squared(abs(subtract(travelogue.statistics.ageGroupAvg, travel.statistics().ageGroupAvg()))),
+                squared(abs(subtract(travelogue.statistics.genderAvg, travel.statistics().genderAvg())))));
     }
 
     /**
@@ -118,6 +100,15 @@ public class TravelCityAttractionRepository {
     private NumberExpression<Double> add(Object left, Object right) {
         return Expressions.numberTemplate(Double.class, "({0} + {1})", left, right);
     }
+
+    private NumberExpression<Double> abs(Object argument) {
+        return Expressions.numberTemplate(Double.class, "ABS({0})", argument);
+    }
+
+    private NumberExpression<Double> subtract(Object left, Object right) {
+        return Expressions.numberTemplate(Double.class, "({0} - {1})", left, right);
+    }
+
 
     private NumberExpression<Double> multiply(Object left, Object right) {
         return Expressions.numberTemplate(Double.class, "({0} * {1})", left, right);

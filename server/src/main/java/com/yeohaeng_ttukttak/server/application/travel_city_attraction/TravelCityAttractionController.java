@@ -42,7 +42,7 @@ public class TravelCityAttractionController {
 
         Travel travel = travelRepository.findById(travelId).get();
 
-        Geography city = geographyRepository.findById(cityId).get();
+        City city = geographyRepository.findCityById(cityId).get();
 
         repository.recommend(travel, city);
 
