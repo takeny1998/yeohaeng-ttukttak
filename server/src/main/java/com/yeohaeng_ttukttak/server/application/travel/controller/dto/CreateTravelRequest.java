@@ -9,8 +9,9 @@ import java.util.List;
 
 public record CreateTravelRequest (
         String name,
-        LocalDate startedOn,
-        LocalDate endedOn,
-        @NotEmpty @Size(max = 3) List<CompanionType> companionTypes,
-        @NotEmpty @Size(max = 5) List<MotivationType> motivationTypes
+        @NotNull LocalDate startedOn,
+        @NotNull LocalDate endedOn,
+        @NotNull List<CompanionType> companionTypes,
+        @NotNull List<MotivationType> motivationTypes,
+        @NotNull List<Long> cityIds
 ) { }

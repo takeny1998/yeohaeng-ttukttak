@@ -6,12 +6,17 @@ class MessageUtil {
   MessageUtil._();
 
   static void showSnackBar(BuildContext context, MessageEvent event) {
-    ScaffoldMessenger.of(context).showSnackBar(createSnackBar(context, event));
+    final messenger = ScaffoldMessenger.of(context);
+
+    messenger.hideCurrentSnackBar();
+    messenger.showSnackBar(createSnackBar(context, event));
   }
 
   static void showRootSnackBar(MessageEvent event) {
-    messengerKey.currentState
-        ?.showSnackBar(createSnackBar(themeKey.currentContext!, event));
+    final messenger = messengerKey.currentState;
+
+    messenger?.hideCurrentSnackBar();
+    messenger?.showSnackBar(createSnackBar(themeKey.currentContext!, event));
   }
 
   static SnackBar createSnackBar(BuildContext context, MessageEvent event) {

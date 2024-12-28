@@ -7,7 +7,7 @@ part 'travel_plan_model.g.dart';
 class TravelPlanModel with _$TravelPlanModel {
   const factory TravelPlanModel({
     required int id,
-    required int orderOfVisit,
+    required int orderOfPlan,
     required int placeId,
     required DateTime willVisitOn,
   }) = _TravelPlanModel;

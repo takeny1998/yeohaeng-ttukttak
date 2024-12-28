@@ -30,8 +30,8 @@ class TravelPlan extends _$TravelPlan {
   void selectCity(int cityIndex) {
     if (state == null || state?.cityIndex == cityIndex) return;
 
-    final cityCount = state!.travel.cities.length;
-    if (!IterableUtil.isIndexInRange(cityIndex, end: cityCount - 1)) return;
+    // final cityCount = state!.travel.cities.length;
+    // if (!IterableUtil.isIndexInRange(cityIndex, end: cityCount - 1)) return;
 
     state = state?.copyWith(
       cityIndex: cityIndex,

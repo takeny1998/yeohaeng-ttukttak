@@ -63,7 +63,8 @@ class TravelCreate extends _$TravelCreate {
   }
 
   void selectCities(List<CityModel> cities) {
-    state = state.copyWith(cities: [...state.cities, ...cities]);
+    if (cities.length > 10) return;
+    state = state.copyWith(cities: cities);
   }
 
   void selectRegion(ProvinceModel? region) {
@@ -86,7 +87,7 @@ class TravelCreate extends _$TravelCreate {
 
   Future<TravelModel> submit() async {
     final TravelCreateState(
-    :name,
+      :name,
       :startedOn,
       :endedOn,
       :companionTypes,
@@ -97,14 +98,12 @@ class TravelCreate extends _$TravelCreate {
     final travel = await ref.read(asyncLoadingProvider.notifier).guard(() async {
       final response = await ref.read(httpServiceProvider).post('/travels',
           options: ServerRequestOptions(data: {
-            'date': {
-              'startedOn': startedOn?.toIso8601String(),
-              'endedOn': endedOn?.toIso8601String(),
-            },
+            'startedOn': startedOn?.toIso8601String(),
+            'endedOn': endedOn?.toIso8601String(),
             'name': name,
             'companionTypes': companionTypes.map((e) => e.name).toList(),
             'motivationTypes': motivationTypes.map((e) => e.name).toList(),
-            'cities': cities,
+            'cityIds': cities.map((city) => city.id).toList(),
           }));
 
       return TravelModel.fromJson(response['travel']);

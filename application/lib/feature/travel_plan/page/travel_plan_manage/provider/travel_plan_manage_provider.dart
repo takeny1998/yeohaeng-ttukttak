@@ -81,7 +81,7 @@ class TravelPlanManage extends _$TravelPlanManage {
           .patch('/travels/$travelId/plans/${from.id}',
               options: ServerRequestOptions(
                 data: {
-                  'orderOfVisit': order,
+                  'orderOfPlan': order,
                   'willVisitOn': selectedDate.toIso8601String(),
                 },
               ));
@@ -98,7 +98,7 @@ class TravelPlanManage extends _$TravelPlanManage {
     await ref.read(asyncLoadingProvider.notifier).guard(() async {
       await ref
           .read(httpServiceProvider)
-          .delete('travels/$travelId/plans/${plan.id}');
+          .delete('/travels/$travelId/plans/${plan.id}');
     });
 
     final newPlans = List.of(state!.plans)..remove(plan);

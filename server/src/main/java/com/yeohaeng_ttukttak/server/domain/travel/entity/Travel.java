@@ -51,18 +51,25 @@ public class Travel extends BaseTimeMemberEntity {
 
     /**
      * 새로운 여행을 생성합니다.
-     * @param name 여행 이름(TravelName) 엔티티
      * @param dates 여행 날짜(TravelDates) 엔티티
+     * @param cities 여행에서 들릴 도시 리스트
      * @param companionTypes 여행의 동반 타입 리스트
      * @param motivationTypes 여행 동기 리스트
      * @throws ArgumentNotInRangeFailException <br>
-     *          if (companionTypes 의 원소가 1개 이상 3개 이하가 아닌 경우) <br>
-     *          if (motivationTypes 의 원소가 1개 이상 5개 이하가 아닌 경우)
+     *          if (cities.size < 1 || cities.size > 10) <br>
+     *          if (companionTypes.size < 1 || companionTypes.size > 3) <br>
+     *          if (motivationTypes.size < 1 || motivationTypes.size > 5)
      */
-    public Travel(TravelName name, TravelDates dates, List<CompanionType> companionTypes, List<MotivationType> motivationTypes) {
-
-        this.name = name;
+    public Travel(TravelDates dates, List<City> cities, List<CompanionType> companionTypes, List<MotivationType> motivationTypes) {
         this.dates = dates;
+
+        if (cities.isEmpty() || cities.size() > 10) {
+            throw new ArgumentNotInRangeFailException("cityIds", 1, 10);
+        }
+
+        this.cities = cities.stream()
+                .map(city -> new TravelCity(this, city))
+                .toList();
 
         if (companionTypes.isEmpty() || companionTypes.size() > 3) {
             throw new ArgumentNotInRangeFailException("companionTypes", 1, 3);
@@ -89,7 +96,13 @@ public class Travel extends BaseTimeMemberEntity {
     }
 
     public String name() {
+        if (Objects.isNull(name)) return null;
         return name.name();
+    }
+
+    public Boolean isNameGenerated() {
+        if (Objects.isNull(name)) return null;
+        return name.isGenerated();
     }
 
     public LocalDate startedOn() {
@@ -146,26 +159,8 @@ public class Travel extends BaseTimeMemberEntity {
         }
     }
 
-    /**
-     * <pre>
-     * 아래와 같은 경우, 여행의 이름을 변경한다.
-     *   - 새로운 이름이 자동 생성되지 않은 경우
-     *   - 자동 생성된 이름을 대체하는 경우
-     * </pre>
-     * @param memberId 여행 이름을 변경할 회원의 ID
-     * @param newName 새로운 여행 이름 (null일 수 없음)
-     * @throws AccessDeniedFailException 여행에 참여하지 않은 사용자인 경우 발생한다.
-     */
-    public void rename(String memberId, TravelName newName) {
-        verifyParticipantsOrCreator(memberId);
-
-        boolean isCurrentNameGenerated = this.name.isGenerated();
-        boolean isNewNameGenerated = newName.isGenerated();
-
-        // 새로운 이름이 자동 생성되지 않거나, 현재 이름이 자동 생성된 경우
-        if (!isNewNameGenerated || isCurrentNameGenerated) {
-            this.name = newName;
-        }
+    public void rename(TravelName newName) {
+        this.name = newName;
     }
 
     /**

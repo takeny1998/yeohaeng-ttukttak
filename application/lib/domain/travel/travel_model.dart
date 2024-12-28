@@ -21,7 +21,6 @@ class TravelModel with _$TravelModel {
     required String memberId,
     required List<TravelCompanionType> companionTypes,
     required List<TravelMotivationType> motivationTypes,
-    required List<CityModel> cities,
   }) = _TravelModel;
 
   factory TravelModel.fromJson(Map<String, dynamic> json) =>

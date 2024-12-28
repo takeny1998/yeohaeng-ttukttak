@@ -1,6 +1,5 @@
 package com.yeohaeng_ttukttak.server.application.travel.service;
 
-import com.yeohaeng_ttukttak.server.common.dto.EntityReference;
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundFailException;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.City;
 import com.yeohaeng_ttukttak.server.domain.geography.repository.GeographyRepository;
@@ -10,15 +9,12 @@ import com.yeohaeng_ttukttak.server.domain.travel.dto.TravelDto;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelDates;
 import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelRepository;
-import com.yeohaeng_ttukttak.server.domain.travel_name.TravelName;
 import com.yeohaeng_ttukttak.server.domain.travel_name.TravelNameService;
-import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -27,14 +23,16 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class TravelService {
 
-    private final TravelNameService nameService;
+    private final TravelNameService travelNameService;
 
     private final TravelRepository travelRepository;
+
+    private final GeographyRepository geographyRepository;
 
     /**
      * 새로운 여행을 생성합니다.
      * @param locale 현재 요청의 로케일 정보
-     * @param inputtedName (nullable) 여행의 이름
+     * @param inputName (nullable) 여행의 이름
      * @param startedOn 여행의 시작 날짜
      * @param endedOn 여행의 종료 날짜
      * @param motivationTypes 선택된 여행 동기 리스트
@@ -44,21 +42,25 @@ public class TravelService {
     @Transactional
     public Long create(
             Locale locale,
-            String inputtedName,
+            String inputName,
             LocalDate startedOn,
             LocalDate endedOn,
             List<MotivationType> motivationTypes,
-            List<CompanionType> companionTypes) {
+            List<CompanionType> companionTypes,
+            List<Long> cityIds) {
 
-        final TravelName travelName = Objects.isNull(inputtedName)
-                ? nameService.generateDefaultName(locale)
-                : nameService.validateInputName(inputtedName);
+        final List<City> cities = geographyRepository.findCitiesByIds(cityIds);
+
+        if (!Objects.equals(cities.size(), cityIds.size())) {
+            throw new EntityNotFoundFailException(City.class);
+        }
+
+        final TravelDates dates = new TravelDates(startedOn, endedOn);
 
         final Travel travel = new Travel(
-                travelName,
-                new TravelDates(startedOn, endedOn),
-                companionTypes,
-                motivationTypes);
+                dates, cities, companionTypes, motivationTypes);
+
+        travelNameService.initializeName(locale, travel, inputName);
 
         final Travel savedTravel = travelRepository.save(travel);
 
