@@ -3,6 +3,8 @@ package com.yeohaeng_ttukttak.server.application.travel.service;
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundFailException;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.City;
 import com.yeohaeng_ttukttak.server.domain.geography.repository.GeographyRepository;
+import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
+import com.yeohaeng_ttukttak.server.domain.member.service.MemberService;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.CompanionType;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.MotivationType;
 import com.yeohaeng_ttukttak.server.domain.travel.dto.TravelDto;
@@ -29,6 +31,8 @@ public class TravelService {
 
     private final GeographyRepository geographyRepository;
 
+    private final MemberService memberService;
+
     /**
      * 새로운 여행을 생성합니다.
      * @param locale 현재 요청의 로케일 정보
@@ -47,7 +51,10 @@ public class TravelService {
             LocalDate endedOn,
             List<MotivationType> motivationTypes,
             List<CompanionType> companionTypes,
-            List<Long> cityIds) {
+            List<Long> cityIds,
+            String creatorId) {
+
+        final Member creator = memberService.find(creatorId);
 
         final List<City> cities = geographyRepository.findCitiesByIds(cityIds);
 
@@ -58,7 +65,7 @@ public class TravelService {
         final TravelDates dates = new TravelDates(startedOn, endedOn);
 
         final Travel travel = new Travel(
-                dates, cities, companionTypes, motivationTypes);
+               creator, dates, cities, companionTypes, motivationTypes);
 
         travelNameService.initializeName(locale, travel, inputName);
 
