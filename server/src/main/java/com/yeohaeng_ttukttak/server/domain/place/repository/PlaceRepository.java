@@ -9,8 +9,8 @@ import java.util.List;
 
 public interface PlaceRepository extends JpaRepository<Place, Long> {
 
-    @Query("SELECT p FROM Place p " +
-            "JOIN p.categories pcm " +
-            "WHERE pcm.place = p AND pcm.type = :category")
-    List<Place> findByCategory(PlaceCategoryType category);
+
+    @Query("SELECT p FROM Place p JOIN City c ON c.id = :cityId WHERE p.regionCode between c.codeStart AND c.codeEnd")
+    List<Place> findAllByCityId(Long cityId);
+
 }

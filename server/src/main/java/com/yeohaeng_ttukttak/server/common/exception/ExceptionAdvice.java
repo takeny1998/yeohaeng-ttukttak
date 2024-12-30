@@ -76,6 +76,8 @@ public class ExceptionAdvice {
         final InternalServerErrorException errorException =
                 new InternalServerErrorException(exception);
 
+        exception.printStackTrace();
+
         logError(errorException, request);
 
         final String message = getMessage(errorException, locale);

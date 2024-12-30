@@ -14,10 +14,10 @@ public enum PlaceCategoryType {
     public static List<PlaceCategoryType> thingsToDo() {
         return List.of(
                 PlaceCategoryType.nature,
+                PlaceCategoryType.tourism,
                 PlaceCategoryType.culture,
                 PlaceCategoryType.commerce,
-                PlaceCategoryType.tourism,
-                PlaceCategoryType.transport);
+                PlaceCategoryType.dining);
     }
 }
 
