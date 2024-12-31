@@ -1,12 +1,16 @@
 package com.yeohaeng_ttukttak.server.application.travel_city_attraction;
 
-import com.querydsl.core.Tuple;
 import com.querydsl.core.types.dsl.*;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.yeohaeng_ttukttak.server.common.dto.InfiniteScrollCommand;
+import com.yeohaeng_ttukttak.server.common.dto.InfiniteScrollResult;
+import com.yeohaeng_ttukttak.server.common.dto.JpaInfiniteScrollResult;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.City;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.Geography;
-import com.yeohaeng_ttukttak.server.domain.member.entity.Gender;
 import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
+import com.yeohaeng_ttukttak.server.domain.place.dto.PlaceDto;
+import com.yeohaeng_ttukttak.server.domain.place.entity.Place;
 import com.yeohaeng_ttukttak.server.domain.place.entity.PlaceCategoryType;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.CompanionType;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.EnumNormalizable;
@@ -39,7 +43,7 @@ public class TravelCityAttractionRepository {
     private final JPAQueryFactory queryFactory;
     private static final double C = 5.0;
 
-    public List<Tuple> recommend(Travel travel, City city) {
+    public InfiniteScrollResult<PlaceDto> orderByTravelSimilarity(InfiniteScrollCommand command, Travel travel, City city) {
 
         final NumberExpression<Double> ratingExpr = calculateMemberSimilarity(travel)
                 .add(calculateMotivationSimilarity(travel))
@@ -56,8 +60,7 @@ public class TravelCityAttractionRepository {
         final NumberExpression<Long> countExpr = travelogueVisit.countDistinct();
         final NumberExpression<Double> bayesianAvgExpr = calculateBayesianAvg(avgRating, ratingExpr.multiply(countExpr), countExpr);
 
-        return queryFactory.select(place.id, place.name, countExpr, ratingExpr, bayesianAvgExpr)
-                .from(place)
+        final JPAQuery<Place> query = queryFactory.selectFrom(place)
                 .join(place.categories, placeCategory)
                 .join(place.visits, travelogueVisit)
                 .join(travelogueVisit.travelogue, travelogue)
@@ -65,12 +68,13 @@ public class TravelCityAttractionRepository {
                 .join(travelogue.motivations, travelogueMotivation)
                 .where(placeCategory.type.in(PlaceCategoryType.thingsToDo()), isInGeography(city))
                 .groupBy(place)
-                .orderBy(bayesianAvgExpr.desc(), place.id.asc())
-                .fetch();
+                .orderBy(bayesianAvgExpr.desc(), place.id.asc());
+
+        return new JpaInfiniteScrollResult<>(command, query, PlaceDto::of);
+
     }
 
     private NumberExpression<Double> calculateMemberSimilarity(Travel travel) {
-
 
         final NumberExpression<Integer> numOfParticipantSumExpr = travelogue.numberOfParticipant.sum();
 
