@@ -8,7 +8,6 @@ import com.yeohaeng_ttukttak.server.domain.place.entity.Place;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.BaseTimeMemberEntity;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.CompanionType;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.MotivationType;
-import com.yeohaeng_ttukttak.server.domain.shared.entity.ParticipantStatistics;
 import com.yeohaeng_ttukttak.server.domain.travel.exception.AlreadyJoinedTravelFailException;
 import com.yeohaeng_ttukttak.server.domain.travel_name.TravelName;
 import com.yeohaeng_ttukttak.server.domain.travel_plan.TravelPlan;
@@ -34,9 +33,6 @@ public class Travel extends BaseTimeMemberEntity {
     @Embedded
     private TravelDates dates;
 
-    @Embedded
-    private ParticipantStatistics statistics;
-
     @OneToMany(mappedBy = "travel", cascade = CascadeType.PERSIST)
     private List<TravelCity> cities = new ArrayList<>();
 
@@ -52,10 +48,6 @@ public class Travel extends BaseTimeMemberEntity {
 
     @OneToMany(mappedBy = "travel", cascade = { CascadeType.PERSIST, CascadeType.MERGE }, orphanRemoval = true)
     private List<TravelParticipant> participants = new ArrayList<>();
-
-    public ParticipantStatistics statistics() {
-        return statistics;
-    }
 
     /**
      * 새로운 여행을 생성합니다.
@@ -98,7 +90,6 @@ public class Travel extends BaseTimeMemberEntity {
                 .map(motivationType -> new TravelMotivation(this, motivationType))
                 .toList();
 
-        this.statistics = new ParticipantStatistics(creator, List.of());
     }
 
     public Long id() {
@@ -113,6 +104,10 @@ public class Travel extends BaseTimeMemberEntity {
     public Boolean isNameGenerated() {
         if (Objects.isNull(name)) return null;
         return name.isGenerated();
+    }
+
+    public List<TravelParticipant> participants() {
+        return participants;
     }
 
     public LocalDate startedOn() {
@@ -215,7 +210,6 @@ public class Travel extends BaseTimeMemberEntity {
         }
 
         participants.add(new TravelParticipant(this, invitee, inviter));
-        statistics.update(createdBy(), participants);
     }
 
     /**
@@ -235,7 +229,6 @@ public class Travel extends BaseTimeMemberEntity {
         }
 
         participants.remove(participant);
-        statistics.update(createdBy(), participants);
     }
 
     /**

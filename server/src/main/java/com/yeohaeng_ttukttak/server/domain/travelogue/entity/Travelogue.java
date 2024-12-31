@@ -2,7 +2,6 @@ package com.yeohaeng_ttukttak.server.domain.travelogue.entity;
 
 import com.yeohaeng_ttukttak.server.domain.member.entity.AgeGroup;
 import com.yeohaeng_ttukttak.server.domain.member.entity.Gender;
-import com.yeohaeng_ttukttak.server.domain.shared.entity.ParticipantStatistics;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -19,8 +18,11 @@ public class Travelogue {
 
     private LocalDate endedOn;
 
-    @Embedded
-    private ParticipantStatistics statistics;
+    private Double genderSum;
+
+    private Double ageGroupSum;
+
+    private Integer numberOfParticipant;
 
     @Enumerated(EnumType.STRING)
     private AgeGroup ageGroup;

@@ -5,18 +5,24 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.City;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.Geography;
+import com.yeohaeng_ttukttak.server.domain.member.entity.Gender;
+import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
 import com.yeohaeng_ttukttak.server.domain.place.entity.PlaceCategoryType;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.CompanionType;
+import com.yeohaeng_ttukttak.server.domain.shared.entity.EnumNormalizable;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.MotivationType;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelCompanion;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelMotivation;
+import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelParticipant;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.yeohaeng_ttukttak.server.domain.place.entity.QPlace.place;
 import static com.yeohaeng_ttukttak.server.domain.place.entity.QPlaceCategory.placeCategory;
@@ -65,15 +71,32 @@ public class TravelCityAttractionRepository {
 
     private NumberExpression<Double> calculateMemberSimilarity(Travel travel) {
 
-        final NumberExpression<Double> p1 = travelogue.statistics.ageGroupAvg.avg();
-        final NumberExpression<Double> p2 = travelogue.statistics.genderAvg.avg();
 
-        final NumberExpression<Double> q1 = Expressions.asNumber(travel.statistics().ageGroupAvg());
-        final NumberExpression<Double> q2 = Expressions.asNumber(travel.statistics().genderAvg());
+        final NumberExpression<Integer> numOfParticipantSumExpr = travelogue.numberOfParticipant.sum();
+
+        final NumberExpression<Double> p1 = travelogue.ageGroupSum.sum().divide(numOfParticipantSumExpr);
+        final NumberExpression<Double> p2 = travelogue.genderSum.sum().divide(numOfParticipantSumExpr);
+
+        final List<Member> members = Stream.concat(
+                travel.participants().stream().map(TravelParticipant::invitee),
+                Stream.of(travel.createdBy())
+                ).toList();
+
+        final NumberExpression<Double> q1 = avgNormalizeValues(members, Member::ageGroup);
+        final NumberExpression<Double> q2 = avgNormalizeValues(members, Member::gender);
 
         // R(dist) = ABS(dist - 1)
         final NumberExpression<Double> rating = calEuclideanDistance(p1, p2, q1, q2).subtract(1.0).abs();
+
         return compareWithCompanionTypes(travel).add(rating).divide(2.0);
+    }
+
+    private NumberExpression<Double> avgNormalizeValues(List<Member> members, Function<Member, EnumNormalizable> mapper) {
+        return Expressions.asNumber(
+                members.stream()
+                        .map(mapper)
+                        .mapToDouble(EnumNormalizable::normalize)
+                        .sum()).divide(members.size());
     }
 
     private NumberExpression<Double> calculateMotivationSimilarity(Travel travel) {
