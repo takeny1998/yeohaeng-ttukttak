@@ -1,19 +1,35 @@
 package com.yeohaeng_ttukttak.server.application.travel_city_attraction;
 
-import com.querydsl.core.Tuple;
 import com.querydsl.core.types.dsl.*;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.yeohaeng_ttukttak.server.common.dto.InfiniteScrollCommand;
+import com.yeohaeng_ttukttak.server.common.dto.InfiniteScrollResult;
+import com.yeohaeng_ttukttak.server.common.dto.JpaInfiniteScrollResult;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.City;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.Geography;
+import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
+import com.yeohaeng_ttukttak.server.domain.place.dto.PlaceDto;
 import com.yeohaeng_ttukttak.server.domain.place.entity.Place;
+import com.yeohaeng_ttukttak.server.domain.place.entity.PlaceCategoryType;
+import com.yeohaeng_ttukttak.server.domain.shared.entity.CompanionType;
+import com.yeohaeng_ttukttak.server.domain.shared.entity.EnumNormalizable;
+import com.yeohaeng_ttukttak.server.domain.shared.entity.MotivationType;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
+import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelCompanion;
+import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelMotivation;
+import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelParticipant;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.yeohaeng_ttukttak.server.domain.place.entity.QPlace.place;
+import static com.yeohaeng_ttukttak.server.domain.place.entity.QPlaceCategory.placeCategory;
 import static com.yeohaeng_ttukttak.server.domain.travelogue.entity.QTravelogue.travelogue;
 import static com.yeohaeng_ttukttak.server.domain.travelogue.entity.QTravelogueCompanion.travelogueCompanion;
 import static com.yeohaeng_ttukttak.server.domain.travelogue.entity.QTravelogueMotivation.travelogueMotivation;
@@ -25,92 +41,161 @@ import static com.yeohaeng_ttukttak.server.domain.travelogue.entity.QTravelogueV
 public class TravelCityAttractionRepository {
 
     private final JPAQueryFactory queryFactory;
+    private static final double C = 5.0;
 
-    /**
-     * 여행 선호도와 지리적 데이터를 기반으로 명소를 추천합니다.
-     *
-     * @param travel 사용자의 여행 선호도.
-     * @param city 추천을 위한 지리적 제약.
-     */
-    public void recommend(Travel travel, City city) {
+    public InfiniteScrollResult<PlaceDto> orderByTravelSimilarity(InfiniteScrollCommand command, Travel travel, City city) {
 
-        final NumberExpression<Double> distExpr = calEuclideanDistance(travel);
+        final NumberExpression<Double> ratingExpr = calculateMemberSimilarity(travel)
+                .add(calculateMotivationSimilarity(travel))
+                .divide(2.0);
 
-        final Double entireDistAvg = calEntireDistanceAvg(travel);
+        final double avgRating =  queryFactory.select(ratingExpr)
+                .from(travelogue)
+                .join(travelogue.companions, travelogueCompanion)
+                .join(travelogue.motivations, travelogueMotivation)
+                .fetch()
+                .stream()
+                .collect(Collectors.averagingDouble(Double::doubleValue));
 
-        final NumberExpression<Double> bayesianDistAvgExpr =
-                calBayesianAvg(entireDistAvg, distExpr.sum(), travelogue.count());
+        final NumberExpression<Long> countExpr = travelogueVisit.countDistinct();
+        final NumberExpression<Double> bayesianAvgExpr = calculateBayesianAvg(avgRating, ratingExpr.multiply(countExpr), countExpr);
 
-        List<Tuple> result = queryFactory.select(place, bayesianDistAvgExpr, distExpr.avg(), travelogue.count(), travelogue.countDistinct())
-                .from(place)
+        final JPAQuery<Place> query = queryFactory.selectFrom(place)
+                .join(place.categories, placeCategory)
                 .join(place.visits, travelogueVisit)
                 .join(travelogueVisit.travelogue, travelogue)
-                .leftJoin(travelogue.companions, travelogueCompanion)
-                .leftJoin(travelogue.motivations, travelogueMotivation)
-                .where(isInGeography(city))
-                .orderBy(bayesianDistAvgExpr.desc())
+                .join(travelogue.companions, travelogueCompanion)
+                .join(travelogue.motivations, travelogueMotivation)
+                .where(placeCategory.type.in(PlaceCategoryType.thingsToDo()), isInGeography(city))
                 .groupBy(place)
-                .fetch();
+                .orderBy(bayesianAvgExpr.desc(), place.id.asc());
 
-        for (Tuple tuple : result) {
-            System.out.println("name=" + tuple.get(0, Place.class).name()
-                    + " bayesianAvg=" + tuple.get(1, Double.class)
-                    + " distance=" + tuple.get(2, Double.class)
-                    + " count=" + tuple.get(3, Integer.class)
-                    + " countDistinct=" + tuple.get(4, Integer.class));
-        }
+        return new JpaInfiniteScrollResult<>(command, query, PlaceDto::of);
+
     }
 
-    private Double calEntireDistanceAvg(Travel travel) {
-        return queryFactory
-                .select(calEuclideanDistance(travel).avg())
-                .from(travelogue)
-                .fetchOne();
+    private NumberExpression<Double> calculateMemberSimilarity(Travel travel) {
+
+        final NumberExpression<Integer> numOfParticipantSumExpr = travelogue.numberOfParticipant.sum();
+
+        final NumberExpression<Double> p1 = travelogue.ageGroupSum.sum().divide(numOfParticipantSumExpr);
+        final NumberExpression<Double> p2 = travelogue.genderSum.sum().divide(numOfParticipantSumExpr);
+
+        final List<Member> members = Stream.concat(
+                travel.participants().stream().map(TravelParticipant::invitee),
+                Stream.of(travel.createdBy())
+                ).toList();
+
+        final NumberExpression<Double> q1 = avgNormalizeValues(members, Member::ageGroup);
+        final NumberExpression<Double> q2 = avgNormalizeValues(members, Member::gender);
+
+        // R(dist) = ABS(dist - 1)
+        final NumberExpression<Double> rating = calEuclideanDistance(p1, p2, q1, q2).subtract(1.0).abs();
+
+        return compareWithCompanionTypes(travel).add(rating).divide(2.0);
     }
 
-    private NumberExpression<Double> calBayesianAvg(Double entireAvg,
-                                                    NumberExpression<Double> avgExpr,
-                                                    NumberExpression<Long> countExpr) {
-        final double C = 2.0;
-        return add(avgExpr, multiply(C, entireAvg))
-                .divide(countExpr.add(C));
+    private NumberExpression<Double> avgNormalizeValues(List<Member> members, Function<Member, EnumNormalizable> mapper) {
+        return Expressions.asNumber(
+                members.stream()
+                        .map(mapper)
+                        .mapToDouble(EnumNormalizable::normalize)
+                        .sum()).divide(members.size());
     }
 
+    private NumberExpression<Double> calculateMotivationSimilarity(Travel travel) {
+        List<MotivationType> motivationTypes = travel.motivations().stream()
+                .map(TravelMotivation::type).collect(Collectors.toList());
 
-    private NumberExpression<Double> calEuclideanDistance(Travel travel) {
-        return sqrt(add(squared(abs(subtract(travelogue.statistics.ageGroupAvg, travel.statistics().ageGroupAvg()))),
-                squared(abs(subtract(travelogue.statistics.genderAvg, travel.statistics().genderAvg())))));
+        return calJaccardSimilarity(travelogueMotivation.type, motivationTypes);
+    }
+
+    private NumberExpression<Double> compareWithCompanionTypes(Travel travel) {
+        List<CompanionType> companionTypes = travel.companions().stream()
+                .map(TravelCompanion::type).collect(Collectors.toList());
+
+        return calJaccardSimilarity(travelogueCompanion.type, companionTypes);
     }
 
     /**
-     * 지정된 지역 내에 장소가 있는지 확인합니다.
+     * 두 Enum 집합 A, B의 자카드 지수를 계산해 반환합니다.
+     *
+     * <p>
+     * J(A, B) = &frac{|A ∩ B|}{|A ∪ B|
+     * </p>
+     *
+     * @param elementTypeExpr 집합 A의 원소를 나타내는 표현식
+     * @param types 집합 B의 원소 목록
+     * @return 0부터 1 사이의 일반화된 유사도
+     * @param <T> Enum 원소 타입
      */
+    private <T extends Enum<T>> NumberExpression<Double> calJaccardSimilarity(EnumPath<T> elementTypeExpr, List<T> types) {
+        NumberExpression<Long> intersectCountExpr = new CaseBuilder()
+                .when(elementTypeExpr.in(types))
+                .then(elementTypeExpr)
+                .otherwise(Expressions.nullExpression())
+                .countDistinct();
+
+        NumberExpression<Long> unionCountExpr = intersectCountExpr.add(types.size());
+        return intersectCountExpr.divide(unionCountExpr).doubleValue();
+    }
+
+    /**
+     * 베이지안 평균을 계산해 반환합니다.
+     *
+     * <p>
+     * 베이지안 평균은 전체 평균과 데이터의 평균을 바탕으로 가중치를 두어 계산됩니다.
+     * <br>
+     * Bayesian Avg = &frac{(C &times; 전체 평균) + 평균값}{C + 데이터 개수}
+     * </p>
+     *
+     * @param entireAverage 전체 평균 값
+     * @param averageExpr 데이터의 평균 표현식
+     * @param countExpr 데이터의 개수 표현식
+     * @return 계산된 베이지안 평균
+     */
+    private NumberExpression<Double> calculateBayesianAvg(double entireAverage, NumberExpression<Double> averageExpr, NumberExpression<Long> countExpr) {
+        NumberExpression<Double> upperHand = Expressions.asNumber(entireAverage * C).add(averageExpr);
+        NumberExpression<Long> lowerHand = countExpr.add(C);
+        return upperHand.divide(lowerHand);
+    }
+
+    /**
+     * 두 숫자의 절대 차이의 제곱을 계산해 반환합니다.
+     *
+     * <p>
+     * Absolute Difference Squared = POWER(ABS(a - b), 2)
+     * </p>
+     *
+     * @param a 첫 번째 숫자 표현식
+     * @param b 두 번째 숫자 표현식
+     * @return 절대 차이의 제곱을 나타내는 표현식
+     */
+    private NumberExpression<Double> calAbsoluteDifference(NumberExpression<Double> a, NumberExpression<Double> b) {
+        return Expressions.numberTemplate(Double.class, "POWER(ABS({0} - {1}), 2)", a, b);
+    }
+
+    /**
+     * 두 점 (p1, p2)와 (q1, q2) 간의 유클리드 거리를 계산해 반환합니다.
+     *
+     * <p>
+     * Euclidean Distance = SQRT(POWER(ABS(p1 - q1), 2) + POWER(ABS(p2 - q2), 2))
+     * </p>
+     *
+     * @param p1 첫 번째 점의 x좌표 표현식
+     * @param p2 첫 번째 점의 y좌표 표현식
+     * @param q1 두 번째 점의 x좌표 표현식
+     * @param q2 두 번째 점의 y좌표 표현식
+     * @return 두 점 간의 유클리드 거리 표현식
+     */
+    private NumberExpression<Double> calEuclideanDistance(NumberExpression<Double> p1, NumberExpression<Double> p2, NumberExpression<Double> q1, NumberExpression<Double> q2) {
+        NumberExpression<Double> leftHand = calAbsoluteDifference(p1, q1);
+        NumberExpression<Double> rightHand = calAbsoluteDifference(p2, q2);
+        return Expressions.numberTemplate(Double.class, "SQRT({0} + {1})", leftHand, rightHand);
+    }
+
     private BooleanExpression isInGeography(Geography geography) {
         return place.regionCode.between(geography.codeStart(), geography.codeEnd());
     }
 
-    private NumberExpression<Double> squared(Object argument) {
-        return Expressions.numberTemplate(Double.class, "POWER({0}, 2)", argument);
-    }
-
-    private NumberExpression<Double> sqrt(Object argument) {
-        return Expressions.numberTemplate(Double.class, "SQRT({0})", argument);
-    }
-
-    private NumberExpression<Double> add(Object left, Object right) {
-        return Expressions.numberTemplate(Double.class, "({0} + {1})", left, right);
-    }
-
-    private NumberExpression<Double> abs(Object argument) {
-        return Expressions.numberTemplate(Double.class, "ABS({0})", argument);
-    }
-
-    private NumberExpression<Double> subtract(Object left, Object right) {
-        return Expressions.numberTemplate(Double.class, "({0} - {1})", left, right);
-    }
-
-
-    private NumberExpression<Double> multiply(Object left, Object right) {
-        return Expressions.numberTemplate(Double.class, "({0} * {1})", left, right);
-    }
 }

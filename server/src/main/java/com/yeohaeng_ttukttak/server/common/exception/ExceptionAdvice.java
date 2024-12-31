@@ -83,13 +83,20 @@ public class ExceptionAdvice {
         return new ServerErrorResponse(errorException.code(), message);
     }
 
-    private String getMessage(BaseException ex, Locale locale) {
-        final Object[] arguments = ex instanceof ArgumentException
-                ? ((ArgumentException) ex).args()
-                : null;
-
-        return messageSource.getMessage(ex.code(), arguments, locale);
+    private String getMessage(BaseException exception, Locale locale) {
+        final Object[] arguments = resolveArguments(exception, locale);
+        return messageSource.getMessage(exception.code(), arguments, locale);
     }
+
+    private Object[] resolveArguments(BaseException exception, Locale locale) {
+        if (exception instanceof ArgumentException argumentException) {
+            return Arrays.stream(argumentException.args())
+                    .map(arg -> messageSource.getMessage(arg.toString(), null, locale))
+                    .toArray();
+        }
+        return null;
+    }
+
 
     private void logError(Exception ex, HttpServletRequest request) {
 

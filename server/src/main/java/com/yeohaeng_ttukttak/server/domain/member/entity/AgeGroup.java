@@ -1,10 +1,12 @@
 package com.yeohaeng_ttukttak.server.domain.member.entity;
 
+import com.yeohaeng_ttukttak.server.domain.shared.entity.EnumNormalizable;
+
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.Objects;
 
-public enum AgeGroup {
+public enum AgeGroup implements EnumNormalizable {
     underNine,
     teens,
     twenties,
@@ -43,6 +45,18 @@ public enum AgeGroup {
         return seventiesPlus;
     }
 
-
+    @Override
+    public double normalize() {
+        return switch (this) {
+            case underNine -> 0.125;
+            case teens -> 0.25;
+            case twenties -> 0.375;
+            case thirties -> 0.5;
+            case forties -> 0.625;
+            case fifties -> 0.75;
+            case sixties -> 0.875;
+            case seventiesPlus -> 1.0;
+        };
+    }
 
 }
