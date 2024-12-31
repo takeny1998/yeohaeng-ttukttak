@@ -6,16 +6,25 @@ public class EntityNotFoundFailException extends FailException implements Argume
 
     static final String code = "ENTITY_NOT_FOUND_FAIL";
 
-    private final Class<?> clazz;
+    private final String entityName;
 
     public EntityNotFoundFailException(Class<?> clazz) {
-        super(code);
-        this.clazz = clazz;
+        this(code, clazz.getSimpleName());
     }
+
+    public EntityNotFoundFailException(String entityName) {
+        this(code, entityName);
+    }
+
+    protected EntityNotFoundFailException(String code, String entityName) {
+        super(code);
+        this.entityName = entityName;
+    }
+
 
     @Override
     public Object[] args() {
-        return new Object[] { clazz.getSimpleName() };
+        return new Object[] { entityName };
     }
 
 }
