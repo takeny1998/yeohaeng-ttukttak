@@ -6,7 +6,6 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.City;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.Geography;
 import com.yeohaeng_ttukttak.server.domain.place.entity.PlaceCategoryType;
-import com.yeohaeng_ttukttak.server.domain.place.entity.QPlaceCategory;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.CompanionType;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.MotivationType;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
@@ -35,10 +34,21 @@ public class TravelCityAttractionRepository {
     private static final double C = 5.0;
 
     public List<Tuple> recommend(Travel travel, City city) {
-        NumberExpression<Double> ratingExpr = createRatingExpr(travel);
-        double avgRating = calEntireRatingAverage(ratingExpr);
-        NumberExpression<Long> countExpr = travelogueVisit.countDistinct();
-        NumberExpression<Double> bayesianAvgExpr = calculateBayesianAvg(avgRating, ratingExpr.multiply(countExpr), countExpr);
+
+        final NumberExpression<Double> ratingExpr = calculateMemberSimilarity(travel)
+                .add(calculateMotivationSimilarity(travel))
+                .divide(2.0);
+
+        final double avgRating =  queryFactory.select(ratingExpr)
+                .from(travelogue)
+                .join(travelogue.companions, travelogueCompanion)
+                .join(travelogue.motivations, travelogueMotivation)
+                .fetch()
+                .stream()
+                .collect(Collectors.averagingDouble(Double::doubleValue));
+
+        final NumberExpression<Long> countExpr = travelogueVisit.countDistinct();
+        final NumberExpression<Double> bayesianAvgExpr = calculateBayesianAvg(avgRating, ratingExpr.multiply(countExpr), countExpr);
 
         return queryFactory.select(place.id, place.name, countExpr, ratingExpr, bayesianAvgExpr)
                 .from(place)
@@ -53,86 +63,112 @@ public class TravelCityAttractionRepository {
                 .fetch();
     }
 
-    private NumberExpression<Double> createRatingExpr(Travel travel) {
-        return calculateMemberSimilarity(travel)
-                .add(calculateMotivationSimilarity(travel))
-                .divide(2.0);
-    }
-
     private NumberExpression<Double> calculateMemberSimilarity(Travel travel) {
-        return compareWithCompanionTypes(travel).add(compareProfiles(travel)).divide(2.0);
+
+        final NumberExpression<Double> p1 = travelogue.statistics.ageGroupAvg.avg();
+        final NumberExpression<Double> p2 = travelogue.statistics.genderAvg.avg();
+
+        final NumberExpression<Double> q1 = Expressions.asNumber(travel.statistics().ageGroupAvg());
+        final NumberExpression<Double> q2 = Expressions.asNumber(travel.statistics().genderAvg());
+
+        // R(dist) = ABS(dist - 1)
+        final NumberExpression<Double> rating = calEuclideanDistance(p1, p2, q1, q2).subtract(1.0).abs();
+        return compareWithCompanionTypes(travel).add(rating).divide(2.0);
     }
 
     private NumberExpression<Double> calculateMotivationSimilarity(Travel travel) {
         List<MotivationType> motivationTypes = travel.motivations().stream()
                 .map(TravelMotivation::type).collect(Collectors.toList());
 
-        return calculateSimilarity(travelogueMotivation.type, motivationTypes);
+        return calJaccardSimilarity(travelogueMotivation.type, motivationTypes);
     }
 
     private NumberExpression<Double> compareWithCompanionTypes(Travel travel) {
         List<CompanionType> companionTypes = travel.companions().stream()
                 .map(TravelCompanion::type).collect(Collectors.toList());
 
-        return calculateSimilarity(travelogueCompanion.type, companionTypes);
+        return calJaccardSimilarity(travelogueCompanion.type, companionTypes);
     }
 
-    private <T extends Enum<T>> NumberExpression<Double> calculateSimilarity(EnumPath<T> typeExpr, List<T> types) {
+    /**
+     * 두 Enum 집합 A, B의 자카드 지수를 계산해 반환합니다.
+     *
+     * <p>
+     * J(A, B) = &frac{|A ∩ B|}{|A ∪ B|
+     * </p>
+     *
+     * @param elementTypeExpr 집합 A의 원소를 나타내는 표현식
+     * @param types 집합 B의 원소 목록
+     * @return 0부터 1 사이의 일반화된 유사도
+     * @param <T> Enum 원소 타입
+     */
+    private <T extends Enum<T>> NumberExpression<Double> calJaccardSimilarity(EnumPath<T> elementTypeExpr, List<T> types) {
         NumberExpression<Long> intersectCountExpr = new CaseBuilder()
-                .when(typeExpr.in(types))
-                .then(typeExpr)
+                .when(elementTypeExpr.in(types))
+                .then(elementTypeExpr)
                 .otherwise(Expressions.nullExpression())
                 .countDistinct();
 
-        NumberExpression<Long> unionCountExpr = typeExpr.countDistinct().add(types.size());
+        NumberExpression<Long> unionCountExpr = intersectCountExpr.add(types.size());
         return intersectCountExpr.divide(unionCountExpr).doubleValue();
     }
 
-    private double calEntireRatingAverage(NumberExpression<Double> ratingExpr) {
-        return queryFactory.select(ratingExpr)
-                .from(travelogue)
-                .join(travelogue.companions, travelogueCompanion)
-                .join(travelogue.motivations, travelogueMotivation)
-                .fetch()
-                .stream()
-                .collect(Collectors.averagingDouble(Double::doubleValue));
+    /**
+     * 베이지안 평균을 계산해 반환합니다.
+     *
+     * <p>
+     * 베이지안 평균은 전체 평균과 데이터의 평균을 바탕으로 가중치를 두어 계산됩니다.
+     * <br>
+     * Bayesian Avg = &frac{(C &times; 전체 평균) + 평균값}{C + 데이터 개수}
+     * </p>
+     *
+     * @param entireAverage 전체 평균 값
+     * @param averageExpr 데이터의 평균 표현식
+     * @param countExpr 데이터의 개수 표현식
+     * @return 계산된 베이지안 평균
+     */
+    private NumberExpression<Double> calculateBayesianAvg(double entireAverage, NumberExpression<Double> averageExpr, NumberExpression<Long> countExpr) {
+        NumberExpression<Double> upperHand = Expressions.asNumber(entireAverage * C).add(averageExpr);
+        NumberExpression<Long> lowerHand = countExpr.add(C);
+        return upperHand.divide(lowerHand);
     }
 
-    private NumberExpression<Double> calculateBayesianAvg(double entireAvg, NumberExpression<Double> avgExpr, NumberExpression<Long> countExpr) {
-        return add(avgExpr, multiply(C, entireAvg)).divide(countExpr.add(C));
+    /**
+     * 두 숫자의 절대 차이의 제곱을 계산해 반환합니다.
+     *
+     * <p>
+     * Absolute Difference Squared = POWER(ABS(a - b), 2)
+     * </p>
+     *
+     * @param a 첫 번째 숫자 표현식
+     * @param b 두 번째 숫자 표현식
+     * @return 절대 차이의 제곱을 나타내는 표현식
+     */
+    private NumberExpression<Double> calAbsoluteDifference(NumberExpression<Double> a, NumberExpression<Double> b) {
+        return Expressions.numberTemplate(Double.class, "POWER(ABS({0} - {1}), 2)", a, b);
     }
 
-    private NumberExpression<Double> compareProfiles(Travel travel) {
-        return abs(sqrt(add(squared(abs(subtract(travelogue.statistics.ageGroupAvg.avg(), travel.statistics().ageGroupAvg()))),
-                squared(abs(subtract(travelogue.statistics.genderAvg.avg(), travel.statistics().genderAvg())))))
-                .subtract(1.0));
+    /**
+     * 두 점 (p1, p2)와 (q1, q2) 간의 유클리드 거리를 계산해 반환합니다.
+     *
+     * <p>
+     * Euclidean Distance = SQRT(POWER(ABS(p1 - q1), 2) + POWER(ABS(p2 - q2), 2))
+     * </p>
+     *
+     * @param p1 첫 번째 점의 x좌표 표현식
+     * @param p2 첫 번째 점의 y좌표 표현식
+     * @param q1 두 번째 점의 x좌표 표현식
+     * @param q2 두 번째 점의 y좌표 표현식
+     * @return 두 점 간의 유클리드 거리 표현식
+     */
+    private NumberExpression<Double> calEuclideanDistance(NumberExpression<Double> p1, NumberExpression<Double> p2, NumberExpression<Double> q1, NumberExpression<Double> q2) {
+        NumberExpression<Double> leftHand = calAbsoluteDifference(p1, q1);
+        NumberExpression<Double> rightHand = calAbsoluteDifference(p2, q2);
+        return Expressions.numberTemplate(Double.class, "SQRT({0} + {1})", leftHand, rightHand);
     }
 
     private BooleanExpression isInGeography(Geography geography) {
         return place.regionCode.between(geography.codeStart(), geography.codeEnd());
     }
 
-    private NumberExpression<Double> squared(Object argument) {
-        return Expressions.numberTemplate(Double.class, "POWER({0}, 2)", argument);
-    }
-
-    private NumberExpression<Double> sqrt(Object argument) {
-        return Expressions.numberTemplate(Double.class, "SQRT({0})", argument);
-    }
-
-    private NumberExpression<Double> add(Object left, Object right) {
-        return Expressions.numberTemplate(Double.class, "({0} + {1})", left, right);
-    }
-
-    private NumberExpression<Double> abs(Object argument) {
-        return Expressions.numberTemplate(Double.class, "ABS({0})", argument);
-    }
-
-    private NumberExpression<Double> subtract(Object left, Object right) {
-        return Expressions.numberTemplate(Double.class, "({0} - {1})", left, right);
-    }
-
-    private NumberExpression<Double> multiply(Object left, Object right) {
-        return Expressions.numberTemplate(Double.class, "({0} * {1})", left, right);
-    }
 }
