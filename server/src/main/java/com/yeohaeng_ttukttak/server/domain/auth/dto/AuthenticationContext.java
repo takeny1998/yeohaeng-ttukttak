@@ -13,7 +13,7 @@ import java.util.Optional;
 public record AuthenticationContext(Optional<Member> member, String uuid) {
 
     public Map<String, Object> toClaims() {
-        return new HashMap<>(Map.of("sub", uuid, "nickname", nickname));
+        return new HashMap<>(Map.of("sub", uuid));
     }
 
 
