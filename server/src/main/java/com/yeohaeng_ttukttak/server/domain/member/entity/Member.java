@@ -55,7 +55,7 @@ public class Member {
         this.avatar = new DefaultAvatar(this);
     }
 
-    Long id() { return id; }
+    public Long id() { return id; }
 
     public String uuid() {
         return uuid;

@@ -8,9 +8,10 @@ import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
-    @Query("SELECT u FROM Member u WHERE u.auth.openId = :openId")
+    @Query("SELECT m FROM Member m WHERE m.auth.openId = :openId")
     Optional<Member> findByOpenId(String openId);
 
+    @Query("SELECT m FROM Member m WHERE m.uuid = :uuid")
     Optional<Member> findByUuid(String uuid);
 
 }

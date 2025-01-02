@@ -6,6 +6,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class AuthenticationContextHolder {
 
+    private AuthenticationContextHolder() {}
+
     private static final ThreadLocal<AuthenticationContext> contextHolder = new ThreadLocal<>();
 
     public static void setContext(AuthenticationContext context) {

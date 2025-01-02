@@ -50,11 +50,7 @@ public class OAuthLoginService {
 
         log.debug("[OAuthLoginService.login] member = {}", member);
 
-        final AuthenticationContext authorization = new AuthenticationContext(
-                member.uuid(),
-                member.nickname(),
-                member.ageGroup(),
-                member.gender());
+        final AuthenticationContext authorization = AuthenticationContext.of(member);
 
         final String accessToken = accessTokenService.create(authorization);
         final String refreshToken = refreshTokenService.create(member.uuid());
