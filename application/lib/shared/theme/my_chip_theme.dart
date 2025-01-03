@@ -7,37 +7,40 @@ class MyChipTheme extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
+
+    final ColorScheme(:primary, :onPrimary, :onSurface, :secondaryContainer) =
+        Theme.of(context).colorScheme;
+
+    final foregroundColor = WidgetStateColor.resolveWith((states) {
+      if (states.contains(WidgetState.selected)) {
+        return onPrimary;
+      }
+      return onSurface;
+    });
+
+    final backgroundColor = WidgetStateBorderSide.resolveWith((states) {
+      if (states.contains(WidgetState.selected)) {
+        return BorderSide(color: primary);
+      }
+      return BorderSide(color: secondaryContainer);
+    });
 
     return Theme(
         data: Theme.of(context).copyWith(
           chipTheme: ChipThemeData(
-              labelStyle: TextStyle(
-                color: WidgetStateColor.resolveWith((states) {
-                  if (states.contains(WidgetState.selected)) {
-                    return colorScheme.primary;
-                  }
-                  return colorScheme.onSurface;
-                }),
-                fontWeight: FontWeight.w600,
-              ),
-              secondaryLabelStyle: TextStyle(
-                color: colorScheme.primary,
-                fontWeight: FontWeight.w600,
-              ),
-              selectedColor: colorScheme.primaryContainer,
-              checkmarkColor: colorScheme.primary,
-              backgroundColor: colorScheme.surfaceContainerLow,
-              deleteIconColor: colorScheme.primary,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0)),
-              side: WidgetStateBorderSide.resolveWith((states) {
-                if (states.contains(WidgetState.selected)) {
-                  return BorderSide(color: colorScheme.primaryFixedDim);
-                }
-                return BorderSide(color: colorScheme.surfaceDim);
-              }),
-              padding: const EdgeInsets.all(8.0)),
+            labelStyle:
+                TextStyle(color: foregroundColor, fontWeight: FontWeight.w600),
+            secondaryLabelStyle:
+                TextStyle(color: primary, fontWeight: FontWeight.w600),
+            selectedColor: primary,
+            checkmarkColor: onPrimary,
+            backgroundColor: secondaryContainer,
+            deleteIconColor: primary,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0)),
+            side: backgroundColor,
+            padding: const EdgeInsets.all(8.0),
+          ),
         ),
         child: _child);
   }
