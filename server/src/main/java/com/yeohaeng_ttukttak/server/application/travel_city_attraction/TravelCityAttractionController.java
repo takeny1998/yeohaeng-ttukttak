@@ -1,6 +1,6 @@
 package com.yeohaeng_ttukttak.server.application.travel_city_attraction;
 
-import com.yeohaeng_ttukttak.server.application.travel_city_attraction.dto.PlaceInfiniteScrolledResponse;
+import com.yeohaeng_ttukttak.server.application.travel_city_attraction.dto.AttractionInfiniteScrolledResponse;
 import com.yeohaeng_ttukttak.server.common.dto.InfiniteScrollCommand;
 import com.yeohaeng_ttukttak.server.common.dto.InfiniteScrollResult;
 import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
@@ -10,6 +10,7 @@ import com.yeohaeng_ttukttak.server.domain.geography.repository.GeographyReposit
 import com.yeohaeng_ttukttak.server.domain.place.dto.PlaceDto;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
 import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelRepository;
+import com.yeohaeng_ttukttak.server.domain.travel_city_attraction.AttractionDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +28,7 @@ public class TravelCityAttractionController {
 
     @GetMapping
     @Transactional(readOnly = true)
-    public ServerResponse<PlaceInfiniteScrolledResponse> orderByTravelSimilarity(
+    public ServerResponse<AttractionInfiniteScrolledResponse> orderByTravelSimilarity(
             @PathVariable Long travelId, @PathVariable Long cityId, @ModelAttribute InfiniteScrollCommand scrollCommand) {
 
         final Travel travel = travelRepository.findById(travelId)
@@ -36,10 +37,10 @@ public class TravelCityAttractionController {
         final City city = geographyRepository.findCityById(cityId)
                 .orElseThrow(() -> new EntityNotFoundFailException(City.class));
 
-        final InfiniteScrollResult<PlaceDto> scrollResult =
+        final InfiniteScrollResult<AttractionDto> scrollResult =
                 repository.orderByTravelSimilarity(scrollCommand, travel, city);
 
-        return new ServerResponse<>(new PlaceInfiniteScrolledResponse(scrollResult));
+        return new ServerResponse<>(new AttractionInfiniteScrolledResponse(scrollResult));
     }
 
 }
