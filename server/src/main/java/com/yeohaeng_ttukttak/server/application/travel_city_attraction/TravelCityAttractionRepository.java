@@ -1,8 +1,5 @@
 package com.yeohaeng_ttukttak.server.application.travel_city_attraction;
 
-import com.querydsl.core.Tuple;
-import com.querydsl.core.group.GroupBy;
-import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.*;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.JPQLQuery;
@@ -14,8 +11,6 @@ import com.yeohaeng_ttukttak.server.common.dto.JpaInfiniteScrollResult;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.City;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.Geography;
 import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
-import com.yeohaeng_ttukttak.server.domain.place.dto.PlaceDto;
-import com.yeohaeng_ttukttak.server.domain.place.entity.Place;
 import com.yeohaeng_ttukttak.server.domain.place.entity.PlaceCategoryType;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.CompanionType;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.EnumNormalizable;
@@ -51,22 +46,39 @@ public class TravelCityAttractionRepository {
 
     public InfiniteScrollResult<AttractionDto> orderByTravelSimilarity(InfiniteScrollCommand command, Travel travel, City city) {
 
-        final NumberExpression<Double> ratingExpr = calculateMemberSimilarity(travel)
+        final NumberExpression<Double> similarityExpr = calculateMemberSimilarity(travel)
                 .add(calculateMotivationSimilarity(travel))
                 .divide(2.0);
 
-        final double avgRating =  queryFactory.select(ratingExpr)
+        final double entireSimilarityAvg = queryFactory.select(similarityExpr)
                 .from(travelogue)
                 .join(travelogue.companions, travelogueCompanion)
                 .join(travelogue.motivations, travelogueMotivation)
-                .fetch()
-                .stream()
-                .collect(Collectors.averagingDouble(Double::doubleValue));
+                .groupBy(travelogue)
+                .fetch().stream().collect(Collectors.averagingDouble(Double::doubleValue));
 
         final NumberExpression<Long> countExpr = travelogueVisit.countDistinct();
-        final NumberExpression<Double> bayesianAvgExpr = calculateBayesianAvg(avgRating, ratingExpr.multiply(countExpr), countExpr);
 
-        final JPAQuery<Place> query = queryFactory.select(place)
+        final NumberExpression<Double> bayesianAvgExpr =
+                calculateBayesianAvg(entireSimilarityAvg, similarityExpr.multiply(countExpr), countExpr);
+
+        final NumberExpression<Double> ratingAvgExpr = travelogueVisit.satisfaction.avg();
+        final Double entireRatingAvg = queryFactory.select(ratingAvgExpr)
+                .from(travelogueVisit)
+                .fetchOne();
+
+        log.debug("avg={}", entireRatingAvg);
+
+        final NumberExpression<Double> ratingSumExpr =
+                travelogueVisit.satisfaction.sum().castToNum(Double.class);
+
+        final JPQLQuery<Double> bayesianRatingSubQuery = JPAExpressions
+                .select(calculateBayesianAvg(entireRatingAvg, ratingSumExpr, travelogueVisit.count()))
+                .from(travelogueVisit)
+                .where(travelogueVisit.place.eq(place));
+
+        final JPAQuery<AttractionQueryDto> query = queryFactory.select(
+                new QAttractionQueryDto(place, bayesianRatingSubQuery))
                 .from(place)
                 .join(place.categories, placeCategory)
                 .join(place.visits, travelogueVisit)
@@ -77,7 +89,7 @@ public class TravelCityAttractionRepository {
                 .groupBy(place)
                 .orderBy(bayesianAvgExpr.desc(), place.id.asc());
 
-        return new JpaInfiniteScrollResult<>(command, query, AttractionDto::of);
+        return new JpaInfiniteScrollResult<AttractionQueryDto, AttractionDto>(command, query, AttractionQueryDto::toEntityDto);
     }
 
 
