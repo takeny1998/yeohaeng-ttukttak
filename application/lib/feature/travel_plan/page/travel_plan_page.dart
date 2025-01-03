@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:animations/animations.dart';
 import 'package:application_new/common/loading/loading_page.dart';
+import 'package:application_new/feature/travel/travel_city_page.dart';
 import 'package:application_new/feature/travel_plan/component/travel_plan_home_header.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_bookmark_page.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_participant/page/travel_plan_participant_page.dart';
@@ -34,33 +35,34 @@ class _TravelPlanPageState extends ConsumerState<TravelPlanPage> {
     super.dispose();
   }
 
+
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(travelPlanProvider(widget.travelId));
+    final provider = travelPlanProvider(widget.travelId);
+    final state = ref.watch(provider).value;
 
     if (state == null) return const LoadingPage();
 
-    final TravelPlanState(:travel, :pageIndex, :cityIndex) = state;
 
-    // final cityId = travel.cities[cityIndex].id;
+    final TravelPlanState(:travel, :pageIndex, :selectedCity) = state;
+
+    ref.listen(provider, (prev, next) {
+      if (prev?.value?.pageIndex == next.value?.pageIndex) return;
+
+
+      pageController.animateToPage(next.value!.pageIndex, duration: const Duration(milliseconds: 200), curve: Curves.linear);
+    });
 
     return Scaffold(
-      body: PageTransitionSwitcher(
-        transitionBuilder: (child, primaryAnimation, secondaryAnimation) =>
-            FadeTransition(
-                opacity:primaryAnimation,
-                child: child),
-        child: IndexedStack(
-          index: pageIndex,
-          key: ValueKey<int>(pageIndex),
-          children: [
-            TravelPlanHomePage(provider: travelPlanProvider(widget.travelId), state: state),
-            TravelPlanRecommendPage(travelId: widget.travelId, cityId: 162),
-            TravelPlanManagePage(travelId: widget.travelId),
-            TravelPlanBookmarkPage(travelId: widget.travelId),
-          ],
-        ),
-      ),
+      body: PageView(
+        physics: const NeverScrollableScrollPhysics(),
+        controller: pageController,
+        children: [
+        TravelPlanHomePage(provider: provider, state: state),
+        TravelCityPage(provider: provider, state: state),
+        TravelPlanManagePage(travelId: widget.travelId),
+        TravelPlanBookmarkPage(travelId: widget.travelId)
+      ],),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
             border: Border(
@@ -70,7 +72,7 @@ class _TravelPlanPageState extends ConsumerState<TravelPlanPage> {
         child: NavigationBar(
           selectedIndex: pageIndex,
           onDestinationSelected: (index) => ref
-              .read(travelPlanProvider(widget.travelId).notifier)
+              .read(provider.notifier)
               .changePage(index),
           destinations: const [
             NavigationDestination(

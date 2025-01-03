@@ -30,15 +30,15 @@ class TravelPlanRecommend extends _$TravelPlanRecommend {
     final city = ref.watch(cityProvider(cityId)).value;
 
     if (state == null || city == null) return null;
-
-    _initTargets(state.travel);
-
-    return TravelPlanRecommendState(
-        travel: state.travel,
-        city: city,
-        placeRecommends: [],
-        hasNextPage: true,
-        hasMoreTravel: true);
+    //
+    // _initTargets(state.travel);
+    //
+    // return TravelPlanRecommendState(
+    //     travel: state.travel,
+    //     city: city,
+    //     placeRecommends: [],
+    //     hasNextPage: true,
+    //     hasMoreTravel: true);
   }
 
   void _initTargets(TravelModel travel) {

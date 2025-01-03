@@ -9,7 +9,7 @@
 '{} has been selected.': '{}이(가) 선택되었습니다.'
 '{} has been deselected.': '{}이(가) 선택 해제되었습니다.'
 
-Add to your plan: 일정에 추가하기
+Add to plan: 일정에 추가
 Age group: 연령대
 All: 전체
 An Error Occurred: 에러가 발생했습니다.
@@ -18,6 +18,8 @@ A network error occurred. Please try again later.: 네트워크 연결에 문제
 
 Back to the main page: 메인 페이지로
 Back to the page: 이전 페이지로
+Bookmark: 북마크
+By Chance: 우연히
 
 Cancel: 취소
 Close: 닫기
@@ -28,9 +30,11 @@ Complete: 완료
 
 Delete comment: 댓글 삭제하기
 
+Easy of Access: 좋은 접근성
 Edit comment: 댓글 수정하기
 Edit profile: 프로필 수정
 Edited: 수정됨
+Education: 교육성
 
 For adventure: 일상적인 환경 및 역할에서의 탈출, 지루함 탈피
 For rest: 쉴 수 있는 기회, 육체 피로 해결 및 정신적인 휴식
@@ -44,16 +48,28 @@ For special: 특별한 목적(칠순여행, 신혼여행, 수학여행 등)
 For other: 기타
 
 Gender: 성별
+Good Amenities: 훌륭한 시설
+Good Reviews: 좋은 후기
+Good Value: 좋은 가성비
 
 Invite new participant: 새 일행 초대
+It has good amenities/services: 시설/서비스가 좋아요
+I found it by chance: 우연히 발견헀어요
+I had good experiences: 좋은 경험이 있었어요
+It's a hot spot: 인기있는 장소예요
+It's a good value: 가성비가 좋아요
+It's an educational place: 교육성이 좋아요
+It's easy to access: 접근성이 좋아요
 
 Kick: 추방하기
 Korea: 대한민국
 
 Leader: 팀 리더
 Leave: 떠나기
+Local Landmark: 지역 명소라 방문했어요
 
 Me: 나
+Media Reviews: 미디어 리뷰
 Member: 팀원
 
 Next: 다음으로
@@ -61,7 +77,9 @@ Nickname: 닉네임
 No comments found to delete: 삭제할 댓글을 찾을 수 없습니다.
 
 Optional: 선택 사항
+Other: 기타
 
+Past Experience: 과거 경험
 Please check all of the boxes.: 모든 사항을 선택해 주세요.
 Please enter a comment.: 댓글 내용을 입력해 주세요.
 Please enter a name of travel.: 여행의 이름을 입력해 주세요.
@@ -75,6 +93,8 @@ Previous: 이전으로
 
 Read More: 더 보기
 Read travelogues: 여행기 읽기
+Recommendation: 추천
+Referred by a friend: 지인이 추천했어요
 Report comment: 댓글 신고하기
 Retry: 다시 시도하기
 
@@ -86,6 +106,7 @@ Submit: 제출하기
 
 The invitation link expire after 30 minutes.: 초대 링크는 30분 후에 만료되요.
 The profile was updated successfully.: 프로필이 성공적으로 수정되었습니다.
+The reviews were good: 리뷰가 좋아요
 The travel has been created successfully.: 여행이 성공적으로 생성되었습니다.
 Travel of {}: '{} 여행'
 Travel participants: 여행 일행
