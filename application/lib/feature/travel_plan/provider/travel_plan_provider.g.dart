@@ -6,7 +6,7 @@ part of 'travel_plan_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$travelPlanHash() => r'6baa7493bc7b7a2f9b96ae6ccb8916e7853d058c';
+String _$travelPlanHash() => r'fd6394e709b225f4d3bbdb16b0cb7479e2250683';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -30,10 +30,10 @@ class _SystemHash {
 }
 
 abstract class _$TravelPlan
-    extends BuildlessAutoDisposeNotifier<TravelPlanState?> {
+    extends BuildlessAutoDisposeAsyncNotifier<TravelPlanState> {
   late final int travelId;
 
-  TravelPlanState? build(
+  FutureOr<TravelPlanState> build(
     int travelId,
   );
 }
@@ -43,7 +43,7 @@ abstract class _$TravelPlan
 const travelPlanProvider = TravelPlanFamily();
 
 /// See also [TravelPlan].
-class TravelPlanFamily extends Family<TravelPlanState?> {
+class TravelPlanFamily extends Family<AsyncValue<TravelPlanState>> {
   /// See also [TravelPlan].
   const TravelPlanFamily();
 
@@ -82,7 +82,7 @@ class TravelPlanFamily extends Family<TravelPlanState?> {
 
 /// See also [TravelPlan].
 class TravelPlanProvider
-    extends AutoDisposeNotifierProviderImpl<TravelPlan, TravelPlanState?> {
+    extends AutoDisposeAsyncNotifierProviderImpl<TravelPlan, TravelPlanState> {
   /// See also [TravelPlan].
   TravelPlanProvider(
     int travelId,
@@ -113,7 +113,7 @@ class TravelPlanProvider
   final int travelId;
 
   @override
-  TravelPlanState? runNotifierBuild(
+  FutureOr<TravelPlanState> runNotifierBuild(
     covariant TravelPlan notifier,
   ) {
     return notifier.build(
@@ -138,7 +138,7 @@ class TravelPlanProvider
   }
 
   @override
-  AutoDisposeNotifierProviderElement<TravelPlan, TravelPlanState?>
+  AutoDisposeAsyncNotifierProviderElement<TravelPlan, TravelPlanState>
       createElement() {
     return _TravelPlanProviderElement(this);
   }
@@ -157,13 +157,13 @@ class TravelPlanProvider
   }
 }
 
-mixin TravelPlanRef on AutoDisposeNotifierProviderRef<TravelPlanState?> {
+mixin TravelPlanRef on AutoDisposeAsyncNotifierProviderRef<TravelPlanState> {
   /// The parameter `travelId` of this provider.
   int get travelId;
 }
 
 class _TravelPlanProviderElement
-    extends AutoDisposeNotifierProviderElement<TravelPlan, TravelPlanState?>
+    extends AutoDisposeAsyncNotifierProviderElement<TravelPlan, TravelPlanState>
     with TravelPlanRef {
   _TravelPlanProviderElement(super.provider);
 

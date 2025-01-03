@@ -27,7 +27,7 @@ class _TravelPlanHomePageState extends ConsumerState<TravelPlanHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final TravelPlanState(:travel, :appBarHeight) = widget.state;
+    final TravelPlanState(:travel) = widget.state;
     final colorScheme = Theme.of(context).colorScheme;
 
     const headerStyle = TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600);
