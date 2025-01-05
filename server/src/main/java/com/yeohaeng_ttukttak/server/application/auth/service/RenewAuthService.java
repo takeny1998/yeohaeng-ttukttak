@@ -29,11 +29,7 @@ public class RenewAuthService {
         refreshTokenService.revoke(verifiedToken);
 
         final Member member = memberService.find(memberId);
-        final AuthenticationContext authorization = new AuthenticationContext(
-                member.uuid(),
-                member.nickname(),
-                member.ageGroup(),
-                member.gender());
+        final AuthenticationContext authorization = AuthenticationContext.of(member);
 
         return new AuthTokenDto(
                 accessTokenService.create(authorization),

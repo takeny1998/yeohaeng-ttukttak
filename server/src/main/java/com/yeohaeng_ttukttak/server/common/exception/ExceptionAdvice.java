@@ -28,7 +28,7 @@ public class ExceptionAdvice {
     public ServerFailResponse handleFailException(
             FailException exception, Locale locale, HttpServletRequest request) {
 
-        logError(exception, request);
+        logError(exception, request, 0);
 
         final Map<String, String> error = new HashMap<>(
                 Map.of("code", exception.code(),
@@ -45,7 +45,7 @@ public class ExceptionAdvice {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ServerFailResponse handleValidationException(
             MethodArgumentNotValidException exception, Locale locale, HttpServletRequest request) {
-        logError(exception, request);
+        logError(exception, request, 0);
 
         final List<Map<String, String>> data = exception
                 .getFieldErrors()
@@ -63,7 +63,7 @@ public class ExceptionAdvice {
     public ServerErrorResponse handleErrorException(
             ErrorException exception, Locale locale, HttpServletRequest request) {
 
-        logError(exception, request);
+        logError(exception, request, 0);
         final String message = getMessage(exception, locale);
 
         return new ServerErrorResponse(exception.code(), message);
@@ -76,7 +76,7 @@ public class ExceptionAdvice {
         final InternalServerErrorException errorException =
                 new InternalServerErrorException(exception);
 
-        logError(errorException, request);
+        logError(errorException, request, 0);
 
         final String message = getMessage(errorException, locale);
 
@@ -98,23 +98,24 @@ public class ExceptionAdvice {
     }
 
 
-    private void logError(Exception ex, HttpServletRequest request) {
+    private void logError(Throwable exception, HttpServletRequest request, int depth) {
 
         final String uuid = UUID.randomUUID().toString().substring(0, 7);
 
-        log.error("[{}] -->> {} {}", uuid, request.getMethod(), request.getRequestURI());
+        String padding = " ".repeat(depth);
 
-        log.error("[{}] <<-- {}", uuid, ex.getClass().getName());
-        logStackTrace(ex, uuid, 0);
+        if (depth == 0) {
+            log.error("[{}] -->> {} {}", uuid, request.getMethod(), request.getRequestURI());
 
-        if (Objects.nonNull(ex.getCause())) {
-            Throwable cause = ex.getCause();
+        }
 
-            log.error("[{}]   <<-- Caused By: {}", uuid, cause.getClass().getName());
-            log.error("[{}]   <<-- Message: {}", uuid, cause.getMessage());
+        log.error("[{}] {}<<-- Caused By: {}", uuid, padding, exception.getClass().getName());
+        log.error("[{}] {}<<-- Message: {}", uuid, padding, exception.getMessage());
 
-            logStackTrace(cause, uuid, 2);
+        logStackTrace(exception, uuid, depth);
 
+        if (Objects.nonNull(exception.getCause())) {
+            logError(exception.getCause(), request, depth + 2);
         }
 
     }
@@ -124,7 +125,7 @@ public class ExceptionAdvice {
 
         if (stackTrace == null) return;
 
-        String padding = " ".repeat(depth);
+        final String padding = " ".repeat(depth);
 
         log.error("[{}] {}<<-- At: {}", uuid, padding, stackTrace[0]);
 
