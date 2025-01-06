@@ -1,12 +1,12 @@
 package com.yeohaeng_ttukttak.server.application.travel_plan_comment;
 
 import com.yeohaeng_ttukttak.server.application.travel_plan_comment.dto.CommentListResponse;
-import com.yeohaeng_ttukttak.server.application.travel_plan_comment.dto.EditCommentRequest;
-import com.yeohaeng_ttukttak.server.application.travel_plan_comment.dto.WriteCommentRequest;
+import com.yeohaeng_ttukttak.server.application.travel_plan_comment.dto.CommentContentRequest;
 import com.yeohaeng_ttukttak.server.common.aop.annotation.Authorization;
 import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
 import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthenticationContext;
 import com.yeohaeng_ttukttak.server.domain.comment.CommentDto;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -16,16 +16,29 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v2/travels/{travelId}/plans/{planId}/comments")
 @RequiredArgsConstructor
+@Tag(name = "댓글 (Comment)", description = "댓글과 관련된 동작을 수행하는 컬렉션 입니다.")
 public class TravelPlanCommentController {
 
     private final TravelPlanCommentService travelPlanCommentService;
 
+    /**
+     * 지정한 여행 계획에 새로운 댓글을 작성합니다.
+     *
+     * <ul>
+     *     <li>여행 생성자 및 참여자만 댓글을 작성할 수 있습니다.</li>
+     * </ul>
+     *
+     * @param travelId 사용자 여행의 식별자
+     * @param planId 여행 일정의 식별자
+     * @param request 작성할 댓글 정보
+     * @return 새로운 상태의 댓글 목록
+     */
     @PostMapping
     @Authorization
     public ServerResponse<CommentListResponse> writeComment(
             @PathVariable Long travelId,
             @PathVariable Long planId,
-            @RequestBody @Valid WriteCommentRequest request,
+            @RequestBody @Valid CommentContentRequest request,
             AuthenticationContext authentication) {
 
         final String writerId = authentication.uuid();
@@ -40,6 +53,13 @@ public class TravelPlanCommentController {
                 new CommentListResponse(dtoList));
     }
 
+    /**
+     * 지정한 여행 계획의 댓글 목록을 조회합니다.
+     *
+     * @param travelId 사용자 여행의 식별자
+     * @param planId 여행 일정의 식별자
+     * @return 조회된 댓글 목록
+     */
     @GetMapping
     public ServerResponse<CommentListResponse> getOrderedComments(
             @PathVariable Long travelId,
@@ -52,13 +72,26 @@ public class TravelPlanCommentController {
                 new CommentListResponse(dtoList));
     }
 
+    /**
+     * 지정한 여행 게획의 댓글 본문을 수정합니다.
+     *
+     * <ul>
+     *     <li>댓글의 작성자만 본문을 수정할 수 있습니다.</li>
+     * </ul>
+     *
+     * @param travelId 사용자 여행의 식별자
+     * @param planId 여행 일정의 식별자
+     * @param commentId 댓글의 식별자
+     * @param request 수정할 댓글의 본문 정보
+     * @return 새로운 상태의 댓글 목록
+     */
     @PatchMapping("/{commentId}")
     @Authorization
     public ServerResponse<CommentListResponse> editComment(
             @PathVariable Long travelId,
             @PathVariable Long planId,
             @PathVariable Long commentId,
-            @RequestBody @Valid EditCommentRequest request,
+            @RequestBody @Valid CommentContentRequest request,
             AuthenticationContext authentication) {
 
         final String editorId = authentication.uuid();
@@ -74,6 +107,18 @@ public class TravelPlanCommentController {
                 new CommentListResponse(dtoList));
     }
 
+    /**
+     * 지정한 여행 게획의 댓글을 삭제합니다.
+     *
+     * <ul>
+     *     <li>댓글의 작성자만 삭제할 수 있습니다.</li>
+     * </ul>
+     *
+     * @param travelId 사용자 여행의 식별자
+     * @param planId 여행 일정의 식별자
+     * @param commentId 댓글의 식별자
+     * @return 새로운 상태의 댓글 목록
+     */
     @DeleteMapping("/{commentId}")
     @Authorization
     public ServerResponse<CommentListResponse> deleteComment(

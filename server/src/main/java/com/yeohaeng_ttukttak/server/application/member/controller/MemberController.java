@@ -11,6 +11,7 @@ import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
 import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthenticationContext;
 import com.yeohaeng_ttukttak.server.domain.member.dto.MemberDto;
 import com.yeohaeng_ttukttak.server.domain.travel.dto.TravelDto;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +20,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v2/members")
 @RequiredArgsConstructor
+@Tag(name = "사용자 (Member)", description = "사용자 정보와 관련된 동작을 수행하는 컬렉션 입니다.")
 public class MemberController {
 
     private final FindMemberService findMemberService;
@@ -53,9 +55,13 @@ public class MemberController {
 
     }
 
+    /**
+     * 사용자가 참여하거나 생성한 여행을 모두 조회합니다.
+     * @return 조회된 여행 목록
+     */
     @GetMapping("/me/travels")
     @Authorization
-    public ServerResponse<TravelListResponse> findMyAll(
+    public ServerResponse<TravelListResponse> findMyTravels(
             AuthenticationContext context) {
 
         final List<TravelDto> travelDtoList =

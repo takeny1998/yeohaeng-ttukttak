@@ -12,6 +12,7 @@ import com.yeohaeng_ttukttak.server.application.travel.controller.dto.CreateTrav
 import com.yeohaeng_ttukttak.server.domain.travel.dto.TravelDto;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
 import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelRepository;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -24,13 +25,19 @@ import java.util.Locale;
 @RestController
 @RequestMapping("/api/v2/travels")
 @RequiredArgsConstructor
-public class TravelController implements TravelDocument {
+@Tag(name = "여행 (Travel)", description = "사용자 여행과 관련된 동작을 수행하는 컬렉션 입니다.")
+public class TravelController {
 
     private final TravelService travelService;
     private final TravelCityService travelCityService;
 
     private final TravelRepository travelRepository;
 
+    /**
+     * 새로운 여행 계획을 생성합니다.
+     * @param request 생성할 여행 정보
+     * @return 생성된 여행 정보 및 도시 목록
+     */
     @PostMapping
     @Authorization
     public ServerResponse<CreateTravelResponse> create(
