@@ -51,7 +51,6 @@ import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.NOT_REQUIR
  *                </ul>
  */
 public record CreateTravelRequest (
-
         String name,
         @NotNull LocalDate startedOn,
         @NotNull LocalDate endedOn,
