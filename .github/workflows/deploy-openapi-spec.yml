@@ -40,7 +40,7 @@ jobs:
           revision: ./server/api-specification.json
           format: markup
 
-      - run: ${{ steps.oasdiff.outputs }}
+      - run: ${{ steps.oasdiff.outputs.diff }}
 
       - name: Add comment API changes
         uses: actions/github-script@v7
