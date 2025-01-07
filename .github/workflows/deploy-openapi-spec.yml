@@ -1,0 +1,45 @@
+name: Deploy OpenAPI Specification
+
+on:
+  push:
+    branches: [ main ]
+
+
+permissions:
+  contents: write    
+
+jobs:
+  depoly:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./server
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'zulu'
+          cache: gradle # Gradle 캐시 설정
+
+      - name: Grant Execution Permission to gradlew
+        run: chmod +x ./gradlew # gradlew 실행 권한 부여
+
+      - name: Build jar
+        run: ./gradlew test --tests com.yeohaeng_ttukttak.server.ServerDocumentationTest
+
+      - name: print
+        run: mv api-specification.json ../docs
+
+      - name: commit
+        env:
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+        run: |
+          git config --global user.name github-actions
+          git config --global user.email github-actions@github.com
+          
+          git add ../docs/api-specification.json
+          git commit -m "docs-api: API 명세 작성 #${{ github.sha }}"
+          git push
