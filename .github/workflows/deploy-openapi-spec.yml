@@ -40,6 +40,8 @@ jobs:
           revision: ./server/api-specification.json
           format: markup
 
+      - run: ${{ steps.oasdiff.outputs }}
+
       - name: Add comment API changes
         uses: actions/github-script@v7
         if: ${{ !startsWith(steps.oasdiff.outputs.diff, 'No endpoint changes') }}
@@ -52,6 +54,7 @@ jobs:
               repo: context.repo.repo,
               body: '${{ steps.oasdiff.outputs.diff }}'
             })
+              
       - name: Move file to docs directory
         run: mv ./server/api-specification.json ./docs
 
