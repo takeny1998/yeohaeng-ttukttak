@@ -5,6 +5,7 @@ import com.yeohaeng_ttukttak.server.domain.locale.LocalizedMessagesProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
@@ -14,10 +15,11 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 @Slf4j
+@Profile(value = {"dev", "prod"})
 @Configuration
-public class ResourceConfig {
+public class ResourceConfig implements ResourceConfigurable {
 
-    @Bean
+    @Bean(name = "fWords")
     public List<String> fWords() {
         return loadWords("data/fword_ko.txt", "data/fword_en.txt");
     }

@@ -19,6 +19,15 @@ public class GeographyController {
 
     private final GeographyRepository geographyRepository;
 
+    /**
+     * 모든 지역 정보(국가, 지역, 도시) 목록을 반환합니다.
+     *
+     * <ul>
+     *     <li>해당 데이터는 변경될 여지가 적으므로, 적절히 캐시해 사용하기를 권장합니다.</li>
+     * </ul>
+     *
+     * @return 조회된 지역 정보 목록
+     */
     @GetMapping
     @Transactional(readOnly = true)
     public ServerResponse<GeographyListResponse> findAll() {
