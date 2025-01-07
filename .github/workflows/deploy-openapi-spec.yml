@@ -11,9 +11,6 @@ permissions:
 jobs:
   depoly:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./server
     steps:
       - uses: actions/checkout@v3
         with:
@@ -27,16 +24,38 @@ jobs:
           cache: gradle # Gradle 캐시 설정
 
       - name: Grant Execution Permission to gradlew
+        working-directory: ./server
         run: chmod +x ./gradlew # gradlew 실행 권한 부여
 
       - name: Generate OpenAPI Specification file
+        id: oasdiff
+        working-directory: ./server
         run: ./gradlew test --tests com.yeohaeng_ttukttak.server.ServerDocumentationTest
 
+      - name: Add comment API changes
+        uses: actions/github-script@v7
+        if: ${{ !startsWith(steps.oasdiff.outputs.diff, 'No endpoint changes') }}
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '${{ steps.oasdiff.outputs.diff }}'
+            })
+
+      - name: Running OpenAPI Spec diff action
+        uses: oasdiff/oasdiff-action/diff@main
+        with:
+          base: ./docs/api-specification.json
+          revision: ./server/api-specification.json
+          format: markup
+
       - name: Move file to docs directory
-        run: mv api-specification.json ../docs
+        run: mv ./server/api-specification.json ./docs
 
       - name: Commit and push changes
-        working-directory: ./
         run: |
           git config --global user.name github-actions
           git config --global user.email github-actions@github.com
