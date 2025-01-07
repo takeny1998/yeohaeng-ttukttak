@@ -6,7 +6,8 @@ on:
     types: [opened, synchronize, reopened]
 
 permissions:
-  contents: write    
+  contents: write
+  pull-requests: write
 
 jobs:
   depoly:
