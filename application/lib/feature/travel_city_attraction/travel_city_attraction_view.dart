@@ -1,7 +1,10 @@
 import 'package:application_new/core/scroll/infinite_scroll_model.dart';
+import 'package:application_new/core/translation/translation_service.dart';
+import 'package:application_new/feature/travel_city_attraction/components/attraction_list_item.dart';
 import 'package:application_new/feature/travel_city_attraction/travel_city_attraction_provider.dart';
 import 'package:application_new/feature/travel_city_attraction/travel_city_attraction_state.dart';
 import 'package:application_new/shared/component/infinite_list_indicator.dart';
+import 'package:application_new/shared/util/snap_scroll_physics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -13,31 +16,34 @@ class TravelCityAttractionView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final asyncState =
-        ref.watch(travelCityAttractionProvider(travelId, cityId));
+    final provider = travelCityAttractionProvider(travelId, cityId);
+    final asyncState = ref.watch(provider);
 
     return asyncState.when(
       data: (state) {
-        final TravelCityAttractionState(:attractions) = state;
+        final TravelCityAttractionState(:travel, :attractions) = state;
 
-        return CustomScrollView(slivers: [
+        return CustomScrollView(
+            physics: const ClampingScrollPhysics(),
+            slivers: [
+          const SliverToBoxAdapter(child: SizedBox(height: 48.0)),
           SliverList.builder(
               itemCount: attractions.length,
               itemBuilder: (context, index) {
                 final attraction = attractions[index];
-
-                return Column(children: [
-                  for (final place in attraction.records)
-                    Column(children: [
-                      Container(width: 400, height: 320, color: Colors.blue),
-                      Text(place.name)
-                    ])
+                return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                  for (final attraction in attraction.records)
+                    AttractionListItem(
+                        travel: travel, attraction: attraction)
                 ]);
               }),
-
           SliverFillRemaining(
             child: InfiniteListIndicator(
-                onVisible: () => print('hi'),
+                onVisible: () {
+                  return ref.read(provider.notifier).fetch();
+                },
                 hasNextPage: InfiniteScrollModel.resolveHasNext(attractions)),
           )
         ]);

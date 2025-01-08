@@ -21,6 +21,7 @@ class TravelCityPage extends ConsumerWidget {
       body: Column(
         children: [
           ContentTopAppBar(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: SingleChildScrollView(
             child: Row(children: [
               const SizedBox(width: 24.0),

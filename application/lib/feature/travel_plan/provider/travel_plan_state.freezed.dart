@@ -17,9 +17,9 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$TravelPlanState {
   TravelModel get travel => throw _privateConstructorUsedError;
+  List<CityModel> get cities => throw _privateConstructorUsedError;
+  CityModel get selectedCity => throw _privateConstructorUsedError;
   int get pageIndex => throw _privateConstructorUsedError;
-  int get cityIndex => throw _privateConstructorUsedError;
-  double get appBarHeight => throw _privateConstructorUsedError;
 
   /// Create a copy of TravelPlanState
   /// with the given fields replaced by the non-null parameter values.
@@ -35,7 +35,10 @@ abstract class $TravelPlanStateCopyWith<$Res> {
       _$TravelPlanStateCopyWithImpl<$Res, TravelPlanState>;
   @useResult
   $Res call(
-      {TravelModel travel, int pageIndex, int cityIndex, double appBarHeight});
+      {TravelModel travel,
+      List<CityModel> cities,
+      CityModel selectedCity,
+      int pageIndex});
 
   $TravelModelCopyWith<$Res> get travel;
 }
@@ -56,27 +59,27 @@ class _$TravelPlanStateCopyWithImpl<$Res, $Val extends TravelPlanState>
   @override
   $Res call({
     Object? travel = null,
+    Object? cities = null,
+    Object? selectedCity = freezed,
     Object? pageIndex = null,
-    Object? cityIndex = null,
-    Object? appBarHeight = null,
   }) {
     return _then(_value.copyWith(
       travel: null == travel
           ? _value.travel
           : travel // ignore: cast_nullable_to_non_nullable
               as TravelModel,
+      cities: null == cities
+          ? _value.cities
+          : cities // ignore: cast_nullable_to_non_nullable
+              as List<CityModel>,
+      selectedCity: freezed == selectedCity
+          ? _value.selectedCity
+          : selectedCity // ignore: cast_nullable_to_non_nullable
+              as CityModel,
       pageIndex: null == pageIndex
           ? _value.pageIndex
           : pageIndex // ignore: cast_nullable_to_non_nullable
               as int,
-      cityIndex: null == cityIndex
-          ? _value.cityIndex
-          : cityIndex // ignore: cast_nullable_to_non_nullable
-              as int,
-      appBarHeight: null == appBarHeight
-          ? _value.appBarHeight
-          : appBarHeight // ignore: cast_nullable_to_non_nullable
-              as double,
     ) as $Val);
   }
 
@@ -100,7 +103,10 @@ abstract class _$$TravelPlanStateImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {TravelModel travel, int pageIndex, int cityIndex, double appBarHeight});
+      {TravelModel travel,
+      List<CityModel> cities,
+      CityModel selectedCity,
+      int pageIndex});
 
   @override
   $TravelModelCopyWith<$Res> get travel;
@@ -120,27 +126,27 @@ class __$$TravelPlanStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? travel = null,
+    Object? cities = null,
+    Object? selectedCity = freezed,
     Object? pageIndex = null,
-    Object? cityIndex = null,
-    Object? appBarHeight = null,
   }) {
     return _then(_$TravelPlanStateImpl(
       travel: null == travel
           ? _value.travel
           : travel // ignore: cast_nullable_to_non_nullable
               as TravelModel,
+      cities: null == cities
+          ? _value._cities
+          : cities // ignore: cast_nullable_to_non_nullable
+              as List<CityModel>,
+      selectedCity: freezed == selectedCity
+          ? _value.selectedCity
+          : selectedCity // ignore: cast_nullable_to_non_nullable
+              as CityModel,
       pageIndex: null == pageIndex
           ? _value.pageIndex
           : pageIndex // ignore: cast_nullable_to_non_nullable
               as int,
-      cityIndex: null == cityIndex
-          ? _value.cityIndex
-          : cityIndex // ignore: cast_nullable_to_non_nullable
-              as int,
-      appBarHeight: null == appBarHeight
-          ? _value.appBarHeight
-          : appBarHeight // ignore: cast_nullable_to_non_nullable
-              as double,
     ));
   }
 }
@@ -150,26 +156,31 @@ class __$$TravelPlanStateImplCopyWithImpl<$Res>
 class _$TravelPlanStateImpl extends _TravelPlanState {
   const _$TravelPlanStateImpl(
       {required this.travel,
-      this.pageIndex = 0,
-      this.cityIndex = 0,
-      this.appBarHeight = 0.0})
-      : super._();
+      required final List<CityModel> cities,
+      required this.selectedCity,
+      this.pageIndex = 0})
+      : _cities = cities,
+        super._();
 
   @override
   final TravelModel travel;
+  final List<CityModel> _cities;
+  @override
+  List<CityModel> get cities {
+    if (_cities is EqualUnmodifiableListView) return _cities;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_cities);
+  }
+
+  @override
+  final CityModel selectedCity;
   @override
   @JsonKey()
   final int pageIndex;
-  @override
-  @JsonKey()
-  final int cityIndex;
-  @override
-  @JsonKey()
-  final double appBarHeight;
 
   @override
   String toString() {
-    return 'TravelPlanState(travel: $travel, pageIndex: $pageIndex, cityIndex: $cityIndex, appBarHeight: $appBarHeight)';
+    return 'TravelPlanState(travel: $travel, cities: $cities, selectedCity: $selectedCity, pageIndex: $pageIndex)';
   }
 
   @override
@@ -178,17 +189,20 @@ class _$TravelPlanStateImpl extends _TravelPlanState {
         (other.runtimeType == runtimeType &&
             other is _$TravelPlanStateImpl &&
             (identical(other.travel, travel) || other.travel == travel) &&
+            const DeepCollectionEquality().equals(other._cities, _cities) &&
+            const DeepCollectionEquality()
+                .equals(other.selectedCity, selectedCity) &&
             (identical(other.pageIndex, pageIndex) ||
-                other.pageIndex == pageIndex) &&
-            (identical(other.cityIndex, cityIndex) ||
-                other.cityIndex == cityIndex) &&
-            (identical(other.appBarHeight, appBarHeight) ||
-                other.appBarHeight == appBarHeight));
+                other.pageIndex == pageIndex));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, travel, pageIndex, cityIndex, appBarHeight);
+  int get hashCode => Object.hash(
+      runtimeType,
+      travel,
+      const DeepCollectionEquality().hash(_cities),
+      const DeepCollectionEquality().hash(selectedCity),
+      pageIndex);
 
   /// Create a copy of TravelPlanState
   /// with the given fields replaced by the non-null parameter values.
@@ -203,19 +217,19 @@ class _$TravelPlanStateImpl extends _TravelPlanState {
 abstract class _TravelPlanState extends TravelPlanState {
   const factory _TravelPlanState(
       {required final TravelModel travel,
-      final int pageIndex,
-      final int cityIndex,
-      final double appBarHeight}) = _$TravelPlanStateImpl;
+      required final List<CityModel> cities,
+      required final CityModel selectedCity,
+      final int pageIndex}) = _$TravelPlanStateImpl;
   const _TravelPlanState._() : super._();
 
   @override
   TravelModel get travel;
   @override
+  List<CityModel> get cities;
+  @override
+  CityModel get selectedCity;
+  @override
   int get pageIndex;
-  @override
-  int get cityIndex;
-  @override
-  double get appBarHeight;
 
   /// Create a copy of TravelPlanState
   /// with the given fields replaced by the non-null parameter values.

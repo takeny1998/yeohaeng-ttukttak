@@ -2,15 +2,17 @@ import 'package:flutter/material.dart';
 
 Future<T?> showModalContentSheet<T>(
     BuildContext context, Widget content) async {
-  final ThemeData(:textTheme, :colorScheme) = Theme.of(context);
+  final ColorScheme(:surface) = Theme.of(context).colorScheme;
 
   return showModalBottomSheet<T>(
       context: context,
-      backgroundColor: colorScheme.surface,
+      backgroundColor: surface,
       isScrollControlled: true,
-      builder: (context) => SafeArea(
-            child: Padding(
-                padding: const EdgeInsets.only(top: 24.0, bottom: 16.0),
-                child: content),
-          ));
+      useSafeArea: true,
+      showDragHandle: true,
+      clipBehavior: Clip.hardEdge,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(8.0)),
+      ),
+      builder: (context) => SafeArea(child: content));
 }

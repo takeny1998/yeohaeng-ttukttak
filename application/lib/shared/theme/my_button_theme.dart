@@ -9,8 +9,9 @@ class MyButtonTheme extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData(:colorScheme, :textTheme) = Theme.of(context);
 
-    final buttonTextStyle =
-        textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w600);
+    final ColorScheme(:onSurface) = Theme.of(context).colorScheme;
+
+    final buttonTextStyle = TextStyle(fontWeight: FontWeight.w600, color: onSurface);
 
     return Theme(
       data: Theme.of(context).copyWith(
@@ -27,16 +28,17 @@ class MyButtonTheme extends StatelessWidget {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.0)),
             textStyle: buttonTextStyle,
-            padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 16)
+            padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16)
           ),
         ),
         outlinedButtonTheme: OutlinedButtonThemeData(
           style: OutlinedButton.styleFrom(
             side: BorderSide(color: colorScheme.surfaceDim),
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.0)),
             textStyle: buttonTextStyle,
+            foregroundColor: onSurface,
           ),
         ),
       ),

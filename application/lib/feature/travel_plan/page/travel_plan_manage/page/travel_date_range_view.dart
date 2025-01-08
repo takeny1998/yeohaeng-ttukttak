@@ -21,8 +21,6 @@ class TravelDateRangeView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
 
-    final ThemeData(:textTheme, :colorScheme) = Theme.of(context);
-
     final daysOfTravel =
         DateTimeRange(start: travel.startedOn, end: travel.endedOn)
             .duration
@@ -30,20 +28,24 @@ class TravelDateRangeView extends ConsumerWidget {
 
     final builder = this.builder ?? (TravelDateItem item, int index) => item;
 
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-        const SizedBox(width: 24.0),
-        for (int i = 0; i < daysOfTravel; i++) ...[
-          builder(TravelDateItem(
-              dayOfTravel: i,
-              travel: travel,
-              selectedDate: selectedDate,
-              onChangeDate: onChangeDate), i),
-          const SizedBox(width: 12.0),
-        ],
-        const SizedBox(width: 16.0),
-      ]),
-    );
+    return StatefulBuilder(builder: (context, setState) {
+
+      return SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+          const SizedBox(width: 24.0),
+          for (int i = 0; i < daysOfTravel; i++) ...[
+            builder(TravelDateItem(
+                dayOfTravel: i,
+                travel: travel,
+                selectedDate: selectedDate,
+                onChangeDate: onChangeDate), i),
+            const SizedBox(width: 12.0),
+          ],
+          const SizedBox(width: 16.0),
+        ]),
+      );
+
+    });
   }
 }
