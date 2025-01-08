@@ -99,7 +99,6 @@ class TravelPlanManagePage extends ConsumerWidget {
               child: TravelDateRangeView(
                   travel: travel,
                   onChangeDate: onChangeDate,
-                  selectedDate: selectedDate,
                   builder: (item, index) {
                     return DragTarget(
                         onMove: (detail) => onChangeDate(

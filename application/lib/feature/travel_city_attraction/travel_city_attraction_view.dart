@@ -18,16 +18,14 @@ class TravelCityAttractionView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final provider = travelCityAttractionProvider(travelId, cityId);
     final asyncState = ref.watch(provider);
-    final tr = ref.watch(translationServiceProvider);
-
-    final ColorScheme(:surfaceContainer, :primaryFixedDim) =
-        Theme.of(context).colorScheme;
 
     return asyncState.when(
       data: (state) {
-        final TravelCityAttractionState(:attractions) = state;
+        final TravelCityAttractionState(:travel, :attractions) = state;
 
-        return CustomScrollView(slivers: [
+        return CustomScrollView(
+            physics: const ClampingScrollPhysics(),
+            slivers: [
           const SliverToBoxAdapter(child: SizedBox(height: 48.0)),
           SliverList.builder(
               itemCount: attractions.length,
@@ -37,7 +35,8 @@ class TravelCityAttractionView extends ConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                   for (final attraction in attraction.records)
-                    AttractionListItem(attraction: attraction)
+                    AttractionListItem(
+                        travel: travel, attraction: attraction)
                 ]);
               }),
           SliverFillRemaining(

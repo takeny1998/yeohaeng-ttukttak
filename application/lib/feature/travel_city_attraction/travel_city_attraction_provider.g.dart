@@ -7,7 +7,7 @@ part of 'travel_city_attraction_provider.dart';
 // **************************************************************************
 
 String _$travelCityAttractionHash() =>
-    r'0a4de62d4148474a9f710c464e3b0654ef731657';
+    r'af68abeea4cef9c3998e7aad25281f79be81df51';
 
 /// Copied from Dart SDK
 class _SystemHash {

@@ -6,7 +6,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class TravelDateRangeView extends ConsumerWidget {
   final TravelModel travel;
-  final DateTime? selectedDate;
   final void Function(DateTime date) onChangeDate;
   final Widget Function(TravelDateItem item, int index)? builder;
 
@@ -15,35 +14,43 @@ class TravelDateRangeView extends ConsumerWidget {
     required this.travel,
     required this.onChangeDate,
     this.builder,
-    this.selectedDate,
   });
+
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
-    final ThemeData(:textTheme, :colorScheme) = Theme.of(context);
 
     final daysOfTravel =
         DateTimeRange(start: travel.startedOn, end: travel.endedOn)
             .duration
             .inDays;
 
+    DateTime? selectedDate;
+
     final builder = this.builder ?? (TravelDateItem item, int index) => item;
 
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-        const SizedBox(width: 24.0),
-        for (int i = 0; i < daysOfTravel; i++) ...[
-          builder(TravelDateItem(
-              dayOfTravel: i,
-              travel: travel,
-              selectedDate: selectedDate,
-              onChangeDate: onChangeDate), i),
-          const SizedBox(width: 12.0),
-        ],
-        const SizedBox(width: 16.0),
-      ]),
-    );
+    return StatefulBuilder(builder: (context, setDateViewState) {
+
+      return SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        physics: const ClampingScrollPhysics(),
+        child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+          const SizedBox(width: 24.0),
+          for (int i = 0; i < daysOfTravel; i++) ...[
+            builder(TravelDateItem(
+                dayOfTravel: i,
+                travel: travel,
+                selectedDate: selectedDate,
+                onChangeDate: (date) {
+                  setDateViewState(() => selectedDate = date);
+                  onChangeDate(date);
+                }), i),
+            const SizedBox(width: 12.0),
+          ],
+          const SizedBox(width: 16.0),
+        ]),
+      );
+
+    });
   }
 }

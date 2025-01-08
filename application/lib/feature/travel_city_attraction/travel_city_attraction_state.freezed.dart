@@ -16,6 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$TravelCityAttractionState {
+  TravelModel get travel => throw _privateConstructorUsedError;
   List<InfiniteScrollModel<AttractionModel>> get attractions =>
       throw _privateConstructorUsedError;
 
@@ -32,7 +33,11 @@ abstract class $TravelCityAttractionStateCopyWith<$Res> {
           $Res Function(TravelCityAttractionState) then) =
       _$TravelCityAttractionStateCopyWithImpl<$Res, TravelCityAttractionState>;
   @useResult
-  $Res call({List<InfiniteScrollModel<AttractionModel>> attractions});
+  $Res call(
+      {TravelModel travel,
+      List<InfiniteScrollModel<AttractionModel>> attractions});
+
+  $TravelModelCopyWith<$Res> get travel;
 }
 
 /// @nodoc
@@ -51,14 +56,29 @@ class _$TravelCityAttractionStateCopyWithImpl<$Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? travel = null,
     Object? attractions = null,
   }) {
     return _then(_value.copyWith(
+      travel: null == travel
+          ? _value.travel
+          : travel // ignore: cast_nullable_to_non_nullable
+              as TravelModel,
       attractions: null == attractions
           ? _value.attractions
           : attractions // ignore: cast_nullable_to_non_nullable
               as List<InfiniteScrollModel<AttractionModel>>,
     ) as $Val);
+  }
+
+  /// Create a copy of TravelCityAttractionState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $TravelModelCopyWith<$Res> get travel {
+    return $TravelModelCopyWith<$Res>(_value.travel, (value) {
+      return _then(_value.copyWith(travel: value) as $Val);
+    });
   }
 }
 
@@ -71,7 +91,12 @@ abstract class _$$TravelCityAttractionStateImplCopyWith<$Res>
       __$$TravelCityAttractionStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<InfiniteScrollModel<AttractionModel>> attractions});
+  $Res call(
+      {TravelModel travel,
+      List<InfiniteScrollModel<AttractionModel>> attractions});
+
+  @override
+  $TravelModelCopyWith<$Res> get travel;
 }
 
 /// @nodoc
@@ -89,9 +114,14 @@ class __$$TravelCityAttractionStateImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? travel = null,
     Object? attractions = null,
   }) {
     return _then(_$TravelCityAttractionStateImpl(
+      travel: null == travel
+          ? _value.travel
+          : travel // ignore: cast_nullable_to_non_nullable
+              as TravelModel,
       attractions: null == attractions
           ? _value._attractions
           : attractions // ignore: cast_nullable_to_non_nullable
@@ -104,9 +134,12 @@ class __$$TravelCityAttractionStateImplCopyWithImpl<$Res>
 
 class _$TravelCityAttractionStateImpl implements _TravelCityAttractionState {
   const _$TravelCityAttractionStateImpl(
-      {required final List<InfiniteScrollModel<AttractionModel>> attractions})
+      {required this.travel,
+      required final List<InfiniteScrollModel<AttractionModel>> attractions})
       : _attractions = attractions;
 
+  @override
+  final TravelModel travel;
   final List<InfiniteScrollModel<AttractionModel>> _attractions;
   @override
   List<InfiniteScrollModel<AttractionModel>> get attractions {
@@ -117,7 +150,7 @@ class _$TravelCityAttractionStateImpl implements _TravelCityAttractionState {
 
   @override
   String toString() {
-    return 'TravelCityAttractionState(attractions: $attractions)';
+    return 'TravelCityAttractionState(travel: $travel, attractions: $attractions)';
   }
 
   @override
@@ -125,13 +158,14 @@ class _$TravelCityAttractionStateImpl implements _TravelCityAttractionState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$TravelCityAttractionStateImpl &&
+            (identical(other.travel, travel) || other.travel == travel) &&
             const DeepCollectionEquality()
                 .equals(other._attractions, _attractions));
   }
 
   @override
   int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(_attractions));
+      runtimeType, travel, const DeepCollectionEquality().hash(_attractions));
 
   /// Create a copy of TravelCityAttractionState
   /// with the given fields replaced by the non-null parameter values.
@@ -145,9 +179,12 @@ class _$TravelCityAttractionStateImpl implements _TravelCityAttractionState {
 
 abstract class _TravelCityAttractionState implements TravelCityAttractionState {
   const factory _TravelCityAttractionState(
-      {required final List<InfiniteScrollModel<AttractionModel>>
+      {required final TravelModel travel,
+      required final List<InfiniteScrollModel<AttractionModel>>
           attractions}) = _$TravelCityAttractionStateImpl;
 
+  @override
+  TravelModel get travel;
   @override
   List<InfiniteScrollModel<AttractionModel>> get attractions;
 

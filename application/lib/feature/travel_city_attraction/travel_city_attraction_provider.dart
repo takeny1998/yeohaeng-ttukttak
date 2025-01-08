@@ -3,6 +3,7 @@ import 'package:application_new/common/http/http_service_provider.dart';
 import 'package:application_new/common/util/riverpod_extensions.dart';
 import 'package:application_new/core/scroll/infinite_scroll_model.dart';
 import 'package:application_new/domain/place/place_model.dart';
+import 'package:application_new/domain/travel/travel_provider.dart';
 import 'package:application_new/feature/travel_city_attraction/attraction_model.dart';
 import 'package:application_new/feature/travel_city_attraction/travel_city_attraction_state.dart';
 import 'package:application_new/shared/dto/types.dart';
@@ -18,9 +19,12 @@ class TravelCityAttraction extends _$TravelCityAttraction {
   FutureOr<TravelCityAttractionState> build(int travelId, int cityId) async {
     ref.cacheFor(const Duration(minutes: 5));
 
+    final travel = await ref.watch(travelProvider(travelId).future);
+
     final attraction = await _fetchAttraction(0, pageSize);
 
-    return TravelCityAttractionState(attractions: [attraction]);
+    return TravelCityAttractionState(
+        travel: travel, attractions: [attraction]);
   }
 
   Future<InfiniteScrollModel<AttractionModel>> _fetchAttraction(

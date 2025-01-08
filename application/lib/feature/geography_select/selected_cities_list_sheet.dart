@@ -1,11 +1,10 @@
 import 'package:application_new/common/event/event.dart';
 import 'package:application_new/core/translation/translation_service.dart';
-import 'package:application_new/domain/geography/geography_model.dart';
 import 'package:application_new/feature/geography_select/geography_select_provider.dart';
 import 'package:application_new/feature/geography_select/province_city_select_provider.dart';
 import 'package:application_new/feature/geography_select/province_city_select_state.dart';
 import 'package:application_new/shared/component/safe_bottom_view.dart';
-import 'package:application_new/shared/dto/reference.dart';
+import 'package:application_new/shared/component/show_modal_content_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -14,22 +13,11 @@ class SelectedCitiesListSheet extends ConsumerWidget {
 
   const SelectedCitiesListSheet._({required this.state});
 
-  static Future<bool?> showSheet(
+  static Future<void> showSheet(
     BuildContext context, {
     required ProvinceCitySelectState state,
-  }) =>
-      showModalBottomSheet<bool>(
-        context: context,
-        useSafeArea: true,
-        showDragHandle: true,
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        clipBehavior: Clip.hardEdge,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(8.0)),
-        ),
-        builder: (context) =>
-            SelectedCitiesListSheet._(state: state),
-      );
+  }) =>  showModalContentSheet(
+          context, SelectedCitiesListSheet._(state: state));
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -101,9 +89,10 @@ class SelectedCitiesListSheet extends ConsumerWidget {
                 style: const TextStyle(
                     fontWeight: FontWeight.w600, fontSize: 16.0),
               )),
-      bottomNavigationBar: SafeBottomView(child: FilledButton(
-          onPressed:  Navigator.of(context).pop,
-          child: Text(tr.from('Close')))),
+      bottomNavigationBar: SafeBottomView(
+          child: FilledButton(
+              onPressed: Navigator.of(context).pop,
+              child: Text(tr.from('Close')))),
     );
   }
 }
