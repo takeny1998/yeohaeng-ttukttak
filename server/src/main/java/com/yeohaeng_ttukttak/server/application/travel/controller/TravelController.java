@@ -62,6 +62,11 @@ public class TravelController {
         return new ServerResponse<>(new CreateTravelResponse(travelDto, cityDtoList));
     }
 
+    /**
+     * 사용자 여행을 조회합니다.
+     * @param id 사용자 여행의 식별자
+     * @return 조회된 사용자 여행
+     */
     @GetMapping("/{id}")
     @Transactional(readOnly = true)
     public ServerResponse<FindTravelResponse> find(@PathVariable Long id) {

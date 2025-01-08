@@ -1,0 +1,102 @@
+name: Deploy API Documentation
+
+on:
+  pull_request:
+    branches: main
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+env:
+  BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+
+jobs:
+  generate:
+    name: generate
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          ref: ${{ env.BRANCH_NAME }}
+
+      - name: Grant Execution Permission to gradlew
+        working-directory: ./server
+        run: chmod +x ./gradlew # gradlew 실행 권한 부여
+
+      - name: Generate OpenAPI Specification file
+        working-directory: ./server
+        run: ./gradlew test --tests com.yeohaeng_ttukttak.server.ServerDocumentationTest
+      
+      - name: Running OpenAPI Spec diff action
+        id: oasdiff
+        uses: oasdiff/oasdiff-action/diff@main
+        with:
+          base: ./docs/api-specification.json
+          revision: ./server/api-specification.json
+          format: markup
+
+      - name: Check if the specificaion file has changed
+        id: check-spec-changed
+        run: echo "has_changed=${{ !startsWith(steps.oasdiff.outputs.diff, 'No Changes') }}" >> $GITHUB_OUTPUT
+
+      - name: Archive new specification file
+        uses: actions/upload-artifact@v4
+        with:
+          name: api-specification.json
+          path: ./server/api-specification.json
+      
+    outputs:
+      diff: ${{ steps.oasdiff.outputs.diff }}
+      has_changed: ${{ steps.check-spec-changed.outputs.has_changed }}
+  
+  deploy:
+    name: deploy
+    needs: generate
+    
+    if: ${{ needs.generate.outputs.has_changed == 'true' }}
+    
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          ref: ${{ env.BRANCH_NAME }}
+
+      - name: Download new specification file
+        uses: actions/download-artifact@v4
+        with:
+          name: api-specification.json
+          path: ./downloads
+              
+      - name: Move file to docs directory
+        run: mv ./downloads/api-specification.json ./docs
+
+      - name: Get latest commit hash
+        id: latest_commit
+        run:
+          echo "head_hash=$(git rev-parse --short ${{ github.event.pull_request.head.sha }})" >> $GITHUB_OUTPUT
+  
+      - name: Add comment API changes
+        uses: mshick/add-pr-comment@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          message: ${{ needs.generate.outputs.diff }}
+          message-id: '${{ github.run_id }}-${{ github.run_attempt }}'
+
+      - name: Commit and push changes
+        env:
+          BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+          USERNAME: github-actions[bot]
+          EMAIL: github-actions[bot]@users.noreply.github.com
+        run: |
+          git config user.name '${{ env.USERNAME }}'
+          git config user.email '${{ env.EMAIL }}'
+          
+          git add .
+          git commit -m "docs-api: API 명세서 동기화 (from ${{ steps.latest_commit.outputs.head_hash }})"
+          git push origin ${{ env.BRANCH_NAME }}
