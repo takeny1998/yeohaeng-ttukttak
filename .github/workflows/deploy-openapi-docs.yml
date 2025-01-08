@@ -1,4 +1,4 @@
-name: Deploy OpenAPI Specification
+name: Deploy API Documentation
 
 on:
   pull_request:
@@ -13,7 +13,7 @@ env:
   BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
 
 jobs:
-  depoly:
+  depoly-api-documentation:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -55,13 +55,20 @@ jobs:
       - name: Move file to docs directory
         run: mv ./server/api-specification.json ./docs
 
+      - name: Get latest commit hash
+        id: latest_commit
+        run:
+          echo "head_hash=$(git rev-parse --short ${{ github.event.pull_request.head.sha }})" >> $GITHUB_OUTPUT
+
       - name: Commit and push changes
         env:
           BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+          USERNAME: github-actions[bot]
+          EMAIL: github-actions[bot]@users.noreply.github.com
         run: |
-          git config --global user.name github-actions
-          git config --global user.email github-actions@github.com
+          git config user.name '${{ env.USERNAME }}'
+          git config user.email '${{ env.EMAIL }}'
           
           git add .
-          git commit -m "docs-api: API 명세 작성"
+          git commit -m "docs-api: API Docs 동기화 (From ${{ steps.latest_commit.outputs.head_hash }})"
           git push origin ${{ env.BRANCH_NAME }}
