@@ -38,11 +38,17 @@ jobs:
           base: ./docs/api-specification.json
           revision: ./server/api-specification.json
           format: markup
-      
+
       - name: Check if the specificaion file has changed
         id: check-spec-changed
         run: echo "has_changed=${{ !startsWith(steps.oasdiff.outputs.diff, 'No Changes') }}" >> $GITHUB_OUTPUT
 
+      - name: Archive new specification file
+        uses: actions/upload-artifact@v4
+        with:
+          name: api-specification.json
+          path: ./server/api-specification.json
+      
     outputs:
       diff: ${{ steps.oasdiff.outputs.diff }}
       has_changed: ${{ steps.check-spec-changed.outputs.has_changed }}
@@ -66,9 +72,15 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           message: ${{ needs.generate.outputs.diff }}
+
+      - name: Download new specification file
+        uses: actions/download-artifact@v4
+        with:
+          name: api-specification.json
+          path: ./downloads
               
       - name: Move file to docs directory
-        run: mv ./server/api-specification.json ./docs
+        run: mv ./downloads/api-specification.json ./docs
 
       - name: Get latest commit hash
         id: latest_commit
