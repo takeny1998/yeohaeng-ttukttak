@@ -28,6 +28,11 @@ public class MemberController {
 
     private final MemberTravelService memberTravelService;
 
+    /**
+     * 지정한 사용자의 프로필을 조회합니다.
+     * @param id 사용자의 식별자
+     * @return 조회된 사용자 프로필
+     */
     @GetMapping("/{id}")
     public ServerResponse<MemberResponse> find(@PathVariable String id) {
         final MemberDto dto = findMemberService.findOne(id);
