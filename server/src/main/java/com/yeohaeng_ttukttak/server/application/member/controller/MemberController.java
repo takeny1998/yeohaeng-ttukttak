@@ -39,6 +39,10 @@ public class MemberController {
         return new ServerResponse<>(new MemberResponse(dto));
     }
 
+    /**
+     * 로그인한 사용자의 프로필을 조회합니다.
+     * @return 로그인한 사용자 프로필 정보
+     */
     @GetMapping("/me")
     @Authorization
     public ServerResponse<MemberResponse> findMe(AuthenticationContext authorization) {
