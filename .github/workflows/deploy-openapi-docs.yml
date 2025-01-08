@@ -57,7 +57,7 @@ jobs:
     name: deploy
     needs: generate
     
-    if: ${{ needs.generate.outputs.has_changed == true }}
+    if: ${{ needs.generate.outputs.has_changed == 'true' }}
     
     runs-on: ubuntu-latest
     steps:
