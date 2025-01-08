@@ -98,5 +98,5 @@ jobs:
           git config user.email '${{ env.EMAIL }}'
           
           git add .
-          git commit -m "docs-api: API Docs 동기화 (from ${{ steps.latest_commit.outputs.head_hash }})"
+          git commit -m "docs-api: API 명세서 동기화 (from ${{ steps.latest_commit.outputs.head_hash }})"
           git push origin ${{ env.BRANCH_NAME }}
