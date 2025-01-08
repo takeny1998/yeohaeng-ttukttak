@@ -41,7 +41,7 @@ jobs:
       
       - name: Check if the specificaion file has changed
         id: check-spec-changed
-        run: echo "has_changed=${{ !startsWith(steps.oasdiff.outputs.diff, 'No endpoint changes') }}" >> $GITHUB_OUTPUT
+        run: echo "has_changed=${{ !startsWith(steps.oasdiff.outputs.diff, 'No Changes') }}" >> $GITHUB_OUTPUT
 
     outputs:
       diff: ${{ steps.oasdiff.outputs.diff }}
