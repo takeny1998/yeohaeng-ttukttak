@@ -64,6 +64,7 @@ class _TravelPlanAddViewState extends ConsumerState<TravelPlanAddView> {
               const SizedBox(height: 24.0),
               TravelDateRangeView(
                   travel: travel,
+                  selectedDate: selectedDate,
                   onChangeDate: (date) => setState(() => selectedDate = date)),
               const SizedBox(height: 24.0),
             ],

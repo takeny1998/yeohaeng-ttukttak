@@ -132,7 +132,6 @@ class _AttractionListItemState extends ConsumerState<AttractionListItem> {
                             horizontal: 4.0, vertical: 1.0),
                         label: Text(
                             '+ ${attraction.visitReasons.length - visitReasons.length}'),
-
                         onSelected: (_) => setState(() => isExpanded = true))
                 ],
               );
@@ -146,60 +145,62 @@ class _AttractionListItemState extends ConsumerState<AttractionListItem> {
               flex: 6,
               child: OutlinedButton.icon(
                   onPressed: () async {
-
                     final navigator = Navigator.of(context);
 
-
-                    showSnackBar(event) => MessageUtil
-                    .showSnackBar(context, event);
-
+                    showSnackBar(event) =>
+                        MessageUtil.showSnackBar(context, event);
 
                     final selectedDate = await showModalContentSheet<DateTime>(
-                        context,
-                        Builder(
-                          builder: (context) {
-                            DateTime? selectedDate;
-                            return Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                        context, Builder(builder: (context) {
+                      DateTime? selectedDate;
+
+                      return StatefulBuilder(builder: (context, setState) {
+                        return Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
                                 children: [
-                                  Row(
-                                    children: [
-                                      const SizedBox(width: 24.0),
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(attraction.name,
-                                                style: nameTextStyle),
-                                            const SizedBox(height: 4.0),
-                                            Text(tr.from(
-                                                "To add above place to your plan, please select the date you'd like to visit."),),
-                                          ],
+                                  const SizedBox(width: 24.0),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(attraction.name,
+                                            style: nameTextStyle),
+                                        const SizedBox(height: 4.0),
+                                        Text(
+                                          tr.from(
+                                              "To add above place to your plan, please select the date you'd like to visit."),
                                         ),
-                                      ),
-                                      const SizedBox(width: 24.0),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                  const SizedBox(height: 32.0),
-                                  TravelDateRangeView(
-                                      travel: travel,
-                                      onChangeDate: (date) => selectedDate = date),
-                                  const SizedBox(height: 24.0),
-                                  SizedBox(
-                                    width: double.maxFinite,
-                                    child: SafeBottomView(
-                                        child: FilledButton(
-                                            onPressed: () => navigator.pop(selectedDate),
-                                            child: Text(tr.from('Confirm')))),
-                                  ),
-                                ]);
-                          }
-                        ));
+                                  const SizedBox(width: 24.0),
+                                ],
+                              ),
+                              const SizedBox(height: 32.0),
+                              TravelDateRangeView(
+                                  travel: travel,
+                                  selectedDate: selectedDate,
+                                  onChangeDate: (date) =>
+                                      setState(() => selectedDate = date)),
+                              const SizedBox(height: 24.0),
+                              SizedBox(
+                                width: double.maxFinite,
+                                child: SafeBottomView(
+                                    child: FilledButton(
+                                        onPressed: () =>
+                                            navigator.pop(selectedDate),
+                                        child: Text(tr.from('Confirm')))),
+                              ),
+                            ]);
+                      });
+                    }));
 
                     if (selectedDate == null) return;
-                    
+
                     final dayOfTravel =
                         selectedDate.difference(travel.startedOn).inDays;
 
@@ -207,9 +208,9 @@ class _AttractionListItemState extends ConsumerState<AttractionListItem> {
                         .read(travelPlanManageProvider(travel.id).notifier)
                         .create(attraction.id, dayOfTravel);
 
-                    final message = ref
-                        .read(translationServiceProvider)
-                        .from('{} has been added to plan successfully.', args: [attraction.name]);
+                    final message = ref.read(translationServiceProvider).from(
+                        '{} has been added to plan successfully.',
+                        args: [attraction.name]);
 
                     showSnackBar(MessageEvent(message));
                   },
