@@ -7,38 +7,32 @@ class MyChipTheme extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    final ColorScheme(:primary, :onPrimary, :onSurface, :secondaryContainer) =
+    final ColorScheme(:surfaceContainer, :onSurface, :secondaryContainer) =
         Theme.of(context).colorScheme;
 
-    final foregroundColor = WidgetStateColor.resolveWith((states) {
-      if (states.contains(WidgetState.selected)) {
-        return onPrimary;
-      }
-      return onSurface;
-    });
+    final foregroundColor = onSurface;
 
-    final backgroundColor = WidgetStateBorderSide.resolveWith((states) {
+    final borderSide = WidgetStateBorderSide.resolveWith((states) {
       if (states.contains(WidgetState.selected)) {
-        return BorderSide(color: primary);
+        return BorderSide(color: secondaryContainer);
       }
-      return BorderSide(color: secondaryContainer);
+      return BorderSide(color: surfaceContainer);
     });
 
     return Theme(
         data: Theme.of(context).copyWith(
           chipTheme: ChipThemeData(
             labelStyle:
-                TextStyle(color: foregroundColor, fontWeight: FontWeight.w600),
+            TextStyle(color: foregroundColor, fontWeight: FontWeight.w600),
             secondaryLabelStyle:
-                TextStyle(color: primary, fontWeight: FontWeight.w600),
-            selectedColor: primary,
-            checkmarkColor: onPrimary,
-            backgroundColor: secondaryContainer,
-            deleteIconColor: primary,
+            TextStyle(color: foregroundColor, fontWeight: FontWeight.w600),
+            selectedColor: secondaryContainer,
+            backgroundColor: surfaceContainer,
+            checkmarkColor: foregroundColor,
+            deleteIconColor: foregroundColor,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.0)),
-            side: backgroundColor,
+            side: borderSide,
             padding: const EdgeInsets.all(8.0),
           ),
         ),

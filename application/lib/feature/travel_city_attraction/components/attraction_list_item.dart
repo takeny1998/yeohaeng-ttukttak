@@ -114,7 +114,7 @@ class _AttractionListItemState extends ConsumerState<AttractionListItem> {
                       label: Row(
                         children: [
                           Text(tr.from(visitReason.reasonType.shortLabel),
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 13.0,
                                   fontWeight: FontWeight.normal)),
                           const SizedBox(width: 8.0),
@@ -126,11 +126,13 @@ class _AttractionListItemState extends ConsumerState<AttractionListItem> {
                   if (isExpanded == false && attraction.visitReasons.length > 1)
                     ChoiceChip(
                         visualDensity: VisualDensity.compact,
+                        selected: true,
+                        showCheckmark: false,
                         labelPadding: const EdgeInsets.symmetric(
                             horizontal: 4.0, vertical: 1.0),
                         label: Text(
                             '+ ${attraction.visitReasons.length - visitReasons.length}'),
-                        selected: false,
+
                         onSelected: (_) => setState(() => isExpanded = true))
                 ],
               );
