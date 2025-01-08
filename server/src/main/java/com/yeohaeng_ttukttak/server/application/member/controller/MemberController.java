@@ -6,7 +6,7 @@ import com.yeohaeng_ttukttak.server.application.member.controller.dto.UpdateMemb
 import com.yeohaeng_ttukttak.server.application.member.service.FindMemberService;
 import com.yeohaeng_ttukttak.server.application.member.service.MemberTravelService;
 import com.yeohaeng_ttukttak.server.application.member.service.UpdateMemberService;
-import com.yeohaeng_ttukttak.server.common.aop.annotation.Authorization;
+import com.yeohaeng_ttukttak.server.common.aop.annotation.Authentication;
 import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
 import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthenticationContext;
 import com.yeohaeng_ttukttak.server.domain.member.dto.MemberDto;
@@ -44,14 +44,14 @@ public class MemberController {
      * @return 로그인한 사용자 프로필 정보
      */
     @GetMapping("/me")
-    @Authorization
+    @Authentication
     public ServerResponse<MemberResponse> findMe(AuthenticationContext authorization) {
         final MemberDto dto = findMemberService.findOne(authorization.uuid());
         return new ServerResponse<>(new MemberResponse(dto));
     }
 
     @PatchMapping("/me/profile")
-    @Authorization
+    @Authentication
     public ServerResponse<MemberResponse> updateProfile(
             @RequestBody UpdateMemberProfileRequest request,
             AuthenticationContext authorization) {
@@ -69,7 +69,7 @@ public class MemberController {
      * @return 조회된 여행 목록
      */
     @GetMapping("/me/travels")
-    @Authorization
+    @Authentication
     public ServerResponse<TravelListResponse> findMyTravels(
             AuthenticationContext context) {
 

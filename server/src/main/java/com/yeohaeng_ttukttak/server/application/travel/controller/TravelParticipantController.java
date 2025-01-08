@@ -3,7 +3,7 @@ package com.yeohaeng_ttukttak.server.application.travel.controller;
 import com.yeohaeng_ttukttak.server.application.travel.controller.dto.FindTravelParticipantsResponse;
 import com.yeohaeng_ttukttak.server.application.travel.controller.dto.JoinTravelRequest;
 import com.yeohaeng_ttukttak.server.application.travel.service.TravelParticipantService;
-import com.yeohaeng_ttukttak.server.common.aop.annotation.Authorization;
+import com.yeohaeng_ttukttak.server.common.aop.annotation.Authentication;
 import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
 import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthenticationContext;
 import com.yeohaeng_ttukttak.server.domain.travel.dto.TravelParticipantDto;
@@ -21,7 +21,7 @@ public class TravelParticipantController {
     private final TravelParticipantService participantService;
 
     @PostMapping
-    @Authorization
+    @Authentication
     public ServerResponse<Void> join(
             @PathVariable Long travelId,
             @Valid @RequestBody JoinTravelRequest request,
@@ -45,7 +45,7 @@ public class TravelParticipantController {
     }
 
     @DeleteMapping("/{participantId}")
-    @Authorization
+    @Authentication
     public ServerResponse<Void> leave(
             @PathVariable Long travelId,
             @PathVariable Long participantId,

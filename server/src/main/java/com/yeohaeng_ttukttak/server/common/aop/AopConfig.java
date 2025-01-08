@@ -12,11 +12,11 @@ import org.springframework.data.domain.AuditorAware;
 public class AopConfig {
 
     @Bean
-    public AuthorizationAspect authorizationAspect(
+    public AuthenticationAspect authorizationAspect(
             AccessTokenService accessTokenService,
             HttpServletRequest httpServletRequest
     ) {
-        return new AuthorizationAspect(accessTokenService, httpServletRequest);
+        return new AuthenticationAspect(accessTokenService, httpServletRequest);
     }
 
     @Bean

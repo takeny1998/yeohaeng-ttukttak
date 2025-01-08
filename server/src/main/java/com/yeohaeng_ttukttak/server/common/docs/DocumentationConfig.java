@@ -1,6 +1,6 @@
 package com.yeohaeng_ttukttak.server.common.docs;
 
-import com.yeohaeng_ttukttak.server.common.aop.annotation.Authorization;
+import com.yeohaeng_ttukttak.server.common.aop.annotation.Authentication;
 import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthenticationContext;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
@@ -80,10 +80,10 @@ public class DocumentationConfig {
             operation.setParameters(parameters);
         }
 
-        final Authorization authorizationAnnotation
-                = handlerMethod.getMethodAnnotation(Authorization.class);
+        final Authentication authenticationAnnotation
+                = handlerMethod.getMethodAnnotation(Authentication.class);
 
-        if (Objects.isNull(authorizationAnnotation)) {
+        if (Objects.isNull(authenticationAnnotation)) {
             return;
         }
 

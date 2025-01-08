@@ -3,14 +3,13 @@ package com.yeohaeng_ttukttak.server.application.travel_plan;
 import com.yeohaeng_ttukttak.server.application.travel_plan.dto.CreateTravelPlanRequest;
 import com.yeohaeng_ttukttak.server.application.travel_plan.dto.TravelPlanListResponse;
 import com.yeohaeng_ttukttak.server.application.travel_plan.dto.MoveTravelPlanRequest;
-import com.yeohaeng_ttukttak.server.common.aop.annotation.Authorization;
+import com.yeohaeng_ttukttak.server.common.aop.annotation.Authentication;
 import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
 import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthenticationContext;
 import com.yeohaeng_ttukttak.server.domain.travel_plan.TravelPlanDto;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,7 +34,7 @@ public class TravelPlanController {
      * @return 변경된 사용자 여행의 일정 목록
      */
     @PostMapping
-    @Authorization
+    @Authentication
     public ServerResponse<TravelPlanListResponse> create(
             @PathVariable Long travelId,
             @RequestBody CreateTravelPlanRequest request,
@@ -79,7 +78,7 @@ public class TravelPlanController {
      *         </ul>
      */
     @PatchMapping("/{planId}")
-    @Authorization
+    @Authentication
     public ServerResponse<TravelPlanListResponse> move(
             @PathVariable Long travelId,
             @PathVariable Long planId,
@@ -104,7 +103,7 @@ public class TravelPlanController {
      * @return 삭제 후의 여행 일정 목록
      */
     @DeleteMapping("/{planId}")
-    @Authorization
+    @Authentication
     public ServerResponse<TravelPlanListResponse> delete(
             @PathVariable Long travelId,
             @PathVariable Long planId,
