@@ -13,20 +13,15 @@ env:
   BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
 
 jobs:
-  depoly-api-documentation:
+  generate:
+    name: generate
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           ref: ${{ env.BRANCH_NAME }}
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          java-version: '17'
-          distribution: 'zulu'
-          cache: gradle # Gradle 캐시 설정
 
       - name: Grant Execution Permission to gradlew
         working-directory: ./server
@@ -43,14 +38,33 @@ jobs:
           base: ./docs/api-specification.json
           revision: ./server/api-specification.json
           format: markup
+      
+      - name: Check if the specificaion file has changed
+        id: check-spec-changed
+        run: echo "has_changed=${{ !startsWith(steps.oasdiff.outputs.diff, 'No endpoint changes') }}" >> $GITHUB_OUTPUT
+
+    outputs:
+      diff: ${{ steps.oasdiff.outputs.diff }}
+      has_changed: ${{ steps.check-spec-changed.outputs.has_changed }}
+  
+  deploy:
+    name: deploy
+    needs: generate
+    if: ${{ needs.generate.outputs.has_changed }}
+    
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          ref: ${{ env.BRANCH_NAME }}
 
       - name: Add comment API changes
         uses: mshick/add-pr-comment@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        if: ${{ !startsWith(steps.oasdiff.outputs.diff, 'No endpoint changes') }}
         with:
-          message: ${{ steps.oasdiff.outputs.diff }}
+          message: ${{ needs.generate.outputs.diff }}
               
       - name: Move file to docs directory
         run: mv ./server/api-specification.json ./docs
