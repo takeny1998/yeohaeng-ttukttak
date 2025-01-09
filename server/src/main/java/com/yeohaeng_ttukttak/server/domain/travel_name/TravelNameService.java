@@ -1,6 +1,7 @@
 package com.yeohaeng_ttukttak.server.domain.travel_name;
 
-import com.yeohaeng_ttukttak.server.common.exception.exception.fail.AccessDeniedFailException;
+import com.yeohaeng_ttukttak.server.common.aop.CrudPermission;
+import com.yeohaeng_ttukttak.server.common.aop.annotation.Authorization;
 import com.yeohaeng_ttukttak.server.common.util.StringUtil;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.City;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.Province;
@@ -46,6 +47,20 @@ public class TravelNameService {
 
     }
 
+    @Transactional
+    public void applyName(Travel travel, String inputName, String memberId) {
+
+        if (Objects.isNull(inputName)) {
+            return;
+        }
+
+        travel.verifyParticipantsOrCreator(memberId);
+
+        final TravelName newName = validateInputName(inputName);
+        travel.rename(newName);
+
+    }
+
     /**
      * <pre>
      * 여행의 변경 사항을 반영해 이름을 변경합니다. 이름이 자동 생성된 경우만 변경합니다.
@@ -54,6 +69,7 @@ public class TravelNameService {
      * @throws IllegalStateException 여행 이름이 초기화되지 않은 경우 발생한다.
      */
     @Transactional
+    @Authorization(requires = { CrudPermission.CREATE, CrudPermission.UPDATE})
     public void applyChangeToName(Locale locale, Travel travel) {
 
         final Boolean travelNameGenerated = travel.isNameGenerated();
@@ -75,7 +91,7 @@ public class TravelNameService {
      * @throws TravelNameTooLongFailException 이름이 100Byte(EUC-KR 기준)가 넘으면 발생한다.
      * @throws InvalidTravelNameCharacterFailException 이름에 한글, 영어, 숫자, 콤마가 아닌 글자가 들어간 경우 발생한다.
      */
-    public TravelName validateInputName(String inputName) {
+     public TravelName validateInputName(String inputName) {
 
         int byteCount = StringUtil.getByteLengthInEucKr(inputName);
 

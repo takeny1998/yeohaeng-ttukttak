@@ -1,5 +1,7 @@
 package com.yeohaeng_ttukttak.server.domain.travel.entity;
 
+import com.yeohaeng_ttukttak.server.common.aop.CrudPermission;
+import com.yeohaeng_ttukttak.server.common.aop.annotation.Authorization;
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.*;
 import com.yeohaeng_ttukttak.server.common.util.LocalDateUtil;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.City;
@@ -176,6 +178,7 @@ public class Travel extends BaseTimeMemberEntity {
      * @throws EntityAlreadyAddedFailException 이미 여행에 추가된 경우 발생한다.
      * @throws TooManyEntityFailException 10개 초과의 여행 도시를 추가하려는 경우 발생한다.
      */
+    @Authorization(requires = CrudPermission.UPDATE)
     public void addCity(String memberId, City city) {
         verifyParticipantsOrCreator(memberId);
 

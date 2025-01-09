@@ -12,16 +12,26 @@ import org.springframework.data.domain.AuditorAware;
 public class AopConfig {
 
     @Bean
-    public AuthenticationAspect authorizationAspect(
+    public AuthenticationAspect authenticationAspect(
             AccessTokenService accessTokenService,
             HttpServletRequest httpServletRequest
     ) {
         return new AuthenticationAspect(accessTokenService, httpServletRequest);
     }
 
+//    @Bean
+//    public AuthorizationAspect authorizationAspect() {
+//        return new AuthorizationAspect();
+//    }
+
     @Bean
     public AuditorAware<Member> memberAuditorAware(MemberRepository memberRepository) {
         return new MemberAuditorAware(memberRepository);
+    }
+
+    @Bean
+    public PermissionCheckerManager permissionCheckerManager() {
+        return new PermissionCheckerManager();
     }
 
 }
