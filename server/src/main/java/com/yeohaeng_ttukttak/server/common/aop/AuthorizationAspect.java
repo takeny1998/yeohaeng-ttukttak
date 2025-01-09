@@ -5,8 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
 
-import java.util.List;
 import java.util.Set;
 
 @Slf4j
@@ -16,21 +16,23 @@ public class AuthorizationAspect {
     private static final ThreadLocal<AuthorizationContext> contextHolder
             = ThreadLocal.withInitial(() -> new AuthorizationContext(0, Set.of()));
 
-    @Around("@annotation(com.yeohaeng_ttukttak.server.common.aop.annotation.Authorization) && @annotation(authorization)")
-    public Object call(final ProceedingJoinPoint joinPoint, final Authorization authorization) throws Throwable {
+    @Pointcut("@annotation(com.yeohaeng_ttukttak.server.common.aop.annotation.Authorization)")
+    public void authorization() {}
 
-        if (contextHolder.get().depth() == 0) {
+    @Around("@annotation(authorization)")
+    public Object authorize(final ProceedingJoinPoint joinPoint, final Authorization authorization) throws Throwable {
 
-            log.debug("{}", contextHolder.get().requires());
-
-            return joinPoint.proceed();
-        }
+        log.debug("[AuthorizationAspect.call] {}", joinPoint.getSignature());
 
         contextHolder.set(contextHolder.get().proceed(authorization.requires()));
 
         final Object result = joinPoint.proceed();
 
         contextHolder.set(contextHolder.get().revert());
+
+        if (contextHolder.get().depth() == 0) {
+            log.debug("{}", contextHolder.get().requires());
+        }
 
         return result;
     }

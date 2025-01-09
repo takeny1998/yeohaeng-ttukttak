@@ -19,10 +19,10 @@ public class AopConfig {
         return new AuthenticationAspect(accessTokenService, httpServletRequest);
     }
 
-//    @Bean
-//    public AuthorizationAspect authorizationAspect() {
-//        return new AuthorizationAspect();
-//    }
+    @Bean
+    public AuthorizationAspect authorizationAspect() {
+        return new AuthorizationAspect();
+    }
 
     @Bean
     public AuditorAware<Member> memberAuditorAware(MemberRepository memberRepository) {
