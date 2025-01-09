@@ -11,6 +11,10 @@ public record AuthorizationContext(
         Set<CrudPermission> requires
 ) {
 
+    public static AuthorizationContext init() {
+        return new AuthorizationContext(0, null, Set.of());
+    }
+
     public AuthorizationContext proceed(
             CrudPermission[] newRequires
     ) {
@@ -23,7 +27,7 @@ public record AuthorizationContext(
         );
     }
 
-    public AuthorizationContext init(Object resourceId) {
+    public AuthorizationContext resolveId(Object resourceId) {
         return new AuthorizationContext(
                 depth,
                 resourceId,
@@ -31,13 +35,8 @@ public record AuthorizationContext(
     }
 
     public AuthorizationContext revert() {
-        if (depth == 0) return this;
         return new AuthorizationContext(
                 depth - 1, resourceId, requires);
-    }
-
-    public AuthorizationContext clear() {
-        return new AuthorizationContext(0, null, Set.of());
     }
 
 }

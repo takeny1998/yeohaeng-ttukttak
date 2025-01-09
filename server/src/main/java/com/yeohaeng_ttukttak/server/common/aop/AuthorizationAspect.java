@@ -1,10 +1,8 @@
 package com.yeohaeng_ttukttak.server.common.aop;
 
 import com.yeohaeng_ttukttak.server.common.aop.annotation.Authorization;
+import com.yeohaeng_ttukttak.server.common.aop.annotation.AuthorizeTarget;
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.AccessDeniedFailException;
-import jakarta.persistence.Transient;
-import jakarta.servlet.http.HttpServletRequest;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -17,7 +15,6 @@ import org.springframework.beans.factory.annotation.Configurable;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.Set;
 
 @Slf4j
 @Aspect
@@ -28,7 +25,7 @@ public class AuthorizationAspect {
     private PermissionManager permissionManager;
 
     private static final ThreadLocal<AuthorizationContext> contextHolder =
-            ThreadLocal.withInitial(() -> new AuthorizationContext(0, null, Set.of()));
+            ThreadLocal.withInitial(AuthorizationContext::init);
 
     @Pointcut("@annotation(com.yeohaeng_ttukttak.server.common.aop.annotation.Authorization)")
     public void authorization() {}
@@ -38,11 +35,11 @@ public class AuthorizationAspect {
 
         log.debug("[AuthorizationAspect.authorize] {} {}", joinPoint.getSignature(), permissionManager);
 
-        if (contextHolder.get().depth() == 0) {
-            Object resourceId = resolveIdentifier(joinPoint, authorization.target());
+        final Object resourceId = resolveIdentifier(joinPoint, authorization.target());
 
+        if (resourceId != null) {
             log.debug("[AuthorizationAspect.authorize] resourceId={}", resourceId);
-            contextHolder.set( contextHolder.get().init(resourceId));
+            contextHolder.set(contextHolder.get().resolveId(resourceId));
         }
 
         contextHolder.set(contextHolder.get().proceed(authorization.requires()));
@@ -71,19 +68,20 @@ public class AuthorizationAspect {
 
         Object resourceId = null;
 
-        Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();
-
-        final String targetName = target.getSimpleName().toLowerCase();
+        final Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();
 
         final Parameter[] parameters = method.getParameters();
 
         for (int i = 0; i < parameters.length; i ++) {
-            final String paramName = parameters[i].getName().toLowerCase();
+            final AuthorizeTarget declaredAnnotation =
+                    parameters[i].getDeclaredAnnotation(AuthorizeTarget.class);
 
-            if (!paramName.contains(targetName)) continue;
+            if (declaredAnnotation == null) continue;
+            if (!declaredAnnotation.target().equals(target)) continue;
 
             resourceId = joinPoint.getArgs()[i];
         }
+
         return resourceId;
     }
 }
