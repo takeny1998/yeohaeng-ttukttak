@@ -66,17 +66,19 @@ public class TravelController {
     /**
      * 사용자 여행을 조회합니다.
      *
-     * @param id 사용자 여행의 식별자
+     * @param travelId 사용자 여행의 식별자
      * @return 조회된 사용자 여행
      */
-    @GetMapping("/{id}")
+    @GetMapping("/{travelId}")
     @Transactional(readOnly = true)
-    public ServerResponse<FindTravelResponse> find(@PathVariable Long id) {
-        Travel foundTravel = travelRepository.findById(id)
+    public ServerResponse<FindTravelResponse> find(@PathVariable Long travelId) {
+
+        Travel foundTravel = travelRepository.findById(travelId)
                 .orElseThrow(() -> new EntityNotFoundFailException(Travel.class));
 
         return new ServerResponse<>(
                 new FindTravelResponse(TravelDto.of(foundTravel)));
+
     }
 
 }

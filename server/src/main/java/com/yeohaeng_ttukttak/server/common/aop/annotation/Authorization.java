@@ -13,4 +13,6 @@ public @interface Authorization {
 
     CrudPermission[] requires() default {};
 
+    Class<?> target();
+
 }

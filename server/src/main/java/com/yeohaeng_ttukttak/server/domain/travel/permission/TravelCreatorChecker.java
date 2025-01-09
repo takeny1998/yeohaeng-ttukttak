@@ -6,16 +6,18 @@ import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFou
 import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
 import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 public class TravelCreatorChecker implements PermissionCheckable {
 
     private final TravelRepository travelRepository;
 
     @Override
-    public boolean check(Object resourceId, String memberId) {
+    public boolean check(Object targetId, String memberId) {
 
-        if (resourceId instanceof Long travelId) {
+        if (targetId instanceof Long travelId) {
 
             final Travel travel = travelRepository.findById(travelId)
                     .orElseThrow(() -> new EntityNotFoundFailException(Travel.class));

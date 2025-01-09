@@ -1,5 +1,6 @@
 package com.yeohaeng_ttukttak.server.application.travel_city;
 
+import com.yeohaeng_ttukttak.server.common.aop.annotation.Authorization;
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundFailException;
 import com.yeohaeng_ttukttak.server.domain.geography.dto.GeographyDto;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.City;
@@ -25,6 +26,7 @@ public class TravelCityService {
     private final GeographyRepository geographyRepository;
 
     @Transactional
+    @Authorization(target = Travel.class)
     public void addCity(Locale locale, String memberId, Long travelId, Long cityId) {
 
         final Travel travel = travelRepository.findById(travelId)

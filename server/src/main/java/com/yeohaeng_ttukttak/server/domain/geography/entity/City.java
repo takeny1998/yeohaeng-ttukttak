@@ -7,7 +7,7 @@ import lombok.ToString;
 @Entity
 @DiscriminatorValue("2")
 @ToString
-public final class City extends Geography {
+public class City extends Geography {
 
     public Province province() {
         return (Province) super.parent();

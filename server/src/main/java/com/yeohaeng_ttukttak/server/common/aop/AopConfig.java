@@ -3,6 +3,10 @@ package com.yeohaeng_ttukttak.server.common.aop;
 import com.yeohaeng_ttukttak.server.domain.auth.service.AccessTokenService;
 import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
 import com.yeohaeng_ttukttak.server.domain.member.repository.MemberRepository;
+import com.yeohaeng_ttukttak.server.domain.travel.permission.TravelCreatorChecker;
+import com.yeohaeng_ttukttak.server.domain.travel.permission.TravelParticipantChecker;
+import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelParticipantRepository;
+import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,18 +24,21 @@ public class AopConfig {
     }
 
     @Bean
-    public AuthorizationAspect authorizationAspect() {
-        return new AuthorizationAspect();
-    }
-
-    @Bean
     public AuditorAware<Member> memberAuditorAware(MemberRepository memberRepository) {
         return new MemberAuditorAware(memberRepository);
     }
 
     @Bean
-    public PermissionCheckerManager permissionCheckerManager() {
-        return new PermissionCheckerManager();
+    public PermissionManager permissionManager(
+            final TravelParticipantRepository participantRepository,
+            final TravelRepository travelRepository) {
+
+        final PermissionManager permissionManager = new PermissionManager();
+
+        permissionManager.register(new TravelParticipantChecker(participantRepository));
+        permissionManager.register(new TravelCreatorChecker(travelRepository));
+
+        return permissionManager;
     }
 
 }

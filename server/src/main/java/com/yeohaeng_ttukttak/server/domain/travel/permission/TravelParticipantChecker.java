@@ -7,18 +7,20 @@ import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelParticipant;
 import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelParticipantRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 
+@Slf4j
 @RequiredArgsConstructor
 public class TravelParticipantChecker implements PermissionCheckable {
 
     private final TravelParticipantRepository travelParticipantRepository;
 
     @Override
-    public boolean check(Object resourceId, String memberId) {
+    public boolean check(Object targetId, String memberId) {
 
-        if (resourceId instanceof Long travelId) {
+        if (targetId instanceof Long travelId) {
 
             final List<Member> invitees = travelParticipantRepository
                     .findAllByTravelId(travelId)

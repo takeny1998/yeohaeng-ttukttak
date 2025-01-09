@@ -1,6 +1,8 @@
 package com.yeohaeng_ttukttak.server.common.aop;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.context.annotation.Configuration;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -8,7 +10,7 @@ import java.util.List;
 import java.util.*;
 
 @Slf4j
-public class PermissionCheckerManager {
+public class PermissionManager {
 
     private final List<PermissionCheckable> checkers = new ArrayList<>();
 

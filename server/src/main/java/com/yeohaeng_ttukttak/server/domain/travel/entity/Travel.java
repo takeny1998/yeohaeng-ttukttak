@@ -178,7 +178,7 @@ public class Travel extends BaseTimeMemberEntity {
      * @throws EntityAlreadyAddedFailException 이미 여행에 추가된 경우 발생한다.
      * @throws TooManyEntityFailException 10개 초과의 여행 도시를 추가하려는 경우 발생한다.
      */
-    @Authorization(requires = CrudPermission.UPDATE)
+    @Authorization(target = Travel.class, requires = CrudPermission.UPDATE)
     public void addCity(String memberId, City city) {
         verifyParticipantsOrCreator(memberId);
 

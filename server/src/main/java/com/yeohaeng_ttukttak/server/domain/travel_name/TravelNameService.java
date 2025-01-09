@@ -69,7 +69,7 @@ public class TravelNameService {
      * @throws IllegalStateException 여행 이름이 초기화되지 않은 경우 발생한다.
      */
     @Transactional
-    @Authorization(requires = { CrudPermission.CREATE, CrudPermission.UPDATE})
+    @Authorization(target = Travel.class, requires = CrudPermission.UPDATE)
     public void applyChangeToName(Locale locale, Travel travel) {
 
         final Boolean travelNameGenerated = travel.isNameGenerated();
