@@ -1,6 +1,6 @@
 package com.yeohaeng_ttukttak.server.domain.travel.entity;
 
-import com.yeohaeng_ttukttak.server.common.aop.CrudPermission;
+import com.yeohaeng_ttukttak.server.common.aop.CrudOperation;
 import com.yeohaeng_ttukttak.server.common.aop.annotation.Authorization;
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.*;
 import com.yeohaeng_ttukttak.server.common.util.LocalDateUtil;
@@ -12,16 +12,12 @@ import com.yeohaeng_ttukttak.server.domain.shared.entity.CompanionType;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.MotivationType;
 import com.yeohaeng_ttukttak.server.domain.shared.interfaces.Authorizable;
 import com.yeohaeng_ttukttak.server.domain.travel.exception.AlreadyJoinedTravelFailException;
-import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelRepository;
 import com.yeohaeng_ttukttak.server.domain.travel_name.TravelName;
 import com.yeohaeng_ttukttak.server.domain.travel_plan.TravelPlan;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowire;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Configurable;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -31,7 +27,7 @@ import java.util.Objects;
 @Entity
 @Slf4j
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Travel extends BaseTimeMemberEntity implements Authorizable<Travel> {
+public class Travel extends BaseTimeMemberEntity implements Authorizable {
 
     @Id @GeneratedValue
     private Long id;
@@ -143,7 +139,7 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable<Travel>
         return plans;
     }
 
-    @Authorization(requires = CrudPermission.UPDATE)
+    @Authorization(requires = CrudOperation.UPDATE)
     public void rename(TravelName newName) {
         this.name = newName;
     }
@@ -155,7 +151,7 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable<Travel>
      * @throws EntityAlreadyAddedFailException 이미 여행에 추가된 경우 발생한다.
      * @throws TooManyEntityFailException 10개 초과의 여행 도시를 추가하려는 경우 발생한다.
      */
-    @Authorization(requires = CrudPermission.UPDATE)
+    @Authorization(requires = CrudOperation.UPDATE)
     public void addCity(City city) {
 
         if (cities.size() == 10) {
@@ -216,7 +212,7 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable<Travel>
      * @throws ArgumentNotInRangeFailException 여행 기간에 벗어나는 일자를 지정했을 경우 발생한다.
      * @throws AccessDeniedFailException 여행에 참여한 사용자가 아닌 경우 발생한다.
      */
-    @Authorization(requires = CrudPermission.UPDATE)
+    @Authorization(requires = CrudOperation.UPDATE)
     public void addPlan(Place place, Integer dayOfTravel) {
 
         // 여행 날짜의 차를 구하고, 하루를 더해 총 여행 기간을 산출한다.
@@ -250,7 +246,7 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable<Travel>
      * @throws ArgumentNotInRangeFailException 지정된 방문일이 여행 기간에 벗어나는 경우 발생합니다.
      * @throws EntityNotFoundFailException 주어진 ID에 해당하는 여행 계획이 존재하지 않는 경우 발생합니다.
      */
-    @Authorization(requires = CrudPermission.UPDATE)
+    @Authorization(requires = CrudOperation.UPDATE)
     public void movePlan(TravelPlan travelPlan, Integer newOrderOfPlan, LocalDate willVisitOn) {
 
         // 지정된 방문일이 여행 기간 내에 있는지 검증
@@ -287,7 +283,7 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable<Travel>
      * @throws AccessDeniedFailException 사용자가 여행 계획의 참여자 또는 생성자가 아닌 경우 발생합니다.
      * @throws EntityNotFoundFailException 주어진 여행 계획이 존재하지 않는 경우 발생합니다.
      */
-    @Authorization(requires = CrudPermission.UPDATE)
+    @Authorization(requires = CrudOperation.UPDATE)
     public void deletePlan(TravelPlan travelPlan) {
 
         // 여행 계획을 삭제
@@ -298,8 +294,4 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable<Travel>
         plans.remove(travelPlan);
     }
 
-    @Override
-    public Travel resolve() {
-        return this;
-    }
 }

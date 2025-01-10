@@ -1,6 +1,6 @@
 package com.yeohaeng_ttukttak.server.common.aop.annotation;
 
-import com.yeohaeng_ttukttak.server.common.aop.CrudPermission;
+import com.yeohaeng_ttukttak.server.common.aop.CrudOperation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -11,6 +11,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Authorization {
 
-    CrudPermission[] requires() default {};
+    CrudOperation[] requires() default {};
 
 }

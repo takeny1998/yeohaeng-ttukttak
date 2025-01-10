@@ -1,6 +1,6 @@
 package com.yeohaeng_ttukttak.server.domain.travel.permission;
 
-import com.yeohaeng_ttukttak.server.common.aop.PermissionManager;
+import com.yeohaeng_ttukttak.server.common.aop.RoleBasedPermissionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
@@ -8,10 +8,10 @@ import org.springframework.context.annotation.Configuration;
 public class TravelPermissionConfig {
 
     @Autowired
-    public void register(PermissionManager permissionManager) {
+    public void register(RoleBasedPermissionManager roleBasedPermissionManager) {
 
-        permissionManager.register(new TravelCreatorChecker());
-        permissionManager.register(new TravelParticipantChecker());
+        roleBasedPermissionManager.register(new TravelCreatorPermission());
+        roleBasedPermissionManager.register(new TravelParticipantPermission());
 
     }
 

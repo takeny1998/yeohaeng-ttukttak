@@ -22,7 +22,7 @@ import org.springframework.beans.factory.annotation.Configurable;
 public class AuthorizationAspect {
 
     @Autowired
-    private PermissionManager permissionManager;
+    private RoleBasedPermissionManager roleBasedPermissionManager;
 
     @Pointcut("@annotation(com.yeohaeng_ttukttak.server.common.aop.annotation.Authorization)")
     public void authorization() {}
@@ -50,7 +50,7 @@ public class AuthorizationAspect {
                 AuthenticationContextHolder.getContext();
 
         final boolean permitted =
-                permissionManager.check(target, context.uuid(), authorization.requires());
+                roleBasedPermissionManager.check(target, context.uuid(), authorization.requires());
 
         log.debug("[AuthorizationAspect.authorize] {} permitted = {}", joinPoint.getSignature(), permitted);
 
@@ -61,8 +61,8 @@ public class AuthorizationAspect {
 
     private Object resolveTarget(final Object target) {
 
-        if (target instanceof Authorizable<?> authorizable) {
-            return authorizable.resolve();
+        if (target instanceof Authorizable authorizable) {
+            return authorizable;
         }
 
         if (target instanceof DelegatedAuthorizable<?> authorizable) {

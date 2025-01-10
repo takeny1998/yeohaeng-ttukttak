@@ -3,10 +3,6 @@ package com.yeohaeng_ttukttak.server.common.aop;
 import com.yeohaeng_ttukttak.server.domain.auth.service.AccessTokenService;
 import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
 import com.yeohaeng_ttukttak.server.domain.member.repository.MemberRepository;
-import com.yeohaeng_ttukttak.server.domain.travel.permission.TravelCreatorChecker;
-import com.yeohaeng_ttukttak.server.domain.travel.permission.TravelParticipantChecker;
-import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelParticipantRepository;
-import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,8 +25,8 @@ public class AopConfig {
     }
 
     @Bean
-    public PermissionManager permissionManagerFactory() {
-        return new PermissionManager();
+    public RoleBasedPermissionManager permissionManagerFactory() {
+        return new RoleBasedPermissionManager();
     }
 
 }

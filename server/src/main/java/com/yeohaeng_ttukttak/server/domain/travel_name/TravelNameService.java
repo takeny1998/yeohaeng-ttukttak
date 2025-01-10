@@ -1,7 +1,5 @@
 package com.yeohaeng_ttukttak.server.domain.travel_name;
 
-import com.yeohaeng_ttukttak.server.common.aop.CrudPermission;
-import com.yeohaeng_ttukttak.server.common.aop.annotation.Authorization;
 import com.yeohaeng_ttukttak.server.common.util.StringUtil;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.City;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.Province;

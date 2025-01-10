@@ -1,6 +1,6 @@
 package com.yeohaeng_ttukttak.server.domain.travel_plan;
 
-import com.yeohaeng_ttukttak.server.common.aop.CrudPermission;
+import com.yeohaeng_ttukttak.server.common.aop.CrudOperation;
 import com.yeohaeng_ttukttak.server.common.aop.annotation.Authorization;
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.AccessDeniedFailException;
 import com.yeohaeng_ttukttak.server.domain.comment.Comment;
@@ -31,7 +31,7 @@ public class TravelPlanComment implements DelegatedAuthorizable<Travel> {
      * @param comment 작성할 댓글 엔티티
      * @throws AccessDeniedFailException 댓글을 추가할 권한이 없는 경우 발생한다.
      */
-    @Authorization(requires = CrudPermission.UPDATE)
+    @Authorization(requires = CrudOperation.UPDATE)
     public TravelPlanComment(TravelPlan plan, Comment comment) {
         this.plan = plan;
         this.comment = comment;
