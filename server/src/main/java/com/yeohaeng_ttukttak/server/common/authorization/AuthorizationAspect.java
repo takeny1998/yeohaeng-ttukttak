@@ -4,6 +4,7 @@ import com.yeohaeng_ttukttak.server.common.authentication.AuthenticationContextH
 import com.yeohaeng_ttukttak.server.common.authorization.interfaces.Authorizable;
 import com.yeohaeng_ttukttak.server.common.authorization.interfaces.DelegatedAuthorizable;
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.AccessDeniedFailException;
+import com.yeohaeng_ttukttak.server.common.exception.exception.fail.AuthorizationFailException;
 import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthenticationContext;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
@@ -27,12 +28,12 @@ public class AuthorizationAspect {
     @Pointcut("@annotation(com.yeohaeng_ttukttak.server.common.authorization.Authorization)")
     public void authorization() {}
 
-    @Before("@annotation(authorization) && (execution(* *(..)))")
+    @Before("@annotation(authorization) && execution(* *(..))")
     public void authorizeMethod(final JoinPoint joinPoint, final Authorization authorization) {
         authorize(joinPoint, authorization);
     }
 
-    @After("@annotation(authorization) && (execution(*.new(..)))")
+    @After("@annotation(authorization) && execution(*.new(..))")
     public void authorizeConstructor(final JoinPoint joinPoint, final Authorization authorization) {
         authorize(joinPoint, authorization);
     }
@@ -48,6 +49,10 @@ public class AuthorizationAspect {
 
         final AuthenticationContext context =
                 AuthenticationContextHolder.getContext();
+
+        if (context == null) {
+            throw new AuthorizationFailException();
+        }
 
         final boolean permitted =
                 roleBasedPermissionManager.check(target, context.uuid(), authorization.requires());
