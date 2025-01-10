@@ -8,7 +8,7 @@ import lombok.ToString;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString
+@ToString(exclude = { "travel", "city" })
 public class TravelCity {
 
     @Id @GeneratedValue

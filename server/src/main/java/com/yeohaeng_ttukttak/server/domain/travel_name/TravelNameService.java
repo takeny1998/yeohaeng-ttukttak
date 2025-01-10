@@ -7,6 +7,7 @@ import com.yeohaeng_ttukttak.server.domain.geography.entity.City;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.Province;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelCity;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +16,7 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class TravelNameService {
 
@@ -48,13 +50,11 @@ public class TravelNameService {
     }
 
     @Transactional
-    public void applyName(Travel travel, String inputName, String memberId) {
+    public void applyName(Travel travel, String inputName) {
 
         if (Objects.isNull(inputName)) {
             return;
         }
-
-        travel.verifyParticipantsOrCreator(memberId);
 
         final TravelName newName = validateInputName(inputName);
         travel.rename(newName);
@@ -69,7 +69,6 @@ public class TravelNameService {
      * @throws IllegalStateException 여행 이름이 초기화되지 않은 경우 발생한다.
      */
     @Transactional
-    @Authorization(target = Travel.class, requires = CrudPermission.UPDATE)
     public void applyChangeToName(Locale locale, Travel travel) {
 
         final Boolean travelNameGenerated = travel.isNameGenerated();
@@ -122,6 +121,9 @@ public class TravelNameService {
      * @return 생성된 TravelName 엔티티
      */
     public TravelName generateDefaultName(Locale locale, List<TravelCity> cities) {
+
+        log.debug("provinces = {}", cities);
+
         final List<Province> provinces = cities.stream()
                 .map(TravelCity::city)
                 .map(City::province)

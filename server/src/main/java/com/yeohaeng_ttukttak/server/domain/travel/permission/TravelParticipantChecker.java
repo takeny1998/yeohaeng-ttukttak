@@ -12,28 +12,19 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.List;
 
 @Slf4j
-@RequiredArgsConstructor
-public class TravelParticipantChecker implements PermissionCheckable {
-
-    private final TravelParticipantRepository travelParticipantRepository;
+public class TravelParticipantChecker implements PermissionCheckable<Travel> {
 
     @Override
-    public boolean check(Object targetId, String memberId) {
+    public boolean check(Travel travel, String memberId) {
 
-        if (targetId instanceof Long travelId) {
+        final List<Member> invitees = travel.participants()
+                .stream()
+                .map(TravelParticipant::invitee)
+                .toList();
 
-            final List<Member> invitees = travelParticipantRepository
-                    .findAllByTravelId(travelId)
-                    .stream()
-                    .map(TravelParticipant::invitee)
-                    .toList();
+        return invitees.stream()
+                .anyMatch(invitee -> invitee.uuid().equals(memberId));
 
-            return invitees.stream()
-                    .anyMatch(invitee -> invitee.uuid().equals(memberId));
-
-        }
-
-        return false;
     }
 
     @Override
@@ -42,7 +33,7 @@ public class TravelParticipantChecker implements PermissionCheckable {
     }
 
     @Override
-    public Class<?> target() {
+    public Class<Travel> target() {
         return Travel.class;
     }
 }

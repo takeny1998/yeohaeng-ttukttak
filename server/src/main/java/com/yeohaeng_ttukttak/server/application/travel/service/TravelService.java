@@ -66,7 +66,7 @@ public class TravelService {
         final TravelDates dates = new TravelDates(startedOn, endedOn);
 
         final Travel travel = new Travel(
-               creator, dates, cities, companionTypes, motivationTypes);
+              dates, cities, companionTypes, motivationTypes);
 
         travelNameService.initializeName(locale, travel, inputName);
 
@@ -90,15 +90,12 @@ public class TravelService {
 
     @Transactional
     public void update(
-            Long travelId,
-            String memberId,
-            String inputName
-    ) {
+            Long travelId, String inputName) {
 
         final Travel travel = travelRepository.findById(travelId)
                 .orElseThrow(() -> new EntityNotFoundFailException(Travel.class));
 
-        travelNameService.applyName(travel, inputName, memberId);
+        travelNameService.applyName(travel, inputName);
 
 
 

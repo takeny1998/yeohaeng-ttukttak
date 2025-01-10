@@ -29,16 +29,8 @@ public class AopConfig {
     }
 
     @Bean
-    public PermissionManager permissionManager(
-            final TravelParticipantRepository participantRepository,
-            final TravelRepository travelRepository) {
-
-        final PermissionManager permissionManager = new PermissionManager();
-
-        permissionManager.register(new TravelParticipantChecker(participantRepository));
-        permissionManager.register(new TravelCreatorChecker(travelRepository));
-
-        return permissionManager;
+    public PermissionManager permissionManagerFactory() {
+        return new PermissionManager();
     }
 
 }

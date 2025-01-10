@@ -37,14 +37,10 @@ public class TravelPlanController {
     @Authentication
     public ServerResponse<TravelPlanListResponse> create(
             @PathVariable Long travelId,
-            @RequestBody CreateTravelPlanRequest request,
-            AuthenticationContext authorization) {
+            @RequestBody CreateTravelPlanRequest request) {
 
         travelPlanService.create(
-                authorization.uuid(),
-                travelId,
-                request.placeId(),
-                request.dayOfTravel());
+                travelId, request.placeId(), request.dayOfTravel());
 
         return responsePlanList(travelId);
     }
@@ -82,11 +78,9 @@ public class TravelPlanController {
     public ServerResponse<TravelPlanListResponse> move(
             @PathVariable Long travelId,
             @PathVariable Long planId,
-            @Valid @RequestBody MoveTravelPlanRequest request,
-            AuthenticationContext context) {
+            @Valid @RequestBody MoveTravelPlanRequest request) {
 
-        travelPlanService.move(
-                context.uuid(), travelId, planId, request.orderOfPlan(), request.willVisitOn());
+        travelPlanService.move(travelId, planId, request.orderOfPlan(), request.willVisitOn());
 
         return responsePlanList(travelId);
     }
@@ -105,11 +99,9 @@ public class TravelPlanController {
     @DeleteMapping("/{planId}")
     @Authentication
     public ServerResponse<TravelPlanListResponse> delete(
-            @PathVariable Long travelId,
-            @PathVariable Long planId,
-            AuthenticationContext context) {
+            @PathVariable Long travelId, @PathVariable Long planId) {
 
-        travelPlanService.delete(context.uuid(), travelId, planId);
+        travelPlanService.delete(travelId, planId);
 
         return responsePlanList(travelId);
     }

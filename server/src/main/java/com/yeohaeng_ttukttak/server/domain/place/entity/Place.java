@@ -13,7 +13,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Entity
 @ToString(exclude = {"categories", "visits"})
 @NoArgsConstructor(access = PROTECTED)
-public final class Place {
+public class Place {
 
     @Id
     private Long id;

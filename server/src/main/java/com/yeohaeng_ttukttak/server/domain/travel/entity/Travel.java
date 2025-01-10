@@ -10,12 +10,18 @@ import com.yeohaeng_ttukttak.server.domain.place.entity.Place;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.BaseTimeMemberEntity;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.CompanionType;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.MotivationType;
+import com.yeohaeng_ttukttak.server.domain.shared.interfaces.Authorizable;
 import com.yeohaeng_ttukttak.server.domain.travel.exception.AlreadyJoinedTravelFailException;
+import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelRepository;
 import com.yeohaeng_ttukttak.server.domain.travel_name.TravelName;
 import com.yeohaeng_ttukttak.server.domain.travel_plan.TravelPlan;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowire;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -23,8 +29,9 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
+@Slf4j
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Travel extends BaseTimeMemberEntity {
+public class Travel extends BaseTimeMemberEntity implements Authorizable<Travel> {
 
     @Id @GeneratedValue
     private Long id;
@@ -62,7 +69,7 @@ public class Travel extends BaseTimeMemberEntity {
      *          if (companionTypes.size < 1 || companionTypes.size > 3) <br>
      *          if (motivationTypes.size < 1 || motivationTypes.size > 5)
      */
-    public Travel(Member creator, TravelDates dates, List<City> cities, List<CompanionType> companionTypes, List<MotivationType> motivationTypes) {
+    public Travel(TravelDates dates, List<City> cities, List<CompanionType> companionTypes, List<MotivationType> motivationTypes) {
         this.dates = dates;
 
         if (cities.isEmpty() || cities.size() > 10) {
@@ -136,51 +143,20 @@ public class Travel extends BaseTimeMemberEntity {
         return plans;
     }
 
-    /**
-     * 해당 여행에 참여자 혹은 생성장니지 검증한다.
-     * @param memberId 접근하려는 자의 식별자
-     * @throws AccessDeniedFailException 권한이 없는 경우
-     */
-    public void verifyParticipantsOrCreator(String memberId) {
-        final boolean isOwner = Objects.equals(createdBy().uuid(), memberId);
-
-        final boolean isParticipant = participants.stream()
-                .anyMatch(e -> e.invitee().uuid().equals(memberId));
-
-        if (!(isOwner || isParticipant)) {
-            throw new AccessDeniedFailException(Travel.class);
-        }
-    }
-
-    /**
-     * 여행 여행 객체를 삭제할 수 있는지 검사한다.
-     * @param memberId 접근자의 식별값
-     * @throws AccessDeniedFailException 권한이 없는 경우
-     */
-    public void verifyCreator(String memberId) {
-        final boolean isCreator =
-                Objects.equals(createdBy().uuid(), memberId);
-
-        if (!isCreator) {
-            throw new AccessDeniedFailException(Travel.class);
-        }
-    }
-
+    @Authorization(requires = CrudPermission.UPDATE)
     public void rename(TravelName newName) {
         this.name = newName;
     }
 
     /**
      * 현재 여행 계획에 지정한 도시를 추가합니다.
-     * @param memberId 사용자의 식별자
      * @param city 추가하려는 도시 엔티티
      * @throws AccessDeniedFailException 여행에 참가자 혹은 생성자가 아니면 발생한다.
      * @throws EntityAlreadyAddedFailException 이미 여행에 추가된 경우 발생한다.
      * @throws TooManyEntityFailException 10개 초과의 여행 도시를 추가하려는 경우 발생한다.
      */
-    @Authorization(target = Travel.class, requires = CrudPermission.UPDATE)
-    public void addCity(String memberId, City city) {
-        verifyParticipantsOrCreator(memberId);
+    @Authorization(requires = CrudPermission.UPDATE)
+    public void addCity(City city) {
 
         if (cities.size() == 10) {
             throw new TooManyEntityFailException(Class.class, 10);
@@ -222,8 +198,6 @@ public class Travel extends BaseTimeMemberEntity {
      * @throws AccessDeniedFailException 대상 참여자를 쫒을 권한이 없는 경우 발생한다.
      */
     public void leaveParticipant(Member member, TravelParticipant participant) {
-        verifyParticipantsOrCreator(member.uuid());
-
         final boolean isInvitedByKicker = Objects.equals(member.uuid(), participant.invitee().uuid());
         final boolean isMemberOwner = Objects.equals(member.uuid(), createdBy().uuid());
 
@@ -237,23 +211,21 @@ public class Travel extends BaseTimeMemberEntity {
     /**
      * 지정한 여행에 새로운 계획을 생성합니다.
      *
-     * @param memberId 접근하는 사용자의 식별자
      * @param place 계획에 지정할 장소(Place) 엔티티
      * @param dayOfTravel 계획을 수행할 일자
      * @throws ArgumentNotInRangeFailException 여행 기간에 벗어나는 일자를 지정했을 경우 발생한다.
      * @throws AccessDeniedFailException 여행에 참여한 사용자가 아닌 경우 발생한다.
      */
-    public void addPlan(String memberId, Place place, Integer dayOfTravel) {
+    @Authorization(requires = CrudPermission.UPDATE)
+    public void addPlan(Place place, Integer dayOfTravel) {
 
         // 여행 날짜의 차를 구하고, 하루를 더해 총 여행 기간을 산출한다.
         final long totalTravelDays = LocalDateUtil
-                .getBetweenDays(dates.startedOn(), dates.endedOn());
+                .getBetweenDays(startedOn(), endedOn());
 
         if (dayOfTravel < 0 || dayOfTravel >= totalTravelDays) {
             throw new ArgumentNotInRangeFailException("dayOfTravel", 0, totalTravelDays);
         }
-
-        verifyParticipantsOrCreator(memberId);
 
         int orderOfPlan = -1;
 
@@ -271,7 +243,6 @@ public class Travel extends BaseTimeMemberEntity {
     /**
      * 여행 계획을 이동합니다.
      *
-     * @param memberId 이동을 요청하는 사용자의 식별자
      * @param travelPlan 이동할 계획 엔티티
      * @param newOrderOfPlan 새로운 계획의 순서
      * @param willVisitOn 방문할 예정일
@@ -279,10 +250,8 @@ public class Travel extends BaseTimeMemberEntity {
      * @throws ArgumentNotInRangeFailException 지정된 방문일이 여행 기간에 벗어나는 경우 발생합니다.
      * @throws EntityNotFoundFailException 주어진 ID에 해당하는 여행 계획이 존재하지 않는 경우 발생합니다.
      */
-    public void movePlan(
-            String memberId, TravelPlan travelPlan, Integer newOrderOfPlan, LocalDate willVisitOn) {
-
-        verifyParticipantsOrCreator(memberId);
+    @Authorization(requires = CrudPermission.UPDATE)
+    public void movePlan(TravelPlan travelPlan, Integer newOrderOfPlan, LocalDate willVisitOn) {
 
         // 지정된 방문일이 여행 기간 내에 있는지 검증
         if (!LocalDateUtil.isInRange(willVisitOn, dates.startedOn(), dates.endedOn())) {
@@ -314,14 +283,12 @@ public class Travel extends BaseTimeMemberEntity {
     /**
      * 지정된 여행 계획을 삭제합니다.
      *
-     * @param memberId 삭제를 요청하는 사용자의 식별자
      * @param travelPlan 삭제할 여행 계획
      * @throws AccessDeniedFailException 사용자가 여행 계획의 참여자 또는 생성자가 아닌 경우 발생합니다.
      * @throws EntityNotFoundFailException 주어진 여행 계획이 존재하지 않는 경우 발생합니다.
      */
-    public void deletePlan(String memberId, TravelPlan travelPlan) {
-        // 사용자가 참여자 또는 생성자인지 검증
-        verifyParticipantsOrCreator(memberId);
+    @Authorization(requires = CrudPermission.UPDATE)
+    public void deletePlan(TravelPlan travelPlan) {
 
         // 여행 계획을 삭제
         if (!plans.contains(travelPlan)) {
@@ -331,4 +298,8 @@ public class Travel extends BaseTimeMemberEntity {
         plans.remove(travelPlan);
     }
 
+    @Override
+    public Travel resolve() {
+        return this;
+    }
 }

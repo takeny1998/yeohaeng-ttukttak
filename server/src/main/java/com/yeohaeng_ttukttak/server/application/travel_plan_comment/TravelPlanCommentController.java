@@ -38,13 +38,10 @@ public class TravelPlanCommentController {
     public ServerResponse<CommentListResponse> writeComment(
             @PathVariable Long travelId,
             @PathVariable Long planId,
-            @RequestBody @Valid CommentContentRequest request,
-            AuthenticationContext authentication) {
-
-        final String writerId = authentication.uuid();
+            @RequestBody @Valid CommentContentRequest request) {
 
         travelPlanCommentService.writeComment(
-                writerId, travelId, planId, request.content());
+                 travelId, planId, request.content());
 
         final List<CommentDto> dtoList =
                 travelPlanCommentService.getOrderedComments(planId);

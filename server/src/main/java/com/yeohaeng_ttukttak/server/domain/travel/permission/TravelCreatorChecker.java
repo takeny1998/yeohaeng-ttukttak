@@ -9,25 +9,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@RequiredArgsConstructor
-public class TravelCreatorChecker implements PermissionCheckable {
-
-    private final TravelRepository travelRepository;
+public class TravelCreatorChecker implements PermissionCheckable<Travel> {
 
     @Override
-    public boolean check(Object targetId, String memberId) {
-
-        if (targetId instanceof Long travelId) {
-
-            final Travel travel = travelRepository.findById(travelId)
-                    .orElseThrow(() -> new EntityNotFoundFailException(Travel.class));
-
-            return travel.createdBy().uuid().equals(memberId);
-
-        }
-
-        return false;
-
+    public boolean check(Travel travel, String memberId) {
+        return travel.createdBy().uuid().equals(memberId);
     }
 
     @Override
@@ -41,7 +27,7 @@ public class TravelCreatorChecker implements PermissionCheckable {
     }
 
     @Override
-    public Class<?> target() {
+    public Class<Travel> target() {
         return Travel.class;
     }
 }

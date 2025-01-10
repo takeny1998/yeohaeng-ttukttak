@@ -1,20 +1,20 @@
 package com.yeohaeng_ttukttak.server.common.aop;
 
 import com.yeohaeng_ttukttak.server.common.aop.annotation.Authorization;
-import com.yeohaeng_ttukttak.server.common.aop.annotation.AuthorizeTarget;
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.AccessDeniedFailException;
+import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthenticationContext;
+import com.yeohaeng_ttukttak.server.domain.shared.interfaces.Authorizable;
+import com.yeohaeng_ttukttak.server.domain.shared.interfaces.DelegatedAuthorizable;
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
-import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowire;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
 
 @Slf4j
 @Aspect
@@ -24,64 +24,52 @@ public class AuthorizationAspect {
     @Autowired
     private PermissionManager permissionManager;
 
-    private static final ThreadLocal<AuthorizationContext> contextHolder =
-            ThreadLocal.withInitial(AuthorizationContext::init);
-
     @Pointcut("@annotation(com.yeohaeng_ttukttak.server.common.aop.annotation.Authorization)")
     public void authorization() {}
 
-    @Around("@annotation(authorization) && execution(* *(..))")
-    public Object authorize(final ProceedingJoinPoint joinPoint, final Authorization authorization) throws Throwable {
-
-        log.debug("[AuthorizationAspect.authorize] {} {}", joinPoint.getSignature(), permissionManager);
-
-        final Object resourceId = resolveIdentifier(joinPoint, authorization.target());
-
-        if (resourceId != null) {
-            log.debug("[AuthorizationAspect.authorize] resourceId={}", resourceId);
-            contextHolder.set(contextHolder.get().resolveId(resourceId));
-        }
-
-        contextHolder.set(contextHolder.get().proceed(authorization.requires()));
-
-        final Object result = joinPoint.proceed();
-
-        contextHolder.set(contextHolder.get().revert());
-
-        final AuthorizationContext context = contextHolder.get();
-
-        if (context.depth() == 0) {
-            final boolean isPermitted = permissionManager.check(context.resourceId(),
-                    AuthenticationContextHolder.getContext().uuid(),
-                    authorization.target(),
-                    context.requires().toArray(new CrudPermission[]{}));
-
-            if (!isPermitted) {
-                throw new AccessDeniedFailException(authorization.target());
-            }
-        }
-
-        return result;
+    @Before("@annotation(authorization) && (execution(* *(..)))")
+    public void authorizeMethod(final JoinPoint joinPoint, final Authorization authorization) {
+        authorize(joinPoint, authorization);
     }
 
-    private Object resolveIdentifier(ProceedingJoinPoint joinPoint, Class<?> target) {
+    @After("@annotation(authorization) && (execution(*.new(..)))")
+    public void authorizeConstructor(final JoinPoint joinPoint, final Authorization authorization) {
+        authorize(joinPoint, authorization);
+    }
 
-        Object resourceId = null;
+    private void authorize(JoinPoint joinPoint, Authorization authorization) {
+        final Object target = resolveTarget(joinPoint.getThis());
 
-        final Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();
-
-        final Parameter[] parameters = method.getParameters();
-
-        for (int i = 0; i < parameters.length; i ++) {
-            final AuthorizeTarget declaredAnnotation =
-                    parameters[i].getDeclaredAnnotation(AuthorizeTarget.class);
-
-            if (declaredAnnotation == null) continue;
-            if (!declaredAnnotation.target().equals(target)) continue;
-
-            resourceId = joinPoint.getArgs()[i];
+        if (target == null) {
+            throw new IllegalStateException("대상 클래스를 찾을 수 없습니다");
         }
 
-        return resourceId;
+        log.debug("[AuthorizationAspect.authorize] {} resolved = {}", joinPoint.getSignature(), target);
+
+        final AuthenticationContext context =
+                AuthenticationContextHolder.getContext();
+
+        final boolean permitted =
+                permissionManager.check(target, context.uuid(), authorization.requires());
+
+        log.debug("[AuthorizationAspect.authorize] {} permitted = {}", joinPoint.getSignature(), permitted);
+
+        if (!permitted) {
+            throw new AccessDeniedFailException(target.getClass());
+        }
     }
+
+    private Object resolveTarget(final Object target) {
+
+        if (target instanceof Authorizable<?> authorizable) {
+            return authorizable.resolve();
+        }
+
+        if (target instanceof DelegatedAuthorizable<?> authorizable) {
+            return authorizable.resolve();
+        }
+
+        return null;
+    }
+
 }

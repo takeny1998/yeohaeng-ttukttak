@@ -1,7 +1,5 @@
 package com.yeohaeng_ttukttak.server.application.travel_city;
 
-import com.yeohaeng_ttukttak.server.common.aop.annotation.Authorization;
-import com.yeohaeng_ttukttak.server.common.aop.annotation.AuthorizeTarget;
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundFailException;
 import com.yeohaeng_ttukttak.server.domain.geography.dto.GeographyDto;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.City;
@@ -27,11 +25,7 @@ public class TravelCityService {
     private final GeographyRepository geographyRepository;
 
     @Transactional
-    @Authorization(target = Travel.class)
-    public void addCity(Locale locale,
-                        String memberId,
-                        @AuthorizeTarget(target = Travel.class) Long travelId,
-                        Long cityId) {
+    public void addCity(Locale locale, Long travelId, Long cityId) {
 
         final Travel travel = travelRepository.findById(travelId)
                 .orElseThrow(() -> new EntityNotFoundFailException(Travel.class));
@@ -39,7 +33,7 @@ public class TravelCityService {
         final City city = geographyRepository.findCityById(cityId)
                 .orElseThrow(() -> new EntityNotFoundFailException(City.class));
 
-        travel.addCity(memberId, city);
+        travel.addCity(city);
 
         travelNameService.applyChangeToName(locale, travel);
     }

@@ -27,14 +27,13 @@ public class TravelPlanService {
 
     /**
      * 지정한 여행에 새로운 도시를 추가한다.
-     * @param memberId 접근하려는 사용자의 식별자
      * @param travelId 찾을 여행의 식별자
      * @param placeId 찾을 장소의 식별자
      * @param dayOfTravel 계획을 수행할 일자
      * @throws EntityNotFoundFailException 엔티티를 찾을 수 없는 경우 발생한다.
      */
     @Transactional
-    public void create(String memberId, Long travelId, Long placeId, Integer dayOfTravel) {
+    public void create(Long travelId, Long placeId, Integer dayOfTravel) {
 
         final Travel travel = travelRepository
                 .findById(travelId)
@@ -44,7 +43,7 @@ public class TravelPlanService {
                 .findById(placeId)
                 .orElseThrow(() -> new EntityNotFoundFailException(Place.class));
 
-        travel.addPlan(memberId, place, dayOfTravel);
+        travel.addPlan(place, dayOfTravel);
 
     }
 
@@ -59,9 +58,7 @@ public class TravelPlanService {
     }
 
     @Transactional
-    public void move(
-            String memberId, Long travelId, Long planId,
-            Integer orderOfPlan, LocalDate willVisitOn) {
+    public void move(Long travelId, Long planId, Integer orderOfPlan, LocalDate willVisitOn) {
 
         final Travel travel = travelRepository.findById(travelId)
                 .orElseThrow(() -> new EntityNotFoundFailException(Travel.class));
@@ -70,11 +67,11 @@ public class TravelPlanService {
                 .findByIdAndTravelId(planId, travelId)
                 .orElseThrow(() -> new EntityNotFoundFailException(TravelPlan.class));
 
-        travel.movePlan(memberId, travelPlan, orderOfPlan, willVisitOn);
+        travel.movePlan(travelPlan, orderOfPlan, willVisitOn);
     }
 
     @Transactional
-    public void delete(String memberId, Long travelId, Long planId) {
+    public void delete(Long travelId, Long planId) {
 
         final Travel travel = travelRepository.findById(travelId)
                 .orElseThrow(() -> new EntityNotFoundFailException(Travel.class));
@@ -83,7 +80,7 @@ public class TravelPlanService {
                 .findByIdAndTravelId(planId, travelId)
                 .orElseThrow(() -> new EntityNotFoundFailException(TravelPlan.class));
 
-        travel.deletePlan(memberId, travelPlan);
+        travel.deletePlan(travelPlan);
 
     }
 
