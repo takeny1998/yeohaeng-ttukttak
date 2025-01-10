@@ -3,7 +3,7 @@ package com.yeohaeng_ttukttak.server.application.travel.controller;
 import com.yeohaeng_ttukttak.server.application.travel.controller.dto.*;
 import com.yeohaeng_ttukttak.server.application.travel.service.TravelService;
 import com.yeohaeng_ttukttak.server.application.travel_city.TravelCityService;
-import com.yeohaeng_ttukttak.server.common.aop.annotation.Authentication;
+import com.yeohaeng_ttukttak.server.common.authentication.Authentication;
 import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundFailException;
 import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthenticationContext;

@@ -1,4 +1,4 @@
-package com.yeohaeng_ttukttak.server.common.aop;
+package com.yeohaeng_ttukttak.server.common.authentication;
 
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.AuthorizationFailException;
 import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthenticationContext;
@@ -22,7 +22,7 @@ public class AuthenticationAspect {
 
     private static final String TOKEN_PREFIX = "Bearer ";
 
-    @Around("@annotation(com.yeohaeng_ttukttak.server.common.aop.annotation.Authentication)")
+    @Around("@annotation(com.yeohaeng_ttukttak.server.common.authentication.Authentication)")
     public Object call(ProceedingJoinPoint joinPoint) throws Throwable {
 
         final String header = httpServletRequest.getHeader("Authorization");

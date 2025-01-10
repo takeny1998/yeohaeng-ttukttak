@@ -1,10 +1,10 @@
 package com.yeohaeng_ttukttak.server.domain.travel_plan;
 
-import com.yeohaeng_ttukttak.server.common.aop.CrudOperation;
-import com.yeohaeng_ttukttak.server.common.aop.annotation.Authorization;
+import com.yeohaeng_ttukttak.server.common.authorization.CrudOperation;
+import com.yeohaeng_ttukttak.server.common.authorization.Authorization;
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.AccessDeniedFailException;
 import com.yeohaeng_ttukttak.server.domain.comment.Comment;
-import com.yeohaeng_ttukttak.server.domain.shared.interfaces.DelegatedAuthorizable;
+import com.yeohaeng_ttukttak.server.common.authorization.interfaces.DelegatedAuthorizable;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
 import jakarta.persistence.*;
 import lombok.AccessLevel;

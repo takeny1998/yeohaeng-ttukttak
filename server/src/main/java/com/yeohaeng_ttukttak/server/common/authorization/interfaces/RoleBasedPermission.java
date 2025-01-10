@@ -1,6 +1,6 @@
-package com.yeohaeng_ttukttak.server.common.aop;
+package com.yeohaeng_ttukttak.server.common.authorization.interfaces;
 
-import com.yeohaeng_ttukttak.server.domain.shared.interfaces.Authorizable;
+import com.yeohaeng_ttukttak.server.common.authorization.CrudOperation;
 
 /**
  * 사용자 역할에 대한 대상 도메인과 허용 작업을 검증하는 인터페이스입니다.

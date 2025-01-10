@@ -1,7 +1,7 @@
 package com.yeohaeng_ttukttak.server.domain.travel.entity;
 
-import com.yeohaeng_ttukttak.server.common.aop.CrudOperation;
-import com.yeohaeng_ttukttak.server.common.aop.annotation.Authorization;
+import com.yeohaeng_ttukttak.server.common.authorization.CrudOperation;
+import com.yeohaeng_ttukttak.server.common.authorization.Authorization;
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.*;
 import com.yeohaeng_ttukttak.server.common.util.LocalDateUtil;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.City;
@@ -10,7 +10,7 @@ import com.yeohaeng_ttukttak.server.domain.place.entity.Place;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.BaseTimeMemberEntity;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.CompanionType;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.MotivationType;
-import com.yeohaeng_ttukttak.server.domain.shared.interfaces.Authorizable;
+import com.yeohaeng_ttukttak.server.common.authorization.interfaces.Authorizable;
 import com.yeohaeng_ttukttak.server.domain.travel.exception.AlreadyJoinedTravelFailException;
 import com.yeohaeng_ttukttak.server.domain.travel_name.TravelName;
 import com.yeohaeng_ttukttak.server.domain.travel_plan.TravelPlan;

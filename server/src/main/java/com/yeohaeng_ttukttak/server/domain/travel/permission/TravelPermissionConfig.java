@@ -1,6 +1,6 @@
 package com.yeohaeng_ttukttak.server.domain.travel.permission;
 
-import com.yeohaeng_ttukttak.server.common.aop.RoleBasedPermissionManager;
+import com.yeohaeng_ttukttak.server.common.authorization.RoleBasedPermissionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 

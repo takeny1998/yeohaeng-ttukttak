@@ -1,4 +1,4 @@
-package com.yeohaeng_ttukttak.server.domain.shared.interfaces;
+package com.yeohaeng_ttukttak.server.common.authorization.interfaces;
 
 public interface DelegatedAuthorizable<T extends Authorizable> {
 

@@ -1,4 +1,4 @@
-package com.yeohaeng_ttukttak.server.common.aop;
+package com.yeohaeng_ttukttak.server.common.authentication;
 
 import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthenticationContext;
 import lombok.extern.slf4j.Slf4j;

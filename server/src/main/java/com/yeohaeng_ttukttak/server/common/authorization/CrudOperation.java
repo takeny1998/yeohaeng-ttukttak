@@ -1,4 +1,4 @@
-package com.yeohaeng_ttukttak.server.common.aop;
+package com.yeohaeng_ttukttak.server.common.authorization;
 
 public enum CrudOperation {
 

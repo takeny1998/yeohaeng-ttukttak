@@ -13,6 +13,6 @@
     </weaver>
     <aspects>
         <!-- These are the two aspects we want to switch on for now. -->
-        <aspect name="com.yeohaeng_ttukttak.server.common.aop.AuthorizationAspect" />
+        <aspect name="com.yeohaeng_ttukttak.server.common.authorization.AuthorizationAspect" />
     </aspects>
 </aspectj>

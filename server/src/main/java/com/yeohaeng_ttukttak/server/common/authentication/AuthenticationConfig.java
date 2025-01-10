@@ -1,4 +1,4 @@
-package com.yeohaeng_ttukttak.server.common.aop;
+package com.yeohaeng_ttukttak.server.common.authentication;
 
 import com.yeohaeng_ttukttak.server.domain.auth.service.AccessTokenService;
 import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
 
 @Configuration
-public class AopConfig {
+public class AuthenticationConfig {
 
     @Bean
     public AuthenticationAspect authenticationAspect(
@@ -22,11 +22,6 @@ public class AopConfig {
     @Bean
     public AuditorAware<Member> memberAuditorAware(MemberRepository memberRepository) {
         return new MemberAuditorAware(memberRepository);
-    }
-
-    @Bean
-    public RoleBasedPermissionManager permissionManagerFactory() {
-        return new RoleBasedPermissionManager();
     }
 
 }

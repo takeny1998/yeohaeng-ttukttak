@@ -1,10 +1,10 @@
-package com.yeohaeng_ttukttak.server.common.aop;
+package com.yeohaeng_ttukttak.server.common.authorization;
 
-import com.yeohaeng_ttukttak.server.common.aop.annotation.Authorization;
+import com.yeohaeng_ttukttak.server.common.authentication.AuthenticationContextHolder;
+import com.yeohaeng_ttukttak.server.common.authorization.interfaces.Authorizable;
+import com.yeohaeng_ttukttak.server.common.authorization.interfaces.DelegatedAuthorizable;
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.AccessDeniedFailException;
 import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthenticationContext;
-import com.yeohaeng_ttukttak.server.domain.shared.interfaces.Authorizable;
-import com.yeohaeng_ttukttak.server.domain.shared.interfaces.DelegatedAuthorizable;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
@@ -24,7 +24,7 @@ public class AuthorizationAspect {
     @Autowired
     private RoleBasedPermissionManager roleBasedPermissionManager;
 
-    @Pointcut("@annotation(com.yeohaeng_ttukttak.server.common.aop.annotation.Authorization)")
+    @Pointcut("@annotation(com.yeohaeng_ttukttak.server.common.authorization.Authorization)")
     public void authorization() {}
 
     @Before("@annotation(authorization) && (execution(* *(..)))")

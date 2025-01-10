@@ -1,7 +1,7 @@
 package com.yeohaeng_ttukttak.server.domain.travel.permission;
 
-import com.yeohaeng_ttukttak.server.common.aop.CrudOperation;
-import com.yeohaeng_ttukttak.server.common.aop.RoleBasedPermission;
+import com.yeohaeng_ttukttak.server.common.authorization.CrudOperation;
+import com.yeohaeng_ttukttak.server.common.authorization.interfaces.RoleBasedPermission;
 import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelParticipant;

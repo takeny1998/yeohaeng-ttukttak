@@ -3,7 +3,7 @@ package com.yeohaeng_ttukttak.server.application.travel.controller;
 import com.yeohaeng_ttukttak.server.application.travel.controller.dto.CreateTravelInvitationResponse;
 import com.yeohaeng_ttukttak.server.application.travel.service.CreateTravelInvitationService;
 import com.yeohaeng_ttukttak.server.application.travel.service.FindTravelInvitationService;
-import com.yeohaeng_ttukttak.server.common.aop.annotation.Authentication;
+import com.yeohaeng_ttukttak.server.common.authentication.Authentication;
 import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
 import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthenticationContext;
 import com.yeohaeng_ttukttak.server.domain.travel.dto.TravelInvitationDto;

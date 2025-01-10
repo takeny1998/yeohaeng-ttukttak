@@ -1,6 +1,6 @@
-package com.yeohaeng_ttukttak.server.common.aop.annotation;
+package com.yeohaeng_ttukttak.server.common.authorization;
 
-import com.yeohaeng_ttukttak.server.common.aop.CrudOperation;
+import com.yeohaeng_ttukttak.server.common.authorization.CrudOperation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

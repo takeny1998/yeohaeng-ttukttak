@@ -1,6 +1,6 @@
 package com.yeohaeng_ttukttak.server.common.docs;
 
-import com.yeohaeng_ttukttak.server.common.aop.annotation.Authentication;
+import com.yeohaeng_ttukttak.server.common.authentication.Authentication;
 import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthenticationContext;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;

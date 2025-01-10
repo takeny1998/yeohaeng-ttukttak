@@ -1,6 +1,7 @@
-package com.yeohaeng_ttukttak.server.common.aop;
+package com.yeohaeng_ttukttak.server.common.authorization;
 
-import com.yeohaeng_ttukttak.server.domain.shared.interfaces.Authorizable;
+import com.yeohaeng_ttukttak.server.common.authorization.interfaces.Authorizable;
+import com.yeohaeng_ttukttak.server.common.authorization.interfaces.RoleBasedPermission;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
