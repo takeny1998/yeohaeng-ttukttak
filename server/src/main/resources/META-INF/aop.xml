@@ -1,7 +1,7 @@
 <!DOCTYPE aspectj PUBLIC "-//AspectJ//DTD//EN" "http://www.eclipse.org/aspectj/dtd/aspectj.dtd">
 
 <aspectj>
-    <weaver>
+    <weaver options="-Xset:weaveJavaxPackages=true">
         <!-- We only want to weave classes that exist in our application-specific packages.
 
              IMPORTANT: The packages defined here MUST include the package that the aspects are

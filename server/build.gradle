@@ -33,7 +33,6 @@ dependencies {
 
 	/* AOP Dependency */
 	compileOnly 'org.springframework.boot:spring-boot-starter-aop'
-	runtimeAgent "org.springframework:spring-instrument"
 	runtimeAgent "org.aspectj:aspectjweaver"
 
 	/* Documentation Dependency */
