@@ -1,4 +1,4 @@
-package com.yeohaeng_ttukttak.server.common.aop;
+package com.yeohaeng_ttukttak.server.common.authentication;
 
 import com.yeohaeng_ttukttak.server.domain.auth.service.AccessTokenService;
 import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
@@ -9,14 +9,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
 
 @Configuration
-public class AopConfig {
+public class AuthenticationConfig {
 
     @Bean
-    public AuthorizationAspect authorizationAspect(
+    public AuthenticationAspect authenticationAspect(
             AccessTokenService accessTokenService,
             HttpServletRequest httpServletRequest
     ) {
-        return new AuthorizationAspect(accessTokenService, httpServletRequest);
+        return new AuthenticationAspect(accessTokenService, httpServletRequest);
     }
 
     @Bean

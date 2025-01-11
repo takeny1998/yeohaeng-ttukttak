@@ -1,4 +1,4 @@
-package com.yeohaeng_ttukttak.server.common.aop.annotation;
+package com.yeohaeng_ttukttak.server.common.authentication;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,4 +7,4 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Authorization { }
+public @interface Authentication { }

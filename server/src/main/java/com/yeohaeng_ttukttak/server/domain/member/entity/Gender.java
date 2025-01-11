@@ -1,6 +1,6 @@
 package com.yeohaeng_ttukttak.server.domain.member.entity;
 
-import com.yeohaeng_ttukttak.server.domain.shared.entity.EnumNormalizable;
+import com.yeohaeng_ttukttak.server.domain.shared.interfaces.EnumNormalizable;
 
 public enum Gender implements EnumNormalizable {
     male, female;

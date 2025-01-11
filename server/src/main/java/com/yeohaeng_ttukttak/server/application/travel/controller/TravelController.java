@@ -3,7 +3,7 @@ package com.yeohaeng_ttukttak.server.application.travel.controller;
 import com.yeohaeng_ttukttak.server.application.travel.controller.dto.*;
 import com.yeohaeng_ttukttak.server.application.travel.service.TravelService;
 import com.yeohaeng_ttukttak.server.application.travel_city.TravelCityService;
-import com.yeohaeng_ttukttak.server.common.aop.annotation.Authorization;
+import com.yeohaeng_ttukttak.server.common.authentication.Authentication;
 import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundFailException;
 import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthenticationContext;
@@ -35,11 +35,12 @@ public class TravelController {
 
     /**
      * 새로운 여행 계획을 생성합니다.
+     *
      * @param request 생성할 여행 정보
      * @return 생성된 여행 정보 및 도시 목록
      */
     @PostMapping
-    @Authorization
+    @Authentication
     public ServerResponse<CreateTravelResponse> create(
             @RequestBody @Valid CreateTravelRequest request,
             AuthenticationContext context) {
@@ -64,17 +65,20 @@ public class TravelController {
 
     /**
      * 사용자 여행을 조회합니다.
-     * @param id 사용자 여행의 식별자
+     *
+     * @param travelId 사용자 여행의 식별자
      * @return 조회된 사용자 여행
      */
-    @GetMapping("/{id}")
+    @GetMapping("/{travelId}")
     @Transactional(readOnly = true)
-    public ServerResponse<FindTravelResponse> find(@PathVariable Long id) {
-        Travel foundTravel = travelRepository.findById(id)
+    public ServerResponse<FindTravelResponse> find(@PathVariable Long travelId) {
+
+        Travel foundTravel = travelRepository.findById(travelId)
                 .orElseThrow(() -> new EntityNotFoundFailException(Travel.class));
 
         return new ServerResponse<>(
                 new FindTravelResponse(TravelDto.of(foundTravel)));
+
     }
 
 }

@@ -5,4 +5,4 @@ import jakarta.persistence.Entity;
 
 @Entity
 @DiscriminatorValue("0")
-public final class Country extends Geography { }
+public class Country extends Geography { }

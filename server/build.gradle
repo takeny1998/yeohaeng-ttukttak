@@ -23,9 +23,17 @@ repositories {
 	mavenCentral()
 }
 
+configurations {
+	runtimeAgent
+}
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+	/* AOP Dependency */
+	compileOnly 'org.springframework.boot:spring-boot-starter-aop'
+	runtimeAgent "org.aspectj:aspectjweaver"
 
 	/* Documentation Dependency */
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0'
@@ -39,7 +47,7 @@ dependencies {
 
 	/* Database >> JPA dependency */
 	implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
-	annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
+	annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"
 	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
 	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 
@@ -70,4 +78,21 @@ clean {
 
 jar {
 	enabled = false
+}
+
+test.doFirst {
+	// Ensure that all of the agents we need to load at run-time happen for tests
+	configurations.runtimeAgent.each {
+		File jarFile ->
+			jvmArgs "-javaagent:${jarFile.absolutePath}"
+	}
+}
+
+bootRun.doFirst {
+	// Ensure that all of the agents we need to load at run-time happen when running the app through
+	// Gradle
+	configurations.runtimeAgent.each {
+		File jarFile ->
+			jvmArgs "-javaagent:${jarFile.absolutePath}"
+	}
 }

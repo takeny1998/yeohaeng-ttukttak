@@ -1,14 +1,18 @@
 package com.yeohaeng_ttukttak.server.domain.travel_plan;
 
+import com.yeohaeng_ttukttak.server.common.authorization.CrudOperation;
+import com.yeohaeng_ttukttak.server.common.authorization.Authorization;
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.AccessDeniedFailException;
 import com.yeohaeng_ttukttak.server.domain.comment.Comment;
+import com.yeohaeng_ttukttak.server.common.authorization.interfaces.DelegatedAuthorizable;
+import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class TravelPlanComment {
+public class TravelPlanComment implements DelegatedAuthorizable<Travel> {
 
     @Id @GeneratedValue
     private Long id;
@@ -27,6 +31,7 @@ public class TravelPlanComment {
      * @param comment 작성할 댓글 엔티티
      * @throws AccessDeniedFailException 댓글을 추가할 권한이 없는 경우 발생한다.
      */
+    @Authorization(requires = CrudOperation.UPDATE)
     public TravelPlanComment(TravelPlan plan, Comment comment) {
         this.plan = plan;
         this.comment = comment;
@@ -44,4 +49,8 @@ public class TravelPlanComment {
         return comment;
     }
 
+    @Override
+    public Travel resolve() {
+        return plan().travel();
+    }
 }

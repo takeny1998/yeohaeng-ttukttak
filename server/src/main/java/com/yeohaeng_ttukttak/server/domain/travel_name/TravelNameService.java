@@ -1,11 +1,11 @@
 package com.yeohaeng_ttukttak.server.domain.travel_name;
 
-import com.yeohaeng_ttukttak.server.common.exception.exception.fail.AccessDeniedFailException;
 import com.yeohaeng_ttukttak.server.common.util.StringUtil;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.City;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.Province;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelCity;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +14,7 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class TravelNameService {
 
@@ -46,6 +47,18 @@ public class TravelNameService {
 
     }
 
+    @Transactional
+    public void applyName(Travel travel, String inputName) {
+
+        if (Objects.isNull(inputName)) {
+            return;
+        }
+
+        final TravelName newName = validateInputName(inputName);
+        travel.rename(newName);
+
+    }
+
     /**
      * <pre>
      * 여행의 변경 사항을 반영해 이름을 변경합니다. 이름이 자동 생성된 경우만 변경합니다.
@@ -75,7 +88,7 @@ public class TravelNameService {
      * @throws TravelNameTooLongFailException 이름이 100Byte(EUC-KR 기준)가 넘으면 발생한다.
      * @throws InvalidTravelNameCharacterFailException 이름에 한글, 영어, 숫자, 콤마가 아닌 글자가 들어간 경우 발생한다.
      */
-    public TravelName validateInputName(String inputName) {
+     public TravelName validateInputName(String inputName) {
 
         int byteCount = StringUtil.getByteLengthInEucKr(inputName);
 
@@ -106,6 +119,9 @@ public class TravelNameService {
      * @return 생성된 TravelName 엔티티
      */
     public TravelName generateDefaultName(Locale locale, List<TravelCity> cities) {
+
+        log.debug("provinces = {}", cities);
+
         final List<Province> provinces = cities.stream()
                 .map(TravelCity::city)
                 .map(City::province)

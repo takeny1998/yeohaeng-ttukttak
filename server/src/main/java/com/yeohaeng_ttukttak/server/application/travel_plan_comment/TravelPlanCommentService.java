@@ -9,11 +9,13 @@ import com.yeohaeng_ttukttak.server.domain.travel_plan.TravelPlanComment;
 import com.yeohaeng_ttukttak.server.domain.comment.CommentDto;
 import com.yeohaeng_ttukttak.server.domain.travel_plan.TravelPlanCommentRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class TravelPlanCommentService {
@@ -24,12 +26,10 @@ public class TravelPlanCommentService {
     private final CommentRepository commentRepository;
 
     @Transactional
-    public void writeComment(String writerId, Long travelId, Long planId, String content) {
+    public void writeComment(Long travelId, Long planId, String content) {
         final TravelPlan travelPlan = travelPlanRepository
                 .findByIdAndTravelId(planId, travelId)
                 .orElseThrow(() -> new EntityNotFoundFailException(TravelPlan.class));
-
-        travelPlan.travel().verifyParticipantsOrCreator(writerId);
 
         final Comment comment = new Comment(content);
         commentRepository.save(comment);

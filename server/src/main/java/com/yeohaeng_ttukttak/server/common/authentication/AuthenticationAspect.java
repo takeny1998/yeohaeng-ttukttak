@@ -1,4 +1,4 @@
-package com.yeohaeng_ttukttak.server.common.aop;
+package com.yeohaeng_ttukttak.server.common.authentication;
 
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.AuthorizationFailException;
 import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthenticationContext;
@@ -15,14 +15,14 @@ import java.util.Objects;
 @Slf4j
 @Aspect
 @RequiredArgsConstructor
-public class AuthorizationAspect {
+public class AuthenticationAspect {
 
     private final AccessTokenService accessTokenService;
     private final HttpServletRequest httpServletRequest;
 
     private static final String TOKEN_PREFIX = "Bearer ";
 
-    @Around("@annotation(com.yeohaeng_ttukttak.server.common.aop.annotation.Authorization)")
+    @Around("@annotation(com.yeohaeng_ttukttak.server.common.authentication.Authentication)")
     public Object call(ProceedingJoinPoint joinPoint) throws Throwable {
 
         final String header = httpServletRequest.getHeader("Authorization");

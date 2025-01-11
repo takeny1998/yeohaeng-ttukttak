@@ -25,7 +25,7 @@ public class TravelCityService {
     private final GeographyRepository geographyRepository;
 
     @Transactional
-    public void addCity(Locale locale, String memberId, Long travelId, Long cityId) {
+    public void addCity(Locale locale, Long travelId, Long cityId) {
 
         final Travel travel = travelRepository.findById(travelId)
                 .orElseThrow(() -> new EntityNotFoundFailException(Travel.class));
@@ -33,7 +33,7 @@ public class TravelCityService {
         final City city = geographyRepository.findCityById(cityId)
                 .orElseThrow(() -> new EntityNotFoundFailException(City.class));
 
-        travel.addCity(memberId, city);
+        travel.addCity(city);
 
         travelNameService.applyChangeToName(locale, travel);
     }

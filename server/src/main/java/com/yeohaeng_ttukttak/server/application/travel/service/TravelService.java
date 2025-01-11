@@ -11,6 +11,7 @@ import com.yeohaeng_ttukttak.server.domain.travel.dto.TravelDto;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelDates;
 import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelRepository;
+import com.yeohaeng_ttukttak.server.domain.travel_name.TravelName;
 import com.yeohaeng_ttukttak.server.domain.travel_name.TravelNameService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -65,7 +66,7 @@ public class TravelService {
         final TravelDates dates = new TravelDates(startedOn, endedOn);
 
         final Travel travel = new Travel(
-               creator, dates, cities, companionTypes, motivationTypes);
+              dates, cities, companionTypes, motivationTypes);
 
         travelNameService.initializeName(locale, travel, inputName);
 
@@ -86,4 +87,18 @@ public class TravelService {
 
         return TravelDto.of(travel);
     }
+
+    @Transactional
+    public void update(
+            Long travelId, String inputName) {
+
+        final Travel travel = travelRepository.findById(travelId)
+                .orElseThrow(() -> new EntityNotFoundFailException(Travel.class));
+
+        travelNameService.applyName(travel, inputName);
+
+
+
+    }
+
 }

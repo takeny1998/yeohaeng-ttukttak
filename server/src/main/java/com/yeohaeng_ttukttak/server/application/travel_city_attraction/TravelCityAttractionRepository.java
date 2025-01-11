@@ -13,7 +13,7 @@ import com.yeohaeng_ttukttak.server.domain.geography.entity.Geography;
 import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
 import com.yeohaeng_ttukttak.server.domain.place.entity.PlaceCategoryType;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.CompanionType;
-import com.yeohaeng_ttukttak.server.domain.shared.entity.EnumNormalizable;
+import com.yeohaeng_ttukttak.server.domain.shared.interfaces.EnumNormalizable;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.MotivationType;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelCompanion;

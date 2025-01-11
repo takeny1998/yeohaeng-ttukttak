@@ -3,10 +3,8 @@ package com.yeohaeng_ttukttak.server.application.travel_city;
 import com.yeohaeng_ttukttak.server.application.travel.service.TravelService;
 import com.yeohaeng_ttukttak.server.application.travel_city.dto.AddTravelCityResponse;
 import com.yeohaeng_ttukttak.server.application.travel_city.dto.CityListResponse;
-import com.yeohaeng_ttukttak.server.application.travel.controller.dto.CreateTravelResponse;
-import com.yeohaeng_ttukttak.server.common.aop.annotation.Authorization;
+import com.yeohaeng_ttukttak.server.common.authentication.Authentication;
 import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
-import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthenticationContext;
 import com.yeohaeng_ttukttak.server.domain.geography.dto.GeographyDto;
 import com.yeohaeng_ttukttak.server.domain.travel.dto.TravelDto;
 import lombok.RequiredArgsConstructor;
@@ -24,14 +22,12 @@ public class TravelCityController {
     private final TravelCityService travelCityService;
 
     @PostMapping("/{cityId}")
-    @Authorization
+    @Authentication
     public ServerResponse<AddTravelCityResponse> addCity(
             @PathVariable Long travelId,
-            @PathVariable Long cityId,
-            AuthenticationContext context,
-            Locale locale) {
+            @PathVariable Long cityId, Locale locale) {
 
-        travelCityService.addCity(locale, context.uuid(), travelId, cityId);
+        travelCityService.addCity(locale, travelId, cityId);
 
         final List<GeographyDto> cityDtoList = travelCityService.findCities(travelId);
         final TravelDto travelDto = travelService.findById(travelId);

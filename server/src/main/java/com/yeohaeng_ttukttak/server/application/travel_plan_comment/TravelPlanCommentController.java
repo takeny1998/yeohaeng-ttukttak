@@ -2,7 +2,7 @@ package com.yeohaeng_ttukttak.server.application.travel_plan_comment;
 
 import com.yeohaeng_ttukttak.server.application.travel_plan_comment.dto.CommentListResponse;
 import com.yeohaeng_ttukttak.server.application.travel_plan_comment.dto.CommentContentRequest;
-import com.yeohaeng_ttukttak.server.common.aop.annotation.Authorization;
+import com.yeohaeng_ttukttak.server.common.authentication.Authentication;
 import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
 import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthenticationContext;
 import com.yeohaeng_ttukttak.server.domain.comment.CommentDto;
@@ -34,17 +34,14 @@ public class TravelPlanCommentController {
      * @return 새로운 상태의 댓글 목록
      */
     @PostMapping
-    @Authorization
+    @Authentication
     public ServerResponse<CommentListResponse> writeComment(
             @PathVariable Long travelId,
             @PathVariable Long planId,
-            @RequestBody @Valid CommentContentRequest request,
-            AuthenticationContext authentication) {
-
-        final String writerId = authentication.uuid();
+            @RequestBody @Valid CommentContentRequest request) {
 
         travelPlanCommentService.writeComment(
-                writerId, travelId, planId, request.content());
+                 travelId, planId, request.content());
 
         final List<CommentDto> dtoList =
                 travelPlanCommentService.getOrderedComments(planId);
@@ -86,7 +83,7 @@ public class TravelPlanCommentController {
      * @return 새로운 상태의 댓글 목록
      */
     @PatchMapping("/{commentId}")
-    @Authorization
+    @Authentication
     public ServerResponse<CommentListResponse> editComment(
             @PathVariable Long travelId,
             @PathVariable Long planId,
@@ -120,7 +117,7 @@ public class TravelPlanCommentController {
      * @return 새로운 상태의 댓글 목록
      */
     @DeleteMapping("/{commentId}")
-    @Authorization
+    @Authentication
     public ServerResponse<CommentListResponse> deleteComment(
             @PathVariable Long travelId,
             @PathVariable Long planId,

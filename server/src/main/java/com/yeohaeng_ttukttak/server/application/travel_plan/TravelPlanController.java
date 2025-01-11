@@ -3,14 +3,12 @@ package com.yeohaeng_ttukttak.server.application.travel_plan;
 import com.yeohaeng_ttukttak.server.application.travel_plan.dto.CreateTravelPlanRequest;
 import com.yeohaeng_ttukttak.server.application.travel_plan.dto.TravelPlanListResponse;
 import com.yeohaeng_ttukttak.server.application.travel_plan.dto.MoveTravelPlanRequest;
-import com.yeohaeng_ttukttak.server.common.aop.annotation.Authorization;
+import com.yeohaeng_ttukttak.server.common.authentication.Authentication;
 import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
-import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthenticationContext;
 import com.yeohaeng_ttukttak.server.domain.travel_plan.TravelPlanDto;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,17 +33,13 @@ public class TravelPlanController {
      * @return 변경된 사용자 여행의 일정 목록
      */
     @PostMapping
-    @Authorization
+    @Authentication
     public ServerResponse<TravelPlanListResponse> create(
             @PathVariable Long travelId,
-            @RequestBody CreateTravelPlanRequest request,
-            AuthenticationContext authorization) {
+            @RequestBody CreateTravelPlanRequest request) {
 
         travelPlanService.create(
-                authorization.uuid(),
-                travelId,
-                request.placeId(),
-                request.dayOfTravel());
+                travelId, request.placeId(), request.dayOfTravel());
 
         return responsePlanList(travelId);
     }
@@ -79,15 +73,13 @@ public class TravelPlanController {
      *         </ul>
      */
     @PatchMapping("/{planId}")
-    @Authorization
+    @Authentication
     public ServerResponse<TravelPlanListResponse> move(
             @PathVariable Long travelId,
             @PathVariable Long planId,
-            @Valid @RequestBody MoveTravelPlanRequest request,
-            AuthenticationContext context) {
+            @Valid @RequestBody MoveTravelPlanRequest request) {
 
-        travelPlanService.move(
-                context.uuid(), travelId, planId, request.orderOfPlan(), request.willVisitOn());
+        travelPlanService.move(travelId, planId, request.orderOfPlan(), request.willVisitOn());
 
         return responsePlanList(travelId);
     }
@@ -104,13 +96,11 @@ public class TravelPlanController {
      * @return 삭제 후의 여행 일정 목록
      */
     @DeleteMapping("/{planId}")
-    @Authorization
+    @Authentication
     public ServerResponse<TravelPlanListResponse> delete(
-            @PathVariable Long travelId,
-            @PathVariable Long planId,
-            AuthenticationContext context) {
+            @PathVariable Long travelId, @PathVariable Long planId) {
 
-        travelPlanService.delete(context.uuid(), travelId, planId);
+        travelPlanService.delete(travelId, planId);
 
         return responsePlanList(travelId);
     }
