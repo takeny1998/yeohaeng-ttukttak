@@ -1,20 +1,8 @@
-> **문서 버전:** 1.1
->
-> **최종 업데이트:** 2025-01-11
->
-> - **1.1** (2025-01-11): 제목 변경 
->
->    - 이전: (새로운 API 명세화 도구 선택하기 (Spring REST Docs vs Swagger))
->
->    - 이후: (새로운 API 명세화 도구 선택하기 (Spring REST Docs 대신 Swagger를 선택한 이유))
->
-> - **1.0** (2025-01-11): 최초 작성 
 
 
+# 기존 문서화 도구의 문제점
 
-## 기존 문서화 도구의 문제점
-
-### Postman을 사용했던 이유
+## Postman을 사용했던 이유
 
 문서화 도구로 Postman을 선택했습니다. Postman은 API 테스트 솔루션으로, 자체적으로 API를 문서화할 수 있는 기능을 제공합니다.
 
@@ -24,11 +12,15 @@ Postman의 **높은 생산성과 접근성 덕분에 이 도구를 선택했습�
 
 
 
-#### 스키마 정의 기능의 부재
+### 스키마 정의 기능의 부재
 
-하지만 API의 규모가 커질수록 몇 가지 한계가 드러났습니다. 가장 큰 문제는 스키마(Schema)를 정의할 수 없다는 점이었습니다. 자원을 중점으로 API를 설계하다 보면, 여러 API 응답에서 공통으로 사용하는 스키마가 많습니다.
+하지만 API의 규모가 커질수록 몇 가지 한계점이 보였는데, **가장 큰 문제는 스키마(Schema)를 정의할 수 없다는 점**이었습니다. 
 
-예를 들어, 여행 일정을 추가하고 조회하는 API의 응답은 다음과 같습니다:
+
+
+자원을 중점으로 API를 설계하다 보면, 여러 API 응답에서 공통으로 사용하는 스키마가 많습니다. 예를 들어, 여행 일정을 추가하고 조회하는 API의 응답은 다음과 같습니다:
+
+
 
 ```http
 POST /api/v2/travels/802/plans HTTP/1.1
@@ -55,32 +47,30 @@ Content-Type: application/json
 }
 ```
 
-
-
-이와 같은 CRUD API에서 `orderOfPlan` 필드의 이름을 `seq`로 변경할 경우, 모든 엔드포인트의 예시를 일일이 수정해야 합니다. 하지만 스키마 정의가 있었다면 `TravelPlan`만 변경해도 연관된 API 문서에 자동으로 반영될 수 있었습니다.
-
-스키마 정의는 API 문서화에서 매우 중요한 기능이지만, Postman은 이를 지원하지 않습니다.
+`TravelPlan` 의 `orderOfPlan` 필드의 이름을 `seq`로 변경한다고 가정해 보겠습니다. 만약  `TravelPlan`이 스키마로 관리되었다면, 변경 사항이 자동으로 API 문서에 반영됬을 것입니다.
 
 
 
-## 새로운 문서화 도구 선택
+하지만 Postman은 이를 지원하지 않아, **API 문서에 수동으로 반영**해야 합니다. 이처럼 스키마 정의는 API 문서화에서 매우 중요한 기능이지만, Postman은 이를 지원하지 않습니다.
+
+
+
+# 새로운 문서화 도구 선택하기
 
 이에 따라 문서화 도구를 다시 선택하기로 했습니다. 조사해보니, 스프링 프로젝트에서는 Spring REST Docs와 Swagger가 널리 사용되고 있음을 알게 되었습니다.
 
 
 
-### Swagger vs Spring REST Docs
+## Swagger vs Spring REST Docs 비교하기
 
-![Swagger Documentation](https://swagger.io/docs/_astro/hero-img.CQIKAqF0_1585RE.webp)
+### Swagger
 
 **Swagger**는 **어노테이션 기반**으로 API 문서를 작성하는 도구입니다.
 
 - **장점:** API 문서 작성 및 배포가 용이합니다.
-
-  - 컨트롤러 및 DTO에 어노테이션을 추가하기만 하면 문서를 생성할 수 있습니다.
-
-  - Swagger-UI를 통해 작성한 문서를 깔끔한 페이지로 쉽게 배포할 수 있습니다.
-
+- 컨트롤러 및 DTO에 어노테이션을 추가하기만 하면 문서를 생성할 수 있습니다.
+  
+- Swagger-UI를 통해 작성한 문서를 깔끔한 페이지로 쉽게 배포할 수 있습니다.
 - **단점:** 비즈니스 로직과 명세 코드가 혼합되어 신뢰성이 떨어집니다.
 
   - Swagger 어노테이션이 컨트롤러 및 DTO와 혼합되어 소스 코드 이해가 어려워집니다.
@@ -89,8 +79,7 @@ Content-Type: application/json
 
 
 
-
-![Spring REST Docs 예시 이미지](https://tech.kakaopay.com/_astro/sample-restdocs.6da34b19_RH3jM.avif)
+### Spring REST Docs
 
 **Spring REST Docs**는 **테스트 코드를 기반**으로 API 문서를 작성하는 도구입니다.
 
@@ -105,16 +94,17 @@ Content-Type: application/json
   - 테스트 코드를 일일이 작성해야 하므로 API 명세를 작성하기 어렵습니다.
 
 
-> [출처](https://tech.kakaopay.com/post/openapi-documentation/)
+
+# 두 기술의 장단점 살펴보기
+
+
+## Spring REST Docs는 API 요청 및 반환 정보만 보증한다
+
+Spring REST Docs는 테스트 코드 기반으로 API 명세의 신뢰성이 높다고 설명했습니다. **하지만 Spring REST Docs가 전체 API 동작을 보증하지 않는다고 생각합니다.**
 
 
 
-
-### Spring REST Docs는 API 요청 및 반환 정보만 보증한다
-
-Spring REST Docs는 테스트 코드 기반으로 API 명세의 신뢰성이 높다고 설명했습니다. 하지만 저는 Spring REST Docs가 전체 API 동작을 보증하지 않는다고 생각합니다.
-
-
+### Spring REST Docs는 단위 테스트로 동작한다
 
 ```java
 @WebMvcTest(SampleController.class)
@@ -149,9 +139,14 @@ public class SampleControllerTest {
 }
 ```
 
-위의 코드는 Spring REST Docs 작성을 위한 테스트 코드 예시입니다. MockMvc를 활용하여 `DispatchServlet`을 Mocking해 가상의 HTTP 요청 및 응답을 구현하고 있습니다. 주목할 점은 `SampleService`를 가짜 객체로 Mocking했다는 것입니다.
+위의 코드는 Spring REST Docs 작성을 위한 테스트 코드 예시입니다. 
+
+- MockMvc를 활용하여 `DispatchServlet`을 Mocking해 가상의 HTTP 요청 및 응답을 구현하고 있습니다. 
+-  `SampleService`를 모킹(Mocking)해 **단위 테스트를 구성**했습니다.
 
 
+
+### 왜 단위 테스트로 구성했을까?
 
 ```mermaid
 graph TD
@@ -195,16 +190,22 @@ graph TD
 
 
 
-만약 `Controller`를 테스트할 때 모킹(Mocking)하지 않으면 실제 DB와 `Repository`와 `Service`에 주입될 것입니다. 만약 테스트가 실패했다면, 대체 어디서 실패했는지 파악하기 어렵습니다.
+**하위 계층을 모킹(Mocking)하지 않으면** 어떻게 될까요? `Controller` 코드를 테스트한다 했을 때, 진짜 객체가 DB 계층부터 `Service`까지 주입될 것입니다. 이 환경을 **통합 테스트(Integration Test)**라고 부릅니다.
+
+
+
+일반적으로, **통합 테스트 환경을 구축하기 어렵고 복잡**합니다. 테스트용 데이터베이스 및 설정을 일일히 구성해야 하기 때문입니다. 또한 **테스트 실패 지점을 파악하기 어렵습니다.** 
 
 - `Service` 혹은 `Repository` 에서 비즈니스 예외가 발생했을 수도 있습니다.
 - 외부 데이터베이스와 연결이 불안정하거나, 실패했을 수도 있습니다.
 
 
 
-이 때문에 테스트에서 **모킹(Mocking)은 필수 불가결한 요소**이고, 이를 단위 테스트(Unit Test)라고 합니다.
+이처럼 **하위 계층을 모킹(Mocking)해 테스트하는 기법을 단위 테스트(Unit Test)**라고 합니다. 테스트가 실패했을 때, 하위 계층부터 DB까지 모두 가짜이기 때문에 해당 계층에서 문제가 있음을 바로 파악할 수 있습니다.
 
 
+
+### 컨트롤러 단위 테스트 코드는 비즈니스 로직을 검증하지 못한다
 
 ```java
 @Test
@@ -226,15 +227,17 @@ void save() throw Exception {
 }
 ```
 
-다시 Spring REST Docs 코드를 살펴보면, `SampleService`는 가짜 객체이기 때문에 **하위 비즈니스 로직은 전혀 테스트하지 않고 있습니다.** API의 **입력 및 반환 정보만을 보증**할 뿐입니다.
+다시 Spring REST Docs 코드를 살펴보면, `SampleService`는 가짜 객체이기 때문에 **하위 비즈니스 로직은 전혀 테스트하지 않고 있습니다.** API의 **요청 및 반환 정보만을 보증**할 뿐입니다.
 
 
 
-Spring REST Docs 테스트의 의미는 API 호출 및 반환 정보가 변경되었을 때 명세에 제대로 반영됨을 보증하는 것입니다. 제가 강조하고 싶은 것은 **Spring REST Docs가 보증하는 부분을 명확히 인식해야 한다는 점입니다.**
+API 명세에서 요청 및 반환 정보도 중요하지만, **호출 시 실행되는 비즈니스 로직도 명세에 일부라고 생각**합니다. 그러므로 통합 테스트 환경이 구성되지 않는다면, Spring REST Docs는 비즈니스 로직을 보증하지 않습니다.
 
 
 
-### Swagger의 비즈니스 코드 침투는 어느 정도 보완할 수 있다
+## Swagger의 비즈니스 코드 침투는 어느 정도 보완할 수 있다
+
+### Swagger 어노테이션은 복잡하고 이해가 어렵다
 
 Swagger는 어노테이션 기반으로 API 명세를 작성합니다. 따라서 **어노테이션이 너무 많고 복잡하여 코드를 이해하기 힘들다는 단점이 있습니다.**
 
@@ -285,7 +288,7 @@ Swagger를 적용한 예시 코드입니다. 명세를 위한 어노테이션이
 
 
 
-#### springdoc-openapi는 스프링 정보를 기반으로 API 명세를 자동 구성한다
+### springdoc-openapi는 스프링 정보를 기반으로 API 명세를 자동 구성한다
 
 ![Architecture](https://springdoc.org/img/common.png)
 
@@ -303,7 +306,7 @@ Springdoc은 Swagger를 Spring 환경에서 사용할 수 있도록 도와주는
 
 
 
-#### JavaDoc으로 API 명세를 작성할 수 있다
+### JavaDoc으로 API 명세를 작성할 수 있다
 
 Swagger **어노테이션은 특정 구현(`swagger-core`)에 의존적**입니다. 그러므로 **DTO 등 전 계층에서 사용하는 객체에 적용하기 까다롭습니다**. 만약 구현체가 바뀐다면 모든 코드를 수정해야 하는 상황이 발생할 수 있습니다.
 
@@ -385,6 +388,8 @@ public record CreateTravelPlanRequest(
 
 
 이번 포스팅에서는 `Swagger`와 `Spring REST Docs`를 자세히 비교했습니다. 기술 선택 시 단편적인 장단점을 파악하기보다 각 장단점이 무엇을 의미하는지, 현재 상황에 적합한지를 깊이 고민해야 한다고 느꼈습니다.
+
+
 
 
 향후 `springdoc-openapi`를 활용해 자연스럽게 명세를 작성하는 방법을 찾아 기술하겠습니다.
