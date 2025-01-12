@@ -1,0 +1,36 @@
+name: Generate github wiki sidebar
+
+on: gollum
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}.wiki
+      
+      - uses: actions/setup-node@v4
+      
+      - name: Clone sidebar generator
+        run: git clone https://github.com/takeny1998/github-wiki-sidebar-generator.git
+      
+      - name: Get dependency
+        working-directory: ./github-wiki-sidebar-generator
+        run: npm install
+
+      - name: Generate sidebar file
+        working-directory: ./github-wiki-sidebar-generator
+        run: npm run start ../ ../_Sidebar.md
+
+      - name: Commit and push changes
+        env:
+          USERNAME: github-actions[bot]
+          EMAIL: github-actions[bot]@users.noreply.github.com
+        run: |
+          git config user.name '${{ env.USERNAME }}'
+          git config user.email '${{ env.EMAIL }}'
+          
+          git diff --quiet || (git add ./_Sidebar.md && git commit -m "Updated Sidebar")
+          git push
