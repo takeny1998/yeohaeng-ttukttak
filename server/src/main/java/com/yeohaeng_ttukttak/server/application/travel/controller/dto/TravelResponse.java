@@ -2,7 +2,6 @@ package com.yeohaeng_ttukttak.server.application.travel.controller.dto;
 
 import com.yeohaeng_ttukttak.server.domain.geography.dto.GeographyDto;
 import com.yeohaeng_ttukttak.server.domain.travel.dto.TravelDto;
-import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 
@@ -13,6 +12,6 @@ import java.util.List;
  *
  * @param cities 사용자 여행에서 방문할 도시 목록
  */
-public record CreateTravelResponse(
+public record TravelResponse(
         TravelDto travel,
         List<GeographyDto> cities) { }

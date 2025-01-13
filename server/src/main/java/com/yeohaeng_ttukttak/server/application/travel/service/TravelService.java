@@ -9,13 +9,12 @@ import com.yeohaeng_ttukttak.server.domain.travel.dto.TravelDto;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelDates;
 import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelRepository;
-import com.yeohaeng_ttukttak.server.domain.travel_name.TravelName;
+import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelName;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -76,18 +75,48 @@ public class TravelService {
         return TravelDto.of(travel);
     }
 
+    /**
+     * 지정한 여행의 속성들을 파라미터 값으로 수정합니다.
+     *
+     * <ul>
+     *     <li>값이 null이 아닌 속성만 수정됩니다.</li>
+     * </ul>
+     *
+     * @param travelId 여행의 식별자
+     * @param inputName {@link Travel#rename(String)}
+     * @param startedOn {@link Travel#updateDates(LocalDate startedOn, LocalDate)}
+     * @param endedOn {@link Travel#updateDates(LocalDate, LocalDate endedOn)}
+     * @param motivationTypes {@link Travel#updateMotivationsTypes(List)}
+     * @param companionTypes {@link Travel#updateCompanionTypes(List)}
+     */
     @Transactional
     public void update(
-            Long travelId,
-            String inputName,
-            LocalDateTime startedOn,
-            LocalDateTime endedOn,
-            List<MotivationType> motivationTypes,
-            List<CompanionType> companionTypes) {
+            final Long travelId,
+            final String inputName,
+            final LocalDate startedOn,
+            final LocalDate endedOn,
+            final List<MotivationType> motivationTypes,
+            final List<CompanionType> companionTypes
+    ) {
 
         final Travel travel = travelRepository.findById(travelId)
                 .orElseThrow(() -> new EntityNotFoundFailException(Travel.class));
 
+        if (Objects.nonNull(inputName)) {
+            travel.rename(inputName);
+        }
+
+        if (Objects.nonNull(startedOn) || Objects.nonNull(endedOn)) {
+            travel.updateDates(startedOn, endedOn);
+        }
+
+        if (Objects.nonNull(companionTypes) && !companionTypes.isEmpty()) {
+            travel.updateCompanionTypes(companionTypes);
+        }
+
+        if (Objects.nonNull(motivationTypes) && !motivationTypes.isEmpty()) {
+            travel.updateMotivationsTypes(motivationTypes);
+        }
 
     }
 

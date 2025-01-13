@@ -1,5 +1,8 @@
 package com.yeohaeng_ttukttak.server.domain.travel_name;
 
+import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelName;
+import com.yeohaeng_ttukttak.server.domain.travel.exception.InvalidTravelNameCharacterFailException;
+import com.yeohaeng_ttukttak.server.domain.travel.exception.TravelNameTooLongFailException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

@@ -1,10 +1,11 @@
-package com.yeohaeng_ttukttak.server.domain.travel_name;
+package com.yeohaeng_ttukttak.server.domain.travel.entity;
 
 import com.yeohaeng_ttukttak.server.common.locale.RequestLocaleService;
 import com.yeohaeng_ttukttak.server.common.util.StringUtil;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.City;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.Province;
-import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelCity;
+import com.yeohaeng_ttukttak.server.domain.travel.exception.InvalidTravelNameCharacterFailException;
+import com.yeohaeng_ttukttak.server.domain.travel.exception.TravelNameTooLongFailException;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Transient;
 import lombok.AccessLevel;
@@ -41,7 +42,9 @@ public class TravelName {
             this.isGenerated = true;
             return;
         }
+
         validateInputName(inputName);
+
         this.name = inputName;
         this.isGenerated = false;
 
@@ -60,13 +63,22 @@ public class TravelName {
      *
      * @param travelCities 새로운 도시 목록
      */
-    public void regenerateDefaultName(final List<TravelCity> travelCities) {
+     void regenerateDefaultName(final List<TravelCity> travelCities) {
 
         if (!isGenerated) return;
+
         this.name = generateDefaultName(travelCities.stream()
                 .map(TravelCity::city)
                 .toList());
 
+    }
+
+
+    void rename(final String inputName) {
+        validateInputName(inputName);
+
+        this.name = inputName;
+        this.isGenerated = false;
     }
 
     /**
