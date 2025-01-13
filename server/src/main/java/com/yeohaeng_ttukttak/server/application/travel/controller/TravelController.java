@@ -18,6 +18,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 
 import java.util.List;
 import java.util.Locale;
@@ -42,20 +44,15 @@ public class TravelController {
     @PostMapping
     @Authentication
     public ServerResponse<CreateTravelResponse> create(
-            @RequestBody @Valid CreateTravelRequest request,
-            AuthenticationContext context) {
-
-        final Locale locale = LocaleContextHolder.getLocale();
+            @RequestBody @Valid CreateTravelRequest request) {
 
         final Long createdId = travelService.create(
-                locale,
                 request.name(),
                 request.startedOn(),
                 request.endedOn(),
                 request.motivationTypes(),
                 request.companionTypes(),
-                request.cityIds(),
-                context.uuid());
+                request.cityIds());
 
         final TravelDto travelDto = travelService.findById(createdId);
         final List<GeographyDto> cityDtoList = travelCityService.findCities(createdId);

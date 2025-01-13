@@ -3,6 +3,7 @@ package com.yeohaeng_ttukttak.server.domain.travel.entity;
 import com.yeohaeng_ttukttak.server.common.authorization.CrudOperation;
 import com.yeohaeng_ttukttak.server.common.authorization.Authorization;
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.*;
+import com.yeohaeng_ttukttak.server.common.locale.RequestLocaleService;
 import com.yeohaeng_ttukttak.server.common.util.LocalDateUtil;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.City;
 import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
@@ -12,12 +13,16 @@ import com.yeohaeng_ttukttak.server.domain.shared.entity.CompanionType;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.MotivationType;
 import com.yeohaeng_ttukttak.server.common.authorization.interfaces.Authorizable;
 import com.yeohaeng_ttukttak.server.domain.travel.exception.AlreadyJoinedTravelFailException;
+import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelRepository;
 import com.yeohaeng_ttukttak.server.domain.travel_name.TravelName;
 import com.yeohaeng_ttukttak.server.domain.travel_plan.TravelPlan;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowire;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -26,8 +31,13 @@ import java.util.Objects;
 
 @Entity
 @Slf4j
+@Configurable(autowire = Autowire.BY_TYPE, preConstruction = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Travel extends BaseTimeMemberEntity implements Authorizable {
+
+    @Autowired
+    @Transient
+    private TravelRepository travelRepository;
 
     @Id @GeneratedValue
     private Long id;
@@ -65,7 +75,13 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
      *          if (companionTypes.size < 1 || companionTypes.size > 3) <br>
      *          if (motivationTypes.size < 1 || motivationTypes.size > 5)
      */
-    public Travel(TravelDates dates, List<City> cities, List<CompanionType> companionTypes, List<MotivationType> motivationTypes) {
+    public Travel(TravelName travelName, TravelDates dates, List<City> cities, List<CompanionType> companionTypes, List<MotivationType> motivationTypes) {
+
+
+        log.debug("{}", travelRepository);
+
+        this.name = travelName;
+
         this.dates = dates;
 
         if (cities.isEmpty() || cities.size() > 10) {
@@ -166,6 +182,8 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
         }
 
         cities().add(new TravelCity(this, city));
+
+        this.name.regenerateDefaultName(cities());
     }
 
     /**

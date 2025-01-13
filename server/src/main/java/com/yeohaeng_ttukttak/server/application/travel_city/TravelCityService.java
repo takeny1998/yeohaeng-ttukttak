@@ -7,25 +7,21 @@ import com.yeohaeng_ttukttak.server.domain.geography.repository.GeographyReposit
 import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelCity;
 import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelRepository;
-import com.yeohaeng_ttukttak.server.domain.travel_name.TravelNameService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Locale;
 
 @Service
 @RequiredArgsConstructor
 public class TravelCityService {
 
-    private final TravelNameService travelNameService;
-
     private final TravelRepository travelRepository;
     private final GeographyRepository geographyRepository;
 
     @Transactional
-    public void addCity(Locale locale, Long travelId, Long cityId) {
+    public void addCity(Long travelId, Long cityId) {
 
         final Travel travel = travelRepository.findById(travelId)
                 .orElseThrow(() -> new EntityNotFoundFailException(Travel.class));
@@ -34,8 +30,6 @@ public class TravelCityService {
                 .orElseThrow(() -> new EntityNotFoundFailException(City.class));
 
         travel.addCity(city);
-
-        travelNameService.applyChangeToName(locale, travel);
     }
 
     @Transactional(readOnly = true)

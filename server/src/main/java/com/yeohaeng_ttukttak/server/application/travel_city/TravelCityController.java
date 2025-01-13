@@ -25,9 +25,9 @@ public class TravelCityController {
     @Authentication
     public ServerResponse<AddTravelCityResponse> addCity(
             @PathVariable Long travelId,
-            @PathVariable Long cityId, Locale locale) {
+            @PathVariable Long cityId) {
 
-        travelCityService.addCity(locale, travelId, cityId);
+        travelCityService.addCity(travelId, cityId);
 
         final List<GeographyDto> cityDtoList = travelCityService.findCities(travelId);
         final TravelDto travelDto = travelService.findById(travelId);
