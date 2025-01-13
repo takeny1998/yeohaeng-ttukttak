@@ -1,8 +1,5 @@
 package com.yeohaeng_ttukttak.server.domain.travel_name;
 
-import com.yeohaeng_ttukttak.server.domain.geography.entity.City;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -10,11 +7,8 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
-class TravelNameServiceTest {
-
-    private final TravelNameService travelNameService = new TravelNameService();
+class TravelNameTest {
 
     @Nested
     class ValidateInputNameTest {
@@ -26,8 +20,7 @@ class TravelNameServiceTest {
             final String inputName = "여행 이름, Travel 123";
 
             // given
-            final TravelName travelName =
-                    travelNameService.validateInputName(inputName);
+            final TravelName travelName = new TravelName(inputName, List.of());
 
             // then
             assertThat(travelName.name())
@@ -43,11 +36,10 @@ class TravelNameServiceTest {
 
             // given
             final Throwable koreanThrown = catchThrowable(() ->
-                    travelNameService.validateInputName(koreanName));
+                    new TravelName(koreanName, List.of()));
 
             final Throwable englishThrown = catchThrowable(() ->
-                    travelNameService.validateInputName(englishName));
-
+                    new TravelName(englishName, List.of()));
 
             // then
             assertThat(koreanThrown)
@@ -68,10 +60,10 @@ class TravelNameServiceTest {
 
             // given
             final Throwable jaEumThrown = catchThrowable(() ->
-                    travelNameService.validateInputName(jaEnumName));
+                    new TravelName(jaEnumName, List.of()));
 
             final Throwable specialCharThrown = catchThrowable(() ->
-                    travelNameService.validateInputName(specialCharName));
+                    new TravelName(specialCharName, List.of()));
 
             // then
             assertThat(jaEumThrown)
