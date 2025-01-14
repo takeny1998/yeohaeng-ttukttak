@@ -12,12 +12,13 @@ import com.yeohaeng_ttukttak.server.domain.shared.entity.CompanionType;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.MotivationType;
 import com.yeohaeng_ttukttak.server.common.authorization.interfaces.Authorizable;
 import com.yeohaeng_ttukttak.server.domain.travel.exception.AlreadyJoinedTravelFailException;
-import com.yeohaeng_ttukttak.server.domain.travel_name.TravelName;
 import com.yeohaeng_ttukttak.server.domain.travel_plan.TravelPlan;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowire;
+import org.springframework.beans.factory.annotation.Configurable;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ import java.util.Objects;
 
 @Entity
 @Slf4j
+@Configurable(autowire = Autowire.BY_TYPE, preConstruction = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Travel extends BaseTimeMemberEntity implements Authorizable {
 
@@ -41,10 +43,10 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
     @OneToMany(mappedBy = "travel", cascade = CascadeType.PERSIST)
     private List<TravelCity> cities = new ArrayList<>();
 
-    @OneToMany(mappedBy = "travel", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "travel", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TravelCompanion> companions = new ArrayList<>();
 
-    @OneToMany(mappedBy = "travel", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToMany(mappedBy = "travel", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TravelMotivation> motivations = new ArrayList<>();
 
     @OrderBy("dayOfTravel ASC nulls last, orderOfPlan ASC nulls last")
@@ -56,44 +58,37 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
 
     /**
      * 새로운 여행을 생성합니다.
+     *
      * @param dates 여행 날짜(TravelDates) 엔티티
-     * @param cities 여행에서 들릴 도시 리스트
-     * @param companionTypes 여행의 동반 타입 리스트
-     * @param motivationTypes 여행 동기 리스트
-     * @throws ArgumentNotInRangeFailException <br>
-     *          if (cities.size < 1 || cities.size > 10) <br>
-     *          if (companionTypes.size < 1 || companionTypes.size > 3) <br>
-     *          if (motivationTypes.size < 1 || motivationTypes.size > 5)
+     * @param cities 여행에서 들릴 도시 목록 {@link Travel#validateCities()}
+     * @param companionTypes 여행의 동반 타입 리스트 {@link Travel#validateCompanions()}
+     * @param motivationTypes 여행 동기 리스트 {@link Travel#validateMotivations()}
      */
-    public Travel(TravelDates dates, List<City> cities, List<CompanionType> companionTypes, List<MotivationType> motivationTypes) {
-        this.dates = dates;
+    public Travel(TravelName travelName, TravelDates dates, List<City> cities, List<CompanionType> companionTypes, List<MotivationType> motivationTypes) {
 
-        if (cities.isEmpty() || cities.size() > 10) {
-            throw new ArgumentNotInRangeFailException("cityIds", 1, 10);
-        }
+        this.name = travelName;
+
+        this.dates = dates;
 
         this.cities = cities.stream()
                 .map(city -> new TravelCity(this, city))
                 .toList();
 
-        if (companionTypes.isEmpty() || companionTypes.size() > 3) {
-            throw new ArgumentNotInRangeFailException("companionTypes", 1, 3);
-        }
+        validateCities();
 
         this.companions = companionTypes
                 .stream()
                 .map(companionType -> new TravelCompanion(this, companionType))
                 .toList();
 
-
-        if (motivationTypes.isEmpty() || motivationTypes.size() > 5) {
-            throw new ArgumentNotInRangeFailException("motivationTypes", 1, 5);
-        }
+        validateCompanions();
 
         this.motivations = motivationTypes
                 .stream()
                 .map(motivationType -> new TravelMotivation(this, motivationType))
                 .toList();
+
+        validateMotivations();
 
     }
 
@@ -104,11 +99,6 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
     public String name() {
         if (Objects.isNull(name)) return null;
         return name.name();
-    }
-
-    public Boolean isNameGenerated() {
-        if (Objects.isNull(name)) return null;
-        return name.isGenerated();
     }
 
     public List<TravelParticipant> participants() {
@@ -139,10 +129,53 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
         return plans;
     }
 
+
+    /**
+     * @see TravelName#rename(String)
+     */
     @Authorization(requires = CrudOperation.UPDATE)
-    public void rename(TravelName newName) {
-        this.name = newName;
+    public void rename(final String inputName) {
+        this.name.rename(inputName);
     }
+
+
+    /**
+     * @see TravelDates#updateDates(LocalDate, LocalDate)
+     */
+    @Authorization(requires = CrudOperation.UPDATE)
+    public void updateDates(final LocalDate startedOn, final LocalDate endedOn) {
+        this.dates.updateDates(startedOn, endedOn);
+    }
+
+    @Authorization(requires = CrudOperation.UPDATE)
+    public void updateMotivationsTypes(final List<MotivationType> motivationTypes) {
+
+        motivations.clear();
+
+        final List<TravelMotivation> newMotivations = motivationTypes
+                .stream()
+                .map(motivationType -> new TravelMotivation(this, motivationType))
+                .toList();
+
+        motivations.addAll(newMotivations);
+
+        validateMotivations();
+    }
+
+    @Authorization(requires = CrudOperation.UPDATE)
+    public void updateCompanionTypes(final List<CompanionType> companionTypes) {
+
+        companions.clear();
+
+        final List<TravelCompanion> newCompanions = companionTypes.stream()
+                .map(companionType -> new TravelCompanion(this, companionType))
+                .toList();
+
+        companions.addAll(newCompanions);
+
+        validateCompanions();
+    }
+
 
     /**
      * 현재 여행 계획에 지정한 도시를 추가합니다.
@@ -150,14 +183,11 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
      * @throws AccessDeniedFailException 여행에 참가자 혹은 생성자가 아니면 발생한다.
      * @throws EntityAlreadyAddedFailException 이미 여행에 추가된 경우 발생한다.
      * @throws TooManyEntityFailException 10개 초과의 여행 도시를 추가하려는 경우 발생한다.
+     *
+     * @see Travel#validateCities()
      */
     @Authorization(requires = CrudOperation.UPDATE)
     public void addCity(City city) {
-
-        if (cities.size() == 10) {
-            throw new TooManyEntityFailException(Class.class, 10);
-        }
-
         final boolean isAlreadyExist = cities().stream()
                 .anyMatch(tc -> tc.city().equals(city));
 
@@ -166,6 +196,9 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
         }
 
         cities().add(new TravelCity(this, city));
+
+        validateCities();
+        this.name.regenerateDefaultName(cities());
     }
 
     /**
@@ -294,4 +327,43 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
         plans.remove(travelPlan);
     }
 
+
+    /**
+     * 여행 도시의 제약 조건을 검증합니다.
+     *
+     * @throws ArgumentNotInRangeFailException if cities.size() not between 1 and 10
+     */
+    private void validateCities() {
+
+        if (this.cities.isEmpty() || this.cities.size() > 10) {
+            throw new ArgumentNotInRangeFailException("cityIds", 1, 10);
+        }
+
+    }
+
+    /**
+     * 여행 동기의 제약 사항을 검증합니다.
+     *
+     * @throws ArgumentNotInRangeFailException if motivations.size() not between 1 and 5
+     */
+    private void validateMotivations() {
+
+        if (this.motivations.isEmpty() || this.motivations.size() > 5) {
+            throw new ArgumentNotInRangeFailException("motivationTypes", 1, 5);
+        }
+
+    }
+
+    /**
+     * 여행 동반 타입의 제약 사항을 검증합니다.
+     *
+     * @throws ArgumentNotInRangeFailException if companions.size() not between 1 and 3
+     */
+    private void validateCompanions() {
+
+        if (this.companions.isEmpty() || this.companions.size() > 3) {
+            throw new ArgumentNotInRangeFailException("companionTypes", 1, 3);
+        }
+
+    }
 }

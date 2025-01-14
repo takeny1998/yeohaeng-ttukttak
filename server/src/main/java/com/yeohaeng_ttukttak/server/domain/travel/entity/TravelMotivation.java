@@ -3,12 +3,15 @@ package com.yeohaeng_ttukttak.server.domain.travel.entity;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.MotivationType;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.Objects;
+
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString
+@ToString(of = "type")
 public class TravelMotivation {
 
     @Id @GeneratedValue
@@ -28,6 +31,19 @@ public class TravelMotivation {
 
     public MotivationType type() {
         return type;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+
+        return (type == ((TravelMotivation) object).type);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(type);
     }
 
 }

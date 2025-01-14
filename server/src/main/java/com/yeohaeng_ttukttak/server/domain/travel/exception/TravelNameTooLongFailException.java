@@ -1,4 +1,4 @@
-package com.yeohaeng_ttukttak.server.domain.travel_name;
+package com.yeohaeng_ttukttak.server.domain.travel.exception;
 
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.FailException;
 

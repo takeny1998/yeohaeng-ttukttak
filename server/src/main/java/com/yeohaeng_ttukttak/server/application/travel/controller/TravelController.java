@@ -5,22 +5,17 @@ import com.yeohaeng_ttukttak.server.application.travel.service.TravelService;
 import com.yeohaeng_ttukttak.server.application.travel_city.TravelCityService;
 import com.yeohaeng_ttukttak.server.common.authentication.Authentication;
 import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
-import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundFailException;
-import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthenticationContext;
 import com.yeohaeng_ttukttak.server.domain.geography.dto.GeographyDto;
-import com.yeohaeng_ttukttak.server.application.travel.controller.dto.CreateTravelResponse;
+import com.yeohaeng_ttukttak.server.application.travel.controller.dto.TravelResponse;
 import com.yeohaeng_ttukttak.server.domain.travel.dto.TravelDto;
-import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
 import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelRepository;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Locale;
 
 @RestController
 @RequestMapping("/api/v2/travels")
@@ -41,28 +36,19 @@ public class TravelController {
      */
     @PostMapping
     @Authentication
-    public ServerResponse<CreateTravelResponse> create(
-            @RequestBody @Valid CreateTravelRequest request,
-            AuthenticationContext context) {
-
-        final Locale locale = LocaleContextHolder.getLocale();
+    public ServerResponse<TravelResponse> create(
+            @RequestBody @Valid CreateTravelRequest request) {
 
         final Long createdId = travelService.create(
-                locale,
                 request.name(),
                 request.startedOn(),
                 request.endedOn(),
                 request.motivationTypes(),
                 request.companionTypes(),
-                request.cityIds(),
-                context.uuid());
+                request.cityIds());
 
-        final TravelDto travelDto = travelService.findById(createdId);
-        final List<GeographyDto> cityDtoList = travelCityService.findCities(createdId);
-
-        return new ServerResponse<>(new CreateTravelResponse(travelDto, cityDtoList));
+        return toTravelResponse(createdId);
     }
-
     /**
      * 사용자 여행을 조회합니다.
      *
@@ -71,14 +57,34 @@ public class TravelController {
      */
     @GetMapping("/{travelId}")
     @Transactional(readOnly = true)
-    public ServerResponse<FindTravelResponse> find(@PathVariable Long travelId) {
+    public ServerResponse<TravelResponse> find(@PathVariable Long travelId) {
 
-        Travel foundTravel = travelRepository.findById(travelId)
-                .orElseThrow(() -> new EntityNotFoundFailException(Travel.class));
+        return toTravelResponse(travelId);
 
-        return new ServerResponse<>(
-                new FindTravelResponse(TravelDto.of(foundTravel)));
+    }
 
+    @PatchMapping("/{travelId}")
+    @Authentication
+    public ServerResponse<TravelResponse> update(
+            @PathVariable Long travelId, @RequestBody UpdateTravelRequest request) {
+
+        travelService.update(
+                travelId,
+                request.name(),
+                request.startedOn(),
+                request.endedOn(),
+                request.motivationTypes(),
+                request.companionTypes());
+
+        return toTravelResponse(travelId);
+    }
+
+
+    private ServerResponse<TravelResponse> toTravelResponse(Long travelId) {
+        final TravelDto travelDto = travelService.findById(travelId);
+        final List<GeographyDto> cityDtoList = travelCityService.findCities(travelId);
+
+        return new ServerResponse<>(new TravelResponse(travelDto, cityDtoList));
     }
 
 }
