@@ -7,6 +7,7 @@ import com.yeohaeng_ttukttak.server.common.exception.exception.error.ErrorExcept
 import com.yeohaeng_ttukttak.server.common.exception.exception.error.InternalServerErrorException;
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.FailException;
 import com.yeohaeng_ttukttak.server.common.exception.interfaces.ArgumentException;
+import com.yeohaeng_ttukttak.server.common.locale.LocalizedMessageService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +23,8 @@ import java.util.*;
 @RequiredArgsConstructor
 public class ExceptionAdvice {
 
+    private final LocalizedMessageService localizedMessageService;
+
     private final MessageSource messageSource;
 
     @ExceptionHandler(FailException.class)
@@ -32,7 +35,7 @@ public class ExceptionAdvice {
 
         final Map<String, String> error = new HashMap<>(
                 Map.of("code", exception.code(),
-                        "message", getMessage(exception, locale)));
+                        "message", localizedMessageService.fromException(locale, exception)));
 
         if (Objects.nonNull(exception.field())) {
             error.put("field", exception.field());
@@ -64,7 +67,7 @@ public class ExceptionAdvice {
             ErrorException exception, Locale locale, HttpServletRequest request) {
 
         logError(exception, request, 0);
-        final String message = getMessage(exception, locale);
+        final String message = localizedMessageService.fromException(locale, exception);
 
         return new ServerErrorResponse(exception.code(), message);
     }
@@ -78,25 +81,10 @@ public class ExceptionAdvice {
 
         logError(errorException, request, 0);
 
-        final String message = getMessage(errorException, locale);
+        final String message = localizedMessageService.fromException(locale, errorException);
 
         return new ServerErrorResponse(errorException.code(), message);
     }
-
-    private String getMessage(BaseException exception, Locale locale) {
-        final Object[] arguments = resolveArguments(exception, locale);
-        return messageSource.getMessage(exception.code(), arguments, locale);
-    }
-
-    private Object[] resolveArguments(BaseException exception, Locale locale) {
-        if (exception instanceof ArgumentException argumentException) {
-            return Arrays.stream(argumentException.args())
-                    .map(arg -> messageSource.getMessage(arg.toString(), null, locale))
-                    .toArray();
-        }
-        return null;
-    }
-
 
     private void logError(Throwable exception, HttpServletRequest request, int depth) {
 
