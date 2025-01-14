@@ -33,15 +33,7 @@ public class ExceptionAdvice {
 
         logError(exception, request, 0);
 
-        final Map<String, String> error = new HashMap<>(
-                Map.of("code", exception.code(),
-                        "message", localizedMessageService.fromException(locale, exception)));
-
-        if (Objects.nonNull(exception.field())) {
-            error.put("field", exception.field());
-        }
-
-        return new ServerFailResponse(List.of(error));
+        return new ServerFailResponse(List.of(exception.toErrorObject(locale)));
 
     }
 

@@ -9,7 +9,6 @@ import com.yeohaeng_ttukttak.server.domain.geography.dto.GeographyDto;
 import com.yeohaeng_ttukttak.server.application.travel.controller.dto.TravelResponse;
 import com.yeohaeng_ttukttak.server.domain.travel.dto.TravelDto;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
-import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelDates;
 import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelRepository;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
