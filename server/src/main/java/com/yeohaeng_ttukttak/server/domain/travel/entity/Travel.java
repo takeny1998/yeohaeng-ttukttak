@@ -61,31 +61,18 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
      *
      * @param dates 여행 날짜(TravelDates) 엔티티
      * @param cities 여행에서 들릴 도시 목록 {@link Travel#validateCities()}
-     * @param companionTypes 여행의 동반 타입 리스트 {@link Travel#validateCompanions()}
-     * @param motivationTypes 여행 동기 리스트 {@link Travel#validateMotivations()}
+     * @param companionTypes 여행의 동반 타입 리스트
+     * @param motivationTypes {@link Travel#updateMotivationsTypes(List)}
      */
-    @Authorization
+    @Authorization(requires = CrudOperation.CREATE)
     public Travel(TravelName travelName, TravelDates dates, List<City> cities, List<CompanionType> companionTypes, List<MotivationType> motivationTypes) {
 
         this.name = travelName;
-
         this.dates = dates;
 
-        this.cities = cities.stream()
-                .map(city -> new TravelCity(this, city))
-                .toList();
-
-        validateCities();
-
-        this.companions = companionTypes
-                .stream()
-                .map(companionType -> new TravelCompanion(this, companionType))
-                .toList();
-
-        validateCompanions();
-
+        cities.forEach(this::addCity);
+        updateCompanionTypes(companionTypes);
         updateMotivationsTypes(motivationTypes);
-
     }
 
     public Long id() {
@@ -143,6 +130,10 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
         this.dates.updateDates(startedOn, endedOn);
     }
 
+    /**
+     * @param motivationTypes 여행 동기 리스트
+     * @throws ArgumentNotInRangeFailException if motivations.size() not between 1 and 5
+     */
     @Authorization(requires = CrudOperation.UPDATE)
     public void updateMotivationsTypes(final List<MotivationType> motivationTypes) {
 
@@ -155,7 +146,9 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
 
         motivations.addAll(newMotivations);
 
-        validateMotivations();
+        if (this.motivations.isEmpty() || this.motivations.size() > 5) {
+            throw new ArgumentNotInRangeFailException("motivationTypes", 1, 5);
+        }
     }
 
     @Authorization(requires = CrudOperation.UPDATE)
@@ -169,7 +162,9 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
 
         companions.addAll(newCompanions);
 
-        validateCompanions();
+        if (this.companions.isEmpty() || this.companions.size() > 3) {
+            throw new ArgumentNotInRangeFailException("companionTypes", 1, 3);
+        }
     }
 
 
@@ -333,32 +328,6 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
 
         if (this.cities.isEmpty() || this.cities.size() > 10) {
             throw new ArgumentNotInRangeFailException("cityIds", 1, 10);
-        }
-
-    }
-
-    /**
-     * 여행 동기의 제약 사항을 검증합니다.
-     *
-     * @throws ArgumentNotInRangeFailException if motivations.size() not between 1 and 5
-     */
-    private void validateMotivations() {
-
-        if (this.motivations.isEmpty() || this.motivations.size() > 5) {
-            throw new ArgumentNotInRangeFailException("motivationTypes", 1, 5);
-        }
-
-    }
-
-    /**
-     * 여행 동반 타입의 제약 사항을 검증합니다.
-     *
-     * @throws ArgumentNotInRangeFailException if companions.size() not between 1 and 3
-     */
-    private void validateCompanions() {
-
-        if (this.companions.isEmpty() || this.companions.size() > 3) {
-            throw new ArgumentNotInRangeFailException("companionTypes", 1, 3);
         }
 
     }
