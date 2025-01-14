@@ -2,7 +2,7 @@ package com.yeohaeng_ttukttak.server.common.exception.exception.fail;
 
 import com.yeohaeng_ttukttak.server.common.exception.interfaces.ArgumentException;
 
-public final class ArgumentNotInRangeFailException extends InvalidArgumentFailException implements ArgumentException {
+public class ArgumentNotInRangeFailException extends InvalidArgumentFailException implements ArgumentException {
 
     private static final String code = "ARGUMENT_NOT_IN_RANGE_FAIL";
 

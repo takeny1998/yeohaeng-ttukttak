@@ -8,6 +8,8 @@ import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
 import com.yeohaeng_ttukttak.server.domain.geography.dto.GeographyDto;
 import com.yeohaeng_ttukttak.server.application.travel.controller.dto.TravelResponse;
 import com.yeohaeng_ttukttak.server.domain.travel.dto.TravelDto;
+import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
+import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelDates;
 import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelRepository;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -15,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -26,13 +29,15 @@ public class TravelController {
     private final TravelService travelService;
     private final TravelCityService travelCityService;
 
-    private final TravelRepository travelRepository;
-
     /**
      * 새로운 여행 계획을 생성합니다.
      *
      * @param request 생성할 여행 정보
      * @return 생성된 여행 정보 및 도시 목록
+     *
+     * @throws RuntimeException 런타임 예외
+     *
+     * @see Travel#Travel(String, LocalDate, LocalDate, List, List, List)
      */
     @PostMapping
     @Authentication
