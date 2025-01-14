@@ -64,6 +64,7 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
      * @param companionTypes 여행의 동반 타입 리스트 {@link Travel#validateCompanions()}
      * @param motivationTypes 여행 동기 리스트 {@link Travel#validateMotivations()}
      */
+    @Authorization
     public Travel(TravelName travelName, TravelDates dates, List<City> cities, List<CompanionType> companionTypes, List<MotivationType> motivationTypes) {
 
         this.name = travelName;
@@ -83,12 +84,7 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
 
         validateCompanions();
 
-        this.motivations = motivationTypes
-                .stream()
-                .map(motivationType -> new TravelMotivation(this, motivationType))
-                .toList();
-
-        validateMotivations();
+        updateMotivationsTypes(motivationTypes);
 
     }
 

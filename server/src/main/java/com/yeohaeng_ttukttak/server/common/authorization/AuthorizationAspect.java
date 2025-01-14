@@ -8,10 +8,8 @@ import com.yeohaeng_ttukttak.server.common.exception.exception.fail.Authorizatio
 import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthenticationContext;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.After;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.*;
 import org.springframework.beans.factory.annotation.Autowire;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -28,24 +26,41 @@ public class AuthorizationAspect {
     @Pointcut("@annotation(com.yeohaeng_ttukttak.server.common.authorization.Authorization)")
     public void authorization() {}
 
-    @Before("@annotation(authorization) && execution(* *(..))")
-    public void authorizeMethod(final JoinPoint joinPoint, final Authorization authorization) {
-        authorize(joinPoint, authorization);
-    }
-
-    @After("@annotation(authorization) && execution(*.new(..))")
-    public void authorizeConstructor(final JoinPoint joinPoint, final Authorization authorization) {
-        authorize(joinPoint, authorization);
-    }
-
-    private void authorize(JoinPoint joinPoint, Authorization authorization) {
+    @Around("@annotation(authorization) && (execution(* *(..)) || execution(*.new(..)))")
+    public Object authorizeMethod(final ProceedingJoinPoint joinPoint, final Authorization authorization) throws Throwable {
         final Object target = resolveTarget(joinPoint.getThis());
+
+        final Class<?> targetClass = target.getClass();
+
+        final AuthorizationContext context =
+                AuthorizationContextHolder.getContext(targetClass);
+
+        AuthorizationContextHolder.setContext(
+                targetClass, context.proceedWith(authorization.requires()));
+
+        final Object result = joinPoint.proceed();
+
+        final AuthorizationContext reverted =
+                AuthorizationContextHolder.getContext(targetClass).revert();
+
+        AuthorizationContextHolder.setContext(targetClass, reverted);
+
+        if (reverted.depth() == 0) {
+
+            log.debug("[{}] {}", joinPoint.getSignature(), reverted);
+
+            authorize(target, reverted.getRequires());
+        }
+
+        return result;
+
+    }
+
+    private void authorize(final Object target, final CrudOperation[] requires) {
 
         if (target == null) {
             throw new IllegalStateException("대상 클래스를 찾을 수 없습니다");
         }
-
-        log.debug("[AuthorizationAspect.authorize] {} resolved = {}", joinPoint.getSignature(), target);
 
         final AuthenticationContext context =
                 AuthenticationContextHolder.getContext();
@@ -55,9 +70,7 @@ public class AuthorizationAspect {
         }
 
         final boolean permitted =
-                roleBasedPermissionManager.check(target, context.uuid(), authorization.requires());
-
-        log.debug("[AuthorizationAspect.authorize] {} permitted = {}", joinPoint.getSignature(), permitted);
+                roleBasedPermissionManager.check(target, context.uuid(), requires);
 
         if (!permitted) {
             throw new AccessDeniedFailException(target.getClass());
