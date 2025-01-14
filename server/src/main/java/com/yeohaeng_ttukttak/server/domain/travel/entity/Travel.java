@@ -11,9 +11,7 @@ import com.yeohaeng_ttukttak.server.domain.shared.entity.BaseTimeMemberEntity;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.CompanionType;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.MotivationType;
 import com.yeohaeng_ttukttak.server.common.authorization.interfaces.Authorizable;
-import com.yeohaeng_ttukttak.server.domain.travel.exception.AlreadyJoinedTravelFailException;
-import com.yeohaeng_ttukttak.server.domain.travel.exception.InvalidTravelCompanionSizeFailException;
-import com.yeohaeng_ttukttak.server.domain.travel.exception.InvalidTravelMotivationSizeFailException;
+import com.yeohaeng_ttukttak.server.domain.travel.exception.*;
 import com.yeohaeng_ttukttak.server.domain.travel_plan.TravelPlan;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -196,8 +194,8 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
      * 현재 여행 계획에 지정한 도시를 추가합니다.
      *
      * @param city 추가하려는 도시 엔티티
-     * @throws EntityAlreadyAddedFailException 이미 여행에 추가된 경우 발생한다.
-     * @throws TooManyEntityFailException 10개 초과의 여행 도시를 추가하려는 경우 발생한다.
+     * @throws CityAlreadyAddedFailException 이미 여행에 추가된 경우 발생한다.
+     * @throws InvalidTravelCitySizeFailException 10개 초과의 여행 도시를 추가하려는 경우 발생한다.
      */
     @Authorization(requires = CrudOperation.UPDATE)
     public void addCity(City city) {
@@ -205,13 +203,13 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
                 .anyMatch(tc -> tc.city().equals(city));
 
         if (isAlreadyExist) {
-            throw new EntityAlreadyAddedFailException(City.class);
+            throw new CityAlreadyAddedFailException();
         }
 
         cities().add(new TravelCity(this, city));
 
         if (this.cities.isEmpty() || this.cities.size() > 10) {
-            throw new ArgumentNotInRangeFailException("cityIds", 1, 10);
+            throw new InvalidTravelCitySizeFailException();
         }
 
         this.name.regenerateDefaultName(cities());
@@ -259,7 +257,6 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
      * @param place 계획에 지정할 장소(Place) 엔티티
      * @param dayOfTravel 계획을 수행할 일자
      * @throws ArgumentNotInRangeFailException 여행 기간에 벗어나는 일자를 지정했을 경우 발생한다.
-     * @throws AccessDeniedFailException 여행에 참여한 사용자가 아닌 경우 발생한다.
      */
     @Authorization(requires = CrudOperation.UPDATE)
     public void addPlan(Place place, Integer dayOfTravel) {

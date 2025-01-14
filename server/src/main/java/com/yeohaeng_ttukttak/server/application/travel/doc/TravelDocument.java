@@ -2,10 +2,10 @@ package com.yeohaeng_ttukttak.server.application.travel.doc;
 
 import com.yeohaeng_ttukttak.server.application.travel.controller.dto.CreateTravelRequest;
 import com.yeohaeng_ttukttak.server.application.travel.controller.dto.TravelResponse;
+import com.yeohaeng_ttukttak.server.application.travel.controller.dto.UpdateTravelRequest;
 import com.yeohaeng_ttukttak.server.common.docs.ApiExceptionResponse;
 import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
-import com.yeohaeng_ttukttak.server.domain.travel.exception.InvalidTravelCompanionSizeFailException;
-import com.yeohaeng_ttukttak.server.domain.travel.exception.InvalidTravelMotivationSizeFailException;
+import com.yeohaeng_ttukttak.server.domain.travel.exception.*;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -18,7 +18,23 @@ public interface TravelDocument {
     @ApiExceptionResponse({
             InvalidTravelCompanionSizeFailException.class,
             InvalidTravelMotivationSizeFailException.class,
+            InvalidTravelCitySizeFailException.class,
+            TravelNameTooLongFailException.class,
+            InvalidTravelNameCharacterFailException.class,
+            InvalidTravelDateFormatFailException.class,
+            TravelPeriodTooLongFailException.class
     })
     ServerResponse<TravelResponse> create(CreateTravelRequest request);
+
+
+    @ApiExceptionResponse({
+            InvalidTravelCompanionSizeFailException.class,
+            InvalidTravelMotivationSizeFailException.class,
+            TravelNameTooLongFailException.class,
+            InvalidTravelNameCharacterFailException.class,
+            InvalidTravelDateFormatFailException.class,
+            TravelPeriodTooLongFailException.class
+    })
+    ServerResponse<TravelResponse> update(Long travelId, UpdateTravelRequest request);
 
 }

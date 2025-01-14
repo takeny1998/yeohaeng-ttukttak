@@ -1,9 +1,6 @@
 package com.yeohaeng_ttukttak.server.common.docs;
 
-import com.github.therapi.runtimejavadoc.Link;
-import com.github.therapi.runtimejavadoc.MethodJavadoc;
-import com.github.therapi.runtimejavadoc.RuntimeJavadoc;
-import com.github.therapi.runtimejavadoc.SeeAlsoJavadoc;
+import com.github.therapi.runtimejavadoc.*;
 import com.yeohaeng_ttukttak.server.application.travel.controller.TravelController;
 import com.yeohaeng_ttukttak.server.common.authentication.Authentication;
 import com.yeohaeng_ttukttak.server.common.dto.ServerErrorResponse;
@@ -102,7 +99,6 @@ public class DocumentationConfig {
         final ApiResponses responses = operation.getResponses();
         final ApiResponse apiResponse = new ApiResponse();
 
-
         final ApiExceptionResponse apiExceptionResponse =
                 handlerMethod.getMethodAnnotation(ApiExceptionResponse.class);
 
@@ -113,11 +109,11 @@ public class DocumentationConfig {
         final MediaType mediaType = new MediaType();
 
         for (Class<?> exceptionClass : exceptionClasses) {
-
             final Example example = resolveExample(exceptionClass, locale);
 
-            mediaType.addExamples(exceptionClass.getSimpleName(), example);
+            if (Objects.isNull(example)) continue;
 
+            mediaType.addExamples(exceptionClass.getSimpleName(), example);
         }
 
         operation.setResponses(responses.addApiResponse("200",
