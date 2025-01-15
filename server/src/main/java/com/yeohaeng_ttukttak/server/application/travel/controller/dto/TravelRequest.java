@@ -2,13 +2,10 @@ package com.yeohaeng_ttukttak.server.application.travel.controller.dto;
 
 import com.yeohaeng_ttukttak.server.domain.shared.entity.CompanionType;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.MotivationType;
-import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 
 import java.time.LocalDate;
 import java.util.List;
-
-import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.NOT_REQUIRED;
 
 /**
  * 사용자 여행 생성을 위한 요청 객체입니다.
@@ -50,7 +47,7 @@ import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.NOT_REQUIR
  *                    <li>최소 1개, 최대 10개까지 지정할 수 있습니다.</li>
  *                </ul>
  */
-public record CreateTravelRequest (
+public record TravelRequest(
         String name,
         @NotNull LocalDate startedOn,
         @NotNull LocalDate endedOn,

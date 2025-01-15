@@ -9,14 +9,11 @@ import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
 import com.yeohaeng_ttukttak.server.domain.geography.dto.GeographyDto;
 import com.yeohaeng_ttukttak.server.application.travel.controller.dto.TravelResponse;
 import com.yeohaeng_ttukttak.server.domain.travel.dto.TravelDto;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.eclipse.jdt.internal.compiler.parser.JavadocParser;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -37,7 +34,7 @@ public class TravelController implements TravelDocument {
     @PostMapping
     @Authentication
     public ServerResponse<TravelResponse> create(
-            @RequestBody @Valid CreateTravelRequest request) {
+            @RequestBody @Valid TravelRequest request) {
 
         final Long createdId = travelService.create(
                 request.name(),
@@ -67,7 +64,8 @@ public class TravelController implements TravelDocument {
     @PatchMapping("/{travelId}")
     @Authentication
     public ServerResponse<TravelResponse> update(
-            @PathVariable Long travelId, @RequestBody UpdateTravelRequest request) {
+            @PathVariable Long travelId,
+            @RequestBody TravelRequest request) {
 
         travelService.update(
                 travelId,
@@ -75,7 +73,8 @@ public class TravelController implements TravelDocument {
                 request.startedOn(),
                 request.endedOn(),
                 request.motivationTypes(),
-                request.companionTypes());
+                request.companionTypes(),
+                request.cityIds());
 
         return toTravelResponse(travelId);
     }

@@ -40,7 +40,7 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
     @Embedded
     private TravelDates dates;
 
-    @OneToMany(mappedBy = "travel", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "travel", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TravelCity> cities = new ArrayList<>();
 
     @OneToMany(mappedBy = "travel", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -68,7 +68,7 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
      *
      * @see TravelName#TravelName(String, List)
      * @see TravelDates#TravelDates(LocalDate, LocalDate)
-     * @see Travel#addCity(City)
+     * @see Travel#updateCities(List)
      * @see Travel#updateMotivationsTypes(List) 
      * @see Travel#updateCompanionTypes(List) 
      */
@@ -84,7 +84,7 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
         this.name = new TravelName(inputName, cities);
         this.dates = new TravelDates(startedOn, endedOn);
 
-        cities.forEach(this::addCity);
+        updateCities(cities);
         updateCompanionTypes(companionTypes);
         updateMotivationsTypes(motivationTypes);
     }
@@ -191,25 +191,22 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
 
 
     /**
-     * 현재 여행 계획에 지정한 도시를 추가합니다.
+     * 여행에서 방문할 도시 목록을 변경합니다..
      *
-     * @param city 추가하려는 도시 엔티티
-     * @throws CityAlreadyAddedFailException 이미 여행에 추가된 경우 발생한다.
-     * @throws InvalidTravelCitySizeFailException 10개 초과의 여행 도시를 추가하려는 경우 발생한다.
+     * @param cities 변경하려는 도시 엔티티 목록
+     * @throws InvalidTravelCitySizeFailException 도시 목록이 1개 미만 10개 초과인 경우
      */
     @Authorization(requires = CrudOperation.UPDATE)
-    public void addCity(City city) {
-        final boolean isAlreadyExist = cities().stream()
-                .anyMatch(tc -> tc.city().equals(city));
+    public void updateCities(List<City> cities) {
 
-        if (isAlreadyExist) {
-            throw new CityAlreadyAddedFailException();
+        if (cities.isEmpty() || cities.size() > 10) {
+            throw new InvalidTravelCitySizeFailException();
         }
 
-        cities().add(new TravelCity(this, city));
+        this.cities.clear();
 
-        if (this.cities.isEmpty() || this.cities.size() > 10) {
-            throw new InvalidTravelCitySizeFailException();
+        for (City city : cities) {
+            this.cities.add(new TravelCity(this, city));
         }
 
         this.name.regenerateDefaultName(cities());
