@@ -17,7 +17,6 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$TravelCreateState {
   String? get name => throw _privateConstructorUsedError;
-  int get pageNumber => throw _privateConstructorUsedError;
   DateTime? get startedOn => throw _privateConstructorUsedError;
   DateTime? get endedOn => throw _privateConstructorUsedError;
   List<TravelCompanionType> get companionTypes =>
@@ -42,7 +41,6 @@ abstract class $TravelCreateStateCopyWith<$Res> {
   @useResult
   $Res call(
       {String? name,
-      int pageNumber,
       DateTime? startedOn,
       DateTime? endedOn,
       List<TravelCompanionType> companionTypes,
@@ -67,7 +65,6 @@ class _$TravelCreateStateCopyWithImpl<$Res, $Val extends TravelCreateState>
   @override
   $Res call({
     Object? name = freezed,
-    Object? pageNumber = null,
     Object? startedOn = freezed,
     Object? endedOn = freezed,
     Object? companionTypes = null,
@@ -80,10 +77,6 @@ class _$TravelCreateStateCopyWithImpl<$Res, $Val extends TravelCreateState>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String?,
-      pageNumber: null == pageNumber
-          ? _value.pageNumber
-          : pageNumber // ignore: cast_nullable_to_non_nullable
-              as int,
       startedOn: freezed == startedOn
           ? _value.startedOn
           : startedOn // ignore: cast_nullable_to_non_nullable
@@ -122,7 +115,6 @@ abstract class _$$TravelCreateStateImplCopyWith<$Res>
   @useResult
   $Res call(
       {String? name,
-      int pageNumber,
       DateTime? startedOn,
       DateTime? endedOn,
       List<TravelCompanionType> companionTypes,
@@ -145,7 +137,6 @@ class __$$TravelCreateStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? name = freezed,
-    Object? pageNumber = null,
     Object? startedOn = freezed,
     Object? endedOn = freezed,
     Object? companionTypes = null,
@@ -158,10 +149,6 @@ class __$$TravelCreateStateImplCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String?,
-      pageNumber: null == pageNumber
-          ? _value.pageNumber
-          : pageNumber // ignore: cast_nullable_to_non_nullable
-              as int,
       startedOn: freezed == startedOn
           ? _value.startedOn
           : startedOn // ignore: cast_nullable_to_non_nullable
@@ -195,7 +182,6 @@ class __$$TravelCreateStateImplCopyWithImpl<$Res>
 class _$TravelCreateStateImpl implements _TravelCreateState {
   const _$TravelCreateStateImpl(
       {this.name,
-      this.pageNumber = 0,
       this.startedOn,
       this.endedOn,
       final List<TravelCompanionType> companionTypes = const [],
@@ -209,9 +195,6 @@ class _$TravelCreateStateImpl implements _TravelCreateState {
 
   @override
   final String? name;
-  @override
-  @JsonKey()
-  final int pageNumber;
   @override
   final DateTime? startedOn;
   @override
@@ -254,7 +237,7 @@ class _$TravelCreateStateImpl implements _TravelCreateState {
 
   @override
   String toString() {
-    return 'TravelCreateState(name: $name, pageNumber: $pageNumber, startedOn: $startedOn, endedOn: $endedOn, companionTypes: $companionTypes, motivationTypes: $motivationTypes, cities: $cities, fieldErrors: $fieldErrors)';
+    return 'TravelCreateState(name: $name, startedOn: $startedOn, endedOn: $endedOn, companionTypes: $companionTypes, motivationTypes: $motivationTypes, cities: $cities, fieldErrors: $fieldErrors)';
   }
 
   @override
@@ -263,8 +246,6 @@ class _$TravelCreateStateImpl implements _TravelCreateState {
         (other.runtimeType == runtimeType &&
             other is _$TravelCreateStateImpl &&
             (identical(other.name, name) || other.name == name) &&
-            (identical(other.pageNumber, pageNumber) ||
-                other.pageNumber == pageNumber) &&
             (identical(other.startedOn, startedOn) ||
                 other.startedOn == startedOn) &&
             (identical(other.endedOn, endedOn) || other.endedOn == endedOn) &&
@@ -281,7 +262,6 @@ class _$TravelCreateStateImpl implements _TravelCreateState {
   int get hashCode => Object.hash(
       runtimeType,
       name,
-      pageNumber,
       startedOn,
       endedOn,
       const DeepCollectionEquality().hash(_companionTypes),
@@ -302,7 +282,6 @@ class _$TravelCreateStateImpl implements _TravelCreateState {
 abstract class _TravelCreateState implements TravelCreateState {
   const factory _TravelCreateState(
       {final String? name,
-      final int pageNumber,
       final DateTime? startedOn,
       final DateTime? endedOn,
       final List<TravelCompanionType> companionTypes,
@@ -312,8 +291,6 @@ abstract class _TravelCreateState implements TravelCreateState {
 
   @override
   String? get name;
-  @override
-  int get pageNumber;
   @override
   DateTime? get startedOn;
   @override

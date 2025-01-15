@@ -13,17 +13,46 @@ import 'package:go_router/go_router.dart';
 
 import '../provider/travel_create_provider.dart';
 
-class TravelNameForm extends ConsumerWidget {
+class TravelNameForm extends ConsumerStatefulWidget {
   final int pageIndex;
   final PagedFormBottomControlViewBuilder bottomViewBuilder;
 
-  final TextEditingController nameController = TextEditingController();
-
-  TravelNameForm(
+  const TravelNameForm(
       {super.key, required this.pageIndex, required this.bottomViewBuilder});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState createState() => _TravelNameFormState();
+}
+
+class _TravelNameFormState extends ConsumerState<TravelNameForm> {
+  final TextEditingController nameController = TextEditingController();
+
+  final FocusNode nameFocusNode = FocusNode();
+
+  @override
+  void initState() {
+    Future.microtask(() {
+      final name = ref.read(travelCreateProvider).name;
+
+      FocusManager.instance.primaryFocus?.requestFocus(nameFocusNode);
+
+      if (name != null) {
+        nameController.text = name;
+      }
+    });
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    nameFocusNode.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final tr = ref.watch(translationServiceProvider);
 
     final state = ref.watch(travelCreateProvider);
@@ -37,10 +66,6 @@ class TravelNameForm extends ConsumerWidget {
         .whereType<ProvinceModel>()
         .map((province) => province.shortName)
         .join(', ');
-
-    if (name != null) {
-      nameController.text = name;
-    }
 
     return Scaffold(
       appBar: AppBar(shape: const Border()),
@@ -62,10 +87,10 @@ class TravelNameForm extends ConsumerWidget {
             padding: const EdgeInsets.symmetric(horizontal: 24.0),
             child: TextFormField(
               controller: nameController,
+              focusNode: nameFocusNode,
               onTapOutside: (_) =>
                   FocusManager.instance.primaryFocus?.unfocus(),
               onChanged: (name) {
-                if (name.isEmpty) return;
                 ref.read(travelCreateProvider.notifier).enterName(name);
               },
               decoration: InputDecoration(
@@ -91,8 +116,8 @@ class TravelNameForm extends ConsumerWidget {
           )
         ],
       ),
-      bottomNavigationBar: bottomViewBuilder(
-          isInputted: name?.isNotEmpty ?? false, pageIndex: pageIndex),
+      bottomNavigationBar: widget.bottomViewBuilder(
+          isInputted: name?.isNotEmpty ?? false, pageIndex: widget.pageIndex),
     );
   }
 }

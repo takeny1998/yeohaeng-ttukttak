@@ -18,7 +18,6 @@ class TravelCreate extends _$TravelCreate {
 
   void enterName(String? name) {
     if (state.name == name) return;
-    print(name);
     state = state.copyWith(name: name);
   }
 
@@ -68,41 +67,6 @@ class TravelCreate extends _$TravelCreate {
     state = state.copyWith(cities: cities);
   }
 
-  void prevPage() {
-    if (state.pageNumber == 0) return;
-    state = state.copyWith(pageNumber: state.pageNumber - 1);
-  }
-
-  void nextPage() {
-    if (state.pageNumber == 2) return;
-    state = state.copyWith(pageNumber: state.pageNumber + 1);
-  }
-
-  Future<TravelModel> submit() async {
-    final TravelCreateState(
-      :name,
-      :startedOn,
-      :endedOn,
-      :companionTypes,
-      :motivationTypes,
-      :cities
-    ) = state;
-
-    final travel = await ref.read(asyncLoadingProvider.notifier).guard(() async {
-      final response = await ref.read(httpServiceProvider).post('/travels',
-          options: ServerRequestOptions(data: {
-            'startedOn': startedOn?.toIso8601String(),
-            'endedOn': endedOn?.toIso8601String(),
-            'name': name,
-            'companionTypes': companionTypes.map((e) => e.name).toList(),
-            'motivationTypes': motivationTypes.map((e) => e.name).toList(),
-            'cityIds': cities.map((city) => city.id).toList(),
-          }));
-
-      return TravelModel.fromJson(response['travel']);
-    });
-    return travel;
-  }
 
   void setFieldErrors(Map<String, String> fieldErrors) {
     if (state.fieldErrors == fieldErrors) return;

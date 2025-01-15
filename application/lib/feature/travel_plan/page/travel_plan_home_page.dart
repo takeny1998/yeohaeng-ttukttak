@@ -1,7 +1,10 @@
 import 'package:application_new/common/util/translation_util.dart';
 import 'package:application_new/core/translation/translation_service.dart';
 import 'package:application_new/domain/member/member_provider.dart';
+import 'package:application_new/feature/travel_create/page/travel_companion_type_form.dart';
+import 'package:application_new/feature/travel_create/page/travel_date_form.dart';
 import 'package:application_new/feature/travel_create/page/travel_form_page.dart';
+import 'package:application_new/feature/travel_create/page/travel_motivation_type_form.dart';
 import 'package:application_new/feature/travel_create/page/travel_name_form.dart';
 import 'package:application_new/feature/travel_create/provider/travel_create_provider.dart';
 import 'package:application_new/feature/travel_create/provider/travel_create_state.dart';
@@ -11,6 +14,7 @@ import 'package:application_new/feature/travel_plan/provider/travel_plan_state.d
 import 'package:application_new/shared/component/action_sheet.dart';
 import 'package:application_new/shared/component/action_sheet_item.dart';
 import 'package:application_new/shared/component/show_modal_content_sheet.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -40,6 +44,88 @@ class _TravelPlanHomePageState extends ConsumerState<TravelPlanHomePage> {
 
     const headerStyle = TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600);
     final owner = ref.watch(memberProvider(travel.memberId)).value;
+
+    final editNameAction = ActionSheetItem(
+      title: ref.watch(translationServiceProvider).from('Edit name'),
+      onAction: () => showModalContentSheet(
+        showDragHandle: false,
+        context,
+        TravelFormPage(
+          initialState: TravelCreateState(name: travel.name),
+          canSubmit: (state) => travel.name != state.name,
+          onSubmit: (state) {
+            print(state.name);
+          },
+          pageSize: 1,
+          buildPages: (bottomViewBuilder) => [
+            TravelNameForm(pageIndex: 0, bottomViewBuilder: bottomViewBuilder)
+          ],
+        ),
+      ),
+    );
+
+    final editDateAction = ActionSheetItem(
+      title: ref.watch(translationServiceProvider).from('Edit date'),
+      onAction: () => showModalContentSheet(
+        showDragHandle: false,
+        context,
+        TravelFormPage(
+          initialState: TravelCreateState(
+              startedOn: travel.startedOn, endedOn: travel.endedOn),
+          canSubmit: (state) => state.startedOn != travel.startedOn &&
+                state.endedOn != travel.endedOn,
+          onSubmit: (state) {
+            print(state);
+          },
+          pageSize: 1,
+          buildPages: (bottomViewBuilder) => [
+            TravelDateForm(pageIndex: 0, bottomViewBuilder: bottomViewBuilder)
+          ],
+        ),
+      ),
+    );
+
+    final editCompanionTypeAction = ActionSheetItem(
+      title: ref.watch(translationServiceProvider).from('Edit companion type'),
+      onAction: () => showModalContentSheet(
+        showDragHandle: false,
+        context,
+        TravelFormPage(
+          initialState: TravelCreateState(
+              companionTypes: travel.companionTypes),
+          canSubmit: (state) => !listEquals(state.companionTypes, travel.companionTypes),
+          onSubmit: (state) {
+            print(state);
+          },
+          pageSize: 1,
+          buildPages: (bottomViewBuilder) => [
+            TravelCompanionTypeForm(pageIndex: 0, bottomViewBuilder: bottomViewBuilder)
+          ],
+        ),
+      ),
+    );
+
+
+    final editMotivationTypeAction = ActionSheetItem(
+      title: ref.watch(translationServiceProvider).from('Edit motivation type'),
+      onAction: () => showModalContentSheet(
+        showDragHandle: false,
+        context,
+        TravelFormPage(
+          initialState: TravelCreateState(
+              motivationTypes: travel.motivationTypes),
+          canSubmit: (state) => !setEquals(state.motivationTypes.toSet(),
+              travel.motivationTypes.toSet()),
+          onSubmit: (state) {
+            print(state);
+          },
+          pageSize: 1,
+          buildPages: (bottomViewBuilder) => [
+            TravelMotivationTypeForm(pageIndex: 0, bottomViewBuilder: bottomViewBuilder)
+          ],
+        ),
+      ),
+    );
 
     return IntrinsicSizeBuilder(
         firstFrameWidget: Container(
@@ -94,41 +180,10 @@ class _TravelPlanHomePageState extends ConsumerState<TravelPlanHomePage> {
                             ActionSheet.show(
                               context,
                               items: [
-                                ActionSheetItem(
-                                  title: ref
-                                      .watch(translationServiceProvider)
-                                      .from('Edit name'),
-                                  onAction: () async {
-                                    await showModalContentSheet(
-                                      showDragHandle: false,
-                                      context,
-                                      TravelFormPage(
-                                        initialState: TravelCreateState(name: travel.name),
-                                        canSubmit: (state) => state.name != null && travel.name != state.name,
-                                        onSubmit: (state) {
-                                          print(state.name);
-                                        },
-                                        pageSize: 1,
-                                        buildPages: (bottomViewBuilder) => [TravelNameForm(pageIndex: 0, bottomViewBuilder: bottomViewBuilder)],
-                                      ),
-                                    );
-                                  },
-                                ),
-                                ActionSheetItem(
-                                    title: ref
-                                        .watch(translationServiceProvider)
-                                        .from('Edit date'),
-                                    onAction: () {}),
-                                ActionSheetItem(
-                                    title: ref
-                                        .watch(translationServiceProvider)
-                                        .from('Edit companion type'),
-                                    onAction: () {}),
-                                ActionSheetItem(
-                                    title: ref
-                                        .watch(translationServiceProvider)
-                                        .from('Edit motivation type'),
-                                    onAction: () {}),
+                                editNameAction,
+                                editDateAction,
+                                editCompanionTypeAction,
+                                editMotivationTypeAction,
                               ],
                             );
                           },

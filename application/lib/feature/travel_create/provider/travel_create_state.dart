@@ -8,7 +8,6 @@ part 'travel_create_state.freezed.dart';
 class TravelCreateState with _$TravelCreateState {
   const factory TravelCreateState({
     String? name,
-    @Default(0) int pageNumber,
     DateTime? startedOn,
     DateTime? endedOn,
     @Default([]) List<TravelCompanionType> companionTypes,

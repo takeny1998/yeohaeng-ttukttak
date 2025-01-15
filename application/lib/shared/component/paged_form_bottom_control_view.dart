@@ -56,7 +56,7 @@ class PagedFormBottomControlView extends ConsumerWidget {
             child: FilledButton(
                 onPressed: hasNextPage
                     ? (isInputted ? _nextPage : null)
-                    : (canSubmit ? onSubmit : null),
+                    : (canSubmit && isInputted ? onSubmit : null),
                 child:
                     Text(hasNextPage ? tr.from('Next') : tr.from('Submit')))),
     ]));

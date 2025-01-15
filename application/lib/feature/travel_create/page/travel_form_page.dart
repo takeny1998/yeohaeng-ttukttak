@@ -16,15 +16,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../provider/travel_create_provider.dart';
 
 class TravelFormPage extends ConsumerStatefulWidget {
-
   final bool Function(TravelCreateState) canSubmit;
 
   final void Function(TravelCreateState) onSubmit;
 
   final int pageSize;
-  
-  final List<Widget>
-  Function(PagedFormBottomControlViewBuilder bottomViewBuilder) buildPages;
+
+  final List<Widget> Function(
+      PagedFormBottomControlViewBuilder bottomViewBuilder) buildPages;
 
   final TravelCreateState? initialState;
 
@@ -32,7 +31,7 @@ class TravelFormPage extends ConsumerStatefulWidget {
       {super.key,
       required this.canSubmit,
       required this.onSubmit,
-       required this.pageSize,
+      required this.pageSize,
       required this.buildPages,
       this.initialState});
 
@@ -97,8 +96,10 @@ class _CreateTravelPageState extends ConsumerState<TravelFormPage> {
 
     final canSubmit = widget.canSubmit(state);
 
-    final bottomViewBuilder = 
-    PagedFormBottomControlView.create(pageController, pageSize: widget.pageSize, canSubmit: canSubmit, onSubmit: () => widget.onSubmit(state));
+    final bottomViewBuilder = PagedFormBottomControlView.create(pageController,
+        pageSize: widget.pageSize,
+        canSubmit: canSubmit,
+        onSubmit: () => widget.onSubmit.call(state));
 
     return Scaffold(
       body: PageView(
