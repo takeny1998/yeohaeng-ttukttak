@@ -6,6 +6,7 @@ import com.yeohaeng_ttukttak.server.application.travel.service.TravelService;
 import com.yeohaeng_ttukttak.server.application.travel_city.TravelCityService;
 import com.yeohaeng_ttukttak.server.common.authentication.Authentication;
 import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
+import com.yeohaeng_ttukttak.server.common.http.JsonRequestMapping;
 import com.yeohaeng_ttukttak.server.domain.geography.dto.GeographyDto;
 import com.yeohaeng_ttukttak.server.application.travel.controller.dto.TravelResponse;
 import com.yeohaeng_ttukttak.server.domain.travel.dto.TravelDto;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v2/travels")
+@JsonRequestMapping("/api/v2/travels")
 @RequiredArgsConstructor
 public class TravelController implements TravelDocument {
 
@@ -61,7 +62,7 @@ public class TravelController implements TravelDocument {
 
     }
 
-    @PatchMapping("/{travelId}")
+    @PatchMapping(value = "/{travelId}")
     @Authentication
     public ServerResponse<TravelResponse> update(
             @PathVariable Long travelId,

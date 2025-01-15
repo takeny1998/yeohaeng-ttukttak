@@ -3,6 +3,7 @@ package com.yeohaeng_ttukttak.server.application.place.controller;
 import com.yeohaeng_ttukttak.server.application.place.controller.dto.FindPlaceResponse;
 import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundFailException;
+import com.yeohaeng_ttukttak.server.common.http.JsonRequestMapping;
 import com.yeohaeng_ttukttak.server.domain.place.dto.PlaceDto;
 import com.yeohaeng_ttukttak.server.domain.place.entity.Place;
 import com.yeohaeng_ttukttak.server.domain.place.repository.PlaceRepository;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v2/places")
+@JsonRequestMapping("/api/v2/places")
 @RequiredArgsConstructor
 public class PlaceController {
 

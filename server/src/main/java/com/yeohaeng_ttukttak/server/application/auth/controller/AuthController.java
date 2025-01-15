@@ -8,6 +8,7 @@ import com.yeohaeng_ttukttak.server.application.auth.service.RenewAuthService;
 import com.yeohaeng_ttukttak.server.application.auth.service.OAuthLoginService;
 import com.yeohaeng_ttukttak.server.application.auth.service.dto.AuthTokenDto;
 import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
+import com.yeohaeng_ttukttak.server.common.http.JsonRequestMapping;
 import com.yeohaeng_ttukttak.server.domain.oauth.service.GoogleOAuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Locale;
 
 @RestController
-@RequestMapping("/api/v2/auth")
+@JsonRequestMapping("/api/v2/auth")
 @RequiredArgsConstructor
 public class AuthController {
 

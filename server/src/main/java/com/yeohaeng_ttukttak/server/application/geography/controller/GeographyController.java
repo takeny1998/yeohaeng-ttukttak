@@ -2,6 +2,7 @@ package com.yeohaeng_ttukttak.server.application.geography.controller;
 
 import com.yeohaeng_ttukttak.server.application.geography.controller.dto.GeographyListResponse;
 import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
+import com.yeohaeng_ttukttak.server.common.http.JsonRequestMapping;
 import com.yeohaeng_ttukttak.server.domain.geography.dto.GeographyDto;
 import com.yeohaeng_ttukttak.server.domain.geography.repository.GeographyRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v2/geographies")
+@JsonRequestMapping("/api/v2/geographies")
 @RequiredArgsConstructor
 public class GeographyController {
 
