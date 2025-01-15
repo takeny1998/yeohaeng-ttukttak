@@ -67,6 +67,9 @@ class _TravelNameFormState extends ConsumerState<TravelNameForm> {
         .map((province) => province.shortName)
         .join(', ');
 
+    final String? defaultName =
+        cities.isNotEmpty ? tr.from('Travel of {}', args: [provinceNames]) : null;
+
     return Scaffold(
       appBar: AppBar(shape: const Border()),
       body: Column(
@@ -111,13 +114,14 @@ class _TravelNameFormState extends ConsumerState<TravelNameForm> {
                         },
                         child: const Icon(Icons.clear)),
                   ),
-                  hintText: tr.from('Travel of {}', args: [provinceNames])),
+                  hintText: defaultName),
             ),
           )
         ],
       ),
       bottomNavigationBar: widget.bottomViewBuilder(
-          isInputted: name?.isNotEmpty ?? false, pageIndex: widget.pageIndex),
+          isInputted: name?.isNotEmpty ?? defaultName?.isNotEmpty ?? false,
+          pageIndex: widget.pageIndex),
     );
   }
 }

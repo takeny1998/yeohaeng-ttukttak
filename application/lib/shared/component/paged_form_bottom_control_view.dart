@@ -46,19 +46,19 @@ class PagedFormBottomControlView extends ConsumerWidget {
     final tr = ref.watch(translationServiceProvider);
     return SafeBottomView(
         child: Row(children: [
-      if (hasPreviousPage)
+      if (hasPreviousPage) ...[
         Expanded(
             child: OutlinedButton(
                 onPressed: hasPreviousPage ? _previousPage : null,
                 child: Text(tr.from('Previous')))),
-      if (hasPreviousPage && hasNextPage) const SizedBox(width: 8.0),
-        Expanded(
-            child: FilledButton(
-                onPressed: hasNextPage
-                    ? (isInputted ? _nextPage : null)
-                    : (canSubmit && isInputted ? onSubmit : null),
-                child:
-                    Text(hasNextPage ? tr.from('Next') : tr.from('Submit')))),
+        const SizedBox(width: 8.0),
+      ],
+      Expanded(
+          child: FilledButton(
+              onPressed: hasNextPage
+                  ? (isInputted ? _nextPage : null)
+                  : (canSubmit && isInputted ? onSubmit : null),
+              child: Text(hasNextPage ? tr.from('Next') : tr.from('Submit')))),
     ]));
   }
 

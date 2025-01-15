@@ -1,6 +1,8 @@
+import 'package:application_new/common/loading/async_loading_provider.dart';
 import 'package:application_new/common/util/translation_util.dart';
 import 'package:application_new/core/translation/translation_service.dart';
 import 'package:application_new/domain/member/member_provider.dart';
+import 'package:application_new/domain/travel/travel_repository.dart';
 import 'package:application_new/feature/travel_create/page/travel_companion_type_form.dart';
 import 'package:application_new/feature/travel_create/page/travel_date_form.dart';
 import 'package:application_new/feature/travel_create/page/travel_form_page.dart';
@@ -53,8 +55,14 @@ class _TravelPlanHomePageState extends ConsumerState<TravelPlanHomePage> {
         TravelFormPage(
           initialState: TravelCreateState(name: travel.name),
           canSubmit: (state) => travel.name != state.name,
-          onSubmit: (state) {
-            print(state.name);
+          onSubmit: (state) async {
+            final navigator = Navigator.of(context);
+
+            await ref
+                .read(TravelPlanProvider(travel.id).notifier)
+                .editTravel(name: state.name);
+
+            navigator.pop();
           },
           pageSize: 1,
           buildPages: (bottomViewBuilder) => [
@@ -72,10 +80,17 @@ class _TravelPlanHomePageState extends ConsumerState<TravelPlanHomePage> {
         TravelFormPage(
           initialState: TravelCreateState(
               startedOn: travel.startedOn, endedOn: travel.endedOn),
-          canSubmit: (state) => state.startedOn != travel.startedOn &&
-                state.endedOn != travel.endedOn,
-          onSubmit: (state) {
-            print(state);
+          canSubmit: (state) =>
+              state.startedOn != travel.startedOn &&
+              state.endedOn != travel.endedOn,
+          onSubmit: (state)  async {
+            final navigator = Navigator.of(context);
+
+            await ref
+                .read(TravelPlanProvider(travel.id).notifier)
+                .editTravel(startedOn: state.startedOn, endedOn: state.endedOn);
+
+            navigator.pop();
           },
           pageSize: 1,
           buildPages: (bottomViewBuilder) => [
@@ -91,20 +106,27 @@ class _TravelPlanHomePageState extends ConsumerState<TravelPlanHomePage> {
         showDragHandle: false,
         context,
         TravelFormPage(
-          initialState: TravelCreateState(
-              companionTypes: travel.companionTypes),
-          canSubmit: (state) => !listEquals(state.companionTypes, travel.companionTypes),
-          onSubmit: (state) {
-            print(state);
+          initialState:
+              TravelCreateState(companionTypes: travel.companionTypes),
+          canSubmit: (state) =>
+              !listEquals(state.companionTypes, travel.companionTypes),
+          onSubmit: (state)  async {
+            final navigator = Navigator.of(context);
+
+            await ref
+                .read(TravelPlanProvider(travel.id).notifier)
+                .editTravel(companionTypes: state.companionTypes);
+
+            navigator.pop();
           },
           pageSize: 1,
           buildPages: (bottomViewBuilder) => [
-            TravelCompanionTypeForm(pageIndex: 0, bottomViewBuilder: bottomViewBuilder)
+            TravelCompanionTypeForm(
+                pageIndex: 0, bottomViewBuilder: bottomViewBuilder)
           ],
         ),
       ),
     );
-
 
     final editMotivationTypeAction = ActionSheetItem(
       title: ref.watch(translationServiceProvider).from('Edit motivation type'),
@@ -112,16 +134,23 @@ class _TravelPlanHomePageState extends ConsumerState<TravelPlanHomePage> {
         showDragHandle: false,
         context,
         TravelFormPage(
-          initialState: TravelCreateState(
-              motivationTypes: travel.motivationTypes),
-          canSubmit: (state) => !setEquals(state.motivationTypes.toSet(),
-              travel.motivationTypes.toSet()),
-          onSubmit: (state) {
-            print(state);
+          initialState:
+              TravelCreateState(motivationTypes: travel.motivationTypes),
+          canSubmit: (state) => !setEquals(
+              state.motivationTypes.toSet(), travel.motivationTypes.toSet()),
+          onSubmit: (state) async {
+            final navigator = Navigator.of(context);
+
+            await ref
+                .read(TravelPlanProvider(travel.id).notifier)
+                .editTravel(motivationTypes: state.motivationTypes);
+
+            navigator.pop();
           },
           pageSize: 1,
           buildPages: (bottomViewBuilder) => [
-            TravelMotivationTypeForm(pageIndex: 0, bottomViewBuilder: bottomViewBuilder)
+            TravelMotivationTypeForm(
+                pageIndex: 0, bottomViewBuilder: bottomViewBuilder)
           ],
         ),
       ),

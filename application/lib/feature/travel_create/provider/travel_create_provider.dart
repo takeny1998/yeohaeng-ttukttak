@@ -1,6 +1,8 @@
 import 'package:application_new/common/http/http_service.dart';
 import 'package:application_new/common/http/http_service_provider.dart';
 import 'package:application_new/common/loading/async_loading_provider.dart';
+import 'package:application_new/core/translation/translation_service.dart';
+import 'package:application_new/domain/geography/geography_provider.dart';
 import 'package:application_new/domain/travel/travel_model.dart';
 import 'package:application_new/feature/authentication/service/auth_service_provider.dart';
 import 'package:application_new/domain/geography/geography_model.dart';
@@ -63,14 +65,13 @@ class TravelCreate extends _$TravelCreate {
   }
 
   void selectCities(List<CityModel> cities) {
-    if (cities.length > 10) return;
+    if (cities.length > 10 || cities.isEmpty) return;
+
     state = state.copyWith(cities: cities);
   }
-
 
   void setFieldErrors(Map<String, String> fieldErrors) {
     if (state.fieldErrors == fieldErrors) return;
     state = state.copyWith(fieldErrors: fieldErrors);
   }
-
 }

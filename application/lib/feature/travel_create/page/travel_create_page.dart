@@ -6,6 +6,7 @@ import 'package:application_new/common/loading/async_loading_provider.dart';
 import 'package:application_new/core/message/message_util.dart';
 import 'package:application_new/core/translation/translation_service.dart';
 import 'package:application_new/domain/travel/travel_model.dart';
+import 'package:application_new/domain/travel/travel_repository.dart';
 import 'package:application_new/feature/travel_create/page/travel_city_form.dart';
 import 'package:application_new/feature/travel_create/page/travel_companion_type_form.dart';
 import 'package:application_new/feature/travel_create/page/travel_date_form.dart';
@@ -66,34 +67,32 @@ class TravelCreatePage extends ConsumerWidget {
             :cities
           ) = state;
 
+          if (name == null || startedOn == null || endedOn == null) return;
+
           printMessage() => MessageUtil.showSnackBar(
               context,
               MessageEvent(
                   tr.from('The travel has been created successfully.')));
 
-          final travel =
-              await ref.read(asyncLoadingProvider.notifier).guard(() async {
-            final response =
-                await ref.read(httpServiceProvider).post('/travels',
-                    options: ServerRequestOptions(data: {
-                      'startedOn': startedOn?.toIso8601String(),
-                      'endedOn': endedOn?.toIso8601String(),
-                      'name': name,
-                      'companionTypes':
-                          companionTypes.map((e) => e.name).toList(),
-                      'motivationTypes':
-                          motivationTypes.map((e) => e.name).toList(),
-                      'cityIds': cities.map((city) => city.id).toList(),
-                    }));
+          final travelRepository = ref.read(travelRepositoryProvider);
 
-            return TravelModel.fromJson(response['travel']);
-          }).catchError((error, _) {
+          final travel = await ref
+              .read(asyncLoadingProvider.notifier)
+              .guard(
+                () => travelRepository.create(
+                    name: name,
+                    startedOn: startedOn,
+                    endedOn: endedOn,
+                    companionTypes: companionTypes,
+                    motivationTypes: motivationTypes,
+                    cities: cities),
+              )
+              .catchError((error, _) {
             if (error is ServerFailException) {
               error.consumeFieldErrors(notifier.setFieldErrors);
             }
             throw error;
           });
-          ;
 
           printMessage();
           navigator.pushReplacement('/travels/${travel.id}');
