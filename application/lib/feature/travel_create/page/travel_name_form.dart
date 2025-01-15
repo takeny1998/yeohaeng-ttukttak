@@ -14,30 +14,21 @@ import 'package:go_router/go_router.dart';
 import '../provider/travel_create_provider.dart';
 
 class TravelNameForm extends ConsumerWidget {
-  final PageController pageController;
+  final int pageIndex;
+  final PagedFormBottomControlViewBuilder bottomViewBuilder;
+
   final TextEditingController nameController = TextEditingController();
 
-  TravelNameForm(this.pageController, {super.key});
+  TravelNameForm(
+      {super.key, required this.pageIndex, required this.bottomViewBuilder});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final tr = ref.watch(translationServiceProvider);
 
-    final TravelCreateState(
-      :cities,
-      :name,
-      :motivationTypes,
-      :companionTypes,
-      :startedOn,
-      :endedOn,
-      :fieldErrors,
-    ) = ref.watch(travelCreateProvider);
+    final state = ref.watch(travelCreateProvider);
 
-    final bool canSubmit = cities.isNotEmpty &&
-        motivationTypes.isNotEmpty &&
-        companionTypes.isNotEmpty &&
-        startedOn != null &&
-        endedOn != null;
+    final TravelCreateState(:name, :cities, :fieldErrors) = state;
 
     final String provinceNames = cities
         .map((city) => city.parentId)
@@ -78,7 +69,7 @@ class TravelNameForm extends ConsumerWidget {
                 ref.read(travelCreateProvider.notifier).enterName(name);
               },
               decoration: InputDecoration(
-                errorText: fieldErrors['name'],
+                  errorText: fieldErrors['name'],
                   suffixIcon: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(999.0),
@@ -100,30 +91,8 @@ class TravelNameForm extends ConsumerWidget {
           )
         ],
       ),
-      bottomNavigationBar: PagedFormBottomControlView(
-        isInputted: canSubmit,
-        controller: pageController,
-        hasNextPage: false,
-        onSubmit: () async {
-          final navigator = GoRouter.of(context);
-          final notifier = ref.read(travelCreateProvider.notifier);
-
-          printMessage() => MessageUtil.showSnackBar(
-              context,
-              MessageEvent(
-                  tr.from('The travel has been created successfully.')));
-
-          final travel = await notifier.submit().catchError((error, _) {
-            if (error is ServerFailException) {
-              error.consumeFieldErrors(notifier.setFieldErrors);
-            }
-            throw error;
-          });
-
-          printMessage();
-          navigator.pushReplacement('/travels/${travel.id}');
-        },
-      ),
+      bottomNavigationBar: bottomViewBuilder(
+          isInputted: name?.isNotEmpty ?? false, pageIndex: pageIndex),
     );
   }
 }

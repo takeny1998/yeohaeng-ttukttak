@@ -13,7 +13,6 @@ class TravelCreateState with _$TravelCreateState {
     DateTime? endedOn,
     @Default([]) List<TravelCompanionType> companionTypes,
     @Default([]) List<TravelMotivationType> motivationTypes,
-    ProvinceModel? region,
     @Default([]) List<CityModel> cities,
     @Default({}) Map<String, String> fieldErrors,
   }) = _TravelCreateState;

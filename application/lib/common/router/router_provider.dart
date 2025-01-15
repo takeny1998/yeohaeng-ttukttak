@@ -6,6 +6,7 @@ import 'package:application_new/feature/error/error_page.dart';
 import 'package:application_new/feature/home/home_page.dart';
 import 'package:application_new/feature/profile/profile_edit_page.dart';
 import 'package:application_new/feature/travel_create/page/travel_create_page.dart';
+import 'package:application_new/feature/travel_create/page/travel_form_page.dart';
 import 'package:application_new/feature/travel_invitation/page/travel_invitation_page.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_participant/page/travel_plan_participant_page.dart';
 import 'package:application_new/feature/travel_plan/page/travel_plan_recommend/page/city_travels/page/city_travels_page.dart';

@@ -1,10 +1,15 @@
 import 'package:application_new/common/event/event.dart';
+import 'package:application_new/common/exception/server_exception.dart';
+import 'package:application_new/common/http/http_service.dart';
+import 'package:application_new/common/http/http_service_provider.dart';
+import 'package:application_new/common/loading/async_loading_provider.dart';
 import 'package:application_new/core/message/message_util.dart';
 import 'package:application_new/core/translation/translation_service.dart';
-import 'package:application_new/feature/geography_select/province_city_select_provider.dart';
+import 'package:application_new/domain/travel/travel_model.dart';
 import 'package:application_new/feature/travel_create/page/travel_city_form.dart';
-import 'package:application_new/feature/travel_create/page/travel_date_form.dart';
 import 'package:application_new/feature/travel_create/page/travel_companion_type_form.dart';
+import 'package:application_new/feature/travel_create/page/travel_date_form.dart';
+import 'package:application_new/feature/travel_create/page/travel_form_page.dart';
 import 'package:application_new/feature/travel_create/page/travel_motivation_type_form.dart';
 import 'package:application_new/feature/travel_create/page/travel_name_form.dart';
 import 'package:flutter/material.dart';
@@ -12,56 +17,86 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../provider/travel_create_provider.dart';
+import '../provider/travel_create_state.dart';
 
-class TravelCreatePage extends ConsumerStatefulWidget {
+class TravelCreatePage extends ConsumerWidget {
   const TravelCreatePage({super.key});
 
   @override
-  ConsumerState createState() => _CreateTravelPageState();
-}
-
-class _CreateTravelPageState extends ConsumerState<TravelCreatePage> {
-  final PageController pageController = PageController();
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    pageController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final tr = ref.watch(translationServiceProvider);
 
-    ref.listen(provinceCitySelectProvider, (prev, next) {
-      final selectedCities = next.selectedCities;
-      if (prev?.selectedCities == selectedCities) return;
+    return TravelFormPage(
+        pageSize: 5,
+        buildPages: (builder) => [
+              TravelDateForm(pageIndex: 0, bottomViewBuilder: builder),
+              TravelCityForm(pageIndex: 1, bottomViewBuilder: builder),
+              TravelCompanionTypeForm(pageIndex: 2, bottomViewBuilder: builder),
+              TravelMotivationTypeForm(
+                  pageIndex: 3, bottomViewBuilder: builder),
+              TravelNameForm(pageIndex: 4, bottomViewBuilder: builder),
+            ],
+        canSubmit: (state) {
+          final TravelCreateState(
+            :cities,
+            :name,
+            :motivationTypes,
+            :companionTypes,
+            :startedOn,
+            :endedOn,
+            :fieldErrors,
+          ) = ref.watch(travelCreateProvider);
 
-      if (selectedCities.length > 10) {
-        MessageUtil.showSnackBar(context,
-            MessageEvent(tr.from('You can select up to {}.', args: ['${10}'])));
-      }
+          return cities.isNotEmpty &&
+              motivationTypes.isNotEmpty &&
+              companionTypes.isNotEmpty &&
+              startedOn != null &&
+              endedOn != null;
+        },
+        onSubmit: (state) async {
+          final navigator = GoRouter.of(context);
+          final notifier = ref.read(travelCreateProvider.notifier);
 
-      final notifier = ref.read(travelCreateProvider.notifier);
-      notifier.selectCities(selectedCities.mapToEntity().toList());
-    });
+          final TravelCreateState(
+            :name,
+            :startedOn,
+            :endedOn,
+            :companionTypes,
+            :motivationTypes,
+            :cities
+          ) = state;
 
-    return Scaffold(
-      body: PageView(
-          physics: const NeverScrollableScrollPhysics(),
-          controller: pageController,
-          children: [
-            TravelDateForm(pageController),
-            TravelCityForm(pageController),
-            TravelCompanionTypeForm(pageController),
-            TravelMotivationTypeForm(pageController),
-            TravelNameForm(pageController),
-          ]),
-    );
+          printMessage() => MessageUtil.showSnackBar(
+              context,
+              MessageEvent(
+                  tr.from('The travel has been created successfully.')));
+
+          final travel =
+              await ref.read(asyncLoadingProvider.notifier).guard(() async {
+            final response =
+                await ref.read(httpServiceProvider).post('/travels',
+                    options: ServerRequestOptions(data: {
+                      'startedOn': startedOn?.toIso8601String(),
+                      'endedOn': endedOn?.toIso8601String(),
+                      'name': name,
+                      'companionTypes':
+                          companionTypes.map((e) => e.name).toList(),
+                      'motivationTypes':
+                          motivationTypes.map((e) => e.name).toList(),
+                      'cityIds': cities.map((city) => city.id).toList(),
+                    }));
+
+            return TravelModel.fromJson(response['travel']);
+          }).catchError((error, _) {
+            if (error is ServerFailException) {
+              error.consumeFieldErrors(notifier.setFieldErrors);
+            }
+            throw error;
+          });
+          ;
+
+          printMessage();
+          navigator.pushReplacement('/travels/${travel.id}');
+        });
   }
 }

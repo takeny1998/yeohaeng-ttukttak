@@ -1,8 +1,16 @@
 import 'package:application_new/common/util/translation_util.dart';
+import 'package:application_new/core/translation/translation_service.dart';
 import 'package:application_new/domain/member/member_provider.dart';
+import 'package:application_new/feature/travel_create/page/travel_form_page.dart';
+import 'package:application_new/feature/travel_create/page/travel_name_form.dart';
+import 'package:application_new/feature/travel_create/provider/travel_create_provider.dart';
+import 'package:application_new/feature/travel_create/provider/travel_create_state.dart';
 import 'package:application_new/feature/travel_plan/component/travel_info_chip.dart';
 import 'package:application_new/feature/travel_plan/provider/travel_plan_provider.dart';
 import 'package:application_new/feature/travel_plan/provider/travel_plan_state.dart';
+import 'package:application_new/shared/component/action_sheet.dart';
+import 'package:application_new/shared/component/action_sheet_item.dart';
+import 'package:application_new/shared/component/show_modal_content_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -61,9 +69,6 @@ class _TravelPlanHomePageState extends ConsumerState<TravelPlanHomePage> {
                       label: travel.companionTypes
                           .map((e) => TranslationUtil.enumValue(e))
                           .join(', ')),
-                  // TravelInfoChip(
-                  //     avatar: Icons.place,
-                  //     label: travel.cities.map((e) => e.name).join(', ')),
                   TravelInfoChip(
                       avatar: Icons.tag,
                       label: travel.motivationTypes
@@ -85,7 +90,48 @@ class _TravelPlanHomePageState extends ConsumerState<TravelPlanHomePage> {
                     pinned: true,
                     actions: [
                       IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            ActionSheet.show(
+                              context,
+                              items: [
+                                ActionSheetItem(
+                                  title: ref
+                                      .watch(translationServiceProvider)
+                                      .from('Edit name'),
+                                  onAction: () async {
+                                    await showModalContentSheet(
+                                      showDragHandle: false,
+                                      context,
+                                      TravelFormPage(
+                                        initialState: TravelCreateState(name: travel.name),
+                                        canSubmit: (state) => state.name != null && travel.name != state.name,
+                                        onSubmit: (state) {
+                                          print(state.name);
+                                        },
+                                        pageSize: 1,
+                                        buildPages: (bottomViewBuilder) => [TravelNameForm(pageIndex: 0, bottomViewBuilder: bottomViewBuilder)],
+                                      ),
+                                    );
+                                  },
+                                ),
+                                ActionSheetItem(
+                                    title: ref
+                                        .watch(translationServiceProvider)
+                                        .from('Edit date'),
+                                    onAction: () {}),
+                                ActionSheetItem(
+                                    title: ref
+                                        .watch(translationServiceProvider)
+                                        .from('Edit companion type'),
+                                    onAction: () {}),
+                                ActionSheetItem(
+                                    title: ref
+                                        .watch(translationServiceProvider)
+                                        .from('Edit motivation type'),
+                                    onAction: () {}),
+                              ],
+                            );
+                          },
                           icon: const Icon(Icons.edit_note_outlined)),
                       Padding(
                         padding: const EdgeInsets.only(right: 16.0),

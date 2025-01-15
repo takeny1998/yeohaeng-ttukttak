@@ -18,6 +18,7 @@ class TravelCreate extends _$TravelCreate {
 
   void enterName(String? name) {
     if (state.name == name) return;
+    print(name);
     state = state.copyWith(name: name);
   }
 
@@ -65,14 +66,6 @@ class TravelCreate extends _$TravelCreate {
   void selectCities(List<CityModel> cities) {
     if (cities.length > 10) return;
     state = state.copyWith(cities: cities);
-  }
-
-  void selectRegion(ProvinceModel? region) {
-    if (state.region == region) return;
-
-    state = state.copyWith(
-      region: region,
-    );
   }
 
   void prevPage() {

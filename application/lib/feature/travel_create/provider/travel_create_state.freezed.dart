@@ -24,7 +24,6 @@ mixin _$TravelCreateState {
       throw _privateConstructorUsedError;
   List<TravelMotivationType> get motivationTypes =>
       throw _privateConstructorUsedError;
-  ProvinceModel? get region => throw _privateConstructorUsedError;
   List<CityModel> get cities => throw _privateConstructorUsedError;
   Map<String, String> get fieldErrors => throw _privateConstructorUsedError;
 
@@ -48,7 +47,6 @@ abstract class $TravelCreateStateCopyWith<$Res> {
       DateTime? endedOn,
       List<TravelCompanionType> companionTypes,
       List<TravelMotivationType> motivationTypes,
-      ProvinceModel? region,
       List<CityModel> cities,
       Map<String, String> fieldErrors});
 }
@@ -74,7 +72,6 @@ class _$TravelCreateStateCopyWithImpl<$Res, $Val extends TravelCreateState>
     Object? endedOn = freezed,
     Object? companionTypes = null,
     Object? motivationTypes = null,
-    Object? region = freezed,
     Object? cities = null,
     Object? fieldErrors = null,
   }) {
@@ -103,10 +100,6 @@ class _$TravelCreateStateCopyWithImpl<$Res, $Val extends TravelCreateState>
           ? _value.motivationTypes
           : motivationTypes // ignore: cast_nullable_to_non_nullable
               as List<TravelMotivationType>,
-      region: freezed == region
-          ? _value.region
-          : region // ignore: cast_nullable_to_non_nullable
-              as ProvinceModel?,
       cities: null == cities
           ? _value.cities
           : cities // ignore: cast_nullable_to_non_nullable
@@ -134,7 +127,6 @@ abstract class _$$TravelCreateStateImplCopyWith<$Res>
       DateTime? endedOn,
       List<TravelCompanionType> companionTypes,
       List<TravelMotivationType> motivationTypes,
-      ProvinceModel? region,
       List<CityModel> cities,
       Map<String, String> fieldErrors});
 }
@@ -158,7 +150,6 @@ class __$$TravelCreateStateImplCopyWithImpl<$Res>
     Object? endedOn = freezed,
     Object? companionTypes = null,
     Object? motivationTypes = null,
-    Object? region = freezed,
     Object? cities = null,
     Object? fieldErrors = null,
   }) {
@@ -187,10 +178,6 @@ class __$$TravelCreateStateImplCopyWithImpl<$Res>
           ? _value._motivationTypes
           : motivationTypes // ignore: cast_nullable_to_non_nullable
               as List<TravelMotivationType>,
-      region: freezed == region
-          ? _value.region
-          : region // ignore: cast_nullable_to_non_nullable
-              as ProvinceModel?,
       cities: null == cities
           ? _value._cities
           : cities // ignore: cast_nullable_to_non_nullable
@@ -213,7 +200,6 @@ class _$TravelCreateStateImpl implements _TravelCreateState {
       this.endedOn,
       final List<TravelCompanionType> companionTypes = const [],
       final List<TravelMotivationType> motivationTypes = const [],
-      this.region,
       final List<CityModel> cities = const [],
       final Map<String, String> fieldErrors = const {}})
       : _companionTypes = companionTypes,
@@ -248,8 +234,6 @@ class _$TravelCreateStateImpl implements _TravelCreateState {
     return EqualUnmodifiableListView(_motivationTypes);
   }
 
-  @override
-  final ProvinceModel? region;
   final List<CityModel> _cities;
   @override
   @JsonKey()
@@ -270,7 +254,7 @@ class _$TravelCreateStateImpl implements _TravelCreateState {
 
   @override
   String toString() {
-    return 'TravelCreateState(name: $name, pageNumber: $pageNumber, startedOn: $startedOn, endedOn: $endedOn, companionTypes: $companionTypes, motivationTypes: $motivationTypes, region: $region, cities: $cities, fieldErrors: $fieldErrors)';
+    return 'TravelCreateState(name: $name, pageNumber: $pageNumber, startedOn: $startedOn, endedOn: $endedOn, companionTypes: $companionTypes, motivationTypes: $motivationTypes, cities: $cities, fieldErrors: $fieldErrors)';
   }
 
   @override
@@ -288,7 +272,6 @@ class _$TravelCreateStateImpl implements _TravelCreateState {
                 .equals(other._companionTypes, _companionTypes) &&
             const DeepCollectionEquality()
                 .equals(other._motivationTypes, _motivationTypes) &&
-            const DeepCollectionEquality().equals(other.region, region) &&
             const DeepCollectionEquality().equals(other._cities, _cities) &&
             const DeepCollectionEquality()
                 .equals(other._fieldErrors, _fieldErrors));
@@ -303,7 +286,6 @@ class _$TravelCreateStateImpl implements _TravelCreateState {
       endedOn,
       const DeepCollectionEquality().hash(_companionTypes),
       const DeepCollectionEquality().hash(_motivationTypes),
-      const DeepCollectionEquality().hash(region),
       const DeepCollectionEquality().hash(_cities),
       const DeepCollectionEquality().hash(_fieldErrors));
 
@@ -325,7 +307,6 @@ abstract class _TravelCreateState implements TravelCreateState {
       final DateTime? endedOn,
       final List<TravelCompanionType> companionTypes,
       final List<TravelMotivationType> motivationTypes,
-      final ProvinceModel? region,
       final List<CityModel> cities,
       final Map<String, String> fieldErrors}) = _$TravelCreateStateImpl;
 
@@ -341,8 +322,6 @@ abstract class _TravelCreateState implements TravelCreateState {
   List<TravelCompanionType> get companionTypes;
   @override
   List<TravelMotivationType> get motivationTypes;
-  @override
-  ProvinceModel? get region;
   @override
   List<CityModel> get cities;
   @override

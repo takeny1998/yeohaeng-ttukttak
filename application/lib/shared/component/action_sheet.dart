@@ -34,6 +34,7 @@ class ActionSheet extends ConsumerWidget {
         ActionSheetGroupItem(items: [
           ActionSheetItem(
               title: tr.from('Close'),
+              titleColor: Theme.of(context).colorScheme.error,
               onAction: () {})
         ]),
         SizedBox(height: MediaQuery.of(context).padding.bottom),
