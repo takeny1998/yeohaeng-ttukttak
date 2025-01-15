@@ -50,12 +50,8 @@ public class TravelService {
             throw new EntityNotFoundFailException(City.class);
         }
 
-        final TravelName travelName = new TravelName(inputName, cities);
-
-        final TravelDates travelDates = new TravelDates(startedOn, endedOn);
-
         final Travel travel = new Travel(
-             travelName, travelDates, cities, companionTypes, motivationTypes);
+            inputName, startedOn, endedOn, cities, companionTypes, motivationTypes);
 
         final Travel savedTravel = travelRepository.save(travel);
 

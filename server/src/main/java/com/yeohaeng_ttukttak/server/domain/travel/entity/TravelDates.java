@@ -23,34 +23,40 @@ public class TravelDates {
      *
      * @param startedOn 여행의 시작 날짜
      * @param endedOn 여행의 종료 날짜
-     * @see TravelDates#validateDates
      */
     public TravelDates(LocalDate startedOn, LocalDate endedOn) {
-        validateDates(startedOn, endedOn);
-
-        this.startedOn = startedOn;
-        this.endedOn = endedOn;
+        updateDates(startedOn, endedOn);
     }
 
     /**
-     * startedOn, endedOn을 받아 null이 아닌 값을 변경합니다.
+     * startedOn, endedOn을 받아 여행 기반을 설정합니다.
      *
      * @param startedOn 여행의 시작 날짜
      * @param endedOn 여행의 종료 날짜
-     * @see TravelDates#validateDates
+     * @throws InvalidTravelDateFormatFailException 종료 날짜가 시작 날짜보다 빠른 경우 발생합니다.
+     * @throws TravelPeriodTooLongFailException 두 날짜의 기간이 60일을 초과하는 경우 발생합니다.
      */
     void updateDates(final LocalDate startedOn, final LocalDate endedOn) {
 
-        final LocalDate newStartedOn = Objects.isNull(startedOn)
-                ? this.startedOn : startedOn;
+        if (Objects.nonNull(startedOn)) {
+            this.startedOn = startedOn;
+        }
 
-        final LocalDate newEndedOn = Objects.isNull(endedOn)
-                ? this.endedOn : endedOn;
+        if (Objects.nonNull(endedOn)) {
+            this.endedOn = endedOn;
+        }
 
-        validateDates(newStartedOn, newEndedOn);
+        final boolean isAnyNull = Objects.isNull(startedOn) || Objects.isNull(endedOn);
 
-        this.startedOn = newStartedOn;
-        this.endedOn = newEndedOn;
+        if (isAnyNull || this.startedOn.isAfter(this.endedOn)) {
+            throw new InvalidTravelDateFormatFailException();
+        }
+
+        long days = LocalDateUtil.getBetweenDays(this.startedOn, this.endedOn);
+
+        if (days > 60) {
+            throw new TravelPeriodTooLongFailException();
+        }
 
     }
 
@@ -62,23 +68,5 @@ public class TravelDates {
         return endedOn;
     }
 
-    /**
-     * startedOn, endedOn을 받아 날짜를 검증합니다.
-     *
-     * @param startedOn 여행의 시작 날짜
-     * @param endedOn 여행의 종료 날짜
-     * @throws InvalidTravelDateFormatFailException 종료 날짜가 시작 날짜보다 빠른 경우 발생합니다.
-     * @throws TravelPeriodTooLongFailException 두 날짜의 기간이 60일을 초과하는 경우 발생합니다.
-     */
-    private void validateDates(LocalDate startedOn, LocalDate endedOn) {
-        if (startedOn.isAfter(endedOn)) {
-            throw new InvalidTravelDateFormatFailException();
-        }
 
-        long days = LocalDateUtil.getBetweenDays(startedOn, endedOn);
-
-        if (days > 60) {
-            throw new TravelPeriodTooLongFailException();
-        }
-    }
 }

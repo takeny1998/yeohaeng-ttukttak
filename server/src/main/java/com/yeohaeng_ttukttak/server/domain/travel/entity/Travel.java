@@ -11,7 +11,7 @@ import com.yeohaeng_ttukttak.server.domain.shared.entity.BaseTimeMemberEntity;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.CompanionType;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.MotivationType;
 import com.yeohaeng_ttukttak.server.common.authorization.interfaces.Authorizable;
-import com.yeohaeng_ttukttak.server.domain.travel.exception.AlreadyJoinedTravelFailException;
+import com.yeohaeng_ttukttak.server.domain.travel.exception.*;
 import com.yeohaeng_ttukttak.server.domain.travel_plan.TravelPlan;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -59,37 +59,34 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
     /**
      * 새로운 여행을 생성합니다.
      *
-     * @param dates 여행 날짜(TravelDates) 엔티티
-     * @param cities 여행에서 들릴 도시 목록 {@link Travel#validateCities()}
-     * @param companionTypes 여행의 동반 타입 리스트 {@link Travel#validateCompanions()}
-     * @param motivationTypes 여행 동기 리스트 {@link Travel#validateMotivations()}
+     * @param inputName 여행 이름
+     * @param startedOn 여행 시작 날짜
+     * @param endedOn 여행의 종료 날짜
+     * @param cities 여행에서 들릴 도시 목록
+     * @param companionTypes 여행의 동반 타입 목록
+     * @param motivationTypes 여행의 동기 목록
+     *
+     * @see TravelName#TravelName(String, List)
+     * @see TravelDates#TravelDates(LocalDate, LocalDate)
+     * @see Travel#addCity(City)
+     * @see Travel#updateMotivationsTypes(List) 
+     * @see Travel#updateCompanionTypes(List) 
      */
-    public Travel(TravelName travelName, TravelDates dates, List<City> cities, List<CompanionType> companionTypes, List<MotivationType> motivationTypes) {
+    @Authorization(requires = CrudOperation.CREATE)
+    public Travel(
+            final String inputName,
+            final LocalDate startedOn,
+            final LocalDate endedOn,
+            final List<City> cities,
+            final List<CompanionType> companionTypes,
+            final List<MotivationType> motivationTypes) {
 
-        this.name = travelName;
+        this.name = new TravelName(inputName, cities);
+        this.dates = new TravelDates(startedOn, endedOn);
 
-        this.dates = dates;
-
-        this.cities = cities.stream()
-                .map(city -> new TravelCity(this, city))
-                .toList();
-
-        validateCities();
-
-        this.companions = companionTypes
-                .stream()
-                .map(companionType -> new TravelCompanion(this, companionType))
-                .toList();
-
-        validateCompanions();
-
-        this.motivations = motivationTypes
-                .stream()
-                .map(motivationType -> new TravelMotivation(this, motivationType))
-                .toList();
-
-        validateMotivations();
-
+        cities.forEach(this::addCity);
+        updateCompanionTypes(companionTypes);
+        updateMotivationsTypes(motivationTypes);
     }
 
     public Long id() {
@@ -131,11 +128,11 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
 
 
     /**
-     * @see TravelName#rename(String)
+     * @see TravelName#updateName(String)
      */
     @Authorization(requires = CrudOperation.UPDATE)
     public void rename(final String inputName) {
-        this.name.rename(inputName);
+        this.name.updateName(inputName);
     }
 
 
@@ -147,6 +144,12 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
         this.dates.updateDates(startedOn, endedOn);
     }
 
+    /**
+     * 여행의 동기 목록을 수정합니다.
+     *
+     * @param motivationTypes 새로운 여행 동기 목록
+     * @throws InvalidTravelMotivationSizeFailException if motivationTypes.size() not between 1 and 5
+     */
     @Authorization(requires = CrudOperation.UPDATE)
     public void updateMotivationsTypes(final List<MotivationType> motivationTypes) {
 
@@ -159,9 +162,17 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
 
         motivations.addAll(newMotivations);
 
-        validateMotivations();
+        if (this.motivations.isEmpty() || this.motivations.size() > 5) {
+            throw new InvalidTravelMotivationSizeFailException();
+        }
     }
 
+    /**
+     * 여행의 동반 타입 목록을 수정합니다.
+     *
+     * @param companionTypes 새로운 동반 타입 목록
+     * @throws InvalidTravelCompanionSizeFailException if companionTypes.size() not between 1 and 3
+     */
     @Authorization(requires = CrudOperation.UPDATE)
     public void updateCompanionTypes(final List<CompanionType> companionTypes) {
 
@@ -173,18 +184,18 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
 
         companions.addAll(newCompanions);
 
-        validateCompanions();
+        if (this.companions.isEmpty() || this.companions.size() > 3) {
+            throw new InvalidTravelCompanionSizeFailException();
+        }
     }
 
 
     /**
      * 현재 여행 계획에 지정한 도시를 추가합니다.
-     * @param city 추가하려는 도시 엔티티
-     * @throws AccessDeniedFailException 여행에 참가자 혹은 생성자가 아니면 발생한다.
-     * @throws EntityAlreadyAddedFailException 이미 여행에 추가된 경우 발생한다.
-     * @throws TooManyEntityFailException 10개 초과의 여행 도시를 추가하려는 경우 발생한다.
      *
-     * @see Travel#validateCities()
+     * @param city 추가하려는 도시 엔티티
+     * @throws CityAlreadyAddedFailException 이미 여행에 추가된 경우 발생한다.
+     * @throws InvalidTravelCitySizeFailException 10개 초과의 여행 도시를 추가하려는 경우 발생한다.
      */
     @Authorization(requires = CrudOperation.UPDATE)
     public void addCity(City city) {
@@ -192,12 +203,15 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
                 .anyMatch(tc -> tc.city().equals(city));
 
         if (isAlreadyExist) {
-            throw new EntityAlreadyAddedFailException(City.class);
+            throw new CityAlreadyAddedFailException();
         }
 
         cities().add(new TravelCity(this, city));
 
-        validateCities();
+        if (this.cities.isEmpty() || this.cities.size() > 10) {
+            throw new InvalidTravelCitySizeFailException();
+        }
+
         this.name.regenerateDefaultName(cities());
     }
 
@@ -243,7 +257,6 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
      * @param place 계획에 지정할 장소(Place) 엔티티
      * @param dayOfTravel 계획을 수행할 일자
      * @throws ArgumentNotInRangeFailException 여행 기간에 벗어나는 일자를 지정했을 경우 발생한다.
-     * @throws AccessDeniedFailException 여행에 참여한 사용자가 아닌 경우 발생한다.
      */
     @Authorization(requires = CrudOperation.UPDATE)
     public void addPlan(Place place, Integer dayOfTravel) {
@@ -328,42 +341,4 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
     }
 
 
-    /**
-     * 여행 도시의 제약 조건을 검증합니다.
-     *
-     * @throws ArgumentNotInRangeFailException if cities.size() not between 1 and 10
-     */
-    private void validateCities() {
-
-        if (this.cities.isEmpty() || this.cities.size() > 10) {
-            throw new ArgumentNotInRangeFailException("cityIds", 1, 10);
-        }
-
-    }
-
-    /**
-     * 여행 동기의 제약 사항을 검증합니다.
-     *
-     * @throws ArgumentNotInRangeFailException if motivations.size() not between 1 and 5
-     */
-    private void validateMotivations() {
-
-        if (this.motivations.isEmpty() || this.motivations.size() > 5) {
-            throw new ArgumentNotInRangeFailException("motivationTypes", 1, 5);
-        }
-
-    }
-
-    /**
-     * 여행 동반 타입의 제약 사항을 검증합니다.
-     *
-     * @throws ArgumentNotInRangeFailException if companions.size() not between 1 and 3
-     */
-    private void validateCompanions() {
-
-        if (this.companions.isEmpty() || this.companions.size() > 3) {
-            throw new ArgumentNotInRangeFailException("companionTypes", 1, 3);
-        }
-
-    }
 }

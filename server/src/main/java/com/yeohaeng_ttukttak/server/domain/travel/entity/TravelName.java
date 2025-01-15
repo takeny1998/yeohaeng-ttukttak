@@ -35,6 +35,19 @@ public class TravelName {
 
     private boolean isGenerated;
 
+    /**
+     * 입력받은 <code>inputName</code>의 <code>null</code> 여부에 따라 여행 이름을 생성합니다.
+     *
+     * <pre>{@code
+     *  if (inputName == null) generateDefaultName(cities);
+     *  else validateInputName(inputName);
+     * }</pre>
+     *
+     * @param inputName 사용할 여행 이름
+     * @param cities 지정한 도시 목록
+     *
+     * @see TravelName#updateName(String)
+     */
     public TravelName(final String inputName, final List<City> cities) {
 
         if (Objects.isNull(inputName)) {
@@ -43,11 +56,7 @@ public class TravelName {
             return;
         }
 
-        validateInputName(inputName);
-
-        this.name = inputName;
-        this.isGenerated = false;
-
+        updateName(inputName);
     }
 
     public String name() {
@@ -74,21 +83,14 @@ public class TravelName {
     }
 
 
-    void rename(final String inputName) {
-        validateInputName(inputName);
-
-        this.name = inputName;
-        this.isGenerated = false;
-    }
-
     /**
      * 입력된 이름의 유효성을 검사한 뒤 객체로 만들어 반환한다.
+     *
      * @param inputName 검사할 이름
      * @throws TravelNameTooLongFailException 이름이 100Byte(EUC-KR 기준)가 넘으면 발생한다.
      * @throws InvalidTravelNameCharacterFailException 이름에 한글, 영어, 숫자, 콤마가 아닌 글자가 들어간 경우 발생한다.
      */
-    private void validateInputName(String inputName) {
-
+    void updateName(final String inputName) {
         if (Objects.isNull(inputName)) {
             throw new InvalidTravelNameCharacterFailException();
         }
@@ -106,8 +108,10 @@ public class TravelName {
             throw new InvalidTravelNameCharacterFailException();
         }
 
-    }
+        this.name = inputName;
+        this.isGenerated = false;
 
+    }
 
     /**
      * <pre>
