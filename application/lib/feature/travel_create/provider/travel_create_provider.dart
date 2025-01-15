@@ -1,6 +1,8 @@
 import 'package:application_new/common/http/http_service.dart';
 import 'package:application_new/common/http/http_service_provider.dart';
 import 'package:application_new/common/loading/async_loading_provider.dart';
+import 'package:application_new/core/translation/translation_service.dart';
+import 'package:application_new/domain/geography/geography_provider.dart';
 import 'package:application_new/domain/travel/travel_model.dart';
 import 'package:application_new/feature/authentication/service/auth_service_provider.dart';
 import 'package:application_new/domain/geography/geography_model.dart';
@@ -63,57 +65,13 @@ class TravelCreate extends _$TravelCreate {
   }
 
   void selectCities(List<CityModel> cities) {
-    if (cities.length > 10) return;
+    if (cities.length > 10 || cities.isEmpty) return;
+
     state = state.copyWith(cities: cities);
-  }
-
-  void selectRegion(ProvinceModel? region) {
-    if (state.region == region) return;
-
-    state = state.copyWith(
-      region: region,
-    );
-  }
-
-  void prevPage() {
-    if (state.pageNumber == 0) return;
-    state = state.copyWith(pageNumber: state.pageNumber - 1);
-  }
-
-  void nextPage() {
-    if (state.pageNumber == 2) return;
-    state = state.copyWith(pageNumber: state.pageNumber + 1);
-  }
-
-  Future<TravelModel> submit() async {
-    final TravelCreateState(
-      :name,
-      :startedOn,
-      :endedOn,
-      :companionTypes,
-      :motivationTypes,
-      :cities
-    ) = state;
-
-    final travel = await ref.read(asyncLoadingProvider.notifier).guard(() async {
-      final response = await ref.read(httpServiceProvider).post('/travels',
-          options: ServerRequestOptions(data: {
-            'startedOn': startedOn?.toIso8601String(),
-            'endedOn': endedOn?.toIso8601String(),
-            'name': name,
-            'companionTypes': companionTypes.map((e) => e.name).toList(),
-            'motivationTypes': motivationTypes.map((e) => e.name).toList(),
-            'cityIds': cities.map((city) => city.id).toList(),
-          }));
-
-      return TravelModel.fromJson(response['travel']);
-    });
-    return travel;
   }
 
   void setFieldErrors(Map<String, String> fieldErrors) {
     if (state.fieldErrors == fieldErrors) return;
     state = state.copyWith(fieldErrors: fieldErrors);
   }
-
 }

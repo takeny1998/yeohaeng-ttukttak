@@ -10,7 +10,7 @@ class AsyncLoading extends _$AsyncLoading {
     return const AsyncLoadingSemaphore();
   }
 
-  FutureOr<T> guard<T>(FutureOr<T> Function() callback) async {
+  Future<T> guard<T>(FutureOr<T> Function() callback) async {
     try {
       state = state.copyWith(count: state.count + 1);
       return await callback();

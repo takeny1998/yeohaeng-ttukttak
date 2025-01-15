@@ -11,9 +11,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../provider/travel_create_provider.dart';
 
 class TravelDateForm extends ConsumerWidget {
-  final PageController pageController;
 
-  const TravelDateForm(this.pageController, {super.key});
+  final int pageIndex;
+  final PagedFormBottomControlViewBuilder bottomViewBuilder;
+
+  const TravelDateForm({super.key, required this.pageIndex, required this.bottomViewBuilder});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -64,9 +66,8 @@ class TravelDateForm extends ConsumerWidget {
           ),
         ],
       ),
-      bottomNavigationBar: PagedFormBottomControlView(
-        hasPreviousPage: false,
-          controller: pageController, isInputted: isDateSelected),
+      bottomNavigationBar: bottomViewBuilder(
+        isInputted: isDateSelected, pageIndex: pageIndex),
     );
   }
 

@@ -13,9 +13,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../provider/travel_create_provider.dart';
 
 class TravelCompanionTypeForm extends ConsumerWidget {
-  final PageController pageController;
 
-  const TravelCompanionTypeForm(this.pageController, {super.key});
+  final int pageIndex;
+  final PagedFormBottomControlViewBuilder bottomViewBuilder;
+
+  const TravelCompanionTypeForm({super.key, required this.pageIndex, required this.bottomViewBuilder});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -80,8 +82,8 @@ class TravelCompanionTypeForm extends ConsumerWidget {
                       })),
             ],
           ),
-          bottomNavigationBar: PagedFormBottomControlView(
-              isInputted: companionTypes.isNotEmpty, controller: pageController)),
+    bottomNavigationBar: bottomViewBuilder(
+    isInputted: companionTypes.isNotEmpty, pageIndex: pageIndex))
     );
   }
 }
