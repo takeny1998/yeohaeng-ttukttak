@@ -9,9 +9,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../provider/travel_create_provider.dart';
 
 class TravelCityForm extends ConsumerWidget {
-  final PageController pageController;
 
-  const TravelCityForm(this.pageController, {super.key});
+  final int pageIndex;
+  final PagedFormBottomControlViewBuilder bottomViewBuilder;
+
+  const TravelCityForm({super.key, required this.pageIndex, required this.bottomViewBuilder});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -20,8 +22,8 @@ class TravelCityForm extends ConsumerWidget {
     return Scaffold(
       body: ScaffoldMessenger(
         child: ProvinceCitySelectView(countryId: 0)),
-      bottomNavigationBar: PagedFormBottomControlView(
-          isInputted: cities.isNotEmpty, controller: pageController),
+      bottomNavigationBar: bottomViewBuilder(
+          isInputted: cities.isNotEmpty, pageIndex: pageIndex),
     );
   }
 }

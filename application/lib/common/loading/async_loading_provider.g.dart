@@ -6,7 +6,7 @@ part of 'async_loading_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$asyncLoadingHash() => r'eb8a736df37fffe514d174f6eca9113c3270fde7';
+String _$asyncLoadingHash() => r'7f7ef80409a80d691f3b1b508acf2a68505e5345';
 
 /// See also [AsyncLoading].
 @ProviderFor(AsyncLoading)

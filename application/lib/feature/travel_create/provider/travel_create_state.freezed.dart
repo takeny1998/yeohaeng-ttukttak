@@ -17,14 +17,12 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$TravelCreateState {
   String? get name => throw _privateConstructorUsedError;
-  int get pageNumber => throw _privateConstructorUsedError;
   DateTime? get startedOn => throw _privateConstructorUsedError;
   DateTime? get endedOn => throw _privateConstructorUsedError;
   List<TravelCompanionType> get companionTypes =>
       throw _privateConstructorUsedError;
   List<TravelMotivationType> get motivationTypes =>
       throw _privateConstructorUsedError;
-  ProvinceModel? get region => throw _privateConstructorUsedError;
   List<CityModel> get cities => throw _privateConstructorUsedError;
   Map<String, String> get fieldErrors => throw _privateConstructorUsedError;
 
@@ -43,12 +41,10 @@ abstract class $TravelCreateStateCopyWith<$Res> {
   @useResult
   $Res call(
       {String? name,
-      int pageNumber,
       DateTime? startedOn,
       DateTime? endedOn,
       List<TravelCompanionType> companionTypes,
       List<TravelMotivationType> motivationTypes,
-      ProvinceModel? region,
       List<CityModel> cities,
       Map<String, String> fieldErrors});
 }
@@ -69,12 +65,10 @@ class _$TravelCreateStateCopyWithImpl<$Res, $Val extends TravelCreateState>
   @override
   $Res call({
     Object? name = freezed,
-    Object? pageNumber = null,
     Object? startedOn = freezed,
     Object? endedOn = freezed,
     Object? companionTypes = null,
     Object? motivationTypes = null,
-    Object? region = freezed,
     Object? cities = null,
     Object? fieldErrors = null,
   }) {
@@ -83,10 +77,6 @@ class _$TravelCreateStateCopyWithImpl<$Res, $Val extends TravelCreateState>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String?,
-      pageNumber: null == pageNumber
-          ? _value.pageNumber
-          : pageNumber // ignore: cast_nullable_to_non_nullable
-              as int,
       startedOn: freezed == startedOn
           ? _value.startedOn
           : startedOn // ignore: cast_nullable_to_non_nullable
@@ -103,10 +93,6 @@ class _$TravelCreateStateCopyWithImpl<$Res, $Val extends TravelCreateState>
           ? _value.motivationTypes
           : motivationTypes // ignore: cast_nullable_to_non_nullable
               as List<TravelMotivationType>,
-      region: freezed == region
-          ? _value.region
-          : region // ignore: cast_nullable_to_non_nullable
-              as ProvinceModel?,
       cities: null == cities
           ? _value.cities
           : cities // ignore: cast_nullable_to_non_nullable
@@ -129,12 +115,10 @@ abstract class _$$TravelCreateStateImplCopyWith<$Res>
   @useResult
   $Res call(
       {String? name,
-      int pageNumber,
       DateTime? startedOn,
       DateTime? endedOn,
       List<TravelCompanionType> companionTypes,
       List<TravelMotivationType> motivationTypes,
-      ProvinceModel? region,
       List<CityModel> cities,
       Map<String, String> fieldErrors});
 }
@@ -153,12 +137,10 @@ class __$$TravelCreateStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? name = freezed,
-    Object? pageNumber = null,
     Object? startedOn = freezed,
     Object? endedOn = freezed,
     Object? companionTypes = null,
     Object? motivationTypes = null,
-    Object? region = freezed,
     Object? cities = null,
     Object? fieldErrors = null,
   }) {
@@ -167,10 +149,6 @@ class __$$TravelCreateStateImplCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String?,
-      pageNumber: null == pageNumber
-          ? _value.pageNumber
-          : pageNumber // ignore: cast_nullable_to_non_nullable
-              as int,
       startedOn: freezed == startedOn
           ? _value.startedOn
           : startedOn // ignore: cast_nullable_to_non_nullable
@@ -187,10 +165,6 @@ class __$$TravelCreateStateImplCopyWithImpl<$Res>
           ? _value._motivationTypes
           : motivationTypes // ignore: cast_nullable_to_non_nullable
               as List<TravelMotivationType>,
-      region: freezed == region
-          ? _value.region
-          : region // ignore: cast_nullable_to_non_nullable
-              as ProvinceModel?,
       cities: null == cities
           ? _value._cities
           : cities // ignore: cast_nullable_to_non_nullable
@@ -208,12 +182,10 @@ class __$$TravelCreateStateImplCopyWithImpl<$Res>
 class _$TravelCreateStateImpl implements _TravelCreateState {
   const _$TravelCreateStateImpl(
       {this.name,
-      this.pageNumber = 0,
       this.startedOn,
       this.endedOn,
       final List<TravelCompanionType> companionTypes = const [],
       final List<TravelMotivationType> motivationTypes = const [],
-      this.region,
       final List<CityModel> cities = const [],
       final Map<String, String> fieldErrors = const {}})
       : _companionTypes = companionTypes,
@@ -223,9 +195,6 @@ class _$TravelCreateStateImpl implements _TravelCreateState {
 
   @override
   final String? name;
-  @override
-  @JsonKey()
-  final int pageNumber;
   @override
   final DateTime? startedOn;
   @override
@@ -248,8 +217,6 @@ class _$TravelCreateStateImpl implements _TravelCreateState {
     return EqualUnmodifiableListView(_motivationTypes);
   }
 
-  @override
-  final ProvinceModel? region;
   final List<CityModel> _cities;
   @override
   @JsonKey()
@@ -270,7 +237,7 @@ class _$TravelCreateStateImpl implements _TravelCreateState {
 
   @override
   String toString() {
-    return 'TravelCreateState(name: $name, pageNumber: $pageNumber, startedOn: $startedOn, endedOn: $endedOn, companionTypes: $companionTypes, motivationTypes: $motivationTypes, region: $region, cities: $cities, fieldErrors: $fieldErrors)';
+    return 'TravelCreateState(name: $name, startedOn: $startedOn, endedOn: $endedOn, companionTypes: $companionTypes, motivationTypes: $motivationTypes, cities: $cities, fieldErrors: $fieldErrors)';
   }
 
   @override
@@ -279,8 +246,6 @@ class _$TravelCreateStateImpl implements _TravelCreateState {
         (other.runtimeType == runtimeType &&
             other is _$TravelCreateStateImpl &&
             (identical(other.name, name) || other.name == name) &&
-            (identical(other.pageNumber, pageNumber) ||
-                other.pageNumber == pageNumber) &&
             (identical(other.startedOn, startedOn) ||
                 other.startedOn == startedOn) &&
             (identical(other.endedOn, endedOn) || other.endedOn == endedOn) &&
@@ -288,7 +253,6 @@ class _$TravelCreateStateImpl implements _TravelCreateState {
                 .equals(other._companionTypes, _companionTypes) &&
             const DeepCollectionEquality()
                 .equals(other._motivationTypes, _motivationTypes) &&
-            const DeepCollectionEquality().equals(other.region, region) &&
             const DeepCollectionEquality().equals(other._cities, _cities) &&
             const DeepCollectionEquality()
                 .equals(other._fieldErrors, _fieldErrors));
@@ -298,12 +262,10 @@ class _$TravelCreateStateImpl implements _TravelCreateState {
   int get hashCode => Object.hash(
       runtimeType,
       name,
-      pageNumber,
       startedOn,
       endedOn,
       const DeepCollectionEquality().hash(_companionTypes),
       const DeepCollectionEquality().hash(_motivationTypes),
-      const DeepCollectionEquality().hash(region),
       const DeepCollectionEquality().hash(_cities),
       const DeepCollectionEquality().hash(_fieldErrors));
 
@@ -320,19 +282,15 @@ class _$TravelCreateStateImpl implements _TravelCreateState {
 abstract class _TravelCreateState implements TravelCreateState {
   const factory _TravelCreateState(
       {final String? name,
-      final int pageNumber,
       final DateTime? startedOn,
       final DateTime? endedOn,
       final List<TravelCompanionType> companionTypes,
       final List<TravelMotivationType> motivationTypes,
-      final ProvinceModel? region,
       final List<CityModel> cities,
       final Map<String, String> fieldErrors}) = _$TravelCreateStateImpl;
 
   @override
   String? get name;
-  @override
-  int get pageNumber;
   @override
   DateTime? get startedOn;
   @override
@@ -341,8 +299,6 @@ abstract class _TravelCreateState implements TravelCreateState {
   List<TravelCompanionType> get companionTypes;
   @override
   List<TravelMotivationType> get motivationTypes;
-  @override
-  ProvinceModel? get region;
   @override
   List<CityModel> get cities;
   @override

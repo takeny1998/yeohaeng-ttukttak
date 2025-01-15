@@ -13,31 +13,51 @@ import 'package:go_router/go_router.dart';
 
 import '../provider/travel_create_provider.dart';
 
-class TravelNameForm extends ConsumerWidget {
-  final PageController pageController;
-  final TextEditingController nameController = TextEditingController();
+class TravelNameForm extends ConsumerStatefulWidget {
+  final int pageIndex;
+  final PagedFormBottomControlViewBuilder bottomViewBuilder;
 
-  TravelNameForm(this.pageController, {super.key});
+  const TravelNameForm(
+      {super.key, required this.pageIndex, required this.bottomViewBuilder});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState createState() => _TravelNameFormState();
+}
+
+class _TravelNameFormState extends ConsumerState<TravelNameForm> {
+  final TextEditingController nameController = TextEditingController();
+
+  final FocusNode nameFocusNode = FocusNode();
+
+  @override
+  void initState() {
+    Future.microtask(() {
+      final name = ref.read(travelCreateProvider).name;
+
+      FocusManager.instance.primaryFocus?.requestFocus(nameFocusNode);
+
+      if (name != null) {
+        nameController.text = name;
+      }
+    });
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    nameFocusNode.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final tr = ref.watch(translationServiceProvider);
 
-    final TravelCreateState(
-      :cities,
-      :name,
-      :motivationTypes,
-      :companionTypes,
-      :startedOn,
-      :endedOn,
-      :fieldErrors,
-    ) = ref.watch(travelCreateProvider);
+    final state = ref.watch(travelCreateProvider);
 
-    final bool canSubmit = cities.isNotEmpty &&
-        motivationTypes.isNotEmpty &&
-        companionTypes.isNotEmpty &&
-        startedOn != null &&
-        endedOn != null;
+    final TravelCreateState(:name, :cities, :fieldErrors) = state;
 
     final String provinceNames = cities
         .map((city) => city.parentId)
@@ -47,9 +67,8 @@ class TravelNameForm extends ConsumerWidget {
         .map((province) => province.shortName)
         .join(', ');
 
-    if (name != null) {
-      nameController.text = name;
-    }
+    final String? defaultName =
+        cities.isNotEmpty ? tr.from('Travel of {}', args: [provinceNames]) : null;
 
     return Scaffold(
       appBar: AppBar(shape: const Border()),
@@ -71,14 +90,14 @@ class TravelNameForm extends ConsumerWidget {
             padding: const EdgeInsets.symmetric(horizontal: 24.0),
             child: TextFormField(
               controller: nameController,
+              focusNode: nameFocusNode,
               onTapOutside: (_) =>
                   FocusManager.instance.primaryFocus?.unfocus(),
               onChanged: (name) {
-                if (name.isEmpty) return;
                 ref.read(travelCreateProvider.notifier).enterName(name);
               },
               decoration: InputDecoration(
-                errorText: fieldErrors['name'],
+                  errorText: fieldErrors['name'],
                   suffixIcon: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(999.0),
@@ -95,35 +114,14 @@ class TravelNameForm extends ConsumerWidget {
                         },
                         child: const Icon(Icons.clear)),
                   ),
-                  hintText: tr.from('Travel of {}', args: [provinceNames])),
+                  hintText: defaultName),
             ),
           )
         ],
       ),
-      bottomNavigationBar: PagedFormBottomControlView(
-        isInputted: canSubmit,
-        controller: pageController,
-        hasNextPage: false,
-        onSubmit: () async {
-          final navigator = GoRouter.of(context);
-          final notifier = ref.read(travelCreateProvider.notifier);
-
-          printMessage() => MessageUtil.showSnackBar(
-              context,
-              MessageEvent(
-                  tr.from('The travel has been created successfully.')));
-
-          final travel = await notifier.submit().catchError((error, _) {
-            if (error is ServerFailException) {
-              error.consumeFieldErrors(notifier.setFieldErrors);
-            }
-            throw error;
-          });
-
-          printMessage();
-          navigator.pushReplacement('/travels/${travel.id}');
-        },
-      ),
+      bottomNavigationBar: widget.bottomViewBuilder(
+          isInputted: name?.isNotEmpty ?? defaultName?.isNotEmpty ?? false,
+          pageIndex: widget.pageIndex),
     );
   }
 }

@@ -13,9 +13,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../provider/travel_create_provider.dart';
 
 class TravelMotivationTypeForm extends ConsumerWidget {
-  final PageController pageController;
+  final int pageIndex;
+  final PagedFormBottomControlViewBuilder bottomViewBuilder;
 
-  const TravelMotivationTypeForm(this.pageController, {super.key});
+  const TravelMotivationTypeForm(
+      {super.key, required this.pageIndex, required this.bottomViewBuilder});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -91,9 +93,8 @@ class TravelMotivationTypeForm extends ConsumerWidget {
                       })),
             ],
           ),
-          bottomNavigationBar: PagedFormBottomControlView(
-              isInputted: motivationTypes.isNotEmpty,
-              controller: pageController)),
+          bottomNavigationBar: bottomViewBuilder(
+              isInputted: motivationTypes.isNotEmpty, pageIndex: pageIndex)),
     );
   }
 }

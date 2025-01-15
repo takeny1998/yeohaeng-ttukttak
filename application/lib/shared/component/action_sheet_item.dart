@@ -22,8 +22,8 @@ class ActionSheetItem extends ConsumerWidget {
         style: TextStyle(color: titleColor, fontWeight: FontWeight.w600),
       )),
       onTap: () {
-        onAction();
         Navigator.of(context).pop();
+        onAction();
       },
     );
   }
