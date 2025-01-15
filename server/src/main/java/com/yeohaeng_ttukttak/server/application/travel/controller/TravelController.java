@@ -29,7 +29,6 @@ public class TravelController implements TravelDocument {
      * 새로운 여행 계획을 생성합니다.
      *
      * @param request 생성할 여행 정보
-     * @return 생성된 여행 정보 및 도시 목록
      *
      */
     @PostMapping
@@ -52,7 +51,6 @@ public class TravelController implements TravelDocument {
      * 사용자 여행을 조회합니다.
      *
      * @param travelId 사용자 여행의 식별자
-     * @return 조회된 사용자 여행
      */
     @GetMapping("/{travelId}")
     @Transactional(readOnly = true)
