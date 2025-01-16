@@ -1,6 +1,9 @@
-package com.yeohaeng_ttukttak.server.common.docs;
+package com.yeohaeng_ttukttak.server.doc;
 
 import com.yeohaeng_ttukttak.server.common.authentication.Authentication;
+import com.yeohaeng_ttukttak.server.doc.annotation.ApiExceptionResponse;
+import com.yeohaeng_ttukttak.server.doc.annotation.ApiPostCondition;
+import com.yeohaeng_ttukttak.server.doc.annotation.ApiPostConditions;
 import com.yeohaeng_ttukttak.server.common.dto.ServerErrorResponse;
 import com.yeohaeng_ttukttak.server.common.dto.ServerFailResponse;
 import com.yeohaeng_ttukttak.server.common.exception.exception.error.ErrorException;
@@ -77,7 +80,7 @@ public class DocumentationConfig {
             @Override
             public Operation customize(Operation operation, HandlerMethod handlerMethod) {
 
-                handleSuccessResponse(operation);
+                handleSuccessResponse(operation, handlerMethod);
                 handleExceptionResponse(operation, handlerMethod, currentLocale);
 
                 handleAuthorization(operation, handlerMethod);
@@ -88,18 +91,39 @@ public class DocumentationConfig {
     }
 
 
-    public void handleSuccessResponse(final Operation operation) {
+    public void handleSuccessResponse(final Operation operation, final HandlerMethod handlerMethod) {
 
         final ApiResponses responses = new ApiResponses();
 
         final ApiResponse successResponse = operation.getResponses().get("200");
 
+        successResponse.setDescription(resolveDescription(handlerMethod));
 
         responses.addApiResponse("success", successResponse);
 
-
-
         operation.setResponses(responses);
+    }
+
+    private String resolveDescription(HandlerMethod handlerMethod) {
+        final StringBuilder descriptionBuilder = new StringBuilder();
+
+        final ApiPostConditions postConditions
+                = handlerMethod.getMethodAnnotation(ApiPostConditions.class);
+
+        if (Objects.nonNull(postConditions)) {
+            for (ApiPostCondition apiPostCondition : postConditions.value()) {
+                descriptionBuilder.append(apiPostCondition.value()).append("\n");
+            }
+        }
+
+        final ApiPostCondition postCondition
+                = handlerMethod.getMethodAnnotation(ApiPostCondition.class);
+
+        if (Objects.nonNull(postCondition)) {
+            descriptionBuilder.append(postCondition.value()).append("\n");
+        }
+
+        return descriptionBuilder.toString();
     }
 
 

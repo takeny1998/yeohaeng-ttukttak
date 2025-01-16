@@ -1,7 +1,7 @@
 package com.yeohaeng_ttukttak.server.application.travel.controller;
 
 import com.yeohaeng_ttukttak.server.application.travel.controller.dto.*;
-import com.yeohaeng_ttukttak.server.application.travel.doc.TravelDocument;
+import com.yeohaeng_ttukttak.server.doc.annotation.TravelDocument;
 import com.yeohaeng_ttukttak.server.application.travel.service.TravelService;
 import com.yeohaeng_ttukttak.server.application.travel_city.TravelCityService;
 import com.yeohaeng_ttukttak.server.common.authentication.Authentication;
