@@ -92,7 +92,8 @@ public class TravelService {
             final LocalDate startedOn,
             final LocalDate endedOn,
             final List<MotivationType> motivationTypes,
-            final List<CompanionType> companionTypes
+            final List<CompanionType> companionTypes,
+            final List<Long> cityIds
     ) {
 
         final Travel travel = travelRepository.findById(travelId)
@@ -106,12 +107,23 @@ public class TravelService {
             travel.updateDates(startedOn, endedOn);
         }
 
-        if (Objects.nonNull(companionTypes) && !companionTypes.isEmpty()) {
+        if (Objects.nonNull(companionTypes)) {
             travel.updateCompanionTypes(companionTypes);
         }
 
-        if (Objects.nonNull(motivationTypes) && !motivationTypes.isEmpty()) {
+        if (Objects.nonNull(motivationTypes)) {
             travel.updateMotivationsTypes(motivationTypes);
+        }
+
+        if (Objects.nonNull(cityIds)) {
+
+            final List<City> cities = geographyRepository.findCitiesByIds(cityIds);
+
+            if (!Objects.equals(cities.size(), cityIds.size())) {
+                throw new EntityNotFoundFailException(City.class);
+            }
+
+            travel.updateCities(cities);
         }
 
     }

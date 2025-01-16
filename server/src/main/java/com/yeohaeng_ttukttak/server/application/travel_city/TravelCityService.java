@@ -20,18 +20,6 @@ public class TravelCityService {
     private final TravelRepository travelRepository;
     private final GeographyRepository geographyRepository;
 
-    @Transactional
-    public void addCity(Long travelId, Long cityId) {
-
-        final Travel travel = travelRepository.findById(travelId)
-                .orElseThrow(() -> new EntityNotFoundFailException(Travel.class));
-
-        final City city = geographyRepository.findCityById(cityId)
-                .orElseThrow(() -> new EntityNotFoundFailException(City.class));
-
-        travel.addCity(city);
-    }
-
     @Transactional(readOnly = true)
     public List<GeographyDto> findCities(Long travelId) {
 

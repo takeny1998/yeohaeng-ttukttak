@@ -6,21 +6,19 @@ import com.yeohaeng_ttukttak.server.application.travel.service.TravelService;
 import com.yeohaeng_ttukttak.server.application.travel_city.TravelCityService;
 import com.yeohaeng_ttukttak.server.common.authentication.Authentication;
 import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
+import com.yeohaeng_ttukttak.server.common.http.JsonRequestMapping;
 import com.yeohaeng_ttukttak.server.domain.geography.dto.GeographyDto;
 import com.yeohaeng_ttukttak.server.application.travel.controller.dto.TravelResponse;
 import com.yeohaeng_ttukttak.server.domain.travel.dto.TravelDto;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.eclipse.jdt.internal.compiler.parser.JavadocParser;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v2/travels")
+@JsonRequestMapping("/api/v2/travels")
 @RequiredArgsConstructor
 public class TravelController implements TravelDocument {
 
@@ -31,13 +29,12 @@ public class TravelController implements TravelDocument {
      * 새로운 여행 계획을 생성합니다.
      *
      * @param request 생성할 여행 정보
-     * @return 생성된 여행 정보 및 도시 목록
      *
      */
     @PostMapping
     @Authentication
     public ServerResponse<TravelResponse> create(
-            @RequestBody @Valid CreateTravelRequest request) {
+            @RequestBody @Valid TravelRequest request) {
 
         final Long createdId = travelService.create(
                 request.name(),
@@ -54,7 +51,6 @@ public class TravelController implements TravelDocument {
      * 사용자 여행을 조회합니다.
      *
      * @param travelId 사용자 여행의 식별자
-     * @return 조회된 사용자 여행
      */
     @GetMapping("/{travelId}")
     @Transactional(readOnly = true)
@@ -64,10 +60,11 @@ public class TravelController implements TravelDocument {
 
     }
 
-    @PatchMapping("/{travelId}")
+    @PatchMapping(value = "/{travelId}")
     @Authentication
     public ServerResponse<TravelResponse> update(
-            @PathVariable Long travelId, @RequestBody UpdateTravelRequest request) {
+            @PathVariable Long travelId,
+            @RequestBody TravelRequest request) {
 
         travelService.update(
                 travelId,
@@ -75,7 +72,8 @@ public class TravelController implements TravelDocument {
                 request.startedOn(),
                 request.endedOn(),
                 request.motivationTypes(),
-                request.companionTypes());
+                request.companionTypes(),
+                request.cityIds());
 
         return toTravelResponse(travelId);
     }

@@ -5,6 +5,7 @@ import com.yeohaeng_ttukttak.server.common.dto.InfiniteScrollCommand;
 import com.yeohaeng_ttukttak.server.common.dto.InfiniteScrollResult;
 import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundFailException;
+import com.yeohaeng_ttukttak.server.common.http.JsonRequestMapping;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.City;
 import com.yeohaeng_ttukttak.server.domain.geography.repository.GeographyRepository;
 import com.yeohaeng_ttukttak.server.domain.place.dto.PlaceDto;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/v2/travels/{travelId}/cities/{cityId}/attractions")
+@JsonRequestMapping("/api/v2/travels/{travelId}/cities/{cityId}/attractions")
 @RequiredArgsConstructor
 public class TravelCityAttractionController {
 

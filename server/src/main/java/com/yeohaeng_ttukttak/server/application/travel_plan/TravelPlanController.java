@@ -5,6 +5,7 @@ import com.yeohaeng_ttukttak.server.application.travel_plan.dto.TravelPlanListRe
 import com.yeohaeng_ttukttak.server.application.travel_plan.dto.MoveTravelPlanRequest;
 import com.yeohaeng_ttukttak.server.common.authentication.Authentication;
 import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
+import com.yeohaeng_ttukttak.server.common.http.JsonRequestMapping;
 import com.yeohaeng_ttukttak.server.domain.travel_plan.TravelPlanDto;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v2/travels/{travelId}/plans")
+@JsonRequestMapping("/api/v2/travels/{travelId}/plans")
 @RequiredArgsConstructor
 @Tag(name = "여행 일정(Travel Plan)", description = "여행 일정과 관련된 동작을 수행하는 컬렉션 입니다.")
 public class TravelPlanController {

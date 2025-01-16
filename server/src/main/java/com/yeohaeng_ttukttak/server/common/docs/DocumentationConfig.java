@@ -1,7 +1,5 @@
 package com.yeohaeng_ttukttak.server.common.docs;
 
-import com.github.therapi.runtimejavadoc.*;
-import com.yeohaeng_ttukttak.server.application.travel.controller.TravelController;
 import com.yeohaeng_ttukttak.server.common.authentication.Authentication;
 import com.yeohaeng_ttukttak.server.common.dto.ServerErrorResponse;
 import com.yeohaeng_ttukttak.server.common.dto.ServerFailResponse;
@@ -18,7 +16,6 @@ import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.examples.Example;
 import io.swagger.v3.oas.models.media.Content;
 import io.swagger.v3.oas.models.media.MediaType;
-import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
@@ -28,16 +25,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springdoc.core.customizers.OperationCustomizer;
-import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.HandlerMethod;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Objects;
 
 @OpenAPIDefinition(info = @Info(
@@ -84,7 +77,8 @@ public class DocumentationConfig {
             @Override
             public Operation customize(Operation operation, HandlerMethod handlerMethod) {
 
-                handleResponse(operation, handlerMethod, currentLocale);
+                handleSuccessResponse(operation);
+                handleExceptionResponse(operation, handlerMethod, currentLocale);
 
                 handleAuthorization(operation, handlerMethod);
 
@@ -93,8 +87,23 @@ public class DocumentationConfig {
         };
     }
 
-    @SneakyThrows
-    public void handleResponse(final Operation operation, final HandlerMethod handlerMethod, final Locale locale) {
+
+    public void handleSuccessResponse(final Operation operation) {
+
+        final ApiResponses responses = new ApiResponses();
+
+        final ApiResponse successResponse = operation.getResponses().get("200");
+
+
+        responses.addApiResponse("success", successResponse);
+
+
+
+        operation.setResponses(responses);
+    }
+
+
+    public void handleExceptionResponse(final Operation operation, final HandlerMethod handlerMethod, final Locale locale) {
 
         final ApiResponses responses = operation.getResponses();
         final ApiResponse apiResponse = new ApiResponse();
@@ -106,20 +115,38 @@ public class DocumentationConfig {
 
         final Class<?>[] exceptionClasses = apiExceptionResponse.value();
 
-        final MediaType mediaType = new MediaType();
+        final MediaType errorExamples = new MediaType();
+        final MediaType failExamples = new MediaType();
 
         for (Class<?> exceptionClass : exceptionClasses) {
             final Example example = resolveExample(exceptionClass, locale);
 
             if (Objects.isNull(example)) continue;
 
-            mediaType.addExamples(exceptionClass.getSimpleName(), example);
+            if (example.getValue() instanceof ServerFailResponse) {
+                failExamples.addExamples(exceptionClass.getSimpleName(), example);
+            }
+
+            if (example.getValue() instanceof ServerErrorResponse) {
+                errorExamples.addExamples(exceptionClass.getSimpleName(), example);
+            }
+
         }
 
-        operation.setResponses(responses.addApiResponse("200",
-                apiResponse.content(new Content().addMediaType(
-                        "application/json", mediaType)
-                )));
+        if (failExamples.getExamples() != null) {
+            responses.addApiResponse("fail",
+                    apiResponse.content(new Content()
+                            .addMediaType("application/json", failExamples)));
+        }
+
+        if (errorExamples.getExamples() != null) {
+            responses.addApiResponse("error",
+                    apiResponse.content(new Content()
+                            .addMediaType("application/json", errorExamples)));
+
+        }
+
+        operation.setResponses(responses);
     }
 
     @SneakyThrows

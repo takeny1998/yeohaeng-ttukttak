@@ -2,6 +2,7 @@ package com.yeohaeng_ttukttak.server.application.travel.controller;
 
 import com.yeohaeng_ttukttak.server.application.travel.controller.dto.RecommendTravelResponse;
 import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
+import com.yeohaeng_ttukttak.server.common.http.JsonRequestMapping;
 import com.yeohaeng_ttukttak.server.common.util.dto.PageCommand;
 import com.yeohaeng_ttukttak.server.common.util.dto.PageResult;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.CompanionType;
@@ -20,7 +21,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/v2/travels/recommendations")
+@JsonRequestMapping("/api/v2/travels/recommendations")
 @RequiredArgsConstructor
 public class TravelRecommendationsController {
 

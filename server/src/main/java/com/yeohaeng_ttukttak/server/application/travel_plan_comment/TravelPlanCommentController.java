@@ -4,6 +4,7 @@ import com.yeohaeng_ttukttak.server.application.travel_plan_comment.dto.CommentL
 import com.yeohaeng_ttukttak.server.application.travel_plan_comment.dto.CommentContentRequest;
 import com.yeohaeng_ttukttak.server.common.authentication.Authentication;
 import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
+import com.yeohaeng_ttukttak.server.common.http.JsonRequestMapping;
 import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthenticationContext;
 import com.yeohaeng_ttukttak.server.domain.comment.CommentDto;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v2/travels/{travelId}/plans/{planId}/comments")
+@JsonRequestMapping("/api/v2/travels/{travelId}/plans/{planId}/comments")
 @RequiredArgsConstructor
 @Tag(name = "댓글 (Comment)", description = "댓글과 관련된 동작을 수행하는 컬렉션 입니다.")
 public class TravelPlanCommentController {
