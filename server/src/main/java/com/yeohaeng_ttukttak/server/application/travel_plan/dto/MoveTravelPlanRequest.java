@@ -1,7 +1,5 @@
 package com.yeohaeng_ttukttak.server.application.travel_plan.dto;
 
-import jakarta.validation.constraints.NotNull;
-
 import java.time.LocalDate;
 
 /**
@@ -14,6 +12,6 @@ import java.time.LocalDate;
  *                    </ul>
  */
 public record MoveTravelPlanRequest(
-        @NotNull Integer orderOfPlan,
-        @NotNull LocalDate willVisitOn
+        Integer orderOfPlan,
+        LocalDate willVisitOn
 ) {}

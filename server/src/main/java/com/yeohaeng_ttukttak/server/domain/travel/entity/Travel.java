@@ -290,25 +290,34 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
      * @throws EntityNotFoundFailException 주어진 ID에 해당하는 여행 계획이 존재하지 않는 경우 발생합니다.
      */
     @Authorization(requires = CrudOperation.UPDATE)
-    public void movePlan(TravelPlan travelPlan, Integer newOrderOfPlan, LocalDate willVisitOn) {
+    public void movePlan(final TravelPlan travelPlan,
+                         final Integer newOrderOfPlan,
+                         final LocalDate willVisitOn) {
 
-        // 지정된 방문일이 여행 기간 내에 있는지 검증
-        if (!LocalDateUtil.isInRange(willVisitOn, dates.startedOn(), dates.endedOn())) {
-            throw new ArgumentNotInRangeFailException("willVisitOn", dates.startedOn(), dates.endedOn());
+        int dayOfTravel = travelPlan.dayOfTravel();
+
+        final LocalDate startDate = dates.startedOn();
+        final LocalDate endDate = dates.endedOn();
+
+        if (Objects.nonNull(willVisitOn)) {
+
+            if (!LocalDateUtil.isInRange(willVisitOn, startDate, endDate)) {
+                throw new ArgumentNotInRangeFailException("willVisitOn", startDate, endDate);
+            }
+
+            dayOfTravel = (int) LocalDateUtil
+                    .getBetweenDays(startDate, willVisitOn) - 1;
         }
-
-        // 방문일에 대한 여행 일수 계산
-        final int newDayOfTravel =
-                (int) LocalDateUtil.getBetweenDays(dates.startedOn(), willVisitOn) - 1;
 
         for (TravelPlan plan : plans) {
             if (Objects.equals(plan.id(), travelPlan.id())) {
-                travelPlan.setOrderOfPlan(newOrderOfPlan)
-                        .setDayOfTravel(newDayOfTravel);
+                travelPlan
+                        .setOrderOfPlan(newOrderOfPlan)
+                        .setDayOfTravel(dayOfTravel);
                 continue;
             }
 
-            final boolean isInSameDay = Objects.equals(plan.dayOfTravel(), newDayOfTravel);
+            final boolean isInSameDay = Objects.equals(plan.dayOfTravel(), dayOfTravel);
 
             final Integer orderOfPlan = plan.orderOfPlan();
 

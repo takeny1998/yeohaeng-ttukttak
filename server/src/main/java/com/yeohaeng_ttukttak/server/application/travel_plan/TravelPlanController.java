@@ -78,7 +78,7 @@ public class TravelPlanController {
     public ServerResponse<TravelPlanListResponse> move(
             @PathVariable Long travelId,
             @PathVariable Long planId,
-            @Valid @RequestBody MoveTravelPlanRequest request) {
+            @RequestBody MoveTravelPlanRequest request) {
 
         travelPlanService.move(travelId, planId, request.orderOfPlan(), request.willVisitOn());
 
