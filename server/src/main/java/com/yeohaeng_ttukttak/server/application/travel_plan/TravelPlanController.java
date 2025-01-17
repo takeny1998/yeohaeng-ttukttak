@@ -6,9 +6,8 @@ import com.yeohaeng_ttukttak.server.application.travel_plan.dto.MoveTravelPlanRe
 import com.yeohaeng_ttukttak.server.common.authentication.Authentication;
 import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
 import com.yeohaeng_ttukttak.server.common.http.JsonRequestMapping;
+import com.yeohaeng_ttukttak.server.doc.TravelPlanDocument;
 import com.yeohaeng_ttukttak.server.domain.travel_plan.TravelPlanDto;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

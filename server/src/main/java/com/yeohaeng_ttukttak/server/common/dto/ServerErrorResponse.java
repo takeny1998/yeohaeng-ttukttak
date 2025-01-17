@@ -1,5 +1,6 @@
 package com.yeohaeng_ttukttak.server.common.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -9,7 +10,8 @@ import lombok.ToString;
 @EqualsAndHashCode
 public final class ServerErrorResponse {
 
-    private final String status = "error";
+    @Schema(defaultValue = "error")
+    private final ServerResponseStatus status = ServerResponseStatus.error;
 
     private final String code;
 

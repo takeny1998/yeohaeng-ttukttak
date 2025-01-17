@@ -1,6 +1,7 @@
 package com.yeohaeng_ttukttak.server.common.dto;
 
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.FailException;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,8 @@ import java.util.Objects;
 @EqualsAndHashCode
 public final class ServerFailResponse {
 
-    private final String status = "fail";
+    @Schema(defaultValue = "fail")
+    private final ServerResponseStatus status = ServerResponseStatus.fail;
 
     private final ServerFailResponseData data;
 
