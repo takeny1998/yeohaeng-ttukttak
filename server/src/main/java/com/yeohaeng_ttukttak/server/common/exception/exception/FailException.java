@@ -7,7 +7,7 @@ import java.util.Locale;
 import java.util.Map;
 
 @Configurable(autowire = Autowire.BY_TYPE, preConstruction = true)
-public class FailException extends BaseException implements DomainException {
+public class FailException extends BaseException {
 
     private static final String code = "FAIL_EXCEPTION";
 

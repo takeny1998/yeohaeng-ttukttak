@@ -28,10 +28,10 @@ public class ExceptionAdvice {
 
     @ExceptionHandler(FailException.class)
     public ServerFailResponse handleFailException(
-            FailException exception, Locale locale, HttpServletRequest request) {
+            FailException exception, HttpServletRequest request) {
 
         logError(exception, request, 0);
-        return new ServerFailResponse(locale, exception);
+        return new ServerFailResponse(FailExceptionDto.of(exception));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -39,13 +39,12 @@ public class ExceptionAdvice {
             MethodArgumentNotValidException exception, Locale locale, HttpServletRequest request) {
         logError(exception, request, 0);
 
-        final List<Map<String, String>> data = exception
+        final List<FailExceptionDto> data = exception
                 .getFieldErrors()
                 .stream()
-                .map(fieldError -> Map.of(
-                        "code", "METHOD_ARGUMENT_NOT_VALID_FAIL",
-                        "field", fieldError.getField(),
-                        "message", messageSource.getMessage(fieldError, locale)))
+                .map(fieldError -> new FailExceptionDto(
+                        "INVALID_ARGUMENT_FAIL", fieldError.getField(),
+                        messageSource.getMessage(fieldError, locale)))
                 .toList();
 
         return new ServerFailResponse(data);

@@ -27,7 +27,7 @@ public class ArgumentNotInRangeFailException extends InvalidArgumentFailExceptio
 
     @Override
     protected Object[] getArguments() {
-        return new Object[]{ super.name, this.start, this.end};
+        return new Object[]{ super.field, this.start, this.end};
     }
 
 }

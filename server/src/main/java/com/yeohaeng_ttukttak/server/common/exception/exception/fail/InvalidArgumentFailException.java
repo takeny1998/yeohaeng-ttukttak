@@ -1,7 +1,9 @@
 package com.yeohaeng_ttukttak.server.common.exception.exception.fail;
 
 import com.yeohaeng_ttukttak.server.common.exception.exception.FailException;
+import lombok.Getter;
 
+@Getter
 public class InvalidArgumentFailException extends FailException {
 
     private static final String code = "INVALID_ARGUMENT_FAIL";
@@ -9,10 +11,10 @@ public class InvalidArgumentFailException extends FailException {
     private static final String baseMessage =
             "An invalid argument '{0}' has been provided. Please check the input values and try again.";
 
-    protected final String name;
+    protected final String field;
 
-    public InvalidArgumentFailException(String name) {
-        this.name = name;
+    public InvalidArgumentFailException(String field) {
+        this.field = field;
     }
 
     @Override
@@ -27,7 +29,7 @@ public class InvalidArgumentFailException extends FailException {
 
     @Override
     protected Object[] getArguments() {
-        return new Object[]{ name };
+        return new Object[]{field};
     }
 
 }
