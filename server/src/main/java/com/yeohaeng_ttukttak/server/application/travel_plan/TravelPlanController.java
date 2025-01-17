@@ -34,7 +34,7 @@ public class TravelPlanController {
      */
     @PostMapping
     @Authentication
-    public ServerResponse<TravelPlanListResponse> create(
+    public TravelPlanListResponse create(
             @PathVariable Long travelId,
             @RequestBody CreateTravelPlanRequest request) {
 
@@ -51,7 +51,7 @@ public class TravelPlanController {
      * @return 조회된 사용자 여행의 일정 목록
      */
     @GetMapping
-    public ServerResponse<TravelPlanListResponse> findAll(
+    public TravelPlanListResponse findAll(
             @PathVariable Long travelId) {
         return responsePlanList(travelId);
     }
@@ -74,7 +74,7 @@ public class TravelPlanController {
      */
     @PatchMapping("/{planId}")
     @Authentication
-    public ServerResponse<TravelPlanListResponse> move(
+    public TravelPlanListResponse move(
             @PathVariable Long travelId,
             @PathVariable Long planId,
             @RequestBody MoveTravelPlanRequest request) {
@@ -97,7 +97,7 @@ public class TravelPlanController {
      */
     @DeleteMapping("/{planId}")
     @Authentication
-    public ServerResponse<TravelPlanListResponse> delete(
+    public TravelPlanListResponse delete(
             @PathVariable Long travelId, @PathVariable Long planId) {
 
         travelPlanService.delete(travelId, planId);
@@ -105,9 +105,9 @@ public class TravelPlanController {
         return responsePlanList(travelId);
     }
 
-    private ServerResponse<TravelPlanListResponse> responsePlanList(Long travelId) {
+    private TravelPlanListResponse responsePlanList(Long travelId) {
         final List<TravelPlanDto> dtoList = travelPlanService.findAll(travelId);
-        return new ServerResponse<>(new TravelPlanListResponse(dtoList));
+        return new TravelPlanListResponse(dtoList);
     }
 
 }
