@@ -16,8 +16,7 @@ import java.util.List;
 @RestController
 @JsonRequestMapping("/api/v2/travels/{travelId}/plans")
 @RequiredArgsConstructor
-@Tag(name = "여행 일정(Travel Plan)", description = "여행 일정과 관련된 동작을 수행하는 컬렉션 입니다.")
-public class TravelPlanController {
+public class TravelPlanController implements TravelPlanDocument {
 
     private final TravelPlanService travelPlanService;
 
