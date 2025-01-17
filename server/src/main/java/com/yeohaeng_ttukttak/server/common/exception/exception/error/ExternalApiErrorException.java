@@ -1,11 +1,13 @@
 package com.yeohaeng_ttukttak.server.common.exception.exception.error;
 
+import com.yeohaeng_ttukttak.server.common.exception.exception.ErrorException;
+
 public final class ExternalApiErrorException extends ErrorException {
 
-    static final String code = "EXTERNAL_API_ERROR";
+    public static final String CODE = "EXTERNAL_API_ERROR";
 
     public ExternalApiErrorException(Throwable cause) {
-        super(code, cause);
+        super(cause);
     }
 
     public ExternalApiErrorException() {

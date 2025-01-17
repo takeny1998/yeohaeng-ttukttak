@@ -1,7 +1,6 @@
 package com.yeohaeng_ttukttak.server.application.travel.service;
 
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundFailException;
-import com.yeohaeng_ttukttak.server.common.exception.exception.fail.InvalidArgumentFailException;
 import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
 import com.yeohaeng_ttukttak.server.domain.member.service.MemberService;
 import com.yeohaeng_ttukttak.server.domain.travel.dto.TravelParticipantDto;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -73,10 +71,6 @@ public class TravelParticipantService {
 
         final Member kicker = memberService.find(kickerId);
         final Travel travel = participant.travel();
-
-        if (!Objects.equals(travel.id(), travelId)) {
-            throw new InvalidArgumentFailException("participantId");
-        }
 
         travel.leaveParticipant(kicker, participant);
     }

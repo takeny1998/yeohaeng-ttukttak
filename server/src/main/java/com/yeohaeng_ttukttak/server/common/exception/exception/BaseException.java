@@ -1,19 +1,50 @@
 package com.yeohaeng_ttukttak.server.common.exception.exception;
 
+import com.yeohaeng_ttukttak.server.common.locale.RequestLocaleService;
+import org.springframework.beans.factory.annotation.Autowire;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.context.MessageSource;
+
+import java.text.MessageFormat;
+import java.util.Locale;
+
+@Configurable(autowire = Autowire.BY_TYPE)
 public abstract class BaseException extends RuntimeException {
 
-    private final String code;
+    @Autowired
+    protected RequestLocaleService requestLocaleService;
 
-    protected BaseException(String code, Throwable cause) {
+    @Autowired
+    protected MessageSource messageSource;
+
+    private static final String code = "BASE_EXCEPTION";
+
+    protected BaseException(Throwable cause) {
         super(cause);
-        this.code = code;
     }
 
-    protected BaseException(String code) {
-        this(code,  null);
-    }
-
-    public String code() {
+    public String getCode() {
         return code;
     }
+
+    public String getMessage() {
+        return getMessage(requestLocaleService.getCurrentLocale());
+    }
+
+    public String getMessage(final Locale locale) {
+
+        final boolean isEnglish = locale.getLanguage().equalsIgnoreCase("en");
+
+        final String localizedMessage = isEnglish
+                ? getBaseMessage()
+                : messageSource.getMessage(getBaseMessage(), null, locale);
+
+        return MessageFormat.format(localizedMessage, getArguments());
+    }
+
+    protected abstract String getBaseMessage();
+
+    protected abstract Object[] getArguments();
+
 }

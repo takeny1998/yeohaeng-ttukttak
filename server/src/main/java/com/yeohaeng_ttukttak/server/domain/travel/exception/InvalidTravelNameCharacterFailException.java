@@ -1,10 +1,9 @@
 package com.yeohaeng_ttukttak.server.domain.travel.exception;
 
-import com.yeohaeng_ttukttak.server.common.exception.exception.fail.FailException;
+import com.yeohaeng_ttukttak.server.common.exception.exception.FailException;
 
 public final class InvalidTravelNameCharacterFailException extends FailException {
 
-    public InvalidTravelNameCharacterFailException() {
-        super("INVALID_TRAVEL_NAME_CHARACTER_FAIL", "name");
-    }
+    private static final String code = "INVALID_TRAVEL_NAME_CHARACTER_FAIL";;
+
 }

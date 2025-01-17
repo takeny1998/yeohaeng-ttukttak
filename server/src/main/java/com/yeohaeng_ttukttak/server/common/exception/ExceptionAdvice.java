@@ -3,10 +3,9 @@ package com.yeohaeng_ttukttak.server.common.exception;
 import com.yeohaeng_ttukttak.server.common.dto.ServerErrorResponse;
 import com.yeohaeng_ttukttak.server.common.dto.ServerFailResponse;
 import com.yeohaeng_ttukttak.server.common.exception.exception.BaseException;
-import com.yeohaeng_ttukttak.server.common.exception.exception.error.ErrorException;
+import com.yeohaeng_ttukttak.server.common.exception.exception.ErrorException;
 import com.yeohaeng_ttukttak.server.common.exception.exception.error.InternalServerErrorException;
-import com.yeohaeng_ttukttak.server.common.exception.exception.fail.FailException;
-import com.yeohaeng_ttukttak.server.common.exception.interfaces.ArgumentException;
+import com.yeohaeng_ttukttak.server.common.exception.exception.FailException;
 import com.yeohaeng_ttukttak.server.common.locale.LocalizedMessageService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -32,9 +31,7 @@ public class ExceptionAdvice {
             FailException exception, Locale locale, HttpServletRequest request) {
 
         logError(exception, request, 0);
-
-        return new ServerFailResponse(List.of(exception.toErrorObject(locale)));
-
+        return new ServerFailResponse(locale, exception);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -61,7 +58,7 @@ public class ExceptionAdvice {
         logError(exception, request, 0);
         final String message = localizedMessageService.fromException(locale, exception);
 
-        return new ServerErrorResponse(exception.code(), message);
+        return new ServerErrorResponse(exception.getCode(), message);
     }
 
     @ExceptionHandler(Exception.class)
@@ -75,27 +72,31 @@ public class ExceptionAdvice {
 
         final String message = localizedMessageService.fromException(locale, errorException);
 
-        return new ServerErrorResponse(errorException.code(), message);
+        return new ServerErrorResponse(errorException.getCode(), message);
     }
 
-    private void logError(Throwable exception, HttpServletRequest request, int depth) {
+    private void logError(Throwable throwable, HttpServletRequest request, int depth) {
 
         final String uuid = UUID.randomUUID().toString().substring(0, 7);
 
-        String padding = " ".repeat(depth);
+        final String message = throwable instanceof BaseException
+                ? ((BaseException) throwable).getMessage(Locale.getDefault())
+                : throwable.getMessage();
+
+        final String padding = " ".repeat(depth);
 
         if (depth == 0) {
             log.error("[{}] -->> {} {}", uuid, request.getMethod(), request.getRequestURI());
-
         }
 
-        log.error("[{}] {}<<-- Caused By: {}", uuid, padding, exception.getClass().getName());
-        log.error("[{}] {}<<-- Message: {}", uuid, padding, exception.getMessage());
+        log.error("[{}] {}<<-- Caused By: {}", uuid, padding, throwable.getClass().getName());
 
-        logStackTrace(exception, uuid, depth);
+        log.error("[{}] {}<<-- Message: {}", uuid, padding, message);
 
-        if (Objects.nonNull(exception.getCause())) {
-            logError(exception.getCause(), request, depth + 2);
+        logStackTrace(throwable, uuid, depth);
+
+        if (Objects.nonNull(throwable.getCause())) {
+            logError(throwable.getCause(), request, depth + 2);
         }
 
     }

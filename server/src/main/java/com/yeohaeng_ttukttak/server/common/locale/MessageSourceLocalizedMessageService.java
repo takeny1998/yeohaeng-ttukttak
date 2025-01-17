@@ -21,7 +21,7 @@ public class MessageSourceLocalizedMessageService implements LocalizedMessageSer
 
         final Object[] arguments = resolveArguments(exception, locale);
 
-        return messageSource.getMessage(exception.code(), arguments, locale);
+        return messageSource.getMessage(exception.getCode(), arguments, locale);
     }
 
     private Object[] resolveArguments(BaseException exception, Locale locale) {

@@ -1,11 +1,9 @@
 package com.yeohaeng_ttukttak.server.domain.travel.exception;
 
-import com.yeohaeng_ttukttak.server.common.exception.exception.fail.FailException;
+import com.yeohaeng_ttukttak.server.common.exception.exception.FailException;
 
 public final class CannotInviteYourselfFailException extends FailException {
 
-    public CannotInviteYourselfFailException(String field) {
-        super("CANNOT_INVITE_YOURSELF_FAIL", field);
-    }
+    private static final String code = "CANNOT_INVITE_YOURSELF_FAIL";
 
 }

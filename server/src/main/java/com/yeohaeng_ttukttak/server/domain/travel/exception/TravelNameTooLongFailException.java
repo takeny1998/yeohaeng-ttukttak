@@ -1,10 +1,9 @@
 package com.yeohaeng_ttukttak.server.domain.travel.exception;
 
-import com.yeohaeng_ttukttak.server.common.exception.exception.fail.FailException;
+import com.yeohaeng_ttukttak.server.common.exception.exception.FailException;
 
 public final class TravelNameTooLongFailException extends FailException {
 
-    public TravelNameTooLongFailException() {
-        super("TRAVEL_NAME_TOO_LONG_FAIL", "name");
-    }
+    private static final String code = "TRAVEL_NAME_TOO_LONG_FAIL";
+
 }

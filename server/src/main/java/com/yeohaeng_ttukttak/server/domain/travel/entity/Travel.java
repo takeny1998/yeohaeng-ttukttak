@@ -225,7 +225,7 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
         final boolean isOwnerInvited = Objects.equals(invitee.uuid(), createdBy().uuid());
 
         if (isInviteeParticipated || isOwnerInvited) {
-            throw new AlreadyJoinedTravelFailException("inviteeId");
+            throw new AlreadyJoinedTravelFailException();
         }
 
         participants.add(new TravelParticipant(this, invitee, inviter));
@@ -302,7 +302,7 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
         if (Objects.nonNull(willVisitOn)) {
 
             if (!LocalDateUtil.isInRange(willVisitOn, startDate, endDate)) {
-                throw new ArgumentNotInRangeFailException("willVisitOn", startDate, endDate);
+                throw new WillVisitOnNotInTravelPeriodFailException(dates);
             }
 
             dayOfTravel = (int) LocalDateUtil

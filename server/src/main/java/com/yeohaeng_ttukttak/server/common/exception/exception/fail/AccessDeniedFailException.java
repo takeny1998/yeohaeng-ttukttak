@@ -1,5 +1,6 @@
 package com.yeohaeng_ttukttak.server.common.exception.exception.fail;
 
+import com.yeohaeng_ttukttak.server.common.exception.exception.FailException;
 import com.yeohaeng_ttukttak.server.common.exception.interfaces.ArgumentException;
 
 public class AccessDeniedFailException extends FailException implements ArgumentException {
@@ -9,7 +10,7 @@ public class AccessDeniedFailException extends FailException implements Argument
     final Class<?> target;
 
     public AccessDeniedFailException(Class<?> target) {
-        super(code);
+        super();
         this.target = target;
     }
 
