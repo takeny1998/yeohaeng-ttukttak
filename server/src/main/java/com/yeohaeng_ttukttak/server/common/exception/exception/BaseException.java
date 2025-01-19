@@ -1,6 +1,7 @@
 package com.yeohaeng_ttukttak.server.common.exception.exception;
 
 import com.yeohaeng_ttukttak.server.common.locale.RequestLocaleService;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowire;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -18,14 +19,8 @@ public abstract class BaseException extends RuntimeException {
     @Autowired
     protected MessageSource messageSource;
 
-    private static final String code = "BASE_EXCEPTION";
-
     protected BaseException(Throwable cause) {
         super(cause);
-    }
-
-    public String getCode() {
-        return code;
     }
 
     public String getMessage() {

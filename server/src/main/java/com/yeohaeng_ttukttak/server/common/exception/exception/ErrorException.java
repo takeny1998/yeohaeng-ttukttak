@@ -3,19 +3,19 @@ package com.yeohaeng_ttukttak.server.common.exception.exception;
 import lombok.Getter;
 
 @Getter
-public class ErrorException extends BaseException {
+public abstract class ErrorException extends BaseException {
 
     private static final String code = "ERROR_EXCEPTION";
 
     private static final String baseMessage =
             "An error occurred while processing request on the server. Please try again later.";
 
-    protected ErrorException(Throwable cause) {
-        super(cause);
+    public ErrorException() {
+        this(null);
     }
 
-    protected ErrorException() {
-        this(null);
+    protected ErrorException(Throwable cause) {
+        super(cause);
     }
 
     public String getCode() {

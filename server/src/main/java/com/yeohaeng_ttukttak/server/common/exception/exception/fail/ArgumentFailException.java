@@ -3,23 +3,18 @@ package com.yeohaeng_ttukttak.server.common.exception.exception.fail;
 import com.yeohaeng_ttukttak.server.common.exception.exception.FailException;
 import lombok.Getter;
 
-@Getter
-public class InvalidArgumentFailException extends FailException {
 
-    private static final String code = "INVALID_ARGUMENT_FAIL";
+@Getter
+public abstract class ArgumentFailException extends FailException {
 
     private static final String baseMessage =
-            "An invalid argument '{0}' has been provided. Please check the input values and try again.";
+            "An invalid argument {0} has been provided. Please check the input values and try again.";
 
     protected final String field;
 
-    public InvalidArgumentFailException(String field) {
+    public ArgumentFailException(String field) {
+        super(null);
         this.field = field;
-    }
-
-    @Override
-    public String getCode() {
-        return code;
     }
 
     @Override

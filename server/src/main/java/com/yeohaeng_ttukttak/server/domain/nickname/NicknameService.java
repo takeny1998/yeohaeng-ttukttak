@@ -1,16 +1,13 @@
 package com.yeohaeng_ttukttak.server.domain.nickname;
 
+import com.yeohaeng_ttukttak.server.common.exception.exception.FailException;
+import com.yeohaeng_ttukttak.server.common.exception.DomainException;
 import com.yeohaeng_ttukttak.server.common.util.StringUtil;
 import com.yeohaeng_ttukttak.server.domain.locale.LocalizedMessagesProvider;
-import com.yeohaeng_ttukttak.server.domain.member.exception.BadNicknameFailException;
-import com.yeohaeng_ttukttak.server.domain.member.exception.InvalidNicknameCharacterFailException;
-import com.yeohaeng_ttukttak.server.domain.member.exception.InvalidNicknameLengthFailException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ServerErrorException;
 
-import java.io.UnsupportedEncodingException;
 import java.util.*;
 
 @Service
@@ -28,7 +25,7 @@ public class NicknameService {
     /**
      * 닉네임의 제약 조건을 검사하고, 문제가 없으면 생성한다.
      * @param value 설정할 닉네임
-     * @throws BadNicknameFailException 부적절한 닉네임일 경우 발생한다.
+     * @throws FailException 부적절한 닉네임일 경우 발생한다.
      * @return 생성된 닉네임 엔티티
      */
     public Nickname create(String value) {
@@ -36,14 +33,14 @@ public class NicknameService {
         final int byteLength = StringUtil.getByteLengthInEucKr(value);
 
         if (byteLength < 4 || byteLength > 12) {
-            throw new InvalidNicknameLengthFailException();
+            throw DomainException.NICKNAME_LENGTH_OUT_OF_RANGE_FAIL.getInstance();
         }
 
         final boolean hasCharOrNumber = value.matches("^[가-힣a-zA-Z1-9]+$");
         final boolean hasCharMoreThanTwo = value.matches("(?:.*[가-힣a-zA-Z]){2,}");
 
         if (!hasCharOrNumber || !hasCharMoreThanTwo) {
-            throw new InvalidNicknameCharacterFailException();
+            throw DomainException.INVALID_NICKNAME_CHARACTER_FAIL.getInstance();
         }
 
         final String onlyCharValue = value
@@ -52,7 +49,7 @@ public class NicknameService {
 
         for (String fWord : fWords) {
             if (onlyCharValue.contains(fWord)) {
-                throw new BadNicknameFailException();
+                throw DomainException.NICKNAME_HAS_BAD_WORD_FAIL.getInstance();
             }
         }
 

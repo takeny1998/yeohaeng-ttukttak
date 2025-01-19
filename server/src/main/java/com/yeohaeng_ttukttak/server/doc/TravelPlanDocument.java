@@ -3,13 +3,8 @@ package com.yeohaeng_ttukttak.server.doc;
 import com.yeohaeng_ttukttak.server.application.travel_plan.dto.CreateTravelPlanRequest;
 import com.yeohaeng_ttukttak.server.application.travel_plan.dto.MoveTravelPlanRequest;
 import com.yeohaeng_ttukttak.server.application.travel_plan.dto.TravelPlanListResponse;
-import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
-import com.yeohaeng_ttukttak.server.doc.annotation.ApiExceptionResponse;
-import com.yeohaeng_ttukttak.server.doc.annotation.ApiPostCondition;
-import com.yeohaeng_ttukttak.server.domain.travel.exception.InvalidTravelCitySizeFailException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 

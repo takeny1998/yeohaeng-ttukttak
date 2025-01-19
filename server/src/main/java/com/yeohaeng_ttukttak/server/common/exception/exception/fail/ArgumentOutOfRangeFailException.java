@@ -1,23 +1,18 @@
 package com.yeohaeng_ttukttak.server.common.exception.exception.fail;
 
 
-public class ArgumentNotInRangeFailException extends InvalidArgumentFailException {
-
-    private static final String code = "ARGUMENT_NOT_IN_RANGE_FAIL";
+public abstract class ArgumentOutOfRangeFailException extends ArgumentFailException {
 
     private static final String baseMessage =
             "The argument {0} must be between {1} and {2}. The current value is out of range.";
 
     protected final Object start, end;
 
-    public ArgumentNotInRangeFailException(String name, Object start, Object end) {
+    protected ArgumentOutOfRangeFailException(
+            String name, Object start, Object end) {
         super(name);
         this.start = start;
         this.end = end;
-    }
-
-    public String getCode() {
-        return code;
     }
 
     @Override

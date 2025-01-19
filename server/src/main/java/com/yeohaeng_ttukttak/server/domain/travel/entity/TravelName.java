@@ -1,11 +1,11 @@
 package com.yeohaeng_ttukttak.server.domain.travel.entity;
 
+import com.yeohaeng_ttukttak.server.common.exception.exception.FailException;
+import com.yeohaeng_ttukttak.server.common.exception.DomainException;
 import com.yeohaeng_ttukttak.server.common.locale.RequestLocaleService;
 import com.yeohaeng_ttukttak.server.common.util.StringUtil;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.City;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.Province;
-import com.yeohaeng_ttukttak.server.domain.travel.exception.InvalidTravelNameCharacterFailException;
-import com.yeohaeng_ttukttak.server.domain.travel.exception.TravelNameTooLongFailException;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Transient;
 import lombok.AccessLevel;
@@ -87,25 +87,25 @@ public class TravelName {
      * 입력된 이름의 유효성을 검사한 뒤 객체로 만들어 반환한다.
      *
      * @param inputName 검사할 이름
-     * @throws TravelNameTooLongFailException 이름이 100Byte(EUC-KR 기준)가 넘으면 발생한다.
-     * @throws InvalidTravelNameCharacterFailException 이름에 한글, 영어, 숫자, 콤마가 아닌 글자가 들어간 경우 발생한다.
+     * @throws FailException 이름이 100Byte(EUC-KR 기준)가 넘으면 발생한다.
+     * @throws FailException 이름에 한글, 영어, 숫자, 콤마가 아닌 글자가 들어간 경우 발생한다.
      */
     void updateName(final String inputName) {
         if (Objects.isNull(inputName)) {
-            throw new InvalidTravelNameCharacterFailException();
+            throw DomainException.INVALID_TRAVEL_NAME_CHARACTER_FAIL.getInstance();
         }
 
         int byteCount = StringUtil.getByteLengthInEucKr(inputName);
 
         if (byteCount > 100) {
-            throw new TravelNameTooLongFailException();
+            throw DomainException.TRAVEL_NAME_TOO_LONG_FAIL.getInstance();
         }
 
         final boolean hasCharOrNumberOrComma =
                 inputName.matches("^[가-힣a-zA-Z1-9,\\s]+$");
 
         if (!hasCharOrNumberOrComma) {
-            throw new InvalidTravelNameCharacterFailException();
+            throw DomainException.INVALID_TRAVEL_NAME_CHARACTER_FAIL.getInstance();
         }
 
         this.name = inputName;

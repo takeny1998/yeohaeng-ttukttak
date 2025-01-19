@@ -14,6 +14,7 @@ public class EntityNotFoundFailException extends FailException implements Argume
     }
 
     public EntityNotFoundFailException(String entityName) {
+        super(null);
         this.entityName = entityName;
     }
 

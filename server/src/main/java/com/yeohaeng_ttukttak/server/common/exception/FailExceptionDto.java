@@ -2,7 +2,7 @@ package com.yeohaeng_ttukttak.server.common.exception;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.yeohaeng_ttukttak.server.common.exception.exception.FailException;
-import com.yeohaeng_ttukttak.server.common.exception.exception.fail.InvalidArgumentFailException;
+import com.yeohaeng_ttukttak.server.common.exception.exception.fail.ArgumentFailException;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 
@@ -20,8 +20,8 @@ public record FailExceptionDto(
 
     public static FailExceptionDto of (FailException failException) {
 
-        final String field = failException instanceof InvalidArgumentFailException
-                ? ((InvalidArgumentFailException) failException).getField()
+        final String field = failException instanceof ArgumentFailException
+                ? ((ArgumentFailException) failException).getField()
                 : null;
 
         return new FailExceptionDto(

@@ -4,9 +4,7 @@ import com.yeohaeng_ttukttak.server.common.dto.ServerErrorResponse;
 import com.yeohaeng_ttukttak.server.common.dto.ServerFailResponse;
 import com.yeohaeng_ttukttak.server.common.exception.exception.BaseException;
 import com.yeohaeng_ttukttak.server.common.exception.exception.ErrorException;
-import com.yeohaeng_ttukttak.server.common.exception.exception.error.InternalServerErrorException;
 import com.yeohaeng_ttukttak.server.common.exception.exception.FailException;
-import com.yeohaeng_ttukttak.server.common.locale.LocalizedMessageService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,8 +19,6 @@ import java.util.*;
 @RestControllerAdvice
 @RequiredArgsConstructor
 public class ExceptionAdvice {
-
-    private final LocalizedMessageService localizedMessageService;
 
     private final MessageSource messageSource;
 
@@ -55,24 +51,10 @@ public class ExceptionAdvice {
             ErrorException exception, Locale locale, HttpServletRequest request) {
 
         logError(exception, request, 0);
-        final String message = localizedMessageService.fromException(locale, exception);
 
-        return new ServerErrorResponse(exception.getCode(), message);
+        return new ServerErrorResponse(exception.getCode(), exception.getMessage(locale));
     }
 
-    @ExceptionHandler(Exception.class)
-    public ServerErrorResponse handleException(
-            Exception exception, Locale locale, HttpServletRequest request) {
-
-        final InternalServerErrorException errorException =
-                new InternalServerErrorException(exception);
-
-        logError(errorException, request, 0);
-
-        final String message = localizedMessageService.fromException(locale, errorException);
-
-        return new ServerErrorResponse(errorException.getCode(), message);
-    }
 
     private void logError(Throwable throwable, HttpServletRequest request, int depth) {
 
