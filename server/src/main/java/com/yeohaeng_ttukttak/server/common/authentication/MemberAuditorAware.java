@@ -1,6 +1,6 @@
 package com.yeohaeng_ttukttak.server.common.authentication;
 
-import com.yeohaeng_ttukttak.server.common.exception.exception.fail.AuthorizationFailException;
+import com.yeohaeng_ttukttak.server.common.exception.ExceptionCode;
 import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthenticationContext;
 import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
 import com.yeohaeng_ttukttak.server.domain.member.repository.MemberRepository;
@@ -25,7 +25,7 @@ public class MemberAuditorAware implements AuditorAware<Member> {
         final Member member = context.member()
                 .orElseGet(() -> {
                     final Member foundMember = memberRepository.findByUuid(context.uuid())
-                            .orElseThrow(AuthorizationFailException::new);
+                            .orElseThrow(ExceptionCode.AUTHENTICATION_FAIL::getInstance);
 
                     AuthenticationContextHolder.setContext(AuthenticationContext.of(foundMember));
 

@@ -1,6 +1,6 @@
 package com.yeohaeng_ttukttak.server.domain.travel.service;
 
-import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundFailException;
+import com.yeohaeng_ttukttak.server.common.exception.ExceptionCode;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelInvitation;
 import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelInvitationRepository;
@@ -41,7 +41,7 @@ public class TravelInvitationService {
      */
     public TravelInvitation find(Long travelId, String invitationId) {
         final TravelInvitation invitation = repository.findById(invitationId)
-                .orElseThrow(() -> new EntityNotFoundFailException(TravelInvitation.class));
+                .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::getInstance);
 
         return invitation;
     }

@@ -1,6 +1,6 @@
 package com.yeohaeng_ttukttak.server.domain.auth.service;
 
-import com.yeohaeng_ttukttak.server.common.exception.exception.fail.AuthorizationFailException;
+import com.yeohaeng_ttukttak.server.common.exception.ExceptionCode;
 import com.yeohaeng_ttukttak.server.common.util.StringUtil;
 import com.yeohaeng_ttukttak.server.domain.auth.RefreshTokenProperties;
 import com.yeohaeng_ttukttak.server.domain.auth.entity.RefreshToken;
@@ -10,7 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Slf4j
 @Service
@@ -40,7 +39,7 @@ public class RefreshTokenService {
 
         // TODO: 찾지 못한다면 인증이 없거나 만료된 것
         final RefreshToken existToken = repository.findById(refreshToken)
-                .orElseThrow(AuthorizationFailException::new);
+                .orElseThrow(ExceptionCode.AUTHENTICATION_FAIL::getInstance);
 
         log.debug("[RefreshTokenService.verify] existToken = {}", existToken);
 
@@ -48,7 +47,7 @@ public class RefreshTokenService {
         if (isUsedBefore) {
             // TODO: Refresh Token이 재사용 됨, 모든 토큰을 무효화 시킨다.
             repository.findAllByMemberId(existToken.memberId()).forEach(this::revoke);
-            throw new AuthorizationFailException();
+            throw ExceptionCode.AUTHENTICATION_FAIL.getInstance();
         }
 
         return existToken;

@@ -1,6 +1,6 @@
 package com.yeohaeng_ttukttak.server.application.travel.service;
 
-import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundFailException;
+import com.yeohaeng_ttukttak.server.common.exception.ExceptionCode;
 import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
 import com.yeohaeng_ttukttak.server.domain.member.service.MemberService;
 import com.yeohaeng_ttukttak.server.domain.travel.dto.TravelParticipantDto;
@@ -49,7 +49,7 @@ public class TravelParticipantService {
         final TravelInvitation invitation = invitationService.find(travelId, invitationId);
 
         final Travel travel = travelRepository.findById(invitation.travelId())
-                .orElseThrow(() -> new EntityNotFoundFailException(Travel.class));
+                .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::getInstance);
 
         final Member invitee = memberService.find(inviteeId);
         final Member inviter = memberService.find(invitation.memberId());
@@ -67,7 +67,7 @@ public class TravelParticipantService {
     @Transactional
     public void leave(Long travelId, String kickerId, Long participantId) {
         final TravelParticipant participant = participantRepository.findById(participantId)
-                .orElseThrow(() -> new EntityNotFoundFailException(TravelParticipant.class));
+                .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::getInstance);
 
         final Member kicker = memberService.find(kickerId);
         final Travel travel = participant.travel();

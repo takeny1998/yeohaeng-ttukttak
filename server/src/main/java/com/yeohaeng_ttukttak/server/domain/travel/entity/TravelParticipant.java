@@ -1,6 +1,6 @@
 package com.yeohaeng_ttukttak.server.domain.travel.entity;
 
-import com.yeohaeng_ttukttak.server.common.exception.DomainException;
+import com.yeohaeng_ttukttak.server.common.exception.ExceptionCode;
 import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -31,7 +31,7 @@ public class TravelParticipant {
         this.travel = travel;
 
         if (Objects.equals(invitee.uuid(), inviter.uuid())) {
-            throw DomainException.CANNOT_INVITE_YOURSELF_FAIL.getInstance();
+            throw ExceptionCode.CANNOT_INVITE_YOURSELF_FAIL.getInstance();
         }
 
         this.invitee = invitee;

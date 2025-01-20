@@ -1,6 +1,10 @@
 package com.yeohaeng_ttukttak.server.common.exception.exception;
 
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import lombok.Getter;
+
+import java.util.Locale;
 
 @Getter
 public abstract class ErrorException extends BaseException {
@@ -14,7 +18,7 @@ public abstract class ErrorException extends BaseException {
         this(null);
     }
 
-    protected ErrorException(Throwable cause) {
+    protected ErrorException(@Nullable Throwable cause) {
         super(cause);
     }
 
@@ -22,13 +26,14 @@ public abstract class ErrorException extends BaseException {
         return code;
     }
 
+    @Nonnull
     @Override
     protected String getBaseMessage() {
         return baseMessage;
     }
 
     @Override
-    protected Object[] getArguments() {
+    protected Object[] getArguments(Locale locale) {
         return new Object[0];
     }
 

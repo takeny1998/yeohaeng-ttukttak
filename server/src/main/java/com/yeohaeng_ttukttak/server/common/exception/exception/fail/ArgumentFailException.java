@@ -1,14 +1,14 @@
 package com.yeohaeng_ttukttak.server.common.exception.exception.fail;
 
 import com.yeohaeng_ttukttak.server.common.exception.exception.FailException;
+import jakarta.annotation.Nonnull;
 import lombok.Getter;
+
+import java.util.Locale;
 
 
 @Getter
 public abstract class ArgumentFailException extends FailException {
-
-    private static final String baseMessage =
-            "An invalid argument {0} has been provided. Please check the input values and try again.";
 
     protected final String field;
 
@@ -17,13 +17,11 @@ public abstract class ArgumentFailException extends FailException {
         this.field = field;
     }
 
-    @Override
-    protected String getBaseMessage() {
-        return baseMessage;
-    }
+    @Nonnull
+    protected abstract String getBaseMessage();
 
     @Override
-    protected Object[] getArguments() {
+    protected Object[] getArguments(Locale locale) {
         return new Object[]{field};
     }
 

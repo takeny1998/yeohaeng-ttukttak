@@ -1,27 +1,33 @@
-package com.yeohaeng_ttukttak.server.common.exception.exception.fail;
+package com.yeohaeng_ttukttak.server.common.exception.exception.fail.argument;
 
 
-public abstract class ArgumentOutOfRangeFailException extends ArgumentFailException {
+import com.yeohaeng_ttukttak.server.common.exception.exception.fail.ArgumentFailException;
+import jakarta.annotation.Nonnull;
+
+import java.util.Locale;
+
+public class ArgumentOutOfRangeFailException extends ArgumentFailException {
 
     private static final String baseMessage =
             "The argument {0} must be between {1} and {2}. The current value is out of range.";
 
     protected final Object start, end;
 
-    protected ArgumentOutOfRangeFailException(
+    public ArgumentOutOfRangeFailException(
             String name, Object start, Object end) {
         super(name);
         this.start = start;
         this.end = end;
     }
 
+    @Nonnull
     @Override
     protected String getBaseMessage() {
         return baseMessage;
     }
 
     @Override
-    protected Object[] getArguments() {
+    protected Object[] getArguments(Locale locale) {
         return new Object[]{ super.field, this.start, this.end};
     }
 

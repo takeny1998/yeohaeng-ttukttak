@@ -1,6 +1,11 @@
-package com.yeohaeng_ttukttak.server.common.exception.exception.fail;
+package com.yeohaeng_ttukttak.server.common.exception.exception.fail.argument;
 
-public abstract class ArgumentCountExceededException extends ArgumentFailException {
+import com.yeohaeng_ttukttak.server.common.exception.exception.fail.ArgumentFailException;
+import jakarta.annotation.Nonnull;
+
+import java.util.Locale;
+
+public class ArgumentCountExceededException extends ArgumentFailException {
 
     private static final String baseMessage = "The number of {0} must not exceed {1}.";
 
@@ -11,13 +16,14 @@ public abstract class ArgumentCountExceededException extends ArgumentFailExcepti
         this.limit = limit;
     }
 
+    @Nonnull
     @Override
     protected String getBaseMessage() {
         return baseMessage;
     }
 
     @Override
-    protected Object[] getArguments() {
+    protected Object[] getArguments(Locale locale) {
         return new Object[] { super.field, limit };
     }
 }

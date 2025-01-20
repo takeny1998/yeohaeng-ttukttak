@@ -2,9 +2,9 @@ package com.yeohaeng_ttukttak.server.domain.travel.entity;
 
 import com.yeohaeng_ttukttak.server.common.authorization.CrudOperation;
 import com.yeohaeng_ttukttak.server.common.authorization.Authorization;
-import com.yeohaeng_ttukttak.server.common.exception.DomainException;
+import com.yeohaeng_ttukttak.server.common.exception.ExceptionCode;
 import com.yeohaeng_ttukttak.server.common.exception.exception.FailException;
-import com.yeohaeng_ttukttak.server.common.exception.exception.fail.*;
+import com.yeohaeng_ttukttak.server.common.exception.exception.fail.argument.ArgumentOutOfRangeFailException;
 import com.yeohaeng_ttukttak.server.common.util.LocalDateUtil;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.City;
 import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
@@ -164,7 +164,7 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
         motivations.addAll(newMotivations);
 
         if (this.motivations.isEmpty() || this.motivations.size() > 5) {
-            throw DomainException.TRAVEL_MOTIVATION_TYPE_COUNT_OUT_OF_RANGE_FAIL.getInstance();
+            throw ExceptionCode.TRAVEL_MOTIVATION_TYPE_COUNT_OUT_OF_RANGE_FAIL.getInstance();
         }
     }
 
@@ -186,7 +186,7 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
         companions.addAll(newCompanions);
 
         if (this.companions.isEmpty() || this.companions.size() > 3) {
-            throw DomainException.TRAVEL_COMPANION_TYPE_COUNT_OUT_OF_RANGE_FAIL.getInstance();
+            throw ExceptionCode.TRAVEL_COMPANION_TYPE_COUNT_OUT_OF_RANGE_FAIL.getInstance();
         }
     }
 
@@ -201,7 +201,7 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
     public void updateCities(List<City> cities) {
 
         if (cities.isEmpty() || cities.size() > 10) {
-            throw DomainException.TRAVEL_CITY_COUNT_EXCEEDED_FAIL.getInstance();
+            throw ExceptionCode.TRAVEL_CITY_COUNT_EXCEEDED_FAIL.getInstance();
         }
 
         this.cities.clear();
@@ -226,7 +226,7 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
         final boolean isOwnerInvited = Objects.equals(invitee.uuid(), createdBy().uuid());
 
         if (isInviteeParticipated || isOwnerInvited) {
-            throw DomainException.TRAVEL_ALREADY_JOINED_FAIL.getInstance();
+            throw ExceptionCode.TRAVEL_ALREADY_JOINED_FAIL.getInstance();
         }
 
         participants.add(new TravelParticipant(this, invitee, inviter));
@@ -236,14 +236,14 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
      * 지정된 참여자를 해당 여행에서 쫒아(kick)낸다.
      * @param member 쫒아낼 사용자
      * @param participant 쫒을 대상 참여자의 식별자
-     * @throws AccessDeniedFailException 대상 참여자를 쫒을 권한이 없는 경우 발생한다.
+     * @throws PermissionRequiredFailException 대상 참여자를 쫒을 권한이 없는 경우 발생한다.
      */
     public void leaveParticipant(Member member, TravelParticipant participant) {
         final boolean isInvitedByKicker = Objects.equals(member.uuid(), participant.invitee().uuid());
         final boolean isMemberOwner = Objects.equals(member.uuid(), createdBy().uuid());
 
         if (!isInvitedByKicker && !isMemberOwner) {
-            throw new AccessDeniedFailException(TravelParticipant.class);
+            throw ExceptionCode.AUTHORIZATION_FAIL.getInstance();
         }
 
         participants.remove(participant);
@@ -264,7 +264,7 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
                 .getBetweenDays(startedOn(), endedOn());
 
         if (dayOfTravel >= totalTravelDays) {
-            throw DomainException.DAY_OF_TRAVEL_OUT_OF_RANGE_FAIL.getInstance();
+            throw ExceptionCode.DAY_OF_TRAVEL_OUT_OF_RANGE_FAIL.getInstance();
         }
 
         int orderOfPlan = -1;
@@ -286,7 +286,7 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
      * @param travelPlan 이동할 계획 엔티티
      * @param newOrderOfPlan 새로운 계획의 순서
      * @param willVisitOn 방문할 예정일
-     * @throws AccessDeniedFailException 사용자가 변경 권한이 없는 경우 발생합니다.
+     * @throws PermissionRequiredFailException 사용자가 변경 권한이 없는 경우 발생합니다.
      * @throws ArgumentOutOfRangeFailException 지정된 방문일이 여행 기간에 벗어나는 경우 발생합니다.
      * @throws EntityNotFoundFailException 주어진 ID에 해당하는 여행 계획이 존재하지 않는 경우 발생합니다.
      */
@@ -303,7 +303,7 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
         if (Objects.nonNull(willVisitOn)) {
 
             if (!LocalDateUtil.isInRange(willVisitOn, startDate, endDate)) {
-                throw DomainException.WILL_VISIT_ON_OUT_OF_TRAVEL_PERIOD_FAIL.getInstance();
+                throw ExceptionCode.WILL_VISIT_ON_OUT_OF_TRAVEL_PERIOD_FAIL.getInstance();
             }
 
             dayOfTravel = (int) LocalDateUtil
@@ -333,7 +333,7 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
      * 지정된 여행 계획을 삭제합니다.
      *
      * @param travelPlan 삭제할 여행 계획
-     * @throws AccessDeniedFailException 사용자가 여행 계획의 참여자 또는 생성자가 아닌 경우 발생합니다.
+     * @throws PermissionRequiredFailException 사용자가 여행 계획의 참여자 또는 생성자가 아닌 경우 발생합니다.
      * @throws EntityNotFoundFailException 주어진 여행 계획이 존재하지 않는 경우 발생합니다.
      */
     @Authorization(requires = CrudOperation.UPDATE)
@@ -341,7 +341,7 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
 
         // 여행 계획을 삭제
         if (!plans.contains(travelPlan)) {
-            throw new EntityNotFoundFailException(TravelPlan.class);
+            throw ExceptionCode.ENTITY_NOT_FOUND_FAIL.getInstance();
         }
 
         plans.remove(travelPlan);

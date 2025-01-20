@@ -1,7 +1,7 @@
 package com.yeohaeng_ttukttak.server.domain.travel.entity;
 
 import com.yeohaeng_ttukttak.server.common.exception.exception.FailException;
-import com.yeohaeng_ttukttak.server.common.exception.DomainException;
+import com.yeohaeng_ttukttak.server.common.exception.ExceptionCode;
 import com.yeohaeng_ttukttak.server.common.locale.RequestLocaleService;
 import com.yeohaeng_ttukttak.server.common.util.StringUtil;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.City;
@@ -92,20 +92,20 @@ public class TravelName {
      */
     void updateName(final String inputName) {
         if (Objects.isNull(inputName)) {
-            throw DomainException.INVALID_TRAVEL_NAME_CHARACTER_FAIL.getInstance();
+            throw ExceptionCode.INVALID_TRAVEL_NAME_CHARACTER_FAIL.getInstance();
         }
 
         int byteCount = StringUtil.getByteLengthInEucKr(inputName);
 
         if (byteCount > 100) {
-            throw DomainException.TRAVEL_NAME_TOO_LONG_FAIL.getInstance();
+            throw ExceptionCode.TRAVEL_NAME_TOO_LONG_FAIL.getInstance();
         }
 
         final boolean hasCharOrNumberOrComma =
                 inputName.matches("^[가-힣a-zA-Z1-9,\\s]+$");
 
         if (!hasCharOrNumberOrComma) {
-            throw DomainException.INVALID_TRAVEL_NAME_CHARACTER_FAIL.getInstance();
+            throw ExceptionCode.INVALID_TRAVEL_NAME_CHARACTER_FAIL.getInstance();
         }
 
         this.name = inputName;

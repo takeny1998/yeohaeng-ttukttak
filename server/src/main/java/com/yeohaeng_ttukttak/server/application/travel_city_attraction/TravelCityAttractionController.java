@@ -4,7 +4,7 @@ import com.yeohaeng_ttukttak.server.application.travel_city_attraction.dto.Attra
 import com.yeohaeng_ttukttak.server.common.dto.InfiniteScrollCommand;
 import com.yeohaeng_ttukttak.server.common.dto.InfiniteScrollResult;
 import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
-import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundFailException;
+import com.yeohaeng_ttukttak.server.common.exception.ExceptionCode;
 import com.yeohaeng_ttukttak.server.common.http.JsonRequestMapping;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.City;
 import com.yeohaeng_ttukttak.server.domain.geography.repository.GeographyRepository;
@@ -32,10 +32,10 @@ public class TravelCityAttractionController {
             @PathVariable Long travelId, @PathVariable Long cityId, @ModelAttribute InfiniteScrollCommand scrollCommand) {
 
         final Travel travel = travelRepository.findById(travelId)
-                .orElseThrow(() -> new EntityNotFoundFailException(Travel.class));
+                .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::getInstance);
 
         final City city = geographyRepository.findCityById(cityId)
-                .orElseThrow(() -> new EntityNotFoundFailException(City.class));
+                .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::getInstance);
 
         final InfiniteScrollResult<AttractionDto> scrollResult =
                 repository.orderByTravelSimilarity(scrollCommand, travel, city);

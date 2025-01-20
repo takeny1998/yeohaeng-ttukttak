@@ -1,6 +1,6 @@
 package com.yeohaeng_ttukttak.server.common.authentication;
 
-import com.yeohaeng_ttukttak.server.common.exception.exception.fail.AuthorizationFailException;
+import com.yeohaeng_ttukttak.server.common.exception.ExceptionCode;
 import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthenticationContext;
 import com.yeohaeng_ttukttak.server.domain.auth.service.AccessTokenService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,7 +28,7 @@ public class AuthenticationAspect {
         final String header = httpServletRequest.getHeader("Authorization");
 
         if (Objects.isNull(header) || !header.startsWith(TOKEN_PREFIX)) {
-            throw new AuthorizationFailException();
+            throw ExceptionCode.AUTHENTICATION_FAIL.getInstance();
         }
 
         final String encodedToken = header.substring(TOKEN_PREFIX.length());

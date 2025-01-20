@@ -1,7 +1,7 @@
 package com.yeohaeng_ttukttak.server.domain.travel.entity;
 
 import com.yeohaeng_ttukttak.server.common.exception.exception.FailException;
-import com.yeohaeng_ttukttak.server.common.exception.DomainException;
+import com.yeohaeng_ttukttak.server.common.exception.ExceptionCode;
 import com.yeohaeng_ttukttak.server.common.util.LocalDateUtil;
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
@@ -49,13 +49,13 @@ public class TravelDates {
         final boolean isAnyNull = Objects.isNull(startedOn) || Objects.isNull(endedOn);
 
         if (isAnyNull || this.startedOn.isAfter(this.endedOn)) {
-            throw DomainException.STARTED_ON_AFTER_ENDED_ON_FAIL.getInstance();
+            throw ExceptionCode.STARTED_ON_AFTER_ENDED_ON_FAIL.getInstance();
         }
 
         long days = LocalDateUtil.getBetweenDays(this.startedOn, this.endedOn);
 
         if (days > 60) {
-            throw DomainException.TRAVEL_PERIOD_TOO_LONG_FAIL.getInstance();
+            throw ExceptionCode.TRAVEL_PERIOD_TOO_LONG_FAIL.getInstance();
         }
 
     }

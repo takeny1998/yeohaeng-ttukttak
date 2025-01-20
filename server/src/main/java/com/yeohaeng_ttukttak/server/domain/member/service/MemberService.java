@@ -1,6 +1,6 @@
 package com.yeohaeng_ttukttak.server.domain.member.service;
 
-import com.yeohaeng_ttukttak.server.common.exception.exception.fail.AuthorizationFailException;
+import com.yeohaeng_ttukttak.server.common.exception.ExceptionCode;
 import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
 import com.yeohaeng_ttukttak.server.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ public class MemberService {
     public Member find(String memberId) {
         return memberRepository
                 .findByUuid(memberId)
-                .orElseThrow(AuthorizationFailException::new);
+                .orElseThrow(ExceptionCode.AUTHENTICATION_FAIL::getInstance);
     }
 
 
