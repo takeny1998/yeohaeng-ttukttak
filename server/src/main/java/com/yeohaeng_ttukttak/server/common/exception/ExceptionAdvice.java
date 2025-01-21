@@ -2,12 +2,13 @@ package com.yeohaeng_ttukttak.server.common.exception;
 
 import com.yeohaeng_ttukttak.server.common.dto.ServerErrorResponse;
 import com.yeohaeng_ttukttak.server.common.dto.ServerFailResponse;
+import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
+import com.yeohaeng_ttukttak.server.common.exception.dto.ErrorExceptionWrapper;
+import com.yeohaeng_ttukttak.server.common.exception.dto.FailExceptionDto;
+import com.yeohaeng_ttukttak.server.common.exception.dto.FailExceptionWrapper;
 import com.yeohaeng_ttukttak.server.common.exception.exception.BaseException;
-import com.yeohaeng_ttukttak.server.common.exception.exception.error.ErrorException;
-import com.yeohaeng_ttukttak.server.common.exception.exception.error.InternalServerErrorException;
-import com.yeohaeng_ttukttak.server.common.exception.exception.fail.FailException;
-import com.yeohaeng_ttukttak.server.common.exception.interfaces.ArgumentException;
-import com.yeohaeng_ttukttak.server.common.locale.LocalizedMessageService;
+import com.yeohaeng_ttukttak.server.common.exception.exception.ErrorException;
+import com.yeohaeng_ttukttak.server.common.exception.exception.FailException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,18 +24,19 @@ import java.util.*;
 @RequiredArgsConstructor
 public class ExceptionAdvice {
 
-    private final LocalizedMessageService localizedMessageService;
-
     private final MessageSource messageSource;
 
-    @ExceptionHandler(FailException.class)
-    public ServerFailResponse handleFailException(
-            FailException exception, Locale locale, HttpServletRequest request) {
+    private final ExceptionMessageService messageService;
 
-        logError(exception, request, 0);
+    @ExceptionHandler(FailExceptionWrapper.class)
+    public ServerResponse handleFailException(
+            FailExceptionWrapper exceptionWrapper, HttpServletRequest request) {
 
-        return new ServerFailResponse(List.of(exception.toErrorObject(locale)));
+        logError(exceptionWrapper, request, 0);
 
+        final String message = messageService.getMessage(exceptionWrapper);
+
+        return ServerResponse.of(exceptionWrapper, message);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -42,60 +44,51 @@ public class ExceptionAdvice {
             MethodArgumentNotValidException exception, Locale locale, HttpServletRequest request) {
         logError(exception, request, 0);
 
-        final List<Map<String, String>> data = exception
+        final List<FailExceptionDto> data = exception
                 .getFieldErrors()
                 .stream()
-                .map(fieldError -> Map.of(
-                        "code", "METHOD_ARGUMENT_NOT_VALID_FAIL",
-                        "field", fieldError.getField(),
-                        "message", messageSource.getMessage(fieldError, locale)))
+                .map(fieldError -> new FailExceptionDto(
+                        "INVALID_ARGUMENT_FAIL", fieldError.getField(),
+                        messageSource.getMessage(fieldError, locale)))
                 .toList();
 
         return new ServerFailResponse(data);
     }
 
-    @ExceptionHandler(ErrorException.class)
-    public ServerErrorResponse handleErrorException(
-            ErrorException exception, Locale locale, HttpServletRequest request) {
+    @ExceptionHandler(ErrorExceptionWrapper.class)
+    public ServerResponse handleErrorException(
+            ErrorExceptionWrapper exceptionWrapper, HttpServletRequest request) {
 
-        logError(exception, request, 0);
-        final String message = localizedMessageService.fromException(locale, exception);
+        logError(exceptionWrapper, request, 0);
 
-        return new ServerErrorResponse(exception.code(), message);
+        final String message = messageService.getMessage(exceptionWrapper);
+
+        return ServerResponse.of(exceptionWrapper, message);
     }
 
-    @ExceptionHandler(Exception.class)
-    public ServerErrorResponse handleException(
-            Exception exception, Locale locale, HttpServletRequest request) {
 
-        final InternalServerErrorException errorException =
-                new InternalServerErrorException(exception);
-
-        logError(errorException, request, 0);
-
-        final String message = localizedMessageService.fromException(locale, errorException);
-
-        return new ServerErrorResponse(errorException.code(), message);
-    }
-
-    private void logError(Throwable exception, HttpServletRequest request, int depth) {
+    private void logError(Throwable throwable, HttpServletRequest request, int depth) {
 
         final String uuid = UUID.randomUUID().toString().substring(0, 7);
 
-        String padding = " ".repeat(depth);
+        final String message = throwable instanceof BaseException
+                ? messageService.getMessage((BaseException) throwable, Locale.getDefault())
+                : throwable.getMessage();
+
+        final String padding = " ".repeat(depth);
 
         if (depth == 0) {
             log.error("[{}] -->> {} {}", uuid, request.getMethod(), request.getRequestURI());
-
         }
 
-        log.error("[{}] {}<<-- Caused By: {}", uuid, padding, exception.getClass().getName());
-        log.error("[{}] {}<<-- Message: {}", uuid, padding, exception.getMessage());
+        log.error("[{}] {}<<-- Caused By: {}", uuid, padding, throwable.getClass().getName());
 
-        logStackTrace(exception, uuid, depth);
+        log.error("[{}] {}<<-- Message: {}", uuid, padding, message);
 
-        if (Objects.nonNull(exception.getCause())) {
-            logError(exception.getCause(), request, depth + 2);
+        logStackTrace(throwable, uuid, depth);
+
+        if (Objects.nonNull(throwable.getCause())) {
+            logError(throwable.getCause(), request, depth + 2);
         }
 
     }

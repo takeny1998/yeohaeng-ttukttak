@@ -1,7 +1,7 @@
 package com.yeohaeng_ttukttak.server.domain.travel.entity;
 
+import com.yeohaeng_ttukttak.server.common.exception.ExceptionCode;
 import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
-import com.yeohaeng_ttukttak.server.domain.travel.exception.CannotInviteYourselfFailException;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -31,7 +31,7 @@ public class TravelParticipant {
         this.travel = travel;
 
         if (Objects.equals(invitee.uuid(), inviter.uuid())) {
-            throw new CannotInviteYourselfFailException("inviteeId");
+            throw ExceptionCode.CANNOT_INVITE_YOURSELF_FAIL.wrap();
         }
 
         this.invitee = invitee;

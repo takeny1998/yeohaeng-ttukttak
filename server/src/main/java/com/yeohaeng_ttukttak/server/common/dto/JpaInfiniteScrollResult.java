@@ -2,7 +2,7 @@ package com.yeohaeng_ttukttak.server.common.dto;
 
 
 import com.querydsl.jpa.impl.JPAQuery;
-import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundFailException;
+import com.yeohaeng_ttukttak.server.common.exception.ExceptionCode;
 
 import java.util.List;
 import java.util.function.Function;
@@ -21,7 +21,7 @@ public final class JpaInfiniteScrollResult<T, R> implements InfiniteScrollResult
                 .fetch();
 
         if (entities.isEmpty()) {
-            throw new EntityNotFoundFailException("Page");
+            throw ExceptionCode.ENTITY_NOT_FOUND_FAIL.wrap();
         }
 
         final boolean hasNext = entities.size() > command.pageSize();

@@ -1,15 +1,17 @@
 package com.yeohaeng_ttukttak.server.common.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
+@Schema
 @Getter
 @ToString
-@EqualsAndHashCode
-public final class ServerErrorResponse {
+public final class ServerErrorResponse extends ServerResponse {
 
-    private final String status = "error";
+    @Schema(defaultValue = "error")
+    private final ServerResponseStatus status = ServerResponseStatus.error;
 
     private final String code;
 

@@ -3,10 +3,14 @@ package com.yeohaeng_ttukttak.server.common.util;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Objects;
 
-public class LocalDateUtil {
+public final class LocalDateUtil {
+
+    private static final DateTimeFormatter ISO_FORMATTER =
+            DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     private LocalDateUtil() {}
 
@@ -50,6 +54,10 @@ public class LocalDateUtil {
      */
     public static long getBetweenDays(LocalDate startDate, LocalDate endDate) {
         return Duration.between(startDate.atStartOfDay(), endDate.atStartOfDay()).toDays() + 1;
+    }
+
+    public static String toISODateString(final LocalDate localDate) {
+        return ISO_FORMATTER.format(localDate);
     }
 
 }

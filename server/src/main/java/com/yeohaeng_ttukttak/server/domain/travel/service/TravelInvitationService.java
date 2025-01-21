@@ -1,15 +1,12 @@
 package com.yeohaeng_ttukttak.server.domain.travel.service;
 
-import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundFailException;
-import com.yeohaeng_ttukttak.server.common.exception.exception.fail.InvalidArgumentFailException;
+import com.yeohaeng_ttukttak.server.common.exception.ExceptionCode;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelInvitation;
 import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelInvitationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Objects;
 
 @Service
 @Transactional(readOnly = true)
@@ -44,11 +41,7 @@ public class TravelInvitationService {
      */
     public TravelInvitation find(Long travelId, String invitationId) {
         final TravelInvitation invitation = repository.findById(invitationId)
-                .orElseThrow(() -> new EntityNotFoundFailException(TravelInvitation.class));
-
-        if (!Objects.equals(invitation.travelId(), travelId)) {
-            throw new InvalidArgumentFailException("invitationId");
-        }
+                .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::wrap);
 
         return invitation;
     }

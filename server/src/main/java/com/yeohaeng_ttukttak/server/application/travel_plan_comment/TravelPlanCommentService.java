@@ -1,6 +1,6 @@
 package com.yeohaeng_ttukttak.server.application.travel_plan_comment;
 
-import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundFailException;
+import com.yeohaeng_ttukttak.server.common.exception.ExceptionCode;
 import com.yeohaeng_ttukttak.server.domain.comment.Comment;
 import com.yeohaeng_ttukttak.server.domain.comment.CommentRepository;
 import com.yeohaeng_ttukttak.server.domain.travel_plan.TravelPlan;
@@ -29,7 +29,7 @@ public class TravelPlanCommentService {
     public void writeComment(Long travelId, Long planId, String content) {
         final TravelPlan travelPlan = travelPlanRepository
                 .findByIdAndTravelId(planId, travelId)
-                .orElseThrow(() -> new EntityNotFoundFailException(TravelPlan.class));
+                .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::wrap);
 
         final Comment comment = new Comment(content);
         commentRepository.save(comment);
@@ -53,7 +53,7 @@ public class TravelPlanCommentService {
 
         final TravelPlanComment travelPlanComment = travelPlanCommentRepository
                 .findByTravelIdAndPlanIdAndCommentId(travelId, planId, commentId)
-                .orElseThrow(() -> new EntityNotFoundFailException(Comment.class));
+                .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::wrap);
 
         travelPlanComment.comment().editContent(editorId, content);
     }
@@ -62,7 +62,7 @@ public class TravelPlanCommentService {
     public void deleteComment(String deleterId, Long planId, Long commentId) {
 
         TravelPlanComment planComment = travelPlanCommentRepository.findByPlanIdAndCommentId(planId, commentId)
-                .orElseThrow(() -> new EntityNotFoundFailException(Comment.class));
+                .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::wrap);
 
         planComment.comment().verifyWriter(deleterId);
 

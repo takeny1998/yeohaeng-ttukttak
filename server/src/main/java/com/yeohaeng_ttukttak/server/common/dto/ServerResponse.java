@@ -1,28 +1,20 @@
 package com.yeohaeng_ttukttak.server.common.dto;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+import com.yeohaeng_ttukttak.server.common.exception.dto.ExceptionWrapper;
+import com.yeohaeng_ttukttak.server.common.exception.dto.FailExceptionDto;
+import com.yeohaeng_ttukttak.server.common.exception.dto.FailExceptionWrapper;
 
-/**
- * 사용자 요청의 처리 결과를 나타내는 응답 객체입니다.
- *
- * @param <T> 결과 데이터를 표현하는 타입 파라미터
- */
-@ToString
-@Getter
-@EqualsAndHashCode
-public final class ServerResponse<T> {
+public abstract class ServerResponse {
 
-    final String status = "success";
+    public static ServerResponse of (final ExceptionWrapper wrapper, final String message) {
 
-    final T data;
+        if (wrapper instanceof FailExceptionWrapper failWrapper) {
+            return new ServerFailResponse(
+                    new FailExceptionDto(failWrapper.getCode(), message, failWrapper.getField()));
+        }
 
-    public ServerResponse(T data) {
-        this.data = data;
+        return new ServerErrorResponse(
+                wrapper.getCode(), message);
     }
 
-    public ServerResponse() {
-        this(null);
-    }
 }

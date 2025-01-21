@@ -1,34 +1,29 @@
 package com.yeohaeng_ttukttak.server.common.dto;
 
-import com.yeohaeng_ttukttak.server.common.exception.exception.fail.FailException;
-import lombok.EqualsAndHashCode;
+import com.yeohaeng_ttukttak.server.common.exception.dto.FailExceptionDto;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.ToString;
-import org.springframework.beans.factory.annotation.Configurable;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
+@Schema
 @Getter
 @ToString
-@EqualsAndHashCode
-public final class ServerFailResponse {
+public final class ServerFailResponse extends ServerResponse {
 
-    private final String status = "fail";
+    @Schema(defaultValue = "fail")
+    private final ServerResponseStatus status = ServerResponseStatus.fail;
 
-    private final ServerFailResponseData data;
+    private final List<FailExceptionDto> data;
 
-    public ServerFailResponse(List<Map<String, String>> errors) {
-        this.data = new ServerFailResponseData(errors);
+    public ServerFailResponse(List<FailExceptionDto> failExceptions) {
+        this.data = failExceptions;
     }
 
-    public ServerFailResponse(Map<String, String> error) {
-        this(List.of(error));
+    public ServerFailResponse(FailExceptionDto failException) {
+        this(List.of(failException));
     }
 
-    record ServerFailResponseData(List<Map<String, String>> errors) { }
 
 }

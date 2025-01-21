@@ -1,15 +1,13 @@
 package com.yeohaeng_ttukttak.server.application.travel.service;
 
-import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundFailException;
+import com.yeohaeng_ttukttak.server.common.exception.ExceptionCode;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.City;
 import com.yeohaeng_ttukttak.server.domain.geography.repository.GeographyRepository;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.CompanionType;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.MotivationType;
 import com.yeohaeng_ttukttak.server.domain.travel.dto.TravelDto;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
-import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelDates;
 import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelRepository;
-import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelName;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,7 +45,7 @@ public class TravelService {
         final List<City> cities = geographyRepository.findCitiesByIds(cityIds);
 
         if (!Objects.equals(cities.size(), cityIds.size())) {
-            throw new EntityNotFoundFailException(City.class);
+            throw ExceptionCode.ENTITY_NOT_FOUND_FAIL.wrap();
         }
 
         final Travel travel = new Travel(
@@ -66,7 +64,7 @@ public class TravelService {
     @Transactional(readOnly = true)
     public TravelDto findById(Long travelId) {
         final Travel travel = travelRepository.findById(travelId)
-                .orElseThrow(() -> new EntityNotFoundFailException(Travel.class));
+                .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::wrap);
 
         return TravelDto.of(travel);
     }
@@ -97,7 +95,7 @@ public class TravelService {
     ) {
 
         final Travel travel = travelRepository.findById(travelId)
-                .orElseThrow(() -> new EntityNotFoundFailException(Travel.class));
+                .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::wrap);
 
         if (Objects.nonNull(inputName)) {
             travel.rename(inputName);
@@ -120,7 +118,7 @@ public class TravelService {
             final List<City> cities = geographyRepository.findCitiesByIds(cityIds);
 
             if (!Objects.equals(cities.size(), cityIds.size())) {
-                throw new EntityNotFoundFailException(City.class);
+                throw ExceptionCode.ENTITY_NOT_FOUND_FAIL.wrap();
             }
 
             travel.updateCities(cities);

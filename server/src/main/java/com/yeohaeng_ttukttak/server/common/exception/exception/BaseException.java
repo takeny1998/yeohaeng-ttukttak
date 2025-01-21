@@ -1,19 +1,20 @@
 package com.yeohaeng_ttukttak.server.common.exception.exception;
 
+import jakarta.annotation.Nullable;
+import java.util.Locale;
+
 public abstract class BaseException extends RuntimeException {
 
-    private final String code;
-
-    protected BaseException(String code, Throwable cause) {
+    protected BaseException(@Nullable Throwable cause) {
         super(cause);
-        this.code = code;
     }
 
-    protected BaseException(String code) {
-        this(code,  null);
+    protected BaseException() {
+        this(null);
     }
 
-    public String code() {
-        return code;
-    }
+    public abstract String getBaseMessage();
+
+    public abstract Object[] getArguments(Locale locale);
+
 }

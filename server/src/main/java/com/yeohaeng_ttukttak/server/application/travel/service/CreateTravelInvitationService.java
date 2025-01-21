@@ -1,6 +1,6 @@
 package com.yeohaeng_ttukttak.server.application.travel.service;
 
-import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundFailException;
+import com.yeohaeng_ttukttak.server.common.exception.ExceptionCode;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
 import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelRepository;
 import com.yeohaeng_ttukttak.server.domain.travel.service.TravelInvitationService;
@@ -25,7 +25,7 @@ public class CreateTravelInvitationService {
     public String createOne(String invitorId, Long travelId) {
 
         final Travel travel = travelRepository.findById(travelId)
-                .orElseThrow(() -> new EntityNotFoundFailException(Travel.class));
+                .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::wrap);
 
         return invitationService.create(travel, invitorId);
     }

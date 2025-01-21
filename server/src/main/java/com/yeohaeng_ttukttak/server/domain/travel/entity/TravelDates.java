@@ -1,8 +1,8 @@
 package com.yeohaeng_ttukttak.server.domain.travel.entity;
 
+import com.yeohaeng_ttukttak.server.common.exception.exception.FailException;
+import com.yeohaeng_ttukttak.server.common.exception.ExceptionCode;
 import com.yeohaeng_ttukttak.server.common.util.LocalDateUtil;
-import com.yeohaeng_ttukttak.server.domain.travel.exception.InvalidTravelDateFormatFailException;
-import com.yeohaeng_ttukttak.server.domain.travel.exception.TravelPeriodTooLongFailException;
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -33,8 +33,8 @@ public class TravelDates {
      *
      * @param startedOn 여행의 시작 날짜
      * @param endedOn 여행의 종료 날짜
-     * @throws InvalidTravelDateFormatFailException 종료 날짜가 시작 날짜보다 빠른 경우 발생합니다.
-     * @throws TravelPeriodTooLongFailException 두 날짜의 기간이 60일을 초과하는 경우 발생합니다.
+     * @throws FailException 종료 날짜가 시작 날짜보다 빠른 경우 발생합니다.
+     * @throws FailException 두 날짜의 기간이 60일을 초과하는 경우 발생합니다.
      */
     void updateDates(final LocalDate startedOn, final LocalDate endedOn) {
 
@@ -49,13 +49,13 @@ public class TravelDates {
         final boolean isAnyNull = Objects.isNull(startedOn) || Objects.isNull(endedOn);
 
         if (isAnyNull || this.startedOn.isAfter(this.endedOn)) {
-            throw new InvalidTravelDateFormatFailException();
+            throw ExceptionCode.STARTED_ON_AFTER_ENDED_ON_FAIL.wrap();
         }
 
         long days = LocalDateUtil.getBetweenDays(this.startedOn, this.endedOn);
 
         if (days > 60) {
-            throw new TravelPeriodTooLongFailException();
+            throw ExceptionCode.TRAVEL_PERIOD_TOO_LONG_FAIL.wrap();
         }
 
     }

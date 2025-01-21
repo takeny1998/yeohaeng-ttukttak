@@ -1,15 +1,16 @@
 package com.yeohaeng_ttukttak.server.domain.travel_name;
 
 import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelName;
-import com.yeohaeng_ttukttak.server.domain.travel.exception.InvalidTravelNameCharacterFailException;
-import com.yeohaeng_ttukttak.server.domain.travel.exception.TravelNameTooLongFailException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
+import static com.yeohaeng_ttukttak.server.common.exception.ExceptionCode.INVALID_TRAVEL_NAME_CHARACTER_FAIL;
+import static com.yeohaeng_ttukttak.server.common.exception.ExceptionCode.TRAVEL_NAME_TOO_LONG_FAIL;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
 
 class TravelNameTest {
 
@@ -47,11 +48,11 @@ class TravelNameTest {
             // then
             assertThat(koreanThrown)
                     .as("한글은 최대 50자까지 입력할 수 있다.")
-                    .isInstanceOf(TravelNameTooLongFailException.class);
+                    .isEqualTo(TRAVEL_NAME_TOO_LONG_FAIL.wrap());
 
             assertThat(englishThrown)
                     .as("영어는 최대 100자까지 입력할 수 있다.")
-                    .isInstanceOf(TravelNameTooLongFailException.class);
+                    .isEqualTo(TRAVEL_NAME_TOO_LONG_FAIL.wrap());
         }
 
         @Test
@@ -71,11 +72,11 @@ class TravelNameTest {
             // then
             assertThat(jaEumThrown)
                     .as("완성된 한글 문자여야 한다.")
-                    .isInstanceOf(InvalidTravelNameCharacterFailException.class);
+                    .isEqualTo(INVALID_TRAVEL_NAME_CHARACTER_FAIL.wrap());
 
             assertThat(specialCharThrown)
                     .as("한글 혹은 영어, 공백, 숫자, 콤마만 사용 가능하다.")
-                    .isInstanceOf(InvalidTravelNameCharacterFailException.class);
+                    .isEqualTo(INVALID_TRAVEL_NAME_CHARACTER_FAIL.wrap());
         }
 
     }

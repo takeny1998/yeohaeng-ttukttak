@@ -3,11 +3,9 @@ package com.yeohaeng_ttukttak.server.common.authorization;
 import com.yeohaeng_ttukttak.server.common.authentication.AuthenticationContextHolder;
 import com.yeohaeng_ttukttak.server.common.authorization.interfaces.Authorizable;
 import com.yeohaeng_ttukttak.server.common.authorization.interfaces.DelegatedAuthorizable;
-import com.yeohaeng_ttukttak.server.common.exception.exception.fail.AccessDeniedFailException;
-import com.yeohaeng_ttukttak.server.common.exception.exception.fail.AuthorizationFailException;
+import com.yeohaeng_ttukttak.server.common.exception.ExceptionCode;
 import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthenticationContext;
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.springframework.beans.factory.annotation.Autowire;
@@ -65,15 +63,16 @@ public class AuthorizationAspect {
         final AuthenticationContext context =
                 AuthenticationContextHolder.getContext();
 
+        // TODO: 앞에 인증 Aspect 여부 확인으로 변경한다.
         if (context == null) {
-            throw new AuthorizationFailException();
+            throw ExceptionCode.AUTHENTICATION_FAIL.wrap();
         }
 
         final boolean permitted =
                 roleBasedPermissionManager.check(target, context.uuid(), requires);
 
         if (!permitted) {
-            throw new AccessDeniedFailException(target.getClass());
+            throw ExceptionCode.AUTHORIZATION_FAIL.wrap();
         }
     }
 

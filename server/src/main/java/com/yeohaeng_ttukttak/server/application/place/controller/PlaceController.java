@@ -1,8 +1,8 @@
 package com.yeohaeng_ttukttak.server.application.place.controller;
 
-import com.yeohaeng_ttukttak.server.application.place.controller.dto.FindPlaceResponse;
-import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
-import com.yeohaeng_ttukttak.server.common.exception.exception.fail.EntityNotFoundFailException;
+import com.yeohaeng_ttukttak.server.application.place.controller.dto.PlaceResponse;
+import com.yeohaeng_ttukttak.server.common.dto.ServerSuccessResponse;
+import com.yeohaeng_ttukttak.server.common.exception.ExceptionCode;
 import com.yeohaeng_ttukttak.server.common.http.JsonRequestMapping;
 import com.yeohaeng_ttukttak.server.domain.place.dto.PlaceDto;
 import com.yeohaeng_ttukttak.server.domain.place.entity.Place;
@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -23,12 +22,12 @@ public class PlaceController {
 
     @GetMapping("/{id}")
     @Transactional(readOnly = true)
-    public ServerResponse<FindPlaceResponse> find(@PathVariable Long id) {
+    public PlaceResponse find(@PathVariable Long id) {
 
         final Place place = placeRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundFailException(Place.class));
+                .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::wrap);
         
-        return new ServerResponse<>(new FindPlaceResponse(PlaceDto.of(place)));
+        return new PlaceResponse(PlaceDto.of(place));
     }
 
 }
