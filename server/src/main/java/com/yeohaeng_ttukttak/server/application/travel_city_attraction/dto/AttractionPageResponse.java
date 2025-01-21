@@ -4,15 +4,13 @@ import com.yeohaeng_ttukttak.server.common.dto.InfiniteScrollResult;
 import com.yeohaeng_ttukttak.server.common.dto.ServerSuccessResponse;
 import com.yeohaeng_ttukttak.server.domain.travel_city_attraction.AttractionDto;
 
-import java.util.Objects;
-
-public final class AttractionPageResponse extends ServerSuccessResponse<AttractionPageResponse.Data> {
+public final class AttractionPageResponse extends ServerSuccessResponse<AttractionPageResponse.AttractionPageData> {
 
     public AttractionPageResponse(InfiniteScrollResult<AttractionDto> attractions) {
-        super(new Data(attractions));
+        super(new AttractionPageData(attractions));
     }
 
-    public record Data(
+    public record AttractionPageData(
             InfiniteScrollResult<AttractionDto> attractions) { }
 
 }

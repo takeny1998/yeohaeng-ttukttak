@@ -3,7 +3,7 @@ package com.yeohaeng_ttukttak.server.application.travel.controller;
 import com.yeohaeng_ttukttak.server.application.travel.controller.dto.*;
 import com.yeohaeng_ttukttak.server.doc.TravelDocument;
 import com.yeohaeng_ttukttak.server.application.travel.service.TravelService;
-import com.yeohaeng_ttukttak.server.application.travel_city.TravelCityService;
+import com.yeohaeng_ttukttak.server.application.travel.service.TravelCityService;
 import com.yeohaeng_ttukttak.server.common.authentication.Authentication;
 import com.yeohaeng_ttukttak.server.common.http.JsonRequestMapping;
 import com.yeohaeng_ttukttak.server.domain.geography.dto.GeographyDto;

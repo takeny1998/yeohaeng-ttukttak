@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * 사용자 여행의 일정 목록을 표현하는 응답 객체입니다.
  */
-public final class TravelPlanListResponse extends ServerSuccessResponse<TravelPlanListResponse.Data> {
+public final class TravelPlanListResponse extends ServerSuccessResponse<TravelPlanListResponse.TreavelPlanListData> {
 
     /**
      * @param plans 여행 일정 목록
@@ -21,8 +21,8 @@ public final class TravelPlanListResponse extends ServerSuccessResponse<TravelPl
      *              </ul>
      */
     public TravelPlanListResponse(List<TravelPlanDto> plans) {
-        super(new Data(plans));
+        super(new TreavelPlanListData(plans));
     }
 
-    public record Data(List<TravelPlanDto> plans) { }
+    public record TreavelPlanListData(List<TravelPlanDto> plans) { }
 }

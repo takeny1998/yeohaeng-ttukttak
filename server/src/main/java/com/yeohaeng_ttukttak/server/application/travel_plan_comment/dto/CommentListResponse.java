@@ -4,12 +4,11 @@ import com.yeohaeng_ttukttak.server.common.dto.ServerSuccessResponse;
 import com.yeohaeng_ttukttak.server.domain.comment.CommentDto;
 
 import java.util.List;
-import java.util.Objects;
 
 /**
  * 댓글 목록을 나타내는 응답 객체입니다.
  */
-public final class CommentListResponse extends ServerSuccessResponse<CommentListResponse.Data> {
+public final class CommentListResponse extends ServerSuccessResponse<CommentListResponse.CommentListData> {
 
     /**
      * @param comments 댓글 목록
@@ -23,8 +22,8 @@ public final class CommentListResponse extends ServerSuccessResponse<CommentList
      *                 </ul>
      */
     public CommentListResponse(List<CommentDto> comments) {
-        super(new Data(comments));
+        super(new CommentListData(comments));
     }
 
-    public record Data(List<CommentDto> comments) { }
+    public record CommentListData(List<CommentDto> comments) { }
 }

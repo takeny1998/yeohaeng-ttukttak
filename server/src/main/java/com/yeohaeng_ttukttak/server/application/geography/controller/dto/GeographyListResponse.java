@@ -5,13 +5,13 @@ import com.yeohaeng_ttukttak.server.domain.geography.dto.GeographyDto;
 
 import java.util.List;
 
-public final class GeographyListResponse extends ServerSuccessResponse<GeographyListResponse.Data> {
+public final class GeographyListResponse extends ServerSuccessResponse<GeographyListResponse.GeographyListData> {
 
 
     public GeographyListResponse(List<GeographyDto> geographies) {
-        super(new Data(geographies));
+        super(new GeographyListData(geographies));
     }
 
-    public record Data(List<GeographyDto> geographies) { }
+    public record GeographyListData(List<GeographyDto> geographies) { }
 
 }

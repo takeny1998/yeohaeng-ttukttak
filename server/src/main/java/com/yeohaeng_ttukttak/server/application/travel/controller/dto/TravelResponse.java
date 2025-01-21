@@ -8,13 +8,13 @@ import lombok.ToString;
 import java.util.List;
 
 @ToString
-public final class TravelResponse extends ServerSuccessResponse<TravelResponse.Data> {
+public final class TravelResponse extends ServerSuccessResponse<TravelResponse.TravelData> {
 
     public TravelResponse(TravelDto travel, List<GeographyDto> cities) {
-        super(new Data(travel, cities));
+        super(new TravelData(travel, cities));
     }
 
-    public record Data(
+    public record TravelData(
             TravelDto travel,
             List<GeographyDto> cities) {}
 

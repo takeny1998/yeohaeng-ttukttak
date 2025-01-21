@@ -4,12 +4,11 @@ import com.yeohaeng_ttukttak.server.common.dto.ServerSuccessResponse;
 import com.yeohaeng_ttukttak.server.domain.travel.dto.TravelDto;
 
 import java.util.List;
-import java.util.Objects;
 
 /**
  * 사용자 여행 목록을 나타내는 응답 객체입니다.
  */
-public final class TravelListResponse extends ServerSuccessResponse<TravelListResponse.Data> {
+public final class TravelListResponse extends ServerSuccessResponse<TravelListResponse.TravelListData> {
 
     /**
      * @param travels 사용자 여행 목록
@@ -23,8 +22,8 @@ public final class TravelListResponse extends ServerSuccessResponse<TravelListRe
      *                </ul>
      */
     public TravelListResponse(List<TravelDto> travels) {
-        super(new Data(travels));
+        super(new TravelListData(travels));
     }
 
-    public record Data(List<TravelDto> travels) { }
+    public record TravelListData(List<TravelDto> travels) { }
 }

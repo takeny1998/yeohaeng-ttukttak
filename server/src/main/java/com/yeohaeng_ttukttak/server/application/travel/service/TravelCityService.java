@@ -1,4 +1,4 @@
-package com.yeohaeng_ttukttak.server.application.travel_city;
+package com.yeohaeng_ttukttak.server.application.travel.service;
 
 import com.yeohaeng_ttukttak.server.common.exception.ExceptionCode;
 import com.yeohaeng_ttukttak.server.domain.geography.dto.GeographyDto;

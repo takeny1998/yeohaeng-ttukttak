@@ -41,7 +41,7 @@ public enum ExceptionCode {
         }
     }),
 
-    COMMENT_CONTENT_LENGTH_TOO_LONG_FAIL(new ArgumentByteLimitExceededFailException("nickname", 100)),
+    COMMENT_CONTENT_LENGTH_TOO_LONG_FAIL(new ArgumentByteLimitExceededFailException("content", 100)),
 
     ENTITY_NOT_FOUND_FAIL(new FailException() {
         
