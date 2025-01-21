@@ -1,14 +1,11 @@
 package com.yeohaeng_ttukttak.server.domain.nickname;
-
-import com.yeohaeng_ttukttak.server.domain.member.exception.BadNicknameFailException;
-import com.yeohaeng_ttukttak.server.domain.member.exception.NicknameCharacterFailException;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static com.yeohaeng_ttukttak.server.common.exception.ExceptionCode.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -51,7 +48,7 @@ class NicknameServiceTest {
             // When, Then
             assertThatThrownBy(() -> nicknameService.create(givenValue))
                     .as("예외를 발생해야 한다.")
-                    .isInstanceOf(BadNicknameFailException.class);
+                    .isEqualTo(NICKNAME_HAS_BAD_WORD_FAIL.wrap());
         }
 
         @Test
@@ -63,7 +60,7 @@ class NicknameServiceTest {
             // When, Then
             assertThatThrownBy(() -> nicknameService.create(givenValue))
                     .as("예외를 발생해야 한다.")
-                    .isInstanceOf(BadNicknameFailException.class);
+                    .isEqualTo(NICKNAME_HAS_BAD_WORD_FAIL.wrap());
         }
 
         @Test
@@ -75,7 +72,7 @@ class NicknameServiceTest {
             // When, Then
             assertThatThrownBy(() -> nicknameService.create(givenValue))
                     .as("예외를 발생해야 한다.")
-                    .isInstanceOf(BadNicknameFailException.class);
+                    .isEqualTo(NICKNAME_HAS_BAD_WORD_FAIL.wrap());
         }
 
         @Test
@@ -87,7 +84,7 @@ class NicknameServiceTest {
             // When, Then
             assertThatThrownBy(() -> nicknameService.create(givenValue))
                     .as("예외를 발생해야 한다.")
-                    .isInstanceOf(BadNicknameFailException.class);
+                    .isEqualTo(NICKNAME_HAS_BAD_WORD_FAIL.wrap());
         }
 
         @Test
@@ -99,7 +96,7 @@ class NicknameServiceTest {
             // When, Then
             assertThatThrownBy(() -> nicknameService.create(givenValue))
                     .as("알맞은 예외를 발생해야 한다.")
-                    .isInstanceOf(NicknameCharacterFailException.class);
+                    .isEqualTo(INVALID_NICKNAME_CHARACTER_FAIL.wrap());
         }
 
         @Test
@@ -112,11 +109,11 @@ class NicknameServiceTest {
             // When, Then
             assertThatThrownBy(() -> nicknameService.create(koWord))
                     .as("한글 닉네임은 6글자가 초과되면 안된다.")
-                    .isInstanceOf(NickNameLengthOutOfRangeFailException.class);
+                    .isEqualTo(NICKNAME_LENGTH_OUT_OF_RANGE_FAIL.wrap());
 
             assertThatThrownBy(() -> nicknameService.create(enWord))
                     .as("영문 닉네임은 12글자가 초과되면 안된다.")
-                    .isInstanceOf(NickNameLengthOutOfRangeFailException.class);
+                    .isEqualTo(NICKNAME_LENGTH_OUT_OF_RANGE_FAIL.wrap());
         }
 
         @Test
@@ -129,11 +126,11 @@ class NicknameServiceTest {
             // When, Then
             assertThatThrownBy(() -> nicknameService.create(koWord))
                     .as("한글 닉네임은 2글자 이상 입력해야 한다.")
-                    .isInstanceOf(NickNameLengthOutOfRangeFailException.class);
+                    .isEqualTo(NICKNAME_LENGTH_OUT_OF_RANGE_FAIL.wrap());
 
             assertThatThrownBy(() -> nicknameService.create(enWord))
                     .as("영문 닉네임은 4글자 이상 입력해야 한다..")
-                    .isInstanceOf(NickNameLengthOutOfRangeFailException.class);
+                    .isEqualTo(NICKNAME_LENGTH_OUT_OF_RANGE_FAIL.wrap());
         }
 
 
@@ -146,8 +143,7 @@ class NicknameServiceTest {
             // When, Then
             assertThatThrownBy(() -> nicknameService.create(givenValue))
                     .as("알맞은 예외를 발생해야 한다.")
-                    .isInstanceOf(NicknameCharacterFailException.class);
+                    .isEqualTo(INVALID_NICKNAME_CHARACTER_FAIL.wrap());
         }
-
     }
 }
