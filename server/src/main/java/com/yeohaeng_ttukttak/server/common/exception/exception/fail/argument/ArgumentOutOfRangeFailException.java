@@ -20,14 +20,13 @@ public class ArgumentOutOfRangeFailException extends ArgumentFailException {
         this.end = end;
     }
 
-    @Nonnull
     @Override
-    protected String getBaseMessage() {
+    public String getBaseMessage() {
         return baseMessage;
     }
 
     @Override
-    protected Object[] getArguments(Locale locale) {
+    public Object[] getArguments(Locale locale) {
         return new Object[]{ super.field, this.start, this.end};
     }
 

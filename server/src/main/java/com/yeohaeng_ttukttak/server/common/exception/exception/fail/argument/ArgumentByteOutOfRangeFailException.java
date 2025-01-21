@@ -17,14 +17,13 @@ public class ArgumentByteOutOfRangeFailException extends ArgumentFailException {
         this.upperByteLimit = upperByteLimit;
     }
 
-    @Nonnull
     @Override
-    protected String getBaseMessage() {
+    public String getBaseMessage() {
         return baseMessage;
     }
 
     @Override
-    protected Object[] getArguments(Locale locale) {
+    public Object[] getArguments(Locale locale) {
         return new Object[] { super.field, this.lowerByteLimit, this.upperByteLimit, this.lowerByteLimit / 2, this.upperByteLimit / 2 };
     }
 }

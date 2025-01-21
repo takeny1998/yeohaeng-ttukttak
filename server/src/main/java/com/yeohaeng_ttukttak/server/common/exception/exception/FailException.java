@@ -15,7 +15,7 @@ public abstract class FailException extends BaseException {
     }
 
     @Override
-    protected Object[] getArguments(Locale locale) {
+    public Object[] getArguments(Locale locale) {
         return new Object[0];
     }
 }

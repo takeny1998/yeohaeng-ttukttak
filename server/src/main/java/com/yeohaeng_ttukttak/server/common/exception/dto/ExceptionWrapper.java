@@ -21,20 +21,15 @@ public abstract class ExceptionWrapper extends BaseException {
         this.instance = instance;
     }
 
-    @Override
-    public String getMessage(@Nonnull Locale locale) {
-        return instance.getMessage(locale);
-    }
-
     @Nonnull
     @Override
-    protected String getBaseMessage() {
-        throw new UnsupportedOperationException();
+    public final String getBaseMessage() {
+        return instance.getBaseMessage();
     }
 
     @Override
-    protected Object[] getArguments(Locale locale) {
-        throw new UnsupportedOperationException();
+    public Object[] getArguments(Locale locale) {
+        return instance.getArguments(locale);
     }
 
     protected BaseException getInstance() {

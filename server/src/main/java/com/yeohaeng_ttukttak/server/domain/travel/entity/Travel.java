@@ -286,9 +286,7 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
      * @param travelPlan 이동할 계획 엔티티
      * @param newOrderOfPlan 새로운 계획의 순서
      * @param willVisitOn 방문할 예정일
-     * @throws PermissionRequiredFailException 사용자가 변경 권한이 없는 경우 발생합니다.
      * @throws ArgumentOutOfRangeFailException 지정된 방문일이 여행 기간에 벗어나는 경우 발생합니다.
-     * @throws EntityNotFoundFailException 주어진 ID에 해당하는 여행 계획이 존재하지 않는 경우 발생합니다.
      */
     @Authorization(requires = CrudOperation.UPDATE)
     public void movePlan(final TravelPlan travelPlan,
@@ -333,8 +331,6 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
      * 지정된 여행 계획을 삭제합니다.
      *
      * @param travelPlan 삭제할 여행 계획
-     * @throws PermissionRequiredFailException 사용자가 여행 계획의 참여자 또는 생성자가 아닌 경우 발생합니다.
-     * @throws EntityNotFoundFailException 주어진 여행 계획이 존재하지 않는 경우 발생합니다.
      */
     @Authorization(requires = CrudOperation.UPDATE)
     public void deletePlan(TravelPlan travelPlan) {

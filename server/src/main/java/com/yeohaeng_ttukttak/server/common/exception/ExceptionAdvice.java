@@ -3,6 +3,7 @@ package com.yeohaeng_ttukttak.server.common.exception;
 import com.yeohaeng_ttukttak.server.common.dto.ServerErrorResponse;
 import com.yeohaeng_ttukttak.server.common.dto.ServerFailResponse;
 import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
+import com.yeohaeng_ttukttak.server.common.exception.dto.ErrorExceptionWrapper;
 import com.yeohaeng_ttukttak.server.common.exception.dto.FailExceptionDto;
 import com.yeohaeng_ttukttak.server.common.exception.dto.FailExceptionWrapper;
 import com.yeohaeng_ttukttak.server.common.exception.exception.BaseException;
@@ -25,12 +26,17 @@ public class ExceptionAdvice {
 
     private final MessageSource messageSource;
 
+    private final ExceptionMessageService messageService;
+
     @ExceptionHandler(FailExceptionWrapper.class)
     public ServerResponse handleFailException(
-            FailExceptionWrapper exceptionWrapper, Locale locale, HttpServletRequest request) {
+            FailExceptionWrapper exceptionWrapper, HttpServletRequest request) {
 
         logError(exceptionWrapper, request, 0);
-        return new ServerFailResponse(FailExceptionDto.of(exceptionWrapper));
+
+        final String message = messageService.getMessage(exceptionWrapper);
+
+        return ServerResponse.of(exceptionWrapper, message);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -49,13 +55,15 @@ public class ExceptionAdvice {
         return new ServerFailResponse(data);
     }
 
-    @ExceptionHandler(ErrorException.class)
-    public ServerErrorResponse handleErrorException(
-            ErrorException exception, Locale locale, HttpServletRequest request) {
+    @ExceptionHandler(ErrorExceptionWrapper.class)
+    public ServerResponse handleErrorException(
+            ErrorExceptionWrapper exceptionWrapper, HttpServletRequest request) {
 
-        logError(exception, request, 0);
+        logError(exceptionWrapper, request, 0);
 
-        return new ServerErrorResponse(exception.getCode(), exception.getMessage(locale));
+        final String message = messageService.getMessage(exceptionWrapper);
+
+        return ServerResponse.of(exceptionWrapper, message);
     }
 
 
@@ -64,7 +72,7 @@ public class ExceptionAdvice {
         final String uuid = UUID.randomUUID().toString().substring(0, 7);
 
         final String message = throwable instanceof BaseException
-                ? ((BaseException) throwable).getMessage(Locale.getDefault())
+                ? messageService.getMessage((BaseException) throwable, Locale.getDefault())
                 : throwable.getMessage();
 
         final String padding = " ".repeat(depth);

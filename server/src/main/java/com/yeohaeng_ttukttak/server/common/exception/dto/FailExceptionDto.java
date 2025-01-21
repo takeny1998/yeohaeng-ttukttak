@@ -22,13 +22,4 @@ public record FailExceptionDto(
     @Nullable String field) {
 
 
-    public static FailExceptionDto of (FailExceptionWrapper exceptionWrapper) {
-
-        return new FailExceptionDto(
-                exceptionWrapper.getCode(),
-                exceptionWrapper.getMessage(),
-                exceptionWrapper.getField());
-    }
-
-
 }

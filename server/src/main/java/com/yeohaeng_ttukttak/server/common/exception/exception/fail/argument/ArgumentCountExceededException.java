@@ -16,14 +16,13 @@ public class ArgumentCountExceededException extends ArgumentFailException {
         this.limit = limit;
     }
 
-    @Nonnull
     @Override
-    protected String getBaseMessage() {
+    public String getBaseMessage() {
         return baseMessage;
     }
 
     @Override
-    protected Object[] getArguments(Locale locale) {
+    public Object[] getArguments(Locale locale) {
         return new Object[] { super.field, limit };
     }
 }

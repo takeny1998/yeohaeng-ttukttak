@@ -17,14 +17,13 @@ public class ArgumentByteLimitExceededFailException extends ArgumentFailExceptio
         this.byteLimit = byteLimit;
     }
 
-    @Nonnull
     @Override
-    protected String getBaseMessage() {
+    public String getBaseMessage() {
         return baseMessage;
     }
 
     @Override
-    protected Object[] getArguments(Locale locale) {
+    public Object[] getArguments(Locale locale) {
         return new Object[]{ super.field, byteLimit, byteLimit / 2 };
     }
 }

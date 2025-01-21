@@ -17,11 +17,10 @@ public abstract class ArgumentFailException extends FailException {
         this.field = field;
     }
 
-    @Nonnull
-    protected abstract String getBaseMessage();
+    public abstract String getBaseMessage();
 
     @Override
-    protected Object[] getArguments(Locale locale) {
+    public Object[] getArguments(Locale locale) {
         return new Object[]{field};
     }
 

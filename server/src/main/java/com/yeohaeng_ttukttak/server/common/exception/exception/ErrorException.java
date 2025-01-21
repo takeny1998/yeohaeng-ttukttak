@@ -28,12 +28,12 @@ public abstract class ErrorException extends BaseException {
 
     @Nonnull
     @Override
-    protected String getBaseMessage() {
+    public String getBaseMessage() {
         return baseMessage;
     }
 
     @Override
-    protected Object[] getArguments(Locale locale) {
+    public Object[] getArguments(Locale locale) {
         return new Object[0];
     }
 
