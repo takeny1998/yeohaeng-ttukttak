@@ -1,31 +1,23 @@
 package com.yeohaeng_ttukttak.server.doc;
 
 import com.yeohaeng_ttukttak.server.common.authentication.Authentication;
-import com.yeohaeng_ttukttak.server.doc.annotation.ApiExceptionResponse;
-import com.yeohaeng_ttukttak.server.doc.annotation.ApiPostCondition;
-import com.yeohaeng_ttukttak.server.doc.annotation.ApiPostConditions;
-import com.yeohaeng_ttukttak.server.common.dto.ServerErrorResponse;
-import com.yeohaeng_ttukttak.server.common.dto.ServerFailResponse;
-import com.yeohaeng_ttukttak.server.common.exception.exception.error.ErrorException;
-import com.yeohaeng_ttukttak.server.common.exception.exception.fail.FailException;
-import com.yeohaeng_ttukttak.server.common.locale.LocalizedMessageService;
+import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
+import com.yeohaeng_ttukttak.server.common.exception.ExceptionCode;
+import com.yeohaeng_ttukttak.server.common.exception.ExceptionMessageService;
+import com.yeohaeng_ttukttak.server.common.exception.dto.ExceptionWrapper;
 import com.yeohaeng_ttukttak.server.common.locale.RequestLocaleService;
-import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthenticationContext;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.examples.Example;
-import io.swagger.v3.oas.models.media.Content;
 import io.swagger.v3.oas.models.media.MediaType;
-import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.responses.ApiResponse;
-import io.swagger.v3.oas.models.responses.ApiResponses;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springframework.context.annotation.Bean;
@@ -48,7 +40,7 @@ public class DocumentationConfig {
 
     private final RequestLocaleService requestLocaleService;
 
-    private final LocalizedMessageService localizedMessageService;
+    private final ExceptionMessageService messageService;
 
     private static final String SECURITY_NAME = "Authorization";
     private static final String SECURITY_SCHEME = "bearer";
@@ -64,12 +56,12 @@ public class DocumentationConfig {
                 .in(SecurityScheme.In.HEADER)
                 .name(SECURITY_NAME);
 
-
-        final Components authorization = new Components()
+        final Components components = new Components()
                 .addSecuritySchemes(SECURITY_NAME, securityScheme);
 
+
         return new OpenAPI()
-                .components(authorization);
+                .components(components);
     }
 
     @Bean
@@ -80,156 +72,105 @@ public class DocumentationConfig {
             @Override
             public Operation customize(Operation operation, HandlerMethod handlerMethod) {
 
-                handleSuccessResponse(operation, handlerMethod);
-                handleExceptionResponse(operation, handlerMethod, currentLocale);
-
-                handleAuthorization(operation, handlerMethod);
+//                handleSuccessResponse(operation, handlerMethod);
+//                handleExceptionResponse(operation, handlerMethod, currentLocale);
 
                 return operation;
             }
         };
     }
 
+    @Bean
+    public OperationCustomizer handleSuccessResponse() {
+        return (operation, handlerMethod) -> {
 
-    public void handleSuccessResponse(final Operation operation, final HandlerMethod handlerMethod) {
+            final MediaType mediaType = get200MediaType(operation);
+            if (mediaType == null) return operation;
 
-        final ApiResponses responses = new ApiResponses();
+            mediaType.addExamples("SUCCESS", new Example().$ref(mediaType.getSchema().get$ref()));
+            return operation;
 
-        final ApiResponse successResponse = operation.getResponses().get("200");
-
-        successResponse.setDescription(resolveDescription(handlerMethod));
-
-        responses.addApiResponse("success", successResponse);
-
-        operation.setResponses(responses);
+        };
     }
 
-    private String resolveDescription(HandlerMethod handlerMethod) {
-        final StringBuilder descriptionBuilder = new StringBuilder();
+    @Bean
+    public OperationCustomizer handleAuthentication() {
+        return (operation, handlerMethod) -> {
 
-        final ApiPostConditions postConditions
-                = handlerMethod.getMethodAnnotation(ApiPostConditions.class);
+            final Authentication annotation
+                    = handlerMethod.getMethodAnnotation(Authentication.class);
 
-        if (Objects.nonNull(postConditions)) {
-            for (ApiPostCondition apiPostCondition : postConditions.value()) {
-                descriptionBuilder.append(apiPostCondition.value()).append("\n");
-            }
-        }
+            if (Objects.isNull(annotation)) return operation;
 
-        final ApiPostCondition postCondition
-                = handlerMethod.getMethodAnnotation(ApiPostCondition.class);
+            operation.setSecurity(List.of(securityRequirement()));
 
-        if (Objects.nonNull(postCondition)) {
-            descriptionBuilder.append(postCondition.value()).append("\n");
-        }
+            final MediaType mediaType = get200MediaType(operation);
+            if (mediaType == null) return operation;
 
-        return descriptionBuilder.toString();
+            addExceptionAsExample(mediaType, ExceptionCode.AUTHENTICATION_FAIL);
+
+            return operation;
+        };
     }
 
+    @Bean
+    public OperationCustomizer handleGlobalException() {
+        return (operation, handlerMethod) -> {
 
-    public void handleExceptionResponse(final Operation operation, final HandlerMethod handlerMethod, final Locale locale) {
+            final MediaType mediaType = get200MediaType(operation);
 
-        final ApiResponses responses = operation.getResponses();
-        final ApiResponse apiResponse = new ApiResponse();
+            if (mediaType == null) return operation;
 
-        final ApiExceptionResponse apiExceptionResponse =
-                handlerMethod.getMethodAnnotation(ApiExceptionResponse.class);
-
-        if (Objects.isNull(apiExceptionResponse)) return;
-
-        final Class<?>[] exceptionClasses = apiExceptionResponse.value();
-
-        final MediaType errorExamples = new MediaType();
-        final MediaType failExamples = new MediaType();
-
-        for (Class<?> exceptionClass : exceptionClasses) {
-            final Example example = resolveExample(exceptionClass, locale);
-
-            if (Objects.isNull(example)) continue;
-
-            if (example.getValue() instanceof ServerFailResponse) {
-                failExamples.addExamples(exceptionClass.getSimpleName(), example);
+            for (ExceptionCode globalException : ExceptionCode.getGlobalExceptions()) {
+                addExceptionAsExample(mediaType, globalException);
             }
 
-            if (example.getValue() instanceof ServerErrorResponse) {
-                errorExamples.addExamples(exceptionClass.getSimpleName(), example);
+            return operation;
+        };
+    }
+
+    @Bean
+    public OperationCustomizer handleDomainException() {
+        return (operation, handlerMethod) -> {
+
+            final MediaType mediaType = get200MediaType(operation);
+
+            if (mediaType == null) return operation;
+
+            final Throws annotation =
+                    handlerMethod.getMethodAnnotation(Throws.class);
+
+            if (annotation == null) return operation;
+
+            for (ExceptionCode exceptionCode : annotation.value()) {
+                addExceptionAsExample(mediaType, exceptionCode);
             }
 
-        }
-
-        if (failExamples.getExamples() != null) {
-            responses.addApiResponse("fail",
-                    apiResponse.content(new Content()
-                            .addMediaType("application/json", failExamples)));
-        }
-
-        if (errorExamples.getExamples() != null) {
-            responses.addApiResponse("error",
-                    apiResponse.content(new Content()
-                            .addMediaType("application/json", errorExamples)));
-
-        }
-
-        operation.setResponses(responses);
+            return operation;
+        };
     }
 
-    @SneakyThrows
-    private Example resolveExample(Class<?> clazz, Locale locale) {
+    @Nullable
+    private MediaType get200MediaType(Operation operation) {
 
-        if (FailException.class.isAssignableFrom(clazz)) {
+        final ApiResponse response =
+                operation.getResponses().get("200");
 
-            final FailException failException = FailException.class.cast(
-                    clazz.getConstructor().newInstance());
+        if (response == null) return null;
 
-            final ServerFailResponse failResponse = new ServerFailResponse(failException.toErrorObject(locale));
+        return response.getContent().get("application/json");
 
-            return new Example().value(failResponse);
-
-        } else if (ErrorException.class.isAssignableFrom(clazz)) {
-
-            final ErrorException errorException = ErrorException.class.cast(
-                    clazz.getConstructor().newInstance());
-
-            final ServerErrorResponse errorResponse = new ServerErrorResponse(
-                    errorException.code(), localizedMessageService.fromException(locale, errorException));
-
-            return new Example().value(errorResponse);
-        }
-
-        return null;
     }
 
-    /**
-     * 사용자 인증 관련 API 문서 정보를 처리합니다.
-     * <ul>
-     *     <li>사용자 정보(AuthenticationContext) 파라미터를 API 문서에서 제거합니다.</li>
-     *     <li>인증이 필요한 메서드를 API 문서에 표시합니다.</li>
-     * </ul>
-     */
-    private void handleAuthorization(Operation operation, HandlerMethod handlerMethod) {
+    private void addExceptionAsExample(final MediaType mediaType, final ExceptionCode exceptionCode) {
+        final ExceptionWrapper exceptionWrapper = exceptionCode.wrap();
 
-        if (Objects.nonNull(operation.getParameters())) {
-
-            final List<Parameter> parameters = operation.getParameters().stream()
-                    .filter(parameter -> parameter.getClass().isInstance(AuthenticationContext.class))
-                    .toList();
-
-            operation.setParameters(parameters);
-        }
-
-        final Authentication authenticationAnnotation
-                = handlerMethod.getMethodAnnotation(Authentication.class);
-
-        if (Objects.isNull(authenticationAnnotation)) {
-            return;
-        }
-
-        operation.setSecurity(List.of(securityRequirement()));
+        mediaType.addExamples(exceptionCode.name(),
+                new Example().value(ServerResponse.of(exceptionWrapper, messageService.getMessage(exceptionWrapper))));
     }
 
     private SecurityRequirement securityRequirement() {
-        return new SecurityRequirement()
-                .addList(SECURITY_NAME); // 보안 요구 사항을 추가합니다.
+        return new SecurityRequirement().addList(SECURITY_NAME);
     }
 
 }

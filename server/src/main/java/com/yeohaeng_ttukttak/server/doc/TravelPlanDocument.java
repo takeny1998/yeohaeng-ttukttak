@@ -2,10 +2,16 @@ package com.yeohaeng_ttukttak.server.doc;
 
 import com.yeohaeng_ttukttak.server.application.travel_plan.dto.CreateTravelPlanRequest;
 import com.yeohaeng_ttukttak.server.application.travel_plan.dto.MoveTravelPlanRequest;
-import com.yeohaeng_ttukttak.server.application.travel_plan.dto.TravelPlanListSuccessResponse;
+import com.yeohaeng_ttukttak.server.application.travel_plan.dto.TravelPlanListResponse;
+import com.yeohaeng_ttukttak.server.common.exception.ExceptionCode;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+
+import static com.yeohaeng_ttukttak.server.common.exception.ExceptionCode.DAY_OF_TRAVEL_OUT_OF_RANGE_FAIL;
+import static com.yeohaeng_ttukttak.server.common.exception.ExceptionCode.WILL_VISIT_ON_OUT_OF_TRAVEL_PERIOD_FAIL;
 
 
 @Tag(name = "여행 일정", description = "여행 일정과 관련된 동작을 수행하는 컬렉션 입니다.")
@@ -27,7 +33,8 @@ public interface TravelPlanDocument {
         - 일정 목록은 일차(willVisitOn) 오름차순, 순서(orderOfPlan) 오름차순 기준으로 정렬되어야 합니다.
         
         """)
-    TravelPlanListSuccessResponse create(
+    @Throws(DAY_OF_TRAVEL_OUT_OF_RANGE_FAIL)
+    TravelPlanListResponse create(
             Long travelId, CreateTravelPlanRequest request);
 
 
@@ -43,7 +50,7 @@ public interface TravelPlanDocument {
         - 일정 목록은 일차(willVisitOn) 오름차순, 순서(orderOfPlan) 오름차순 기준으로 정렬되어야 합니다.
         
         """)
-    TravelPlanListSuccessResponse findAll(Long travelId);
+    TravelPlanListResponse findAll(Long travelId);
 
 
     @Operation(
@@ -60,7 +67,8 @@ public interface TravelPlanDocument {
             - 일정 목록은 일차(willVisitOn) 오름차순, 순서(orderOfPlan) 오름차순 기준으로 정렬되어야 합니다.
             
             """)
-    TravelPlanListSuccessResponse move(
+    @Throws(WILL_VISIT_ON_OUT_OF_TRAVEL_PERIOD_FAIL)
+    TravelPlanListResponse move(
             Long travelId, Long planId, MoveTravelPlanRequest request);
 
 
@@ -76,6 +84,6 @@ public interface TravelPlanDocument {
         - 추가된 일정은 일차(willVisitOn)가 같은 일정 목록의 마지막 순서(orderOfPlan)가 부여됩니다.
                     
         """)
-    TravelPlanListSuccessResponse delete(Long travelId, Long planId);
+    TravelPlanListResponse delete(Long travelId, Long planId);
 
 }
