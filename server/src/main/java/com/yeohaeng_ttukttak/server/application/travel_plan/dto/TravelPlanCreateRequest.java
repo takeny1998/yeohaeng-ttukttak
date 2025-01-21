@@ -14,7 +14,7 @@ import jakarta.validation.constraints.NotNull;
  *                      </li>
  *                    </ul>
  */
-public record CreateTravelPlanRequest(
+public record TravelPlanCreateRequest(
        @NotNull Long placeId,
        @NotNull Integer dayOfTravel
 ) { }

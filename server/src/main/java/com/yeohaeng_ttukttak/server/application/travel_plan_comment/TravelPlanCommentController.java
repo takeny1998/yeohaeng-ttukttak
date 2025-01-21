@@ -36,7 +36,7 @@ public class TravelPlanCommentController {
      */
     @PostMapping
     @Authentication
-    public ServerSuccessResponse<CommentListResponse> writeComment(
+    public CommentListResponse writeComment(
             @PathVariable Long travelId,
             @PathVariable Long planId,
             @RequestBody @Valid CommentContentRequest request) {
@@ -47,8 +47,7 @@ public class TravelPlanCommentController {
         final List<CommentDto> dtoList =
                 travelPlanCommentService.getOrderedComments(planId);
 
-        return new ServerSuccessResponse<>(
-                new CommentListResponse(dtoList));
+        return new CommentListResponse(dtoList);
     }
 
     /**
@@ -59,15 +58,14 @@ public class TravelPlanCommentController {
      * @return 조회된 댓글 목록
      */
     @GetMapping
-    public ServerSuccessResponse<CommentListResponse> getOrderedComments(
+    public CommentListResponse getOrderedComments(
             @PathVariable Long travelId,
             @PathVariable Long planId) {
 
         final List<CommentDto> dtoList =
                 travelPlanCommentService.getOrderedComments(planId);
 
-        return new ServerSuccessResponse<>(
-                new CommentListResponse(dtoList));
+        return new CommentListResponse(dtoList);
     }
 
     /**
@@ -85,7 +83,7 @@ public class TravelPlanCommentController {
      */
     @PatchMapping("/{commentId}")
     @Authentication
-    public ServerSuccessResponse<CommentListResponse> editComment(
+    public CommentListResponse editComment(
             @PathVariable Long travelId,
             @PathVariable Long planId,
             @PathVariable Long commentId,
@@ -101,8 +99,7 @@ public class TravelPlanCommentController {
         final List<CommentDto> dtoList =
                 travelPlanCommentService.getOrderedComments(planId);
 
-        return new ServerSuccessResponse<>(
-                new CommentListResponse(dtoList));
+        return new CommentListResponse(dtoList);
     }
 
     /**
@@ -119,7 +116,7 @@ public class TravelPlanCommentController {
      */
     @DeleteMapping("/{commentId}")
     @Authentication
-    public ServerSuccessResponse<CommentListResponse> deleteComment(
+    public CommentListResponse deleteComment(
             @PathVariable Long travelId,
             @PathVariable Long planId,
             @PathVariable Long commentId,
@@ -130,8 +127,7 @@ public class TravelPlanCommentController {
         final List<CommentDto> dtoList =
                 travelPlanCommentService.getOrderedComments(planId);
 
-        return new ServerSuccessResponse<>(
-                new CommentListResponse(dtoList));
+        return new CommentListResponse(dtoList);
     }
 
 }

@@ -1,8 +1,8 @@
 package com.yeohaeng_ttukttak.server.application.travel_plan;
 
-import com.yeohaeng_ttukttak.server.application.travel_plan.dto.CreateTravelPlanRequest;
+import com.yeohaeng_ttukttak.server.application.travel_plan.dto.TravelPlanCreateRequest;
 import com.yeohaeng_ttukttak.server.application.travel_plan.dto.TravelPlanListResponse;
-import com.yeohaeng_ttukttak.server.application.travel_plan.dto.MoveTravelPlanRequest;
+import com.yeohaeng_ttukttak.server.application.travel_plan.dto.TravelPlanMoveRequest;
 import com.yeohaeng_ttukttak.server.common.authentication.Authentication;
 import com.yeohaeng_ttukttak.server.common.http.JsonRequestMapping;
 import com.yeohaeng_ttukttak.server.doc.TravelPlanDocument;
@@ -34,7 +34,7 @@ public class TravelPlanController implements TravelPlanDocument {
     @Authentication
     public TravelPlanListResponse create(
             @PathVariable Long travelId,
-            @RequestBody CreateTravelPlanRequest request) {
+            @RequestBody TravelPlanCreateRequest request) {
 
         travelPlanService.create(
                 travelId, request.placeId(), request.dayOfTravel());
@@ -53,7 +53,7 @@ public class TravelPlanController implements TravelPlanDocument {
     public TravelPlanListResponse move(
             @PathVariable Long travelId,
             @PathVariable Long planId,
-            @RequestBody MoveTravelPlanRequest request) {
+            @RequestBody TravelPlanMoveRequest request) {
 
         travelPlanService.move(travelId, planId, request.orderOfPlan(), request.willVisitOn());
 

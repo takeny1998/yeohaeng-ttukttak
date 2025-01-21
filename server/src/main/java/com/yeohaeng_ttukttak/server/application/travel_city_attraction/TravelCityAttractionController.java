@@ -1,6 +1,6 @@
 package com.yeohaeng_ttukttak.server.application.travel_city_attraction;
 
-import com.yeohaeng_ttukttak.server.application.travel_city_attraction.dto.AttractionInfiniteScrolledResponse;
+import com.yeohaeng_ttukttak.server.application.travel_city_attraction.dto.AttractionPageResponse;
 import com.yeohaeng_ttukttak.server.common.dto.InfiniteScrollCommand;
 import com.yeohaeng_ttukttak.server.common.dto.InfiniteScrollResult;
 import com.yeohaeng_ttukttak.server.common.dto.ServerSuccessResponse;
@@ -28,7 +28,7 @@ public class TravelCityAttractionController {
 
     @GetMapping
     @Transactional(readOnly = true)
-    public ServerSuccessResponse<AttractionInfiniteScrolledResponse> orderByTravelSimilarity(
+    public AttractionPageResponse orderByTravelSimilarity(
             @PathVariable Long travelId, @PathVariable Long cityId, @ModelAttribute InfiniteScrollCommand scrollCommand) {
 
         final Travel travel = travelRepository.findById(travelId)
@@ -40,7 +40,7 @@ public class TravelCityAttractionController {
         final InfiniteScrollResult<AttractionDto> scrollResult =
                 repository.orderByTravelSimilarity(scrollCommand, travel, city);
 
-        return new ServerSuccessResponse<>(new AttractionInfiniteScrolledResponse(scrollResult));
+        return new AttractionPageResponse(scrollResult);
     }
 
 }

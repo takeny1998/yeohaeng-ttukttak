@@ -1,6 +1,6 @@
 package com.yeohaeng_ttukttak.server.application.place.controller;
 
-import com.yeohaeng_ttukttak.server.application.place.controller.dto.FindPlaceResponse;
+import com.yeohaeng_ttukttak.server.application.place.controller.dto.PlaceResponse;
 import com.yeohaeng_ttukttak.server.common.dto.ServerSuccessResponse;
 import com.yeohaeng_ttukttak.server.common.exception.ExceptionCode;
 import com.yeohaeng_ttukttak.server.common.http.JsonRequestMapping;
@@ -22,12 +22,12 @@ public class PlaceController {
 
     @GetMapping("/{id}")
     @Transactional(readOnly = true)
-    public ServerSuccessResponse<FindPlaceResponse> find(@PathVariable Long id) {
+    public PlaceResponse find(@PathVariable Long id) {
 
         final Place place = placeRepository.findById(id)
                 .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::wrap);
         
-        return new ServerSuccessResponse<>(new FindPlaceResponse(PlaceDto.of(place)));
+        return new PlaceResponse(PlaceDto.of(place));
     }
 
 }

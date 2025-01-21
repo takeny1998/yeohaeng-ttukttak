@@ -11,7 +11,7 @@ import java.time.LocalDate;
  *                      <li>방문 일자는 해당 여행의 일자 범위에 있어야 합니다.</li>
  *                    </ul>
  */
-public record MoveTravelPlanRequest(
+public record TravelPlanMoveRequest(
         Integer orderOfPlan,
         LocalDate willVisitOn
 ) {}

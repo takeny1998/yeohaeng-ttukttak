@@ -1,6 +1,6 @@
 package com.yeohaeng_ttukttak.server.application.travel.controller;
 
-import com.yeohaeng_ttukttak.server.application.travel.controller.dto.CreateTravelInvitationResponse;
+import com.yeohaeng_ttukttak.server.application.travel.controller.dto.TravelInvitationResponse;
 import com.yeohaeng_ttukttak.server.application.travel.service.CreateTravelInvitationService;
 import com.yeohaeng_ttukttak.server.application.travel.service.FindTravelInvitationService;
 import com.yeohaeng_ttukttak.server.common.authentication.Authentication;
@@ -23,7 +23,7 @@ public class TravelInvitationController {
 
     @PostMapping
     @Authentication
-    public ServerSuccessResponse<CreateTravelInvitationResponse> create(
+    public TravelInvitationResponse create(
             @PathVariable Long travelId,
             AuthenticationContext authorization
     ) {
@@ -34,8 +34,7 @@ public class TravelInvitationController {
                 authorization.uuid(), travelId);
         final TravelInvitationDto dto = findService.findOne(travelId, createdId);
 
-        return new ServerSuccessResponse<>(
-                new CreateTravelInvitationResponse(dto));
+        return new TravelInvitationResponse(dto);
     }
 
 }

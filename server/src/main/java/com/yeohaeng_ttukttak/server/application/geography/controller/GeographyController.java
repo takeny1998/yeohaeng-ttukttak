@@ -30,7 +30,7 @@ public class GeographyController {
      */
     @GetMapping
     @Transactional(readOnly = true)
-    public ServerSuccessResponse<GeographyListResponse> findAll() {
+    public GeographyListResponse findAll() {
 
        final List<GeographyDto> dtoList =
                geographyRepository.findAll()
@@ -38,7 +38,7 @@ public class GeographyController {
                        .map(GeographyDto::of)
                        .toList();
 
-        return new ServerSuccessResponse<>(new GeographyListResponse(dtoList));
+        return new GeographyListResponse(dtoList);
 
     }
 

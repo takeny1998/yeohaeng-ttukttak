@@ -2,7 +2,7 @@ package com.yeohaeng_ttukttak.server.application.member.controller;
 
 import com.yeohaeng_ttukttak.server.application.member.controller.dto.MemberResponse;
 import com.yeohaeng_ttukttak.server.application.member.controller.dto.TravelListResponse;
-import com.yeohaeng_ttukttak.server.application.member.controller.dto.UpdateMemberProfileRequest;
+import com.yeohaeng_ttukttak.server.application.member.controller.dto.MemberProfileUpdateRequest;
 import com.yeohaeng_ttukttak.server.application.member.service.FindMemberService;
 import com.yeohaeng_ttukttak.server.application.member.service.MemberTravelService;
 import com.yeohaeng_ttukttak.server.application.member.service.UpdateMemberService;
@@ -35,9 +35,9 @@ public class MemberController {
      * @return 조회된 사용자 프로필
      */
     @GetMapping("/{id}")
-    public ServerSuccessResponse<MemberResponse> find(@PathVariable String id) {
+    public MemberResponse find(@PathVariable String id) {
         final MemberDto dto = findMemberService.findOne(id);
-        return new ServerSuccessResponse<>(new MemberResponse(dto));
+        return new MemberResponse(dto);
     }
 
     /**
@@ -46,22 +46,22 @@ public class MemberController {
      */
     @GetMapping("/me")
     @Authentication
-    public ServerSuccessResponse<MemberResponse> findMe(AuthenticationContext authorization) {
+    public MemberResponse findMe(AuthenticationContext authorization) {
         final MemberDto dto = findMemberService.findOne(authorization.uuid());
-        return new ServerSuccessResponse<>(new MemberResponse(dto));
+        return new MemberResponse(dto);
     }
 
     @PatchMapping("/me/profile")
     @Authentication
-    public ServerSuccessResponse<MemberResponse> updateProfile(
-            @RequestBody UpdateMemberProfileRequest request,
+    public MemberResponse updateProfile(
+            @RequestBody MemberProfileUpdateRequest request,
             AuthenticationContext authorization) {
 
         updateMemberService.updateProfile(authorization.uuid(),
                 request.nickname(), request.ageGroup(), request.gender());
 
         MemberDto dto = findMemberService.findOne(authorization.uuid());
-        return new ServerSuccessResponse<>(new MemberResponse(dto));
+        return new MemberResponse(dto);
 
     }
 
@@ -71,14 +71,13 @@ public class MemberController {
      */
     @GetMapping("/me/travels")
     @Authentication
-    public ServerSuccessResponse<TravelListResponse> findMyTravels(
+    public TravelListResponse findMyTravels(
             AuthenticationContext context) {
 
         final List<TravelDto> travelDtoList =
                 memberTravelService.findByMemberId(context.uuid());
 
-        return new ServerSuccessResponse<>(
-                new TravelListResponse(travelDtoList));
+        return new TravelListResponse(travelDtoList);
     }
 
 

@@ -1,12 +1,9 @@
 package com.yeohaeng_ttukttak.server.doc;
 
-import com.yeohaeng_ttukttak.server.application.travel_plan.dto.CreateTravelPlanRequest;
-import com.yeohaeng_ttukttak.server.application.travel_plan.dto.MoveTravelPlanRequest;
+import com.yeohaeng_ttukttak.server.application.travel_plan.dto.TravelPlanCreateRequest;
+import com.yeohaeng_ttukttak.server.application.travel_plan.dto.TravelPlanMoveRequest;
 import com.yeohaeng_ttukttak.server.application.travel_plan.dto.TravelPlanListResponse;
-import com.yeohaeng_ttukttak.server.common.exception.ExceptionCode;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -35,7 +32,7 @@ public interface TravelPlanDocument {
         """)
     @Throws(DAY_OF_TRAVEL_OUT_OF_RANGE_FAIL)
     TravelPlanListResponse create(
-            Long travelId, CreateTravelPlanRequest request);
+            Long travelId, TravelPlanCreateRequest request);
 
 
     @Operation(
@@ -69,7 +66,7 @@ public interface TravelPlanDocument {
             """)
     @Throws(WILL_VISIT_ON_OUT_OF_TRAVEL_PERIOD_FAIL)
     TravelPlanListResponse move(
-            Long travelId, Long planId, MoveTravelPlanRequest request);
+            Long travelId, Long planId, TravelPlanMoveRequest request);
 
 
     @Operation(

@@ -12,6 +12,7 @@ import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.examples.Example;
+import io.swagger.v3.oas.models.media.Content;
 import io.swagger.v3.oas.models.media.MediaType;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
@@ -153,12 +154,13 @@ public class DocumentationConfig {
     @Nullable
     private MediaType get200MediaType(Operation operation) {
 
-        final ApiResponse response =
-                operation.getResponses().get("200");
-
+        final ApiResponse response = operation.getResponses().get("200");
         if (response == null) return null;
 
-        return response.getContent().get("application/json");
+        final Content content = response.getContent();
+        if (content == null) return null;
+
+        return content.get("application/json");
 
     }
 
