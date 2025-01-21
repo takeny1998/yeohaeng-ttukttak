@@ -45,7 +45,7 @@ public class TravelService {
         final List<City> cities = geographyRepository.findCitiesByIds(cityIds);
 
         if (!Objects.equals(cities.size(), cityIds.size())) {
-            throw ExceptionCode.ENTITY_NOT_FOUND_FAIL.getInstance();
+            throw ExceptionCode.ENTITY_NOT_FOUND_FAIL.wrap();
         }
 
         final Travel travel = new Travel(
@@ -64,7 +64,7 @@ public class TravelService {
     @Transactional(readOnly = true)
     public TravelDto findById(Long travelId) {
         final Travel travel = travelRepository.findById(travelId)
-                .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::getInstance);
+                .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::wrap);
 
         return TravelDto.of(travel);
     }
@@ -95,7 +95,7 @@ public class TravelService {
     ) {
 
         final Travel travel = travelRepository.findById(travelId)
-                .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::getInstance);
+                .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::wrap);
 
         if (Objects.nonNull(inputName)) {
             travel.rename(inputName);
@@ -118,7 +118,7 @@ public class TravelService {
             final List<City> cities = geographyRepository.findCitiesByIds(cityIds);
 
             if (!Objects.equals(cities.size(), cityIds.size())) {
-                throw ExceptionCode.ENTITY_NOT_FOUND_FAIL.getInstance();
+                throw ExceptionCode.ENTITY_NOT_FOUND_FAIL.wrap();
             }
 
             travel.updateCities(cities);

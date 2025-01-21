@@ -31,7 +31,7 @@ public class TravelParticipant {
         this.travel = travel;
 
         if (Objects.equals(invitee.uuid(), inviter.uuid())) {
-            throw ExceptionCode.CANNOT_INVITE_YOURSELF_FAIL.getInstance();
+            throw ExceptionCode.CANNOT_INVITE_YOURSELF_FAIL.wrap();
         }
 
         this.invitee = invitee;

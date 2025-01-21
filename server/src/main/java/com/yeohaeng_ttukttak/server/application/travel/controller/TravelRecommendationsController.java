@@ -1,7 +1,7 @@
 package com.yeohaeng_ttukttak.server.application.travel.controller;
 
 import com.yeohaeng_ttukttak.server.application.travel.controller.dto.RecommendTravelResponse;
-import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
+import com.yeohaeng_ttukttak.server.common.dto.ServerSuccessResponse;
 import com.yeohaeng_ttukttak.server.common.http.JsonRequestMapping;
 import com.yeohaeng_ttukttak.server.common.util.dto.PageCommand;
 import com.yeohaeng_ttukttak.server.common.util.dto.PageResult;
@@ -28,7 +28,7 @@ public class TravelRecommendationsController {
 
     @GetMapping
     @Transactional(readOnly = true)
-    public ServerResponse<RecommendTravelResponse> recommend(
+    public ServerSuccessResponse<RecommendTravelResponse> recommend(
             @RequestParam Long cityId,
             @RequestParam List<MotivationType> motivationTypes,
             @RequestParam List<CompanionType> companionTypes,
@@ -40,7 +40,7 @@ public class TravelRecommendationsController {
         final PageResult<Travel> pageResult = repository.call(
                 cityId, motivationTypes, companionTypes, pageCommand);
 
-        return new ServerResponse<>(RecommendTravelResponse.of(pageResult));
+        return new ServerSuccessResponse<>(RecommendTravelResponse.of(pageResult));
 
     }
 

@@ -28,7 +28,7 @@ public class AuthenticationAspect {
         final String header = httpServletRequest.getHeader("Authorization");
 
         if (Objects.isNull(header) || !header.startsWith(TOKEN_PREFIX)) {
-            throw ExceptionCode.AUTHENTICATION_FAIL.getInstance();
+            throw ExceptionCode.AUTHENTICATION_FAIL.wrap();
         }
 
         final String encodedToken = header.substring(TOKEN_PREFIX.length());

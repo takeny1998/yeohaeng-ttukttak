@@ -12,7 +12,7 @@ public class ArgumentByteLimitExceededFailException extends ArgumentFailExceptio
 
     private final int byteLimit;
 
-    public ArgumentByteLimitExceededFailException( String field, int byteLimit) {
+    public ArgumentByteLimitExceededFailException(String field, int byteLimit) {
         super(field);
         this.byteLimit = byteLimit;
     }

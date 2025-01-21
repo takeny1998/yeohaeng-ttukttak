@@ -65,14 +65,14 @@ public class AuthorizationAspect {
 
         // TODO: 앞에 인증 Aspect 여부 확인으로 변경한다.
         if (context == null) {
-            throw ExceptionCode.AUTHENTICATION_FAIL.getInstance();
+            throw ExceptionCode.AUTHENTICATION_FAIL.wrap();
         }
 
         final boolean permitted =
                 roleBasedPermissionManager.check(target, context.uuid(), requires);
 
         if (!permitted) {
-            throw ExceptionCode.AUTHORIZATION_FAIL.getInstance();
+            throw ExceptionCode.AUTHORIZATION_FAIL.wrap();
         }
     }
 

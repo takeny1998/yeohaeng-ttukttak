@@ -164,7 +164,7 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
         motivations.addAll(newMotivations);
 
         if (this.motivations.isEmpty() || this.motivations.size() > 5) {
-            throw ExceptionCode.TRAVEL_MOTIVATION_TYPE_COUNT_OUT_OF_RANGE_FAIL.getInstance();
+            throw ExceptionCode.TRAVEL_MOTIVATION_TYPE_COUNT_OUT_OF_RANGE_FAIL.wrap();
         }
     }
 
@@ -186,7 +186,7 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
         companions.addAll(newCompanions);
 
         if (this.companions.isEmpty() || this.companions.size() > 3) {
-            throw ExceptionCode.TRAVEL_COMPANION_TYPE_COUNT_OUT_OF_RANGE_FAIL.getInstance();
+            throw ExceptionCode.TRAVEL_COMPANION_TYPE_COUNT_OUT_OF_RANGE_FAIL.wrap();
         }
     }
 
@@ -201,7 +201,7 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
     public void updateCities(List<City> cities) {
 
         if (cities.isEmpty() || cities.size() > 10) {
-            throw ExceptionCode.TRAVEL_CITY_COUNT_EXCEEDED_FAIL.getInstance();
+            throw ExceptionCode.TRAVEL_CITY_COUNT_EXCEEDED_FAIL.wrap();
         }
 
         this.cities.clear();
@@ -226,7 +226,7 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
         final boolean isOwnerInvited = Objects.equals(invitee.uuid(), createdBy().uuid());
 
         if (isInviteeParticipated || isOwnerInvited) {
-            throw ExceptionCode.TRAVEL_ALREADY_JOINED_FAIL.getInstance();
+            throw ExceptionCode.TRAVEL_ALREADY_JOINED_FAIL.wrap();
         }
 
         participants.add(new TravelParticipant(this, invitee, inviter));
@@ -243,7 +243,7 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
         final boolean isMemberOwner = Objects.equals(member.uuid(), createdBy().uuid());
 
         if (!isInvitedByKicker && !isMemberOwner) {
-            throw ExceptionCode.AUTHORIZATION_FAIL.getInstance();
+            throw ExceptionCode.AUTHORIZATION_FAIL.wrap();
         }
 
         participants.remove(participant);
@@ -264,7 +264,7 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
                 .getBetweenDays(startedOn(), endedOn());
 
         if (dayOfTravel >= totalTravelDays) {
-            throw ExceptionCode.DAY_OF_TRAVEL_OUT_OF_RANGE_FAIL.getInstance();
+            throw ExceptionCode.DAY_OF_TRAVEL_OUT_OF_RANGE_FAIL.wrap();
         }
 
         int orderOfPlan = -1;
@@ -303,7 +303,7 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
         if (Objects.nonNull(willVisitOn)) {
 
             if (!LocalDateUtil.isInRange(willVisitOn, startDate, endDate)) {
-                throw ExceptionCode.WILL_VISIT_ON_OUT_OF_TRAVEL_PERIOD_FAIL.getInstance();
+                throw ExceptionCode.WILL_VISIT_ON_OUT_OF_TRAVEL_PERIOD_FAIL.wrap();
             }
 
             dayOfTravel = (int) LocalDateUtil
@@ -341,7 +341,7 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
 
         // 여행 계획을 삭제
         if (!plans.contains(travelPlan)) {
-            throw ExceptionCode.ENTITY_NOT_FOUND_FAIL.getInstance();
+            throw ExceptionCode.ENTITY_NOT_FOUND_FAIL.wrap();
         }
 
         plans.remove(travelPlan);

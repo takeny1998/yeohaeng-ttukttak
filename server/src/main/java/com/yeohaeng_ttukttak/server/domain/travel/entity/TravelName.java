@@ -92,20 +92,20 @@ public class TravelName {
      */
     void updateName(final String inputName) {
         if (Objects.isNull(inputName)) {
-            throw ExceptionCode.INVALID_TRAVEL_NAME_CHARACTER_FAIL.getInstance();
+            throw ExceptionCode.INVALID_TRAVEL_NAME_CHARACTER_FAIL.wrap();
         }
 
         int byteCount = StringUtil.getByteLengthInEucKr(inputName);
 
         if (byteCount > 100) {
-            throw ExceptionCode.TRAVEL_NAME_TOO_LONG_FAIL.getInstance();
+            throw ExceptionCode.TRAVEL_NAME_TOO_LONG_FAIL.wrap();
         }
 
         final boolean hasCharOrNumberOrComma =
                 inputName.matches("^[가-힣a-zA-Z1-9,\\s]+$");
 
         if (!hasCharOrNumberOrComma) {
-            throw ExceptionCode.INVALID_TRAVEL_NAME_CHARACTER_FAIL.getInstance();
+            throw ExceptionCode.INVALID_TRAVEL_NAME_CHARACTER_FAIL.wrap();
         }
 
         this.name = inputName;

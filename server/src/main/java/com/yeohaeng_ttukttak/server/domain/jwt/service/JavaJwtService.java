@@ -62,7 +62,7 @@ public class JavaJwtService implements JwtService {
                     .verify(encodedToken);
         } catch (JWTVerificationException ex) {
             final BaseException baseException =
-                    ExceptionCode.AUTHORIZATION_FAIL.getInstance();
+                    ExceptionCode.AUTHORIZATION_FAIL.wrap();
 
             baseException.initCause(ex);
             throw baseException;

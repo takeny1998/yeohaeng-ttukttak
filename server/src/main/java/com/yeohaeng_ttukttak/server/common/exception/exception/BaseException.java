@@ -1,5 +1,6 @@
 package com.yeohaeng_ttukttak.server.common.exception.exception;
 
+import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
 import com.yeohaeng_ttukttak.server.common.locale.RequestLocaleService;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
@@ -25,11 +26,15 @@ public abstract class BaseException extends RuntimeException {
         super(cause);
     }
 
+    protected BaseException() {
+        this(null);
+    }
+
     public final String getMessage() {
         return getMessage(requestLocaleService.getCurrentLocale());
     }
 
-    public final String getMessage(@Nonnull final Locale locale) {
+    public String getMessage(@Nonnull final Locale locale) {
 
         final String localizedMessage =
                 localizeBaseMessage(locale, getBaseMessage());

@@ -7,7 +7,7 @@ import com.yeohaeng_ttukttak.server.application.auth.service.LogoutService;
 import com.yeohaeng_ttukttak.server.application.auth.service.RenewAuthService;
 import com.yeohaeng_ttukttak.server.application.auth.service.OAuthLoginService;
 import com.yeohaeng_ttukttak.server.application.auth.service.dto.AuthTokenDto;
-import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
+import com.yeohaeng_ttukttak.server.common.dto.ServerSuccessResponse;
 import com.yeohaeng_ttukttak.server.common.http.JsonRequestMapping;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,7 +28,7 @@ public class AuthController {
     private final LogoutService logoutService;
 
     @PostMapping("/login")
-    public ServerResponse<AuthTokenDto> login(@RequestBody LoginRequest request, Locale locale) {
+    public ServerSuccessResponse<AuthTokenDto> login(@RequestBody LoginRequest request, Locale locale) {
         final String authorizationCode = request.authorizationCode();
 
         final AuthTokenDto authTokenDto = switch (request.provider()) {
@@ -36,19 +36,19 @@ public class AuthController {
             case GOOGLE -> googleLoginService.call(authorizationCode, locale);
         };
 
-        return new ServerResponse<>(authTokenDto);
+        return new ServerSuccessResponse<>(authTokenDto);
     }
 
     @PostMapping("/logout")
-    public ServerResponse<Void> logout(@RequestBody LogoutRequest request) {
+    public ServerSuccessResponse<Void> logout(@RequestBody LogoutRequest request) {
         logoutService.call(request.refreshToken());
-        return new ServerResponse<>();
+        return new ServerSuccessResponse<>();
     }
 
     @PostMapping("/renew")
-    public ServerResponse<AuthTokenDto> renew(@RequestBody AuthRenewRequest request) {
+    public ServerSuccessResponse<AuthTokenDto> renew(@RequestBody AuthRenewRequest request) {
         AuthTokenDto authTokenDto = renewAuthService.call(request.refreshToken());
-        return new ServerResponse<>(authTokenDto);
+        return new ServerSuccessResponse<>(authTokenDto);
     }
 
 }

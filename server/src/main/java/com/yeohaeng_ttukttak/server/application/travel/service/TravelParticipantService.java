@@ -49,7 +49,7 @@ public class TravelParticipantService {
         final TravelInvitation invitation = invitationService.find(travelId, invitationId);
 
         final Travel travel = travelRepository.findById(invitation.travelId())
-                .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::getInstance);
+                .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::wrap);
 
         final Member invitee = memberService.find(inviteeId);
         final Member inviter = memberService.find(invitation.memberId());
@@ -67,7 +67,7 @@ public class TravelParticipantService {
     @Transactional
     public void leave(Long travelId, String kickerId, Long participantId) {
         final TravelParticipant participant = participantRepository.findById(participantId)
-                .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::getInstance);
+                .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::wrap);
 
         final Member kicker = memberService.find(kickerId);
         final Travel travel = participant.travel();

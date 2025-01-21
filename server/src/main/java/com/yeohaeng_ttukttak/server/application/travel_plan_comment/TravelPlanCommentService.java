@@ -29,7 +29,7 @@ public class TravelPlanCommentService {
     public void writeComment(Long travelId, Long planId, String content) {
         final TravelPlan travelPlan = travelPlanRepository
                 .findByIdAndTravelId(planId, travelId)
-                .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::getInstance);
+                .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::wrap);
 
         final Comment comment = new Comment(content);
         commentRepository.save(comment);
@@ -53,7 +53,7 @@ public class TravelPlanCommentService {
 
         final TravelPlanComment travelPlanComment = travelPlanCommentRepository
                 .findByTravelIdAndPlanIdAndCommentId(travelId, planId, commentId)
-                .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::getInstance);
+                .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::wrap);
 
         travelPlanComment.comment().editContent(editorId, content);
     }
@@ -62,7 +62,7 @@ public class TravelPlanCommentService {
     public void deleteComment(String deleterId, Long planId, Long commentId) {
 
         TravelPlanComment planComment = travelPlanCommentRepository.findByPlanIdAndCommentId(planId, commentId)
-                .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::getInstance);
+                .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::wrap);
 
         planComment.comment().verifyWriter(deleterId);
 

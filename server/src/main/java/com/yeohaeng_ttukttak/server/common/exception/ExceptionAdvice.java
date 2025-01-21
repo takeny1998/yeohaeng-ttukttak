@@ -2,6 +2,9 @@ package com.yeohaeng_ttukttak.server.common.exception;
 
 import com.yeohaeng_ttukttak.server.common.dto.ServerErrorResponse;
 import com.yeohaeng_ttukttak.server.common.dto.ServerFailResponse;
+import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
+import com.yeohaeng_ttukttak.server.common.exception.dto.FailExceptionDto;
+import com.yeohaeng_ttukttak.server.common.exception.dto.FailExceptionWrapper;
 import com.yeohaeng_ttukttak.server.common.exception.exception.BaseException;
 import com.yeohaeng_ttukttak.server.common.exception.exception.ErrorException;
 import com.yeohaeng_ttukttak.server.common.exception.exception.FailException;
@@ -22,12 +25,12 @@ public class ExceptionAdvice {
 
     private final MessageSource messageSource;
 
-    @ExceptionHandler(FailException.class)
-    public ServerFailResponse handleFailException(
-            FailException exception, HttpServletRequest request) {
+    @ExceptionHandler(FailExceptionWrapper.class)
+    public ServerResponse handleFailException(
+            FailExceptionWrapper exceptionWrapper, Locale locale, HttpServletRequest request) {
 
-        logError(exception, request, 0);
-        return new ServerFailResponse(FailExceptionDto.of(exception));
+        logError(exceptionWrapper, request, 0);
+        return new ServerFailResponse(FailExceptionDto.of(exceptionWrapper));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

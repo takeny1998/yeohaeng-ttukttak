@@ -23,7 +23,7 @@ public class TravelCityService {
     public List<GeographyDto> findCities(Long travelId) {
 
         final Travel travel = travelRepository.findById(travelId)
-                .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::getInstance);
+                .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::wrap);
 
         return travel.cities().stream()
                 .map(TravelCity::city)

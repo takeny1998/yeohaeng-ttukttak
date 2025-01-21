@@ -21,7 +21,7 @@ public final class JpaInfiniteScrollResult<T, R> implements InfiniteScrollResult
                 .fetch();
 
         if (entities.isEmpty()) {
-            throw ExceptionCode.ENTITY_NOT_FOUND_FAIL.getInstance();
+            throw ExceptionCode.ENTITY_NOT_FOUND_FAIL.wrap();
         }
 
         final boolean hasNext = entities.size() > command.pageSize();

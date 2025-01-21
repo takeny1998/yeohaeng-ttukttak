@@ -2,7 +2,7 @@ package com.yeohaeng_ttukttak.server.doc;
 
 import com.yeohaeng_ttukttak.server.application.travel_plan.dto.CreateTravelPlanRequest;
 import com.yeohaeng_ttukttak.server.application.travel_plan.dto.MoveTravelPlanRequest;
-import com.yeohaeng_ttukttak.server.application.travel_plan.dto.TravelPlanListResponse;
+import com.yeohaeng_ttukttak.server.application.travel_plan.dto.TravelPlanListSuccessResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -27,7 +27,7 @@ public interface TravelPlanDocument {
         - 일정 목록은 일차(willVisitOn) 오름차순, 순서(orderOfPlan) 오름차순 기준으로 정렬되어야 합니다.
         
         """)
-    TravelPlanListResponse create(
+    TravelPlanListSuccessResponse create(
             Long travelId, CreateTravelPlanRequest request);
 
 
@@ -43,7 +43,7 @@ public interface TravelPlanDocument {
         - 일정 목록은 일차(willVisitOn) 오름차순, 순서(orderOfPlan) 오름차순 기준으로 정렬되어야 합니다.
         
         """)
-    TravelPlanListResponse findAll(Long travelId);
+    TravelPlanListSuccessResponse findAll(Long travelId);
 
 
     @Operation(
@@ -60,7 +60,7 @@ public interface TravelPlanDocument {
             - 일정 목록은 일차(willVisitOn) 오름차순, 순서(orderOfPlan) 오름차순 기준으로 정렬되어야 합니다.
             
             """)
-    TravelPlanListResponse move(
+    TravelPlanListSuccessResponse move(
             Long travelId, Long planId, MoveTravelPlanRequest request);
 
 
@@ -76,6 +76,6 @@ public interface TravelPlanDocument {
         - 추가된 일정은 일차(willVisitOn)가 같은 일정 목록의 마지막 순서(orderOfPlan)가 부여됩니다.
                     
         """)
-    TravelPlanListResponse delete(Long travelId, Long planId);
+    TravelPlanListSuccessResponse delete(Long travelId, Long planId);
 
 }

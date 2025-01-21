@@ -25,7 +25,7 @@ public class CreateTravelInvitationService {
     public String createOne(String invitorId, Long travelId) {
 
         final Travel travel = travelRepository.findById(travelId)
-                .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::getInstance);
+                .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::wrap);
 
         return invitationService.create(travel, invitorId);
     }

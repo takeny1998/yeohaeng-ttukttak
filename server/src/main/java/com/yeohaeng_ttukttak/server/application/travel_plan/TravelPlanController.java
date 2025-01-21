@@ -1,10 +1,9 @@
 package com.yeohaeng_ttukttak.server.application.travel_plan;
 
 import com.yeohaeng_ttukttak.server.application.travel_plan.dto.CreateTravelPlanRequest;
-import com.yeohaeng_ttukttak.server.application.travel_plan.dto.TravelPlanListResponse;
+import com.yeohaeng_ttukttak.server.application.travel_plan.dto.TravelPlanListSuccessResponse;
 import com.yeohaeng_ttukttak.server.application.travel_plan.dto.MoveTravelPlanRequest;
 import com.yeohaeng_ttukttak.server.common.authentication.Authentication;
-import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
 import com.yeohaeng_ttukttak.server.common.http.JsonRequestMapping;
 import com.yeohaeng_ttukttak.server.doc.TravelPlanDocument;
 import com.yeohaeng_ttukttak.server.domain.travel_plan.TravelPlanDto;
@@ -33,7 +32,7 @@ public class TravelPlanController implements TravelPlanDocument {
      */
     @PostMapping
     @Authentication
-    public TravelPlanListResponse create(
+    public TravelPlanListSuccessResponse create(
             @PathVariable Long travelId,
             @RequestBody CreateTravelPlanRequest request) {
 
@@ -50,7 +49,7 @@ public class TravelPlanController implements TravelPlanDocument {
      * @return 조회된 사용자 여행의 일정 목록
      */
     @GetMapping
-    public TravelPlanListResponse findAll(
+    public TravelPlanListSuccessResponse findAll(
             @PathVariable Long travelId) {
         return responsePlanList(travelId);
     }
@@ -73,7 +72,7 @@ public class TravelPlanController implements TravelPlanDocument {
      */
     @PatchMapping("/{planId}")
     @Authentication
-    public TravelPlanListResponse move(
+    public TravelPlanListSuccessResponse move(
             @PathVariable Long travelId,
             @PathVariable Long planId,
             @RequestBody MoveTravelPlanRequest request) {
@@ -96,7 +95,7 @@ public class TravelPlanController implements TravelPlanDocument {
      */
     @DeleteMapping("/{planId}")
     @Authentication
-    public TravelPlanListResponse delete(
+    public TravelPlanListSuccessResponse delete(
             @PathVariable Long travelId, @PathVariable Long planId) {
 
         travelPlanService.delete(travelId, planId);
@@ -104,9 +103,9 @@ public class TravelPlanController implements TravelPlanDocument {
         return responsePlanList(travelId);
     }
 
-    private TravelPlanListResponse responsePlanList(Long travelId) {
+    private TravelPlanListSuccessResponse responsePlanList(Long travelId) {
         final List<TravelPlanDto> dtoList = travelPlanService.findAll(travelId);
-        return new TravelPlanListResponse(dtoList);
+        return new TravelPlanListSuccessResponse(dtoList);
     }
 
 }

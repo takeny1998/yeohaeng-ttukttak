@@ -23,7 +23,7 @@ public class MemberService {
     public Member find(String memberId) {
         return memberRepository
                 .findByUuid(memberId)
-                .orElseThrow(ExceptionCode.AUTHENTICATION_FAIL::getInstance);
+                .orElseThrow(ExceptionCode.AUTHENTICATION_FAIL::wrap);
     }
 
 

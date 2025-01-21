@@ -53,7 +53,7 @@ public class Comment extends BaseTimeMemberEntity {
         final int byteLength = StringUtil.getByteLengthInEucKr(content);
 
         if (byteLength > 100) {
-            throw ExceptionCode.COMMENT_CONTENT_LENGTH_TOO_LONG_FAIL.getInstance();
+            throw ExceptionCode.COMMENT_CONTENT_LENGTH_TOO_LONG_FAIL.wrap();
         }
     }
 
@@ -67,7 +67,7 @@ public class Comment extends BaseTimeMemberEntity {
         final String writerId = createdBy().uuid();
 
         if (!Objects.equals(memberId, writerId)) {
-            throw ExceptionCode.AUTHORIZATION_FAIL.getInstance();
+            throw ExceptionCode.AUTHORIZATION_FAIL.wrap();
         }
 
     }

@@ -25,7 +25,7 @@ public class MemberAuditorAware implements AuditorAware<Member> {
         final Member member = context.member()
                 .orElseGet(() -> {
                     final Member foundMember = memberRepository.findByUuid(context.uuid())
-                            .orElseThrow(ExceptionCode.AUTHENTICATION_FAIL::getInstance);
+                            .orElseThrow(ExceptionCode.AUTHENTICATION_FAIL::wrap);
 
                     AuthenticationContextHolder.setContext(AuthenticationContext.of(foundMember));
 

@@ -1,7 +1,7 @@
 package com.yeohaeng_ttukttak.server.application.place.controller;
 
 import com.yeohaeng_ttukttak.server.application.place.controller.dto.PlaceRecommendationResponse;
-import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
+import com.yeohaeng_ttukttak.server.common.dto.ServerSuccessResponse;
 import com.yeohaeng_ttukttak.server.common.exception.ExceptionCode;
 import com.yeohaeng_ttukttak.server.common.util.dto.PageCommand;
 import com.yeohaeng_ttukttak.server.common.util.dto.PageResult;
@@ -30,7 +30,7 @@ public class PlaceRecommendationsController {
     private final PlaceRecommendationsRepository placeRecommendationsRepository;
 
     @GetMapping
-    public ServerResponse<PlaceRecommendationResponse> recommendPlaces(
+    public ServerSuccessResponse<PlaceRecommendationResponse> recommendPlaces(
             PageCommand pageCommand,
             @RequestParam Long cityId,
             @RequestParam PlaceCategoryType categoryType,
@@ -38,7 +38,7 @@ public class PlaceRecommendationsController {
             @RequestParam List<CompanionType> companionTypes) {
 
         Geography geography = geographyRepository.findById(cityId)
-                .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::getInstance);
+                .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::wrap);
 
 
         log.debug("{} {}", motivationTypes, companionTypes);
@@ -50,7 +50,7 @@ public class PlaceRecommendationsController {
                 companionTypes,
                 pageCommand);
 
-        return new ServerResponse<>(PlaceRecommendationResponse.of(pageResult));
+        return new ServerSuccessResponse<>(PlaceRecommendationResponse.of(pageResult));
     }
 
 }

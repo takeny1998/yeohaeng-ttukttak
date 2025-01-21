@@ -1,15 +1,14 @@
 package com.yeohaeng_ttukttak.server.application.travel_plan.dto;
 
-import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
+import com.yeohaeng_ttukttak.server.common.dto.ServerSuccessResponse;
 import com.yeohaeng_ttukttak.server.domain.travel_plan.TravelPlanDto;
 
 import java.util.List;
-import java.util.Objects;
 
 /**
  * 사용자 여행의 일정 목록을 표현하는 응답 객체입니다.
  */
-public final class TravelPlanListResponse extends ServerResponse<TravelPlanListResponse.Data> {
+public final class TravelPlanListSuccessResponse extends ServerSuccessResponse<TravelPlanListSuccessResponse.Data> {
 
     /**
      * @param plans 여행 일정 목록
@@ -21,7 +20,7 @@ public final class TravelPlanListResponse extends ServerResponse<TravelPlanListR
      *                  </ol>
      *              </ul>
      */
-    public TravelPlanListResponse(List<TravelPlanDto> plans) {
+    public TravelPlanListSuccessResponse(List<TravelPlanDto> plans) {
         super(new Data(plans));
     }
 

@@ -41,7 +41,7 @@ public class TravelInvitationService {
      */
     public TravelInvitation find(Long travelId, String invitationId) {
         final TravelInvitation invitation = repository.findById(invitationId)
-                .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::getInstance);
+                .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::wrap);
 
         return invitation;
     }

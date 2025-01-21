@@ -4,7 +4,7 @@ import com.yeohaeng_ttukttak.server.application.travel.controller.dto.CreateTrav
 import com.yeohaeng_ttukttak.server.application.travel.service.CreateTravelInvitationService;
 import com.yeohaeng_ttukttak.server.application.travel.service.FindTravelInvitationService;
 import com.yeohaeng_ttukttak.server.common.authentication.Authentication;
-import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
+import com.yeohaeng_ttukttak.server.common.dto.ServerSuccessResponse;
 import com.yeohaeng_ttukttak.server.common.http.JsonRequestMapping;
 import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthenticationContext;
 import com.yeohaeng_ttukttak.server.domain.travel.dto.TravelInvitationDto;
@@ -23,7 +23,7 @@ public class TravelInvitationController {
 
     @PostMapping
     @Authentication
-    public ServerResponse<CreateTravelInvitationResponse> create(
+    public ServerSuccessResponse<CreateTravelInvitationResponse> create(
             @PathVariable Long travelId,
             AuthenticationContext authorization
     ) {
@@ -34,7 +34,7 @@ public class TravelInvitationController {
                 authorization.uuid(), travelId);
         final TravelInvitationDto dto = findService.findOne(travelId, createdId);
 
-        return new ServerResponse<>(
+        return new ServerSuccessResponse<>(
                 new CreateTravelInvitationResponse(dto));
     }
 

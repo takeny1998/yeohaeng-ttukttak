@@ -1,6 +1,10 @@
 package com.yeohaeng_ttukttak.server.common.exception;
 
+import com.yeohaeng_ttukttak.server.common.exception.dto.ErrorExceptionWrapper;
+import com.yeohaeng_ttukttak.server.common.exception.dto.ExceptionWrapper;
+import com.yeohaeng_ttukttak.server.common.exception.dto.FailExceptionWrapper;
 import com.yeohaeng_ttukttak.server.common.exception.exception.BaseException;
+import com.yeohaeng_ttukttak.server.common.exception.exception.ErrorException;
 import com.yeohaeng_ttukttak.server.common.exception.exception.FailException;
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.*;
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.argument.ArgumentByteLimitExceededFailException;
@@ -8,9 +12,7 @@ import com.yeohaeng_ttukttak.server.common.exception.exception.fail.argument.Arg
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.argument.ArgumentCountExceededException;
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.argument.ArgumentOutOfRangeFailException;
 import jakarta.annotation.Nonnull;
-import lombok.Getter;
 
-@Getter
 public enum ExceptionCode {
 
     AUTHENTICATION_FAIL(new FailException() {
@@ -119,6 +121,20 @@ public enum ExceptionCode {
 
     ExceptionCode(BaseException instance) {
         this.instance = instance;
+    }
+
+    public ExceptionWrapper wrap() {
+
+        if (instance instanceof FailException failException) {
+            return new FailExceptionWrapper(this.name(), failException);
+        }
+
+        if (instance instanceof ErrorException errorException) {
+            return new ErrorExceptionWrapper(this.name(), errorException);
+        }
+
+        throw new IllegalStateException(this.name() + "의 예외 인스턴스가 연결되지 않았습니다.");
+
     }
 
 }

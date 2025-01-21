@@ -49,13 +49,13 @@ public class TravelDates {
         final boolean isAnyNull = Objects.isNull(startedOn) || Objects.isNull(endedOn);
 
         if (isAnyNull || this.startedOn.isAfter(this.endedOn)) {
-            throw ExceptionCode.STARTED_ON_AFTER_ENDED_ON_FAIL.getInstance();
+            throw ExceptionCode.STARTED_ON_AFTER_ENDED_ON_FAIL.wrap();
         }
 
         long days = LocalDateUtil.getBetweenDays(this.startedOn, this.endedOn);
 
         if (days > 60) {
-            throw ExceptionCode.TRAVEL_PERIOD_TOO_LONG_FAIL.getInstance();
+            throw ExceptionCode.TRAVEL_PERIOD_TOO_LONG_FAIL.wrap();
         }
 
     }

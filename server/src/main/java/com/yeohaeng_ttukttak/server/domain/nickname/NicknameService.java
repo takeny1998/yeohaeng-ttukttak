@@ -33,14 +33,14 @@ public class NicknameService {
         final int byteLength = StringUtil.getByteLengthInEucKr(value);
 
         if (byteLength < 4 || byteLength > 12) {
-            throw ExceptionCode.NICKNAME_LENGTH_OUT_OF_RANGE_FAIL.getInstance();
+            throw ExceptionCode.NICKNAME_LENGTH_OUT_OF_RANGE_FAIL.wrap();
         }
 
         final boolean hasCharOrNumber = value.matches("^[가-힣a-zA-Z1-9]+$");
         final boolean hasCharMoreThanTwo = value.matches("(?:.*[가-힣a-zA-Z]){2,}");
 
         if (!hasCharOrNumber || !hasCharMoreThanTwo) {
-            throw ExceptionCode.INVALID_NICKNAME_CHARACTER_FAIL.getInstance();
+            throw ExceptionCode.INVALID_NICKNAME_CHARACTER_FAIL.wrap();
         }
 
         final String onlyCharValue = value
@@ -49,7 +49,7 @@ public class NicknameService {
 
         for (String fWord : fWords) {
             if (onlyCharValue.contains(fWord)) {
-                throw ExceptionCode.NICKNAME_HAS_BAD_WORD_FAIL.getInstance();
+                throw ExceptionCode.NICKNAME_HAS_BAD_WORD_FAIL.wrap();
             }
         }
 

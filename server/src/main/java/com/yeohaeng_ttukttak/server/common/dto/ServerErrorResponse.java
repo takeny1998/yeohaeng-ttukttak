@@ -5,10 +5,10 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
+@Schema
 @Getter
 @ToString
-@EqualsAndHashCode
-public final class ServerErrorResponse {
+public final class ServerErrorResponse extends ServerResponse {
 
     @Schema(defaultValue = "error")
     private final ServerResponseStatus status = ServerResponseStatus.error;

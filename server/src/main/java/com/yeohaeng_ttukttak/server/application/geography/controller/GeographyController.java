@@ -1,7 +1,7 @@
 package com.yeohaeng_ttukttak.server.application.geography.controller;
 
 import com.yeohaeng_ttukttak.server.application.geography.controller.dto.GeographyListResponse;
-import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
+import com.yeohaeng_ttukttak.server.common.dto.ServerSuccessResponse;
 import com.yeohaeng_ttukttak.server.common.http.JsonRequestMapping;
 import com.yeohaeng_ttukttak.server.domain.geography.dto.GeographyDto;
 import com.yeohaeng_ttukttak.server.domain.geography.repository.GeographyRepository;
@@ -30,7 +30,7 @@ public class GeographyController {
      */
     @GetMapping
     @Transactional(readOnly = true)
-    public ServerResponse<GeographyListResponse> findAll() {
+    public ServerSuccessResponse<GeographyListResponse> findAll() {
 
        final List<GeographyDto> dtoList =
                geographyRepository.findAll()
@@ -38,7 +38,7 @@ public class GeographyController {
                        .map(GeographyDto::of)
                        .toList();
 
-        return new ServerResponse<>(new GeographyListResponse(dtoList));
+        return new ServerSuccessResponse<>(new GeographyListResponse(dtoList));
 
     }
 

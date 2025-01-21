@@ -4,7 +4,7 @@ import com.yeohaeng_ttukttak.server.application.travel.controller.dto.FindTravel
 import com.yeohaeng_ttukttak.server.application.travel.controller.dto.JoinTravelRequest;
 import com.yeohaeng_ttukttak.server.application.travel.service.TravelParticipantService;
 import com.yeohaeng_ttukttak.server.common.authentication.Authentication;
-import com.yeohaeng_ttukttak.server.common.dto.ServerResponse;
+import com.yeohaeng_ttukttak.server.common.dto.ServerSuccessResponse;
 import com.yeohaeng_ttukttak.server.common.http.JsonRequestMapping;
 import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthenticationContext;
 import com.yeohaeng_ttukttak.server.domain.travel.dto.TravelParticipantDto;
@@ -23,7 +23,7 @@ public class TravelParticipantController {
 
     @PostMapping
     @Authentication
-    public ServerResponse<Void> join(
+    public ServerSuccessResponse<Void> join(
             @PathVariable Long travelId,
             @Valid @RequestBody JoinTravelRequest request,
             AuthenticationContext authorization) {
@@ -32,28 +32,28 @@ public class TravelParticipantController {
                 request.invitationId(),
                 authorization.uuid());
 
-        return new ServerResponse<>();
+        return new ServerSuccessResponse<>();
     }
 
     @GetMapping
-    public ServerResponse<FindTravelParticipantsResponse> find(
+    public ServerSuccessResponse<FindTravelParticipantsResponse> find(
             @PathVariable Long travelId) {
         final List<TravelParticipantDto> dtoList =
                 participantService.find(travelId);
 
-        return new ServerResponse<>(
+        return new ServerSuccessResponse<>(
                 new FindTravelParticipantsResponse(dtoList));
     }
 
     @DeleteMapping("/{participantId}")
     @Authentication
-    public ServerResponse<Void> leave(
+    public ServerSuccessResponse<Void> leave(
             @PathVariable Long travelId,
             @PathVariable Long participantId,
             AuthenticationContext authorization) {
 
         participantService.leave(travelId, authorization.uuid(), participantId);
-        return new ServerResponse<>();
+        return new ServerSuccessResponse<>();
     }
 
 }

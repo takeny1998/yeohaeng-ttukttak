@@ -37,11 +37,11 @@ public class TravelPlanService {
 
         final Travel travel = travelRepository
                 .findById(travelId)
-                .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::getInstance);
+                .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::wrap);
 
         final Place place = placeRepository
                 .findById(placeId)
-                .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::getInstance);
+                .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::wrap);
 
         travel.addPlan(place, dayOfTravel);
 
@@ -50,7 +50,7 @@ public class TravelPlanService {
     @Transactional(readOnly = true)
     public List<TravelPlanDto> findAll(Long travelId) {
         final Travel travel = travelRepository.findById(travelId)
-                .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::getInstance);
+                .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::wrap);
 
         return travel.plans().stream()
                 .map((TravelPlanDto::of))
@@ -61,11 +61,11 @@ public class TravelPlanService {
     public void move(Long travelId, Long planId, Integer orderOfPlan, LocalDate willVisitOn) {
 
         final Travel travel = travelRepository.findById(travelId)
-                .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::getInstance);
+                .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::wrap);
 
         final TravelPlan travelPlan = travelPlanRepository
                 .findByIdAndTravelId(planId, travelId)
-                .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::getInstance);
+                .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::wrap);
 
         travel.movePlan(travelPlan, orderOfPlan, willVisitOn);
     }
@@ -74,11 +74,11 @@ public class TravelPlanService {
     public void delete(Long travelId, Long planId) {
 
         final Travel travel = travelRepository.findById(travelId)
-                .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::getInstance);
+                .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::wrap);
 
         final TravelPlan travelPlan = travelPlanRepository
                 .findByIdAndTravelId(planId, travelId)
-                .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::getInstance);
+                .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::wrap);
 
         travel.deletePlan(travelPlan);
 
