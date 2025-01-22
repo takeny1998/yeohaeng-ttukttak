@@ -48,23 +48,20 @@ public class TravelPlanCommentService {
     }
 
     @Transactional
-    public void editComment(
-            String editorId, Long travelId, Long planId, Long commentId, String content) {
+    public void editComment(Long travelId, Long planId, Long commentId, String content) {
 
         final TravelPlanComment travelPlanComment = travelPlanCommentRepository
                 .findByTravelIdAndPlanIdAndCommentId(travelId, planId, commentId)
                 .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::wrap);
 
-        travelPlanComment.comment().editContent(editorId, content);
+        travelPlanComment.comment().editContent(content);
     }
 
     @Transactional
-    public void deleteComment(String deleterId, Long planId, Long commentId) {
+    public void deleteComment(Long planId, Long commentId) {
 
         TravelPlanComment planComment = travelPlanCommentRepository.findByPlanIdAndCommentId(planId, commentId)
                 .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::wrap);
-
-        planComment.comment().verifyWriter(deleterId);
 
         travelPlanCommentRepository.delete(planComment);
         commentRepository.delete(planComment.comment());
