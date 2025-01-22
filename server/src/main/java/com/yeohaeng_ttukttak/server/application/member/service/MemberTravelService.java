@@ -1,6 +1,6 @@
 package com.yeohaeng_ttukttak.server.application.member.service;
 
-import com.yeohaeng_ttukttak.server.domain.travel.dto.TravelDto;
+import com.yeohaeng_ttukttak.server.application.travel.service.dto.TravelDto;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
 import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelRepository;
 import lombok.RequiredArgsConstructor;

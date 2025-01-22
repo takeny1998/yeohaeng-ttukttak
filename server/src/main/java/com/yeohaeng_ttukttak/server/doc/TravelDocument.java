@@ -1,7 +1,8 @@
 package com.yeohaeng_ttukttak.server.doc;
 
-import com.yeohaeng_ttukttak.server.application.travel.controller.dto.TravelRequest;
+import com.yeohaeng_ttukttak.server.application.travel.controller.dto.TravelCreateRequest;
 import com.yeohaeng_ttukttak.server.application.travel.controller.dto.TravelResponse;
+import com.yeohaeng_ttukttak.server.application.travel.controller.dto.TravelUpdateRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -44,7 +45,7 @@ public interface TravelDocument {
 
             TRAVEL_CITY_COUNT_EXCEEDED_FAIL
     })
-    TravelResponse create(TravelRequest request);
+    TravelResponse create(TravelCreateRequest request);
 
     @Operation(summary = "여행의 기본 정보를 조회합니다.")
     @ApiResponse(
@@ -71,6 +72,6 @@ public interface TravelDocument {
 
             TRAVEL_CITY_COUNT_EXCEEDED_FAIL
     })
-    TravelResponse update(Long travelId, TravelRequest request);
+    TravelResponse update(Long travelId, TravelUpdateRequest request);
 
 }

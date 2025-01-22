@@ -7,11 +7,10 @@ import com.yeohaeng_ttukttak.server.application.member.service.FindMemberService
 import com.yeohaeng_ttukttak.server.application.member.service.MemberTravelService;
 import com.yeohaeng_ttukttak.server.application.member.service.UpdateMemberService;
 import com.yeohaeng_ttukttak.server.common.authentication.Authentication;
-import com.yeohaeng_ttukttak.server.common.dto.ServerSuccessResponse;
 import com.yeohaeng_ttukttak.server.common.http.JsonRequestMapping;
 import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthenticationContext;
 import com.yeohaeng_ttukttak.server.domain.member.dto.MemberDto;
-import com.yeohaeng_ttukttak.server.domain.travel.dto.TravelDto;
+import com.yeohaeng_ttukttak.server.application.travel.service.dto.TravelDto;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

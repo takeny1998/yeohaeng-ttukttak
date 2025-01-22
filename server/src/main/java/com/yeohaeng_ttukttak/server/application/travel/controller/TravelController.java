@@ -9,15 +9,12 @@ import com.yeohaeng_ttukttak.server.application.travel.service.TravelService;
 import com.yeohaeng_ttukttak.server.application.travel.service.TravelCityService;
 import com.yeohaeng_ttukttak.server.common.authentication.Authentication;
 import com.yeohaeng_ttukttak.server.common.http.JsonRequestMapping;
-import com.yeohaeng_ttukttak.server.domain.geography.dto.GeographyDto;
 import com.yeohaeng_ttukttak.server.application.travel.controller.dto.TravelResponse;
-import com.yeohaeng_ttukttak.server.domain.travel.dto.TravelDto;
+import com.yeohaeng_ttukttak.server.application.travel.service.dto.TravelDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @JsonRequestMapping("/api/v2/travels")
@@ -25,14 +22,13 @@ import java.util.List;
 public class TravelController implements TravelDocument {
 
     private final TravelService travelService;
-    private final TravelCityService travelCityService;
 
     private final TravelRoleService travelRoleService;
 
     @PostMapping
     @Authentication
     public TravelResponse create(
-            @RequestBody @Valid TravelRequest request) {
+            @RequestBody @Valid TravelCreateRequest request) {
 
         final Long createdId = travelService.create(
                 request.name(),
@@ -55,7 +51,7 @@ public class TravelController implements TravelDocument {
     @Authentication
     public TravelResponse update(
             @PathVariable Long travelId,
-            @RequestBody TravelRequest request) {
+            @RequestBody TravelUpdateRequest request) {
 
         final String memberId =
                 AuthenticationContextHolder.getContext().uuid();
@@ -77,12 +73,9 @@ public class TravelController implements TravelDocument {
         return toTravelResponse(travelId);
     }
 
-
     private TravelResponse toTravelResponse(Long travelId) {
         final TravelDto travelDto = travelService.findById(travelId);
-        final List<GeographyDto> cityDtoList = travelCityService.findCities(travelId);
-
-        return new TravelResponse(travelDto, cityDtoList);
+        return new TravelResponse(travelDto);
     }
 
 }
