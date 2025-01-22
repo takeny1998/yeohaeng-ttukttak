@@ -9,6 +9,7 @@ import com.yeohaeng_ttukttak.server.application.auth.service.OAuthLoginService;
 import com.yeohaeng_ttukttak.server.application.auth.service.dto.AuthTokenDto;
 import com.yeohaeng_ttukttak.server.common.dto.ServerSuccessResponse;
 import com.yeohaeng_ttukttak.server.common.http.JsonRequestMapping;
+import io.swagger.v3.oas.annotations.Hidden;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Locale;
 
+@Hidden
 @RestController
 @JsonRequestMapping("/api/v2/auth")
 @RequiredArgsConstructor
