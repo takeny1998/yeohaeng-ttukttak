@@ -1,7 +1,5 @@
 package com.yeohaeng_ttukttak.server.domain.travel.entity;
 
-import com.yeohaeng_ttukttak.server.common.authorization.CrudOperation;
-import com.yeohaeng_ttukttak.server.common.authorization.Authorization;
 import com.yeohaeng_ttukttak.server.common.exception.ExceptionCode;
 import com.yeohaeng_ttukttak.server.common.exception.exception.FailException;
 import com.yeohaeng_ttukttak.server.common.exception.exception.fail.argument.ArgumentOutOfRangeFailException;
@@ -12,7 +10,6 @@ import com.yeohaeng_ttukttak.server.domain.place.entity.Place;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.BaseTimeMemberEntity;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.CompanionType;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.MotivationType;
-import com.yeohaeng_ttukttak.server.common.authorization.interfaces.Authorizable;
 import com.yeohaeng_ttukttak.server.domain.travel_plan.TravelPlan;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -30,7 +27,7 @@ import java.util.Objects;
 @Slf4j
 @Configurable(autowire = Autowire.BY_TYPE, preConstruction = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Travel extends BaseTimeMemberEntity implements Authorizable {
+public class Travel extends BaseTimeMemberEntity {
 
     @Id @GeneratedValue
     private Long id;
@@ -73,7 +70,6 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
      * @see Travel#updateMotivationsTypes(List) 
      * @see Travel#updateCompanionTypes(List) 
      */
-    @Authorization(requires = CrudOperation.CREATE)
     public Travel(
             final String inputName,
             final LocalDate startedOn,
@@ -131,7 +127,6 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
     /**
      * @see TravelName#updateName(String)
      */
-    @Authorization(requires = CrudOperation.UPDATE)
     public void rename(final String inputName) {
         this.name.updateName(inputName);
     }
@@ -140,7 +135,6 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
     /**
      * @see TravelDates#updateDates(LocalDate, LocalDate)
      */
-    @Authorization(requires = CrudOperation.UPDATE)
     public void updateDates(final LocalDate startedOn, final LocalDate endedOn) {
         this.dates.updateDates(startedOn, endedOn);
     }
@@ -151,7 +145,6 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
      * @param motivationTypes 새로운 여행 동기 목록
      * @throws FailException if motivationTypes.size() not between 1 and 5
      */
-    @Authorization(requires = CrudOperation.UPDATE)
     public void updateMotivationsTypes(final List<MotivationType> motivationTypes) {
 
         motivations.clear();
@@ -174,7 +167,6 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
      * @param companionTypes 새로운 동반 타입 목록
      * @throws FailException if companionTypes.size() not between 1 and 3
      */
-    @Authorization(requires = CrudOperation.UPDATE)
     public void updateCompanionTypes(final List<CompanionType> companionTypes) {
 
         companions.clear();
@@ -197,7 +189,6 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
      * @param cities 변경하려는 도시 엔티티 목록
      * @throws FailException 도시 목록이 1개 미만 10개 초과인 경우
      */
-    @Authorization(requires = CrudOperation.UPDATE)
     public void updateCities(List<City> cities) {
 
         if (cities.isEmpty() || cities.size() > 10) {
@@ -256,7 +247,6 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
      * @param dayOfTravel 계획을 수행할 일자; {@code dayOfTravel >= 0}
      * @throws ArgumentOutOfRangeFailException 여행 기간에 벗어나는 일자를 지정했을 경우 발생한다.
      */
-    @Authorization(requires = CrudOperation.UPDATE)
     public void addPlan(Place place, Integer dayOfTravel) {
 
         // 여행 날짜의 차를 구하고, 하루를 더해 총 여행 기간을 산출한다.
@@ -288,7 +278,6 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
      * @param willVisitOn 방문할 예정일
      * @throws ArgumentOutOfRangeFailException 지정된 방문일이 여행 기간에 벗어나는 경우 발생합니다.
      */
-    @Authorization(requires = CrudOperation.UPDATE)
     public void movePlan(final TravelPlan travelPlan,
                          final Integer newOrderOfPlan,
                          final LocalDate willVisitOn) {
@@ -332,7 +321,6 @@ public class Travel extends BaseTimeMemberEntity implements Authorizable {
      *
      * @param travelPlan 삭제할 여행 계획
      */
-    @Authorization(requires = CrudOperation.UPDATE)
     public void deletePlan(TravelPlan travelPlan) {
 
         // 여행 계획을 삭제
