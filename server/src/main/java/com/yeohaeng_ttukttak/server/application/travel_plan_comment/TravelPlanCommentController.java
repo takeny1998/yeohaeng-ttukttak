@@ -3,10 +3,14 @@ package com.yeohaeng_ttukttak.server.application.travel_plan_comment;
 import com.yeohaeng_ttukttak.server.application.travel_plan_comment.dto.CommentListResponse;
 import com.yeohaeng_ttukttak.server.application.travel_plan_comment.dto.CommentContentRequest;
 import com.yeohaeng_ttukttak.server.common.authentication.Authentication;
+import com.yeohaeng_ttukttak.server.common.authentication.AuthenticationContextHolder;
+import com.yeohaeng_ttukttak.server.common.authorization.AuthorizationBuilder;
 import com.yeohaeng_ttukttak.server.common.dto.ServerSuccessResponse;
 import com.yeohaeng_ttukttak.server.common.http.JsonRequestMapping;
 import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthenticationContext;
 import com.yeohaeng_ttukttak.server.domain.comment.CommentDto;
+import com.yeohaeng_ttukttak.server.domain.comment.CommentRoleService;
+import com.yeohaeng_ttukttak.server.domain.travel.role.TravelRoleService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +25,10 @@ import java.util.List;
 public class TravelPlanCommentController {
 
     private final TravelPlanCommentService travelPlanCommentService;
+
+    private final TravelRoleService travelRoleService;
+
+    private final CommentRoleService commentRoleService;
 
     /**
      * 지정한 여행 계획에 새로운 댓글을 작성합니다.
@@ -40,6 +48,14 @@ public class TravelPlanCommentController {
             @PathVariable Long travelId,
             @PathVariable Long planId,
             @RequestBody @Valid CommentContentRequest request) {
+
+        final String memberId =
+                AuthenticationContextHolder.getContext().uuid();
+
+        new AuthorizationBuilder(memberId)
+                .or(travelRoleService.creator(travelId))
+                .or(travelRoleService.participant(travelId))
+                .authorize();
 
         travelPlanCommentService.writeComment(
                  travelId, planId, request.content());
@@ -90,11 +106,15 @@ public class TravelPlanCommentController {
             @RequestBody @Valid CommentContentRequest request,
             AuthenticationContext authentication) {
 
-        final String editorId = authentication.uuid();
+        final String memberId = authentication.uuid();
+
+        new AuthorizationBuilder(memberId)
+                .or(commentRoleService.writer(commentId))
+                .authorize();
+
         final String content = request.content();
 
-        travelPlanCommentService.editComment(
-                editorId, travelId, planId, commentId, content);
+        travelPlanCommentService.editComment(travelId, planId, commentId, content);
 
         final List<CommentDto> dtoList =
                 travelPlanCommentService.getOrderedComments(planId);
@@ -122,7 +142,14 @@ public class TravelPlanCommentController {
             @PathVariable Long commentId,
             AuthenticationContext authentication) {
 
-        travelPlanCommentService.deleteComment(authentication.uuid(), planId, commentId);
+        final String memberId = authentication.uuid();
+
+        new AuthorizationBuilder(memberId)
+                .or(travelRoleService.creator(travelId))
+                .or(commentRoleService.writer(commentId))
+                .authorize();
+
+        travelPlanCommentService.deleteComment(planId, commentId);
 
         final List<CommentDto> dtoList =
                 travelPlanCommentService.getOrderedComments(planId);

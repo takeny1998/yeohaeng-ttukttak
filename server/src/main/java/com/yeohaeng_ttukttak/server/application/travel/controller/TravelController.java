@@ -27,7 +27,7 @@ public class TravelController implements TravelDocument {
     private final TravelService travelService;
     private final TravelCityService travelCityService;
 
-    private final TravelRoleService role;
+    private final TravelRoleService travelRoleService;
 
     @PostMapping
     @Authentication
@@ -61,8 +61,8 @@ public class TravelController implements TravelDocument {
                 AuthenticationContextHolder.getContext().uuid();
 
         new AuthorizationBuilder(memberId)
-                .or(role.creator(travelId))
-                .or(role.participant(travelId))
+                .or(travelRoleService.creator(travelId))
+                .or(travelRoleService.participant(travelId))
                 .authorize();
 
         travelService.update(

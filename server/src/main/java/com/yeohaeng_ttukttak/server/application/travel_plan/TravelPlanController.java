@@ -4,8 +4,11 @@ import com.yeohaeng_ttukttak.server.application.travel_plan.dto.TravelPlanCreate
 import com.yeohaeng_ttukttak.server.application.travel_plan.dto.TravelPlanListResponse;
 import com.yeohaeng_ttukttak.server.application.travel_plan.dto.TravelPlanMoveRequest;
 import com.yeohaeng_ttukttak.server.common.authentication.Authentication;
+import com.yeohaeng_ttukttak.server.common.authentication.AuthenticationContextHolder;
+import com.yeohaeng_ttukttak.server.common.authorization.AuthorizationBuilder;
 import com.yeohaeng_ttukttak.server.common.http.JsonRequestMapping;
 import com.yeohaeng_ttukttak.server.doc.TravelPlanDocument;
+import com.yeohaeng_ttukttak.server.domain.travel.role.TravelRoleService;
 import com.yeohaeng_ttukttak.server.domain.travel_plan.TravelPlanDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -19,22 +22,21 @@ public class TravelPlanController implements TravelPlanDocument {
 
     private final TravelPlanService travelPlanService;
 
-    /**
-     * 지정한 사용자 여행에 새로운 여행 일정을 추가합니다.
-     *
-     * <ul>
-     *     <li>여행 생성자 및 참여자만 일정을 추가할 수 있습니다.</li>
-     * </ul>
-     *
-     * @param travelId 사용자 여행의 식별자
-     * @param request 추가할 여행 일정 정보
-     * @return 변경된 사용자 여행의 일정 목록
-     */
+    private final TravelRoleService travelRoleService;
+
     @PostMapping
     @Authentication
     public TravelPlanListResponse create(
             @PathVariable Long travelId,
             @RequestBody TravelPlanCreateRequest request) {
+
+        final String memberId =
+                AuthenticationContextHolder.getContext().uuid();
+
+        new AuthorizationBuilder(memberId)
+                .or(travelRoleService.creator(travelId))
+                .or(travelRoleService.participant(travelId))
+                .authorize();
 
         travelPlanService.create(
                 travelId, request.placeId(), request.dayOfTravel());
@@ -55,6 +57,14 @@ public class TravelPlanController implements TravelPlanDocument {
             @PathVariable Long planId,
             @RequestBody TravelPlanMoveRequest request) {
 
+        final String memberId =
+                AuthenticationContextHolder.getContext().uuid();
+
+        new AuthorizationBuilder(memberId)
+                .or(travelRoleService.creator(travelId))
+                .or(travelRoleService.participant(travelId))
+                .authorize();
+
         travelPlanService.move(travelId, planId, request.orderOfPlan(), request.willVisitOn());
 
         return responsePlanList(travelId);
@@ -64,6 +74,14 @@ public class TravelPlanController implements TravelPlanDocument {
     @Authentication
     public TravelPlanListResponse delete(
             @PathVariable Long travelId, @PathVariable Long planId) {
+
+        final String memberId =
+                AuthenticationContextHolder.getContext().uuid();
+
+        new AuthorizationBuilder(memberId)
+                .or(travelRoleService.creator(travelId))
+                .or(travelRoleService.participant(travelId))
+                .authorize();
 
         travelPlanService.delete(travelId, planId);
 
