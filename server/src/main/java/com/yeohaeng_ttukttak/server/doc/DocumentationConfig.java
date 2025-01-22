@@ -88,7 +88,7 @@ public class DocumentationConfig {
             final MediaType mediaType = get200MediaType(operation);
             if (mediaType == null) return operation;
 
-            mediaType.addExamples("SUCCESS", new Example().$ref(mediaType.getSchema().get$ref()));
+            mediaType.addExamples("SUCCESS", new Example());
             return operation;
 
         };
