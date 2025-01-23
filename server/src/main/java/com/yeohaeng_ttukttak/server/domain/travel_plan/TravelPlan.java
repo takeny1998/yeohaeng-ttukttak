@@ -53,7 +53,7 @@ public class TravelPlan extends BaseTimeMemberEntity {
         return id;
     }
 
-    Place place() {
+    public Place place() {
         return place;
     }
 

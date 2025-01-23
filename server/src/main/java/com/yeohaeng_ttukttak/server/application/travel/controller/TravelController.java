@@ -1,15 +1,15 @@
 package com.yeohaeng_ttukttak.server.application.travel.controller;
 
-import com.yeohaeng_ttukttak.server.application.travel.controller.dto.*;
+import com.yeohaeng_ttukttak.server.application.travel.controller.dto.request.TravelCreateRequest;
+import com.yeohaeng_ttukttak.server.application.travel.controller.dto.request.TravelUpdateRequest;
 import com.yeohaeng_ttukttak.server.common.authentication.AuthenticationContextHolder;
 import com.yeohaeng_ttukttak.server.common.authorization.AuthorizationBuilder;
 import com.yeohaeng_ttukttak.server.domain.travel.role.TravelRoleService;
 import com.yeohaeng_ttukttak.server.doc.TravelDocument;
 import com.yeohaeng_ttukttak.server.application.travel.service.TravelService;
-import com.yeohaeng_ttukttak.server.application.travel.service.TravelCityService;
 import com.yeohaeng_ttukttak.server.common.authentication.Authentication;
 import com.yeohaeng_ttukttak.server.common.http.JsonRequestMapping;
-import com.yeohaeng_ttukttak.server.application.travel.controller.dto.TravelResponse;
+import com.yeohaeng_ttukttak.server.application.travel.controller.dto.response.TravelResponse;
 import com.yeohaeng_ttukttak.server.application.travel.service.dto.TravelDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

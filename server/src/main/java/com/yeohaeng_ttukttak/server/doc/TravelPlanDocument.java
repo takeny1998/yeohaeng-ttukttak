@@ -1,8 +1,8 @@
 package com.yeohaeng_ttukttak.server.doc;
 
-import com.yeohaeng_ttukttak.server.application.travel_plan.dto.TravelPlanCreateRequest;
-import com.yeohaeng_ttukttak.server.application.travel_plan.dto.TravelPlanMoveRequest;
-import com.yeohaeng_ttukttak.server.application.travel_plan.dto.TravelPlanListResponse;
+import com.yeohaeng_ttukttak.server.application.travel.controller.dto.request.TravelPlanCreateRequest;
+import com.yeohaeng_ttukttak.server.application.travel.controller.dto.request.TravelPlanMoveRequest;
+import com.yeohaeng_ttukttak.server.application.travel.controller.dto.response.TravelPlanListResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;

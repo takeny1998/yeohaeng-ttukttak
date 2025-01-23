@@ -1,5 +1,6 @@
-package com.yeohaeng_ttukttak.server.application.travel_plan;
+package com.yeohaeng_ttukttak.server.application.travel.service;
 
+import com.yeohaeng_ttukttak.server.application.travel.service.dto.TravelPlanDto;
 import com.yeohaeng_ttukttak.server.common.exception.ExceptionCode;
 import com.yeohaeng_ttukttak.server.domain.place.entity.Place;
 import com.yeohaeng_ttukttak.server.domain.place.repository.PlaceRepository;
@@ -7,7 +8,6 @@ import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
 import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelPlanRepository;
 import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelRepository;
 import com.yeohaeng_ttukttak.server.domain.travel_plan.TravelPlan;
-import com.yeohaeng_ttukttak.server.domain.travel_plan.TravelPlanDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,13 +25,6 @@ public class TravelPlanService {
 
     private final PlaceRepository placeRepository;
 
-    /**
-     * 지정한 여행에 새로운 도시를 추가한다.
-     * @param travelId 찾을 여행의 식별자
-     * @param placeId 찾을 장소의 식별자
-     * @param dayOfTravel 계획을 수행할 일자
-     * @throws EntityNotFoundFailException 엔티티를 찾을 수 없는 경우 발생한다.
-     */
     @Transactional
     public void create(Long travelId, Long placeId, Integer dayOfTravel) {
 

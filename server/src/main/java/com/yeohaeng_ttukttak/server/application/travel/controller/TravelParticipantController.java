@@ -1,7 +1,7 @@
 package com.yeohaeng_ttukttak.server.application.travel.controller;
 
-import com.yeohaeng_ttukttak.server.application.travel.controller.dto.TravelParticipantListResponse;
-import com.yeohaeng_ttukttak.server.application.travel.controller.dto.TravelJoinRequest;
+import com.yeohaeng_ttukttak.server.application.travel.controller.dto.response.TravelParticipantListResponse;
+import com.yeohaeng_ttukttak.server.application.travel.controller.dto.request.TravelJoinRequest;
 import com.yeohaeng_ttukttak.server.application.travel.service.TravelParticipantService;
 import com.yeohaeng_ttukttak.server.common.authentication.Authentication;
 import com.yeohaeng_ttukttak.server.common.http.JsonRequestMapping;

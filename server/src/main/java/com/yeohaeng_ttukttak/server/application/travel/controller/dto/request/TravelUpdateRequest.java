@@ -1,4 +1,4 @@
-package com.yeohaeng_ttukttak.server.application.travel.controller.dto;
+package com.yeohaeng_ttukttak.server.application.travel.controller.dto.request;
 
 import com.yeohaeng_ttukttak.server.domain.shared.entity.CompanionType;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.MotivationType;

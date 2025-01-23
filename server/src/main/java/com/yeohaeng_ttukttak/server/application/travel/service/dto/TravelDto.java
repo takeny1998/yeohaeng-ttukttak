@@ -15,7 +15,7 @@ import java.util.Objects;
 @Schema(description = "여행 도메인을 표현하는 DTO 객체입니다.")
 public record TravelDto(
         @Schema(title = "식별자")
-        String id,
+        Long id,
 
         @Schema(title = "이름", example = "증평, 청주 연말 여행")
         String name,
@@ -33,7 +33,7 @@ public record TravelDto(
         List<MotivationType> motivationTypes,
 
         @Schema(title = "방문할 도시의 식별자 목록", example = "[ \"162\" ]")
-        List<String> cityIds,
+        List<Long> cityIds,
 
         @Schema(implementation = BaseTimeMemberMetadata.class)
         BaseTimeMemberMetadata metadata
@@ -42,7 +42,7 @@ public record TravelDto(
     public static TravelDto of(final Travel travel) {
 
         return new TravelDto(
-                travel.id().toString(),
+                travel.id(),
                 travel.name(),
                 travel.startedOn(),
                 travel.endedOn(),
@@ -55,7 +55,6 @@ public record TravelDto(
                 travel.cities().stream()
                         .map(TravelCity::city)
                         .map(City::id)
-                        .map(Objects::toString)
                         .toList(),
                 BaseTimeMemberMetadata.of(travel)
         );

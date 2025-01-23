@@ -1,15 +1,16 @@
-package com.yeohaeng_ttukttak.server.application.travel_plan;
+package com.yeohaeng_ttukttak.server.application.travel.controller;
 
-import com.yeohaeng_ttukttak.server.application.travel_plan.dto.TravelPlanCreateRequest;
-import com.yeohaeng_ttukttak.server.application.travel_plan.dto.TravelPlanListResponse;
-import com.yeohaeng_ttukttak.server.application.travel_plan.dto.TravelPlanMoveRequest;
+import com.yeohaeng_ttukttak.server.application.travel.service.dto.TravelPlanDto;
+import com.yeohaeng_ttukttak.server.application.travel.service.TravelPlanService;
+import com.yeohaeng_ttukttak.server.application.travel.controller.dto.request.TravelPlanCreateRequest;
+import com.yeohaeng_ttukttak.server.application.travel.controller.dto.response.TravelPlanListResponse;
+import com.yeohaeng_ttukttak.server.application.travel.controller.dto.request.TravelPlanMoveRequest;
 import com.yeohaeng_ttukttak.server.common.authentication.Authentication;
 import com.yeohaeng_ttukttak.server.common.authentication.AuthenticationContextHolder;
 import com.yeohaeng_ttukttak.server.common.authorization.AuthorizationBuilder;
 import com.yeohaeng_ttukttak.server.common.http.JsonRequestMapping;
 import com.yeohaeng_ttukttak.server.doc.TravelPlanDocument;
 import com.yeohaeng_ttukttak.server.domain.travel.role.TravelRoleService;
-import com.yeohaeng_ttukttak.server.domain.travel_plan.TravelPlanDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
