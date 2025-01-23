@@ -29,7 +29,7 @@ public interface TravelDocument {
                    - 현재 요청이 영문 로케일일 경우, "Travel to Seoul, Gyeonggi" 이름이 생성됩니다.
             """;
 
-    @Operation(summary = "새로운 여행을 생성합니다.")
+    @Operation(summary = "여행 생성 API")
     @ApiResponse(
             responseCode = "200",
             useReturnTypeSchema = true,
@@ -48,15 +48,16 @@ public interface TravelDocument {
     })
     TravelResponse create(TravelCreateRequest request);
 
-    @Operation(summary = "여행의 기본 정보를 조회합니다.")
+    @Operation(summary = "여행 조회 API")
     @ApiResponse(
             responseCode = "200",
             useReturnTypeSchema = true,
             description = "조회된 여행 객체를 반환합니다.")
     TravelResponse find(Long travelId);
 
-    @Operation(summary = "여행의 기본 정보를 변경합니다.", description = REQUIRE_CREATE_OR_JOIN)
-
+    @Operation(
+            summary = "여행 수정 API",
+            description = REQUIRE_CREATE_OR_JOIN)
     @ApiResponse(
             responseCode = "200",
             useReturnTypeSchema = true,

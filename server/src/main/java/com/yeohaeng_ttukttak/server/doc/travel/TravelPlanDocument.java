@@ -18,7 +18,7 @@ public interface TravelPlanDocument {
     String REQUIRE_CREATE_OR_JOIN =  "[새 여행 생성](#/여행/create)하거나 기존 여행에 참여한 상태여야 합니다.";
 
     @Operation(
-        summary = "지정한 여행에 새로운 여행 일정을 추가합니다.",
+        summary = "일정 생성 API",
         description = REQUIRE_CREATE_OR_JOIN)
     @ApiResponse(
         responseCode = "200",
@@ -37,7 +37,7 @@ public interface TravelPlanDocument {
 
 
     @Operation(
-        summary = "지정한 여행의 계획 목록을 조회합니다.",
+        summary = "일정 목록 조회 API",
         description = REQUIRE_CREATE_OR_JOIN)
     @ApiResponse(
         responseCode = "200",
@@ -52,7 +52,7 @@ public interface TravelPlanDocument {
 
 
     @Operation(
-        summary = "지정한 여행 일정의 일차(willVisitOn)와 순서(orderOfPlan)를 변경합니다.",
+        summary = "일정 이동 API",
         description = REQUIRE_CREATE_OR_JOIN)
     @ApiResponse(
         responseCode = "200",
@@ -71,7 +71,7 @@ public interface TravelPlanDocument {
 
 
     @Operation(
-        summary = "지정한 여행 일정을 계획 목록에서 삭제합니다.",
+        summary = "일정 삭제 API",
         description = REQUIRE_CREATE_OR_JOIN)
     @ApiResponse(
         responseCode = "200",

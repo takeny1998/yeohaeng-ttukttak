@@ -22,7 +22,7 @@ public interface TravelPlanCommentDocument {
     """;
 
     @Operation(
-            summary = "지정한 여행 일정에 새로운 댓글을 작성합니다.",
+            summary = "댓글 작성 API",
             description = "[여행을 생성](#/여행/create)하거나 기존 여행에 참여한 상태여야 합니다.")
     @ApiResponse(
             responseCode = "200",
@@ -31,7 +31,7 @@ public interface TravelPlanCommentDocument {
     TravelPlanCommentListResponse write(
             Long travelId, Long planId, TravelPlanCommentWriteRequest request);
 
-    @Operation(summary = "지정한 여행 일정의 모든 댓글 목록을 반환합니다.")
+    @Operation(summary = "댓글 목록 조회 API")
     @ApiResponse(
             responseCode = "200",
             useReturnTypeSchema = true,
@@ -39,7 +39,7 @@ public interface TravelPlanCommentDocument {
     TravelPlanCommentListResponse findAll(Long travelId, Long planId);
 
     @Operation(
-            summary = "지정한 여행 일정의 댓글을 수정합니다.",
+            summary = "댓글 수정 API",
             description = "지정한 댓글을 작성한 사용자여야 합니다.")
     @ApiResponse(
             responseCode = "200",
@@ -50,7 +50,7 @@ public interface TravelPlanCommentDocument {
             TravelPlanCommentEditRequest request);
 
     @Operation(
-            summary = "지정한 여행 일정의 댓글을 삭제합니다.",
+            summary = "댓글 삭제 API",
             description = "해당 [여행을 생성](#/여행/create)하거나 [댓글을 작성](#여행%20일정%20댓글/write)한 사용자여야 합니다.")
     @ApiResponse(
             responseCode = "200",

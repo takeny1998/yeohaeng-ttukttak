@@ -10,7 +10,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 public interface TravelInvitationDocument {
 
     @Operation(
-            summary = "지정한 여행에 다른 사용자를 초대할 수 있는 토큰을 생성합니다.",
+            summary = "여행 초대 API",
             description = """
                     해당 작업을 수행하기 위해 다음 조건을 만족해야 합니다.
                     - [여행 생성](#/여행/create): 지정한 여행을 생성한 사용자여야 합니다.
