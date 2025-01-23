@@ -4,7 +4,6 @@ import com.yeohaeng_ttukttak.server.application.travel.controller.dto.response.T
 import com.yeohaeng_ttukttak.server.application.travel.service.CreateTravelInvitationService;
 import com.yeohaeng_ttukttak.server.application.travel.service.FindTravelInvitationService;
 import com.yeohaeng_ttukttak.server.common.authentication.Authentication;
-import com.yeohaeng_ttukttak.server.common.http.JsonRequestMapping;
 import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthenticationContext;
 import com.yeohaeng_ttukttak.server.domain.travel.dto.TravelInvitationDto;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Slf4j
-@JsonRequestMapping("/api/v2/travels/{travelId}/invitations")
+@RequestMapping("/api/v2/travels/{travelId}/invitations")
 @RequiredArgsConstructor
 public class TravelInvitationController {
 

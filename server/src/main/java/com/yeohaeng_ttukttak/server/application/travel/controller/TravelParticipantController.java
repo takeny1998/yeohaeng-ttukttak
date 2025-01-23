@@ -4,7 +4,6 @@ import com.yeohaeng_ttukttak.server.application.travel.controller.dto.response.T
 import com.yeohaeng_ttukttak.server.application.travel.controller.dto.request.TravelJoinRequest;
 import com.yeohaeng_ttukttak.server.application.travel.service.TravelParticipantService;
 import com.yeohaeng_ttukttak.server.common.authentication.Authentication;
-import com.yeohaeng_ttukttak.server.common.http.JsonRequestMapping;
 import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthenticationContext;
 import com.yeohaeng_ttukttak.server.domain.travel.dto.TravelParticipantDto;
 import jakarta.validation.Valid;
@@ -14,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@JsonRequestMapping("/api/v2/travels/{travelId}/participants")
+@RequestMapping("/api/v2/travels/{travelId}/participants")
 @RequiredArgsConstructor
 public class TravelParticipantController {
 

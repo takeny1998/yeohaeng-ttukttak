@@ -2,6 +2,10 @@ spring:
   profiles:
     active: dev
 
+springdoc:
+  default-produces-media-type: application/json
+  default-consumes-media-type: application/json
+
 ---
 
 oauth:

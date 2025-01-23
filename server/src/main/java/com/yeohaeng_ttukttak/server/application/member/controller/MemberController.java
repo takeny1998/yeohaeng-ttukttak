@@ -7,7 +7,6 @@ import com.yeohaeng_ttukttak.server.application.member.service.FindMemberService
 import com.yeohaeng_ttukttak.server.application.member.service.MemberTravelService;
 import com.yeohaeng_ttukttak.server.application.member.service.UpdateMemberService;
 import com.yeohaeng_ttukttak.server.common.authentication.Authentication;
-import com.yeohaeng_ttukttak.server.common.http.JsonRequestMapping;
 import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthenticationContext;
 import com.yeohaeng_ttukttak.server.domain.member.dto.MemberDto;
 import com.yeohaeng_ttukttak.server.application.travel.service.dto.TravelDto;
@@ -18,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@JsonRequestMapping("/api/v2/members")
+@RequestMapping("/api/v2/members")
 @RequiredArgsConstructor
 @Tag(name = "사용자 (Member)", description = "사용자 정보와 관련된 동작을 수행하는 컬렉션 입니다.")
 public class MemberController {

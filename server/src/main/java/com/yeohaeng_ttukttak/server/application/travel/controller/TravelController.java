@@ -8,7 +8,6 @@ import com.yeohaeng_ttukttak.server.domain.travel.role.TravelRoleService;
 import com.yeohaeng_ttukttak.server.doc.TravelDocument;
 import com.yeohaeng_ttukttak.server.application.travel.service.TravelService;
 import com.yeohaeng_ttukttak.server.common.authentication.Authentication;
-import com.yeohaeng_ttukttak.server.common.http.JsonRequestMapping;
 import com.yeohaeng_ttukttak.server.application.travel.controller.dto.response.TravelResponse;
 import com.yeohaeng_ttukttak.server.application.travel.service.dto.TravelDto;
 import jakarta.validation.Valid;
@@ -17,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@JsonRequestMapping("/api/v2/travels")
+@RequestMapping("/api/v2/travels")
 @RequiredArgsConstructor
 public class TravelController implements TravelDocument {
 
