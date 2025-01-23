@@ -7,7 +7,7 @@ import com.yeohaeng_ttukttak.server.domain.place.repository.PlaceRepository;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
 import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelPlanRepository;
 import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelRepository;
-import com.yeohaeng_ttukttak.server.domain.travel_plan.TravelPlan;
+import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelPlan;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

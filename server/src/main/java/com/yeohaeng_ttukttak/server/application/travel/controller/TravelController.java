@@ -5,7 +5,7 @@ import com.yeohaeng_ttukttak.server.application.travel.controller.dto.request.Tr
 import com.yeohaeng_ttukttak.server.common.authentication.AuthenticationContextHolder;
 import com.yeohaeng_ttukttak.server.common.authorization.AuthorizationBuilder;
 import com.yeohaeng_ttukttak.server.domain.travel.role.TravelRoleService;
-import com.yeohaeng_ttukttak.server.doc.TravelDocument;
+import com.yeohaeng_ttukttak.server.doc.travel.TravelDocument;
 import com.yeohaeng_ttukttak.server.application.travel.service.TravelService;
 import com.yeohaeng_ttukttak.server.common.authentication.Authentication;
 import com.yeohaeng_ttukttak.server.application.travel.controller.dto.response.TravelResponse;

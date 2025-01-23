@@ -7,6 +7,8 @@ import com.yeohaeng_ttukttak.server.common.exception.ExceptionMessageService;
 import com.yeohaeng_ttukttak.server.common.exception.dto.ExceptionWrapper;
 import com.yeohaeng_ttukttak.server.common.locale.RequestLocaleService;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -65,21 +67,6 @@ public class DocumentationConfig {
                 .components(components);
     }
 
-    @Bean
-    public OperationCustomizer customOperationCustomizer() {
-        final Locale currentLocale = requestLocaleService.getCurrentLocale();
-
-        return new OperationCustomizer() {
-            @Override
-            public Operation customize(Operation operation, HandlerMethod handlerMethod) {
-
-//                handleSuccessResponse(operation, handlerMethod);
-//                handleExceptionResponse(operation, handlerMethod, currentLocale);
-
-                return operation;
-            }
-        };
-    }
 
     @Bean
     public OperationCustomizer handleSuccessResponse() {

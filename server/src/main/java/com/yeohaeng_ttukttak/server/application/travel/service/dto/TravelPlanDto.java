@@ -1,6 +1,6 @@
 package com.yeohaeng_ttukttak.server.application.travel.service.dto;
 
-import com.yeohaeng_ttukttak.server.domain.travel_plan.TravelPlan;
+import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelPlan;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.time.LocalDate;
@@ -22,15 +22,15 @@ public record TravelPlanDto(
     public static TravelPlanDto of(TravelPlan plan) {
 
         final LocalDate willVisitOn = plan
-                .travel()
+                .getTravel()
                 .startedOn()
-                .plusDays(plan.dayOfTravel());
+                .plusDays(plan.getDayOfTravel());
 
         return new TravelPlanDto(
-                plan.id(),
+                plan.getId(),
                 willVisitOn,
-                plan.orderOfPlan(),
-                plan.place().id().toString()
+                plan.getOrderOfPlan(),
+                plan.getPlace().id().toString()
         );
     }
 

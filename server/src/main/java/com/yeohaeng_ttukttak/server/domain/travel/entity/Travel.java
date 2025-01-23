@@ -10,7 +10,6 @@ import com.yeohaeng_ttukttak.server.domain.place.entity.Place;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.BaseTimeMemberEntity;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.CompanionType;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.MotivationType;
-import com.yeohaeng_ttukttak.server.domain.travel_plan.TravelPlan;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -228,7 +227,6 @@ public class Travel extends BaseTimeMemberEntity {
      * 지정된 참여자를 해당 여행에서 쫒아(kick)낸다.
      * @param member 쫒아낼 사용자
      * @param participant 쫒을 대상 참여자의 식별자
-     * @throws PermissionRequiredFailException 대상 참여자를 쫒을 권한이 없는 경우 발생한다.
      */
     public void leaveParticipant(Member member, TravelParticipant participant) {
         final boolean isInvitedByKicker = Objects.equals(member.uuid(), participant.invitee().uuid());
@@ -261,8 +259,8 @@ public class Travel extends BaseTimeMemberEntity {
         int orderOfPlan = -1;
 
         for (TravelPlan plan : plans) {
-            if (Objects.equals(plan.dayOfTravel(), dayOfTravel)) {
-                orderOfPlan = Math.max(orderOfPlan, plan.orderOfPlan());
+            if (Objects.equals(plan.getDayOfTravel(), dayOfTravel)) {
+                orderOfPlan = Math.max(orderOfPlan, plan.getOrderOfPlan());
             }
         }
 
@@ -283,7 +281,7 @@ public class Travel extends BaseTimeMemberEntity {
                          final Integer newOrderOfPlan,
                          final LocalDate willVisitOn) {
 
-        int dayOfTravel = travelPlan.dayOfTravel();
+        int dayOfTravel = travelPlan.getDayOfTravel();
 
         final LocalDate startDate = dates.startedOn();
         final LocalDate endDate = dates.endedOn();
@@ -299,16 +297,16 @@ public class Travel extends BaseTimeMemberEntity {
         }
 
         for (TravelPlan plan : plans) {
-            if (Objects.equals(plan.id(), travelPlan.id())) {
+            if (Objects.equals(plan.getId(), travelPlan.getId())) {
                 travelPlan
                         .setOrderOfPlan(newOrderOfPlan)
                         .setDayOfTravel(dayOfTravel);
                 continue;
             }
 
-            final boolean isInSameDay = Objects.equals(plan.dayOfTravel(), dayOfTravel);
+            final boolean isInSameDay = Objects.equals(plan.getDayOfTravel(), dayOfTravel);
 
-            final Integer orderOfPlan = plan.orderOfPlan();
+            final Integer orderOfPlan = plan.getOrderOfPlan();
 
             if (isInSameDay && orderOfPlan >= newOrderOfPlan) {
                 plan.setOrderOfPlan(orderOfPlan + 1);

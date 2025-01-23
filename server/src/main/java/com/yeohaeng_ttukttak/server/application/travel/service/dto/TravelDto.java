@@ -14,7 +14,7 @@ import java.util.Objects;
 
 @Schema(description = "여행 도메인을 표현하는 DTO 객체입니다.")
 public record TravelDto(
-        @Schema(title = "식별자")
+        @Schema(title = "식별자", example = "1502")
         Long id,
 
         @Schema(title = "이름", example = "증평, 청주 연말 여행")

@@ -1,15 +1,19 @@
-package com.yeohaeng_ttukttak.server.domain.travel_plan;
+package com.yeohaeng_ttukttak.server.domain.travel.entity;
 
 import com.yeohaeng_ttukttak.server.domain.place.entity.Place;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.BaseTimeMemberEntity;
-import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
+@Getter
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TravelPlan extends BaseTimeMemberEntity {
@@ -32,6 +36,10 @@ public class TravelPlan extends BaseTimeMemberEntity {
     @JoinColumn(name = "travel_id")
     private Travel travel;
 
+    @OrderBy("createdAt DESC, lastModifiedAt DESC, id ASC")
+    @OneToMany(mappedBy = "plan", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TravelPlanComment> comments = new ArrayList<>();
+
     public TravelPlan(Integer dayOfTravel, Integer orderOfPlan, Place place, Travel travel) {
         this.dayOfTravel = dayOfTravel;
         this.orderOfPlan = orderOfPlan;
@@ -47,26 +55,6 @@ public class TravelPlan extends BaseTimeMemberEntity {
     public TravelPlan setOrderOfPlan(Integer orderOfPlan) {
         this.orderOfPlan = orderOfPlan;
         return this;
-    }
-
-    public Long id() {
-        return id;
-    }
-
-    public Place place() {
-        return place;
-    }
-
-    public Travel travel() {
-        return travel;
-    }
-
-    public Integer dayOfTravel() {
-        return dayOfTravel;
-    }
-
-    public Integer orderOfPlan() {
-        return orderOfPlan;
     }
 
 }
