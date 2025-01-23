@@ -9,7 +9,7 @@ import jakarta.annotation.Nullable;
 
 
 @Schema
-@JsonPropertyOrder({"code", "field", "message"})
+@JsonPropertyOrder({"token", "field", "message"})
 public record FailExceptionDto(
     @Schema(description = "특정 예외를 식별하는 예외 코드입니다.",
             example = "FAIL_EXCEPTION")

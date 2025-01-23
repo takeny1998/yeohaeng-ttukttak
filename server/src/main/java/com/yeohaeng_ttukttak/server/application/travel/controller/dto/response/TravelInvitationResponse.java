@@ -1,7 +1,7 @@
 package com.yeohaeng_ttukttak.server.application.travel.controller.dto.response;
 
 import com.yeohaeng_ttukttak.server.common.dto.ServerSuccessResponse;
-import com.yeohaeng_ttukttak.server.domain.travel.dto.TravelInvitationDto;
+import com.yeohaeng_ttukttak.server.application.travel.service.dto.TravelInvitationDto;
 
 
 public final class TravelInvitationResponse extends ServerSuccessResponse<TravelInvitationResponse.TravelInvitationData> {

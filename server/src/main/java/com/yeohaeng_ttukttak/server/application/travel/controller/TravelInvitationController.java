@@ -1,11 +1,12 @@
 package com.yeohaeng_ttukttak.server.application.travel.controller;
 
 import com.yeohaeng_ttukttak.server.application.travel.controller.dto.response.TravelInvitationResponse;
-import com.yeohaeng_ttukttak.server.application.travel.service.CreateTravelInvitationService;
-import com.yeohaeng_ttukttak.server.application.travel.service.FindTravelInvitationService;
+import com.yeohaeng_ttukttak.server.application.travel.service.TravelInvitationService;
 import com.yeohaeng_ttukttak.server.common.authentication.Authentication;
+import com.yeohaeng_ttukttak.server.common.authentication.AuthenticationContextHolder;
+import com.yeohaeng_ttukttak.server.doc.travel.TravelInvitationDocument;
 import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthenticationContext;
-import com.yeohaeng_ttukttak.server.domain.travel.dto.TravelInvitationDto;
+import com.yeohaeng_ttukttak.server.application.travel.service.dto.TravelInvitationDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -14,23 +15,20 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RequestMapping("/api/v2/travels/{travelId}/invitations")
 @RequiredArgsConstructor
-public class TravelInvitationController {
+public class TravelInvitationController implements TravelInvitationDocument {
 
-    private final CreateTravelInvitationService createService;
-    private final FindTravelInvitationService findService;
+    private final TravelInvitationService invitationService;
 
     @PostMapping
     @Authentication
     public TravelInvitationResponse create(
-            @PathVariable Long travelId,
-            AuthenticationContext authorization
-    ) {
+            @PathVariable Long travelId) {
 
-        log.debug("get = {}", authorization);
+        final String uuid = AuthenticationContextHolder
+                .getContext().uuid();
 
-        final String createdId = createService.createOne(
-                authorization.uuid(), travelId);
-        final TravelInvitationDto dto = findService.findOne(travelId, createdId);
+        final TravelInvitationDto dto = invitationService
+                .create(travelId, uuid);
 
         return new TravelInvitationResponse(dto);
     }

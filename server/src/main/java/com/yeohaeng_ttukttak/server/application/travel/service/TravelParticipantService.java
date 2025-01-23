@@ -7,9 +7,9 @@ import com.yeohaeng_ttukttak.server.domain.travel.dto.TravelParticipantDto;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelInvitation;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelParticipant;
+import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelInvitationRepository;
 import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelParticipantRepository;
 import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelRepository;
-import com.yeohaeng_ttukttak.server.domain.travel.service.TravelInvitationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,10 +21,10 @@ import java.util.List;
 public class TravelParticipantService {
 
     private final TravelRepository travelRepository;
-    private final TravelInvitationService invitationService;
 
     private final MemberService memberService;
 
+    private final TravelInvitationRepository invitationRepository;
     private final TravelParticipantRepository participantRepository;
 
     @Transactional(readOnly = true)
@@ -46,7 +46,8 @@ public class TravelParticipantService {
     @Transactional
     public void join(Long travelId, String invitationId, String inviteeId) {
 
-        final TravelInvitation invitation = invitationService.find(travelId, invitationId);
+        final TravelInvitation invitation = invitationRepository.findById(invitationId)
+                .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::wrap);
 
         final Travel travel = travelRepository.findById(invitation.travelId())
                 .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::wrap);
@@ -55,7 +56,8 @@ public class TravelParticipantService {
         final Member inviter = memberService.find(invitation.memberId());
 
         travel.joinParticipant(inviter, invitee);
-        invitationService.delete(invitation);
+
+        invitationRepository.delete(invitation);
     }
 
     /**
