@@ -33,14 +33,6 @@ public enum ExceptionCode {
         }
     }),
 
-    CANNOT_INVITE_YOURSELF_FAIL(new FailException() {
-        
-        @Override
-        public String getBaseMessage() {
-            return "You cannot invite yourself to the travel. Please invite another user.";
-        }
-    }),
-
     COMMENT_CONTENT_LENGTH_TOO_LONG_FAIL(new ArgumentByteLimitExceededFailException("content", 100)),
 
     ENTITY_NOT_FOUND_FAIL(new FailException() {
@@ -54,7 +46,6 @@ public enum ExceptionCode {
     DAY_OF_TRAVEL_OUT_OF_RANGE_FAIL(new ArgumentOutOfRangeFailException("dayOfTravel", 0, "endedOn")),
 
     INVALID_TRAVEL_NAME_CHARACTER_FAIL(new ArgumentFailException("name") {
-        
         @Override
         public String getBaseMessage() {
             return "The name of travel must consist of alphanumeric, and commas.";
@@ -66,6 +57,20 @@ public enum ExceptionCode {
         @Override
         public String getBaseMessage() {
             return "The nickname must consist of alphanumeric.";
+        }
+    }),
+
+    INVITATION_INVALID_OR_EXPIRED_FAIL(new ArgumentFailException("invitationToken") {
+        @Override
+        public String getBaseMessage() {
+            return "The invitation is either invalid or has expired. Please request a new invitation.";
+        }
+    }),
+
+    TOO_MANY_PARTICIPANT_FAIL(new FailException() {
+        @Override
+        public String getBaseMessage() {
+            return "There can be no more than 50 people on the trip.";
         }
     }),
 
