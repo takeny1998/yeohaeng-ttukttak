@@ -39,14 +39,14 @@ public class TravelPlanService {
                 .findById(travelId)
                 .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::wrap);
 
+        final Place place = placeRepository
+                .findById(placeId)
+                .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::wrap);
+
         new AuthorizationBuilder(memberId)
                 .or(new TravelCreatorRole(travel))
                 .or(new TravelParticipantRole(travel))
                 .authorize();
-
-        final Place place = placeRepository
-                .findById(placeId)
-                .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::wrap);
 
         return travel.addPlan(place, dayOfTravel);
     }
@@ -60,7 +60,7 @@ public class TravelPlanService {
     }
 
     @Transactional(readOnly = true)
-    public List<TravelPlanDto> findAllByTravelId(Long travelId) {
+    public List<TravelPlanDto> findAllByTravelId(final Long travelId) {
         final Travel travel = travelRepository.findById(travelId)
                 .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::wrap);
 
@@ -76,35 +76,33 @@ public class TravelPlanService {
                      @Nullable final LocalDate willVisitOn,
                      final String memberId) {
 
-        final Travel travel = travelRepository.findById(travelId)
+        final TravelPlan travelPlan = travelPlanRepository
+                .findWithTravelId(travelId, planId)
                 .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::wrap);
+
+        final Travel travel = travelPlan.getTravel();
 
         new AuthorizationBuilder(memberId)
                 .or(new TravelCreatorRole(travel))
                 .or(new TravelParticipantRole(travel))
                 .authorize();
-
-        final TravelPlan travelPlan = travelPlanRepository
-                .findByIdAndTravelId(planId, travelId)
-                .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::wrap);
 
         travel.movePlan(travelPlan, orderOfPlan, willVisitOn);
     }
 
     @Transactional
-    public void delete(Long travelId, Long planId, String memberId) {
+    public void delete(final Long travelId, final Long planId, final String memberId) {
 
-        final Travel travel = travelRepository.findById(travelId)
+        final TravelPlan travelPlan = travelPlanRepository
+                .findWithTravelId(travelId, planId)
                 .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::wrap);
+
+        final Travel travel = travelPlan.getTravel();
 
         new AuthorizationBuilder(memberId)
                 .or(new TravelCreatorRole(travel))
                 .or(new TravelParticipantRole(travel))
                 .authorize();
-
-        final TravelPlan travelPlan = travelPlanRepository
-                .findByIdAndTravelId(planId, travelId)
-                .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::wrap);
 
         travel.deletePlan(travelPlan);
 

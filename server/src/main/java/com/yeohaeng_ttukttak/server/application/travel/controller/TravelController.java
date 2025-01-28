@@ -1,12 +1,10 @@
 package com.yeohaeng_ttukttak.server.application.travel.controller;
 
-import com.yeohaeng_ttukttak.server.application.travel.controller.dto.request.TravelPlanMoveRequest;
+import com.yeohaeng_ttukttak.server.application.travel.controller.dto.request.*;
 import com.yeohaeng_ttukttak.server.application.travel.controller.dto.response.TravelPlanListResponse;
 import com.yeohaeng_ttukttak.server.application.travel.service.TravelParticipantService;
 import com.yeohaeng_ttukttak.server.application.travel.service.TravelPlanService;
 import com.yeohaeng_ttukttak.server.application.travel.service.dto.TravelParticipantDto;
-import com.yeohaeng_ttukttak.server.application.travel.controller.dto.request.TravelCreateRequest;
-import com.yeohaeng_ttukttak.server.application.travel.controller.dto.request.TravelUpdateRequest;
 import com.yeohaeng_ttukttak.server.application.travel.controller.dto.response.TravelParticipantListResponse;
 import com.yeohaeng_ttukttak.server.application.travel.service.dto.TravelPlanDto;
 import com.yeohaeng_ttukttak.server.common.authentication.AuthenticationContextHolder;
@@ -28,8 +26,9 @@ import java.util.List;
 public class TravelController implements TravelDocument {
 
     private final TravelService travelService;
-    private final TravelPlanService travelPlanService;
     private final TravelParticipantService travelParticipantService;
+
+    private final TravelPlanService travelPlanService;
 
     @PostMapping
     @Authentication
