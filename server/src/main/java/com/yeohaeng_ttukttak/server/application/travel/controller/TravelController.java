@@ -1,13 +1,15 @@
 package com.yeohaeng_ttukttak.server.application.travel.controller;
 
+import com.yeohaeng_ttukttak.server.application.travel.controller.dto.request.TravelPlanMoveRequest;
+import com.yeohaeng_ttukttak.server.application.travel.controller.dto.response.TravelPlanListResponse;
 import com.yeohaeng_ttukttak.server.application.travel.service.TravelParticipantService;
+import com.yeohaeng_ttukttak.server.application.travel.service.TravelPlanService;
 import com.yeohaeng_ttukttak.server.application.travel.service.dto.TravelParticipantDto;
 import com.yeohaeng_ttukttak.server.application.travel.controller.dto.request.TravelCreateRequest;
 import com.yeohaeng_ttukttak.server.application.travel.controller.dto.request.TravelUpdateRequest;
 import com.yeohaeng_ttukttak.server.application.travel.controller.dto.response.TravelParticipantListResponse;
+import com.yeohaeng_ttukttak.server.application.travel.service.dto.TravelPlanDto;
 import com.yeohaeng_ttukttak.server.common.authentication.AuthenticationContextHolder;
-import com.yeohaeng_ttukttak.server.common.authorization.AuthorizationBuilder;
-import com.yeohaeng_ttukttak.server.domain.travel.role.TravelRoleService;
 import com.yeohaeng_ttukttak.server.doc.travel.TravelDocument;
 import com.yeohaeng_ttukttak.server.application.travel.service.TravelService;
 import com.yeohaeng_ttukttak.server.common.authentication.Authentication;
@@ -26,9 +28,7 @@ import java.util.List;
 public class TravelController implements TravelDocument {
 
     private final TravelService travelService;
-
-    private final TravelRoleService travelRoleService;
-
+    private final TravelPlanService travelPlanService;
     private final TravelParticipantService travelParticipantService;
 
     @PostMapping
@@ -54,10 +54,15 @@ public class TravelController implements TravelDocument {
     }
 
     @GetMapping("/{travelId}/participants")
-    public TravelParticipantListResponse findParticipants(
+    public TravelParticipantListResponse findAllParticipants(
             @PathVariable Long travelId) {
 
         return toParticipantListResponse(travelId);
+    }
+
+    @GetMapping("/{travelId}/plans")
+    public TravelPlanListResponse findAllPlans(@PathVariable Long travelId) {
+        return toPlanListResponse(travelId);
     }
 
     @PatchMapping(value = "/{travelId}")
@@ -69,11 +74,6 @@ public class TravelController implements TravelDocument {
         final String memberId =
                 AuthenticationContextHolder.getContext().uuid();
 
-        new AuthorizationBuilder(memberId)
-                .or(travelRoleService.creator(travelId))
-                .or(travelRoleService.participant(travelId))
-                .authorize();
-
         travelService.update(
                 travelId,
                 request.name(),
@@ -81,9 +81,26 @@ public class TravelController implements TravelDocument {
                 request.endedOn(),
                 request.motivationTypes(),
                 request.companionTypes(),
-                request.cityIds());
+                request.cityIds(),
+                memberId);
 
         return toTravelResponse(travelId);
+    }
+
+    @PatchMapping("/{travelId}/plans/{planId}")
+    @Authentication
+    public TravelPlanListResponse movePlan(
+            @PathVariable Long travelId,
+            @PathVariable Long planId,
+            @RequestBody TravelPlanMoveRequest request) {
+
+        final String memberId =
+                AuthenticationContextHolder.getContext().uuid();
+
+        travelPlanService.move(
+                travelId, planId, request.orderOfPlan(), request.willVisitOn(), memberId);
+
+        return toPlanListResponse(travelId);
     }
 
     @DeleteMapping("/{travelId}/participants/{participantId}")
@@ -100,6 +117,24 @@ public class TravelController implements TravelDocument {
         return toParticipantListResponse(travelId);
     }
 
+    @DeleteMapping("/{travelId}/plans/{planId}")
+    @Authentication
+    public TravelPlanListResponse deletePlan(
+            @PathVariable Long travelId, @PathVariable Long planId) {
+
+        final String memberId =
+                AuthenticationContextHolder.getContext().uuid();
+
+        travelPlanService.delete(travelId, planId, memberId);
+
+        return toPlanListResponse(travelId);
+    }
+
+    private TravelResponse toTravelResponse(Long travelId) {
+        final TravelDto travelDto = travelService.findById(travelId);
+        return new TravelResponse(travelDto);
+    }
+
     private TravelParticipantListResponse toParticipantListResponse(Long travelId) {
         final List<TravelParticipantDto> dtoList =
                 travelParticipantService.findAllByTravelId(travelId);
@@ -107,9 +142,9 @@ public class TravelController implements TravelDocument {
         return new TravelParticipantListResponse(dtoList);
     }
 
-    private TravelResponse toTravelResponse(Long travelId) {
-        final TravelDto travelDto = travelService.findById(travelId);
-        return new TravelResponse(travelDto);
+    private TravelPlanListResponse toPlanListResponse(Long travelId) {
+        final List<TravelPlanDto> dtoList = travelPlanService.findAllByTravelId(travelId);
+        return new TravelPlanListResponse(dtoList);
     }
 
 }

@@ -1,6 +1,7 @@
 package com.yeohaeng_ttukttak.server.application.travel.service;
 
 import com.yeohaeng_ttukttak.server.application.travel.service.dto.TravelDto;
+import com.yeohaeng_ttukttak.server.common.authorization.AuthorizationBuilder;
 import com.yeohaeng_ttukttak.server.common.exception.ExceptionCode;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.City;
 import com.yeohaeng_ttukttak.server.domain.geography.repository.GeographyRepository;
@@ -8,6 +9,8 @@ import com.yeohaeng_ttukttak.server.domain.shared.entity.CompanionType;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.MotivationType;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
 import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelRepository;
+import com.yeohaeng_ttukttak.server.domain.travel.role.TravelCreatorRole;
+import com.yeohaeng_ttukttak.server.domain.travel.role.TravelParticipantRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -91,11 +94,17 @@ public class TravelService {
             final LocalDate endedOn,
             final List<MotivationType> motivationTypes,
             final List<CompanionType> companionTypes,
-            final List<Long> cityIds
+            final List<Long> cityIds,
+            final String memberId
     ) {
 
         final Travel travel = travelRepository.findById(travelId)
                 .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::wrap);
+
+        new AuthorizationBuilder(memberId)
+                .or(new TravelCreatorRole(travel))
+                .or(new TravelParticipantRole(travel))
+                .authorize();
 
         if (Objects.nonNull(inputName)) {
             travel.rename(inputName);

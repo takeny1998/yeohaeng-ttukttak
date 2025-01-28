@@ -12,6 +12,8 @@ public record TravelPlanCreateRequest(
         @NotNull
         Long placeId,
 
+        Long travelId,
+
         @Schema(title = "방문 일차",
                 description = "4박 5일 여행이라면, 0부터 4까지 지정 가능합니다.",
                 minimum = "0", example = "2")

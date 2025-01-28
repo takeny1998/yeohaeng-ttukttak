@@ -1,15 +1,15 @@
 package com.yeohaeng_ttukttak.server.doc.travel;
 
 import com.yeohaeng_ttukttak.server.application.travel.controller.dto.request.TravelCreateRequest;
+import com.yeohaeng_ttukttak.server.application.travel.controller.dto.request.TravelPlanMoveRequest;
 import com.yeohaeng_ttukttak.server.application.travel.controller.dto.response.TravelParticipantListResponse;
+import com.yeohaeng_ttukttak.server.application.travel.controller.dto.response.TravelPlanListResponse;
 import com.yeohaeng_ttukttak.server.application.travel.controller.dto.response.TravelResponse;
 import com.yeohaeng_ttukttak.server.application.travel.controller.dto.request.TravelUpdateRequest;
-import com.yeohaeng_ttukttak.server.common.dto.VoidResponse;
 import com.yeohaeng_ttukttak.server.doc.Throws;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import static com.yeohaeng_ttukttak.server.common.exception.ExceptionCode.*;
 
@@ -62,8 +62,20 @@ public interface TravelDocument {
     @ApiResponse(
             responseCode = "200",
             useReturnTypeSchema = true,
-            description = "조회딘 참여 객체 목록을 반환합니다.")
-    TravelParticipantListResponse findParticipants(Long travelId);
+            description = "조회된 참여 객체 목록을 반환합니다.")
+    TravelParticipantListResponse findAllParticipants(Long travelId);
+
+    @Operation(
+            summary = "일정 목록 조회 API",
+            description = REQUIRE_CREATE_OR_JOIN)
+    @ApiResponse(
+            responseCode = "200",
+            useReturnTypeSchema = true,
+            description = """
+        조회된 일정 목록을 반환합니다.
+        
+        - 일정 목록은 일차(willVisitOn) 오름차순, 순서(orderOfPlan) 오름차순 기준으로 정렬되어야 합니다.""")
+    TravelPlanListResponse findAllPlans(Long travelId);
 
     @Operation(
             summary = "여행 수정 API",
@@ -98,4 +110,34 @@ public interface TravelDocument {
             description = "추방한 객체를 제외한 모든 참여 객체 목록을 반환합니다.")
     TravelParticipantListResponse kickParticipant(Long travelId, Long participantId);
 
+
+    @Operation(
+            summary = "일정 이동 API",
+            description = REQUIRE_CREATE_OR_JOIN)
+    @ApiResponse(
+            responseCode = "200",
+            useReturnTypeSchema = true,
+            description = """
+            변경된 일정을 포함한 최신 상태의 일정 목록을 반환합니다.
+            
+            - 일자(willVisitOn)가 같고, 순서(orderOfPlan)가 같거나 큰 일정의 순서(orderOfPlan)을 뒤로 밉니다.
+            
+            - 일정 목록은 일차(willVisitOn) 오름차순, 순서(orderOfPlan) 오름차순 기준으로 정렬되어야 합니다.
+            
+            """)
+    @Throws(WILL_VISIT_ON_OUT_OF_TRAVEL_PERIOD_FAIL)
+    TravelPlanListResponse movePlan(
+            Long travelId, Long planId, TravelPlanMoveRequest request);
+
+    @Operation(
+            summary = "일정 삭제 API",
+            description = REQUIRE_CREATE_OR_JOIN)
+    @ApiResponse(
+            responseCode = "200",
+            useReturnTypeSchema = true,
+            description = """
+                    삭제된 항목을 반영한 최신 상태의 일정 목록을 반환합니다.
+                    
+                    - 추가된 일정은 일차(willVisitOn)가 같은 일정 목록의 마지막 순서(orderOfPlan)가 부여됩니다.""")
+    TravelPlanListResponse deletePlan(Long travelId, Long planId);
 }
