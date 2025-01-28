@@ -7,10 +7,10 @@ public record TravelParticipantDto(
 
     public static TravelParticipantDto of(TravelParticipant participant) {
         return new TravelParticipantDto(
-                participant.id(),
-                participant.travel().id(),
-                participant.inviter().uuid(),
-                participant.invitee().uuid());
+                participant.getId(),
+                participant.getTravel().id(),
+                participant.getInviter().uuid(),
+                participant.getInvitee().uuid());
     }
 
 }

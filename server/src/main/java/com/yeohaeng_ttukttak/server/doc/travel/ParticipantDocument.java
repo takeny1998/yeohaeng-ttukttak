@@ -1,8 +1,9 @@
 package com.yeohaeng_ttukttak.server.doc.travel;
 
-import com.yeohaeng_ttukttak.server.application.travel.controller.dto.request.TravelParticipantJoinRequest;
-import com.yeohaeng_ttukttak.server.application.travel.controller.dto.response.TravelParticipantInviteResponse;
-import com.yeohaeng_ttukttak.server.application.travel.controller.dto.response.TravelParticipantJoinResponse;
+import com.yeohaeng_ttukttak.server.application.participant.controller.dto.request.ParticipantCreateRequest;
+import com.yeohaeng_ttukttak.server.application.participant.controller.dto.request.ParticipantTokenCreateRequest;
+import com.yeohaeng_ttukttak.server.application.participant.controller.dto.response.ParticipantResponse;
+import com.yeohaeng_ttukttak.server.application.participant.controller.dto.response.ParticipantTokenResponse;
 import com.yeohaeng_ttukttak.server.doc.Throws;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -11,7 +12,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import static com.yeohaeng_ttukttak.server.common.exception.ExceptionCode.*;
 
 @Tag(name = "여행 참여", description = "[여행](#/여행) 초대 및 참여를 위한 API 컬렉션 입니다.")
-public interface TravelParticipantDocument {
+public interface ParticipantDocument {
 
     @Operation(
             summary = "지정된 여행에 참여할 수 있는 초대 토큰을 생성합니다.",
@@ -26,7 +27,7 @@ public interface TravelParticipantDocument {
                     생성된 초대 토큰과 유효 시간 정보를 반환합니다.
                     - 유효 시간은 초 단위의 정수 값입니다.""")
     @Throws(TOO_MANY_PARTICIPANT_FAIL)
-    TravelParticipantInviteResponse invite();
+    ParticipantTokenResponse createToken(ParticipantTokenCreateRequest request);
 
 
     @Operation(summary = "초대 토큰을 사용해 지정된 여행에 참여합니다.")
@@ -37,7 +38,7 @@ public interface TravelParticipantDocument {
     @Throws({INVITATION_INVALID_OR_EXPIRED_FAIL,
             TRAVEL_ALREADY_JOINED_FAIL,
             TOO_MANY_PARTICIPANT_FAIL})
-    TravelParticipantJoinResponse join(TravelParticipantJoinRequest request);
+    ParticipantResponse updateByToken(ParticipantCreateRequest request);
 
 
 }

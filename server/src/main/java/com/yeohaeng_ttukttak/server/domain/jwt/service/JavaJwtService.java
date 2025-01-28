@@ -36,11 +36,6 @@ public class JavaJwtService implements JwtService {
     }
 
     @Override
-    public String issueByES256(String privateKey, Duration expiration, Map<String, Object> headers, Map<String, Object> claims) {
-        return null;
-    }
-
-    @Override
     public Map<String, JwtClaim> decode(String jwtToken) {
         final var claims = JWT.decode(jwtToken).getClaims();
 
@@ -72,12 +67,6 @@ public class JavaJwtService implements JwtService {
                 .entrySet().stream()
                 .collect(toMap(Map.Entry::getKey,
                         e -> new JavaJwtClaim(e.getValue())));
-    }
-
-
-    @Override
-    public Map<String, JwtClaim> verifyByRSA256(String jwtToken) {
-        return null;
     }
 
 }

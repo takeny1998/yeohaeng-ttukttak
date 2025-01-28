@@ -16,7 +16,7 @@ public class TravelParticipantRole implements Role {
     public TravelParticipantRole(final Travel travel) {
         this.participantIdList = travel.participants()
                 .stream()
-                .map(TravelParticipant::invitee)
+                .map(TravelParticipant::getInvitee)
                 .map(Member::uuid)
                 .toList();
     }
