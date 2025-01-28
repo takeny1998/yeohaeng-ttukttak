@@ -15,6 +15,7 @@ import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelParticipantRe
 import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelRepository;
 import com.yeohaeng_ttukttak.server.domain.travel.role.TravelCreatorRole;
 import com.yeohaeng_ttukttak.server.domain.travel.role.TravelParticipantInviteeRole;
+import com.yeohaeng_ttukttak.server.domain.travel.role.TravelParticipantInviterRole;
 import com.yeohaeng_ttukttak.server.domain.travel.role.TravelParticipantRole;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -46,6 +47,48 @@ public class TravelParticipantService {
     private static final String SECRET = "sample", ISSUER = "yeohaeng-ttukttak.com";
 
     private static final Duration EXPIRATION = Duration.ofMinutes(30);
+
+    @Transactional
+    public Long create(final String encodedToken, final String inviteeId) {
+
+        final Map<String, JwtClaim> claims =
+                jwtService.verifyByHS256(encodedToken, SECRET, ISSUER);
+
+        final String uuid = Optional
+                .ofNullable(claims.get("uuid"))
+                .map(JwtClaim::asString)
+                .orElseThrow(INVITATION_INVALID_OR_EXPIRED_FAIL::wrap);
+
+        final Long travelId = Optional
+                .ofNullable(claims.get("travelId"))
+                .map(JwtClaim::asInteger)
+                .map(Integer::longValue)
+                .orElseThrow(INVITATION_INVALID_OR_EXPIRED_FAIL::wrap);
+
+        final String inviterId = Optional
+                .ofNullable(claims.get("inviterId"))
+                .map(JwtClaim::asString)
+                .orElseThrow(INVITATION_INVALID_OR_EXPIRED_FAIL::wrap);
+
+        final Travel travel = travelRepository.findById(travelId)
+                .orElseThrow(ENTITY_NOT_FOUND_FAIL::wrap);
+
+        final Member inviter = memberRepository.findByUuid(inviterId)
+                .orElseThrow(ENTITY_NOT_FOUND_FAIL::wrap);
+
+        final Member invitee = memberRepository.findByUuid(inviteeId)
+                .orElseThrow(ENTITY_NOT_FOUND_FAIL::wrap);
+
+        final TravelParticipantToken participantToken =
+                new TravelParticipantToken(uuid, travel, inviter);
+
+        final TravelParticipant participant =
+                new TravelParticipant(participantToken, invitee);
+
+        participantRepository.save(participant);
+
+        return participant.getId();
+    }
 
     @Transactional(readOnly = true)
     public TravelParticipantTokenDto createToken(
@@ -97,48 +140,6 @@ public class TravelParticipantService {
     }
 
     @Transactional
-    public Long assignInvitee(final String encodedToken, final String inviteeId) {
-
-        final Map<String, JwtClaim> claims =
-                jwtService.verifyByHS256(encodedToken, SECRET, ISSUER);
-
-        final String uuid = Optional
-                .ofNullable(claims.get("uuid"))
-                .map(JwtClaim::asString)
-                .orElseThrow(INVITATION_INVALID_OR_EXPIRED_FAIL::wrap);
-
-        final Long travelId = Optional
-                .ofNullable(claims.get("travelId"))
-                .map(JwtClaim::asInteger)
-                .map(Integer::longValue)
-                .orElseThrow(INVITATION_INVALID_OR_EXPIRED_FAIL::wrap);
-
-        final String inviterId = Optional
-                .ofNullable(claims.get("inviterId"))
-                .map(JwtClaim::asString)
-                .orElseThrow(INVITATION_INVALID_OR_EXPIRED_FAIL::wrap);
-
-        final Travel travel = travelRepository.findById(travelId)
-                .orElseThrow(ENTITY_NOT_FOUND_FAIL::wrap);
-
-        final Member inviter = memberRepository.findByUuid(inviterId)
-                .orElseThrow(ENTITY_NOT_FOUND_FAIL::wrap);
-
-        final Member invitee = memberRepository.findByUuid(inviteeId)
-                .orElseThrow(ENTITY_NOT_FOUND_FAIL::wrap);
-
-        final TravelParticipantToken participantToken =
-                new TravelParticipantToken(uuid, travel, inviter);
-
-        final TravelParticipant participant =
-                new TravelParticipant(participantToken, invitee);
-
-        participantRepository.save(participant);
-
-        return participant.getId();
-    }
-
-    @Transactional
     public void delete(final Long participantId, final String memberId) {
 
         final TravelParticipant participant = participantRepository
@@ -147,6 +148,7 @@ public class TravelParticipantService {
 
         new AuthorizationBuilder(memberId)
                 .or(new TravelCreatorRole(participant.getTravel()))
+                .or(new TravelParticipantInviterRole(participant))
                 .or(new TravelParticipantInviteeRole(participant))
                 .authorize();
 

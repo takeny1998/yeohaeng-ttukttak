@@ -205,22 +205,6 @@ public class Travel extends BaseTimeMemberEntity {
     }
 
     /**
-     * 지정된 참여자를 해당 여행에서 쫒아(kick)낸다.
-     * @param member 쫒아낼 사용자
-     * @param participant 쫒을 대상 참여자의 식별자
-     */
-    public void leaveParticipant(Member member, TravelParticipant participant) {
-        final boolean isInvitedByKicker = Objects.equals(member.uuid(), participant.getInvitee().uuid());
-        final boolean isMemberOwner = Objects.equals(member.uuid(), createdBy().uuid());
-
-        if (!isInvitedByKicker && !isMemberOwner) {
-            throw ExceptionCode.AUTHORIZATION_FAIL.wrap();
-        }
-
-        participants.remove(participant);
-    }
-
-    /**
      * 지정한 여행에 새로운 계획을 생성합니다.
      *
      * @param place 계획에 지정할 장소(Place) 엔티티

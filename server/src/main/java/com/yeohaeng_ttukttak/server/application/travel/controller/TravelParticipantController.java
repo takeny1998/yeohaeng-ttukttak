@@ -36,14 +36,14 @@ public class TravelParticipantController implements TravelParticipantDocument {
 
     @PostMapping("/participants")
     @Authentication
-    public TravelParticipantResponse updateByToken(
+    public TravelParticipantResponse create(
             @RequestBody TravelParticipantCreateRequest request) {
 
         final String inviteeId =
                 AuthenticationContextHolder.getContext().uuid();
 
         final Long createdId = travelParticipantService
-                .assignInvitee(request.participantToken(), inviteeId);
+                .create(request.participantToken(), inviteeId);
 
         final TravelParticipantDto travelParticipantDto = travelParticipantService.findById(createdId);
 
