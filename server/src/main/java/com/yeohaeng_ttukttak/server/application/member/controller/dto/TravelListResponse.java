@@ -1,7 +1,7 @@
 package com.yeohaeng_ttukttak.server.application.member.controller.dto;
 
 import com.yeohaeng_ttukttak.server.common.dto.ServerSuccessResponse;
-import com.yeohaeng_ttukttak.server.domain.travel.dto.TravelDto;
+import com.yeohaeng_ttukttak.server.application.travel.service.dto.TravelDto;
 
 import java.util.List;
 

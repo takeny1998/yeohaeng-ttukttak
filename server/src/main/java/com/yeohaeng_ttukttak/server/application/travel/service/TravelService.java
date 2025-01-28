@@ -1,11 +1,11 @@
 package com.yeohaeng_ttukttak.server.application.travel.service;
 
+import com.yeohaeng_ttukttak.server.application.travel.service.dto.TravelDto;
 import com.yeohaeng_ttukttak.server.common.exception.ExceptionCode;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.City;
 import com.yeohaeng_ttukttak.server.domain.geography.repository.GeographyRepository;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.CompanionType;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.MotivationType;
-import com.yeohaeng_ttukttak.server.domain.travel.dto.TravelDto;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
 import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelRepository;
 import lombok.RequiredArgsConstructor;

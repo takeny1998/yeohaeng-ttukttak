@@ -36,7 +36,7 @@ public class TravelName {
     private boolean isGenerated;
 
     /**
-     * 입력받은 <code>inputName</code>의 <code>null</code> 여부에 따라 여행 이름을 생성합니다.
+     * 입력받은 <token>inputName</token>의 <token>null</token> 여부에 따라 여행 이름을 생성합니다.
      *
      * <pre>{@code
      *  if (inputName == null) generateDefaultName(cities);

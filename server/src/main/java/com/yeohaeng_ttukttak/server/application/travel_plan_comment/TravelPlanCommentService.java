@@ -1,13 +1,11 @@
 package com.yeohaeng_ttukttak.server.application.travel_plan_comment;
 
 import com.yeohaeng_ttukttak.server.common.exception.ExceptionCode;
-import com.yeohaeng_ttukttak.server.domain.comment.Comment;
-import com.yeohaeng_ttukttak.server.domain.comment.CommentRepository;
-import com.yeohaeng_ttukttak.server.domain.travel_plan.TravelPlan;
+import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelPlan;
 import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelPlanRepository;
-import com.yeohaeng_ttukttak.server.domain.travel_plan.TravelPlanComment;
-import com.yeohaeng_ttukttak.server.domain.comment.CommentDto;
-import com.yeohaeng_ttukttak.server.domain.travel_plan.TravelPlanCommentRepository;
+import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelPlanComment;
+import com.yeohaeng_ttukttak.server.application.travel.service.dto.TravelPlanCommentDto;
+import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelPlanCommentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,47 +21,50 @@ public class TravelPlanCommentService {
     private final TravelPlanRepository travelPlanRepository;
     private final TravelPlanCommentRepository travelPlanCommentRepository;
 
-    private final CommentRepository commentRepository;
-
     @Transactional
-    public void writeComment(Long travelId, Long planId, String content) {
-        final TravelPlan travelPlan = travelPlanRepository
-                .findByIdAndTravelId(planId, travelId)
-                .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::wrap);
+    public void write(final Long travelId, final Long planId, final String content) {
 
-        final Comment comment = new Comment(content);
-        commentRepository.save(comment);
+        final TravelPlan travelPlan = findTravelPlan(travelId, planId);
 
         travelPlanCommentRepository.save(
-                new TravelPlanComment(travelPlan, comment));
+                new TravelPlanComment(travelPlan, content));
+
     }
 
     @Transactional(readOnly = true)
-    public List<CommentDto> getOrderedComments(Long planId) {
-        return travelPlanCommentRepository
-                .getOrderedCommentsByPlanId(planId)
+    public List<TravelPlanCommentDto> findAll(final Long travelId, final Long planId) {
+
+        final TravelPlan travelPlan = findTravelPlan(travelId, planId);
+
+        return travelPlan.getComments()
                 .stream()
-                .map(CommentDto::of)
+                .map(TravelPlanCommentDto::of)
                 .toList();
     }
 
     @Transactional
-    public void editComment(Long travelId, Long planId, Long commentId, String content) {
+    public void edit(final Long travelId, final Long planId, final Long commentId, final String content) {
 
         final TravelPlanComment travelPlanComment = travelPlanCommentRepository
-                .findByTravelIdAndPlanIdAndCommentId(travelId, planId, commentId)
+                .findById(commentId)
                 .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::wrap);
 
-        travelPlanComment.comment().editContent(content);
+        travelPlanComment.editContent(content);
     }
 
     @Transactional
-    public void deleteComment(Long planId, Long commentId) {
+    public void delete(final Long travelId, final Long planId, final Long commentId) {
 
-        TravelPlanComment planComment = travelPlanCommentRepository.findByPlanIdAndCommentId(planId, commentId)
+        final TravelPlanComment travelPlanComment = travelPlanCommentRepository
+                .findById(commentId)
                 .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::wrap);
 
-        travelPlanCommentRepository.delete(planComment);
-        commentRepository.delete(planComment.comment());
+        travelPlanCommentRepository.delete(travelPlanComment);
+    }
+
+    private TravelPlan findTravelPlan(Long travelId, Long planId) {
+        return travelPlanRepository
+                .findByIdAndTravelId(planId, travelId)
+                .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::wrap);
     }
 }

@@ -1,5 +1,6 @@
 package com.yeohaeng_ttukttak.server.domain.shared.entity;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
@@ -17,6 +18,7 @@ public abstract class BaseTimeEntity {
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
+    @Nullable
     @LastModifiedDate
     private LocalDateTime lastModifiedAt;
 
@@ -24,6 +26,7 @@ public abstract class BaseTimeEntity {
         return createdAt;
     }
 
+    @Nullable
     public LocalDateTime lastModifiedAt() {
         return lastModifiedAt;
     }

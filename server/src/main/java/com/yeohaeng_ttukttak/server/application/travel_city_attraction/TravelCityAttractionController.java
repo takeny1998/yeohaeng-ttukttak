@@ -3,9 +3,7 @@ package com.yeohaeng_ttukttak.server.application.travel_city_attraction;
 import com.yeohaeng_ttukttak.server.application.travel_city_attraction.dto.AttractionPageResponse;
 import com.yeohaeng_ttukttak.server.common.dto.InfiniteScrollCommand;
 import com.yeohaeng_ttukttak.server.common.dto.InfiniteScrollResult;
-import com.yeohaeng_ttukttak.server.common.dto.ServerSuccessResponse;
 import com.yeohaeng_ttukttak.server.common.exception.ExceptionCode;
-import com.yeohaeng_ttukttak.server.common.http.JsonRequestMapping;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.City;
 import com.yeohaeng_ttukttak.server.domain.geography.repository.GeographyRepository;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
@@ -18,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
-@JsonRequestMapping("/api/v2/travels/{travelId}/cities/{cityId}/attractions")
+@RequestMapping("/api/v2/travels/{travelId}/cities/{cityId}/attractions")
 @RequiredArgsConstructor
 public class TravelCityAttractionController {
 

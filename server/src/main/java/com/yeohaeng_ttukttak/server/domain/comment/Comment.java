@@ -5,30 +5,22 @@ import com.yeohaeng_ttukttak.server.common.util.StringUtil;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.BaseTimeMemberEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.Objects;
 
-@Entity
+@Getter
+@MappedSuperclass
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Comment extends BaseTimeMemberEntity {
+public abstract class Comment extends BaseTimeMemberEntity {
 
     @Id @GeneratedValue
     private Long id;
 
     private String content;
 
-    public Comment(String content) {
-        validateContent(content);
-        this.content = content;
-    }
-
-    Long id() {
-        return id;
-    }
-
-    String content() {
-        return content;
+    public Comment(final String content) {
+        editContent(content);
     }
 
     /**
@@ -36,22 +28,16 @@ public class Comment extends BaseTimeMemberEntity {
      * @param newContent 수정할 댓글 내용
      */
     public void editContent(String newContent) {
-        validateContent(newContent);
+        final int byteLength = StringUtil.getByteLengthInEucKr(newContent);
+
+        if (byteLength > getContentByteLimit()) {
+            throw ExceptionCode.COMMENT_CONTENT_LENGTH_TOO_LONG_FAIL.wrap();
+        }
 
         this.content = newContent;
     }
 
-    /**
-     * 댓글 내용의 길이를 검사한다.
-     * @param content 검사할 내용 문자열
-     * @throws CommentContentLengthTooLongFailException 내용이 100 Byte가 넘어가는 경우 발생한다.
-     */
-    private void validateContent(String content) {
-        final int byteLength = StringUtil.getByteLengthInEucKr(content);
-
-        if (byteLength > 100) {
-            throw ExceptionCode.COMMENT_CONTENT_LENGTH_TOO_LONG_FAIL.wrap();
-        }
-    }
+    @Transient
+    protected abstract int getContentByteLimit();
 
 }
