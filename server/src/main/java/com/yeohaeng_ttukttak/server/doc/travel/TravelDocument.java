@@ -1,12 +1,15 @@
 package com.yeohaeng_ttukttak.server.doc.travel;
 
 import com.yeohaeng_ttukttak.server.application.travel.controller.dto.request.TravelCreateRequest;
+import com.yeohaeng_ttukttak.server.application.travel.controller.dto.response.TravelParticipantListResponse;
 import com.yeohaeng_ttukttak.server.application.travel.controller.dto.response.TravelResponse;
 import com.yeohaeng_ttukttak.server.application.travel.controller.dto.request.TravelUpdateRequest;
+import com.yeohaeng_ttukttak.server.common.dto.VoidResponse;
 import com.yeohaeng_ttukttak.server.doc.Throws;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import static com.yeohaeng_ttukttak.server.common.exception.ExceptionCode.*;
 
@@ -55,6 +58,13 @@ public interface TravelDocument {
             description = "조회된 여행 객체를 반환합니다.")
     TravelResponse find(Long travelId);
 
+    @Operation(summary = "참여 목록 조회 API")
+    @ApiResponse(
+            responseCode = "200",
+            useReturnTypeSchema = true,
+            description = "조회딘 참여 객체 목록을 반환합니다.")
+    TravelParticipantListResponse findParticipants(Long travelId);
+
     @Operation(
             summary = "여행 수정 API",
             description = REQUIRE_CREATE_OR_JOIN)
@@ -75,5 +85,17 @@ public interface TravelDocument {
             TRAVEL_CITY_COUNT_EXCEEDED_FAIL
     })
     TravelResponse update(Long travelId, TravelUpdateRequest request);
+
+    @Operation(
+            summary = "여행 추방 API",
+            description = """
+                    해당 작업을 수행하기 위해, 다음 조건 중 하나 이상 만족해야 합니다.
+                    - [여행 생성](#/여행/create): 지정한 여행을 생성한 사용자여야 합니다.
+                    - [초대 토큰 생성](#/여행%20참여/createToken): 참여자를 초대한 사용자여야 합니다.""")
+    @ApiResponse(
+            responseCode = "200",
+            useReturnTypeSchema = true,
+            description = "추방한 객체를 제외한 모든 참여 객체 목록을 반환합니다.")
+    TravelParticipantListResponse kickParticipant(Long travelId, Long participantId);
 
 }
