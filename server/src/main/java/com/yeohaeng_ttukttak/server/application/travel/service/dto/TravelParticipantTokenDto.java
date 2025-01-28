@@ -1,8 +1,8 @@
-package com.yeohaeng_ttukttak.server.application.participant.service.dto;
+package com.yeohaeng_ttukttak.server.application.travel.service.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-public record ParticipantTokenDto(
+public record TravelParticipantTokenDto(
 
         @Schema(title = "참여 토큰",
                 description = "암호화된 참여 토큰의 값 입니다.",
