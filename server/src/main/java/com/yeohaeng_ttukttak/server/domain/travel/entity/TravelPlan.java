@@ -50,13 +50,17 @@ public class TravelPlan extends BaseTimeMemberEntity {
         this.travel = travel;
     }
 
+    public TravelPlan(final Place place) {
+        this.place = place;
+    }
+
     /**
      * 해당 일정의 날짜 및 순서를 변경합니다.
      *
      * @param willVisitOn 변경할 날짜; null 이 아니어야 합니다.
      * @param orderOfPlan 변경할 순서; null 이 아니고, 0보다 같거나 커야 합니다.
      */
-    protected void updateOrder(
+    public void updateOrder(
             final LocalDate willVisitOn, final int orderOfPlan) {
 
         final LocalDate startDate = travel.startedOn();
@@ -73,6 +77,10 @@ public class TravelPlan extends BaseTimeMemberEntity {
                 .getBetweenDays(startDate, willVisitOn) - 1;
 
         this.orderOfPlan = orderOfPlan;
+    }
+
+    protected void setTravel(final Travel travel) {
+        this.travel = travel;
     }
 
     /**

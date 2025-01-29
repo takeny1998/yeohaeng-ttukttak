@@ -97,7 +97,11 @@ public class TravelController implements TravelDocument {
                 AuthenticationContextHolder.getContext().uuid();
 
         travelPlanService.move(
-                travelId, planId, request.orderOfPlan(), request.willVisitOn(), memberId);
+                travelId,
+                planId,
+                request.orderOfPlan(),
+                request.willVisitOn(),
+                memberId);
 
         return toPlanListResponse(travelId);
     }
