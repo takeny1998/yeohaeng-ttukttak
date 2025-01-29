@@ -6,6 +6,7 @@ import com.yeohaeng_ttukttak.server.domain.geography.entity.City;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.BaseTimeMemberEntity;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.CompanionType;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.MotivationType;
+import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -224,38 +225,19 @@ public class Travel extends BaseTimeMemberEntity {
      *
      * @param travelPlan 이동할 계획 엔티티
      */
-    public void pushBackBehindPlans(final TravelPlan travelPlan) {
+    public void reorderBehindPlans(final TravelPlan travelPlan) {
 
-        final LocalDate willVisitOn = travelPlan.getWillVisitOn();
-        final Integer orderOfPlan = travelPlan.getOrderOfPlan();
-
-        final List<TravelPlan> targetPlans = plans().stream()
-                .filter(otherPlan -> otherPlan.getWillVisitOn().isEqual(willVisitOn))
-                .filter(otherPlan -> otherPlan.getOrderOfPlan() >= orderOfPlan)
-                .filter(otherPlan -> !otherPlan.equals(travelPlan))
+        final List<TravelPlan> behindPlans = plans().stream()
+                .filter(otherPlan -> otherPlan.getWillVisitOn().isEqual(travelPlan.getWillVisitOn()))
+                .filter(otherPlan -> otherPlan.getOrderOfPlan() >= travelPlan.getOrderOfPlan())
+                .filter(otherPlan -> !otherPlan.getId().equals(travelPlan.getId()))
                 .toList();
 
-        int newOrderOfPlan = orderOfPlan + 1;
+        int newOrderOfPlan = travelPlan.getOrderOfPlan() + 1;
 
-        for (TravelPlan targetPlan : targetPlans) {
-            targetPlan.updateOrder(willVisitOn, newOrderOfPlan ++);
+        for (TravelPlan behindPlan : behindPlans) {
+            behindPlan.updateOrder(behindPlan.getWillVisitOn(), newOrderOfPlan ++);
         }
-    }
-
-
-    /**
-     * 지정된 여행 계획을 삭제합니다.
-     *
-     * @param travelPlan 삭제할 여행 계획
-     */
-    public void deletePlan(TravelPlan travelPlan) {
-
-        // 여행 계획을 삭제
-        if (!plans.contains(travelPlan)) {
-            throw ExceptionCode.ENTITY_NOT_FOUND_FAIL.wrap();
-        }
-
-        plans.remove(travelPlan);
     }
 
 

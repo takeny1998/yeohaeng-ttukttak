@@ -43,13 +43,6 @@ public class TravelPlan extends BaseTimeMemberEntity {
     @OneToMany(mappedBy = "plan", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TravelPlanComment> comments = new ArrayList<>();
 
-    public TravelPlan(Integer dayOfTravel, Integer orderOfPlan, Place place, Travel travel) {
-        this.dayOfTravel = dayOfTravel;
-        this.orderOfPlan = orderOfPlan;
-        this.place = place;
-        this.travel = travel;
-    }
-
     public TravelPlan(final Place place) {
         this.place = place;
     }
@@ -81,13 +74,6 @@ public class TravelPlan extends BaseTimeMemberEntity {
 
     protected void setTravel(final Travel travel) {
         this.travel = travel;
-    }
-
-    /**
-     * 해당 일정의 순서를 뒤로 밉니다.
-     */
-    protected void pushBackOrder() {
-        this.orderOfPlan += 1;
     }
 
     public LocalDate getWillVisitOn() {

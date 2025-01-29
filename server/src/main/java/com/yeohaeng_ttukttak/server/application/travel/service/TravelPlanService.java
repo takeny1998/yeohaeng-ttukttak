@@ -91,7 +91,7 @@ public class TravelPlanService {
                 .authorize();
 
         travelPlan.updateOrder(willVisitOn, orderOfPlan);
-        travel.pushBackBehindPlans(travelPlan);
+        travel.reorderBehindPlans(travelPlan);
     }
 
     @Transactional
@@ -108,8 +108,8 @@ public class TravelPlanService {
                 .or(new TravelParticipantRole(travel))
                 .authorize();
 
-        travel.deletePlan(travelPlan);
-
+        travel.reorderBehindPlans(travelPlan);
+        travelPlanRepository.delete(travelPlan);
     }
 
 }
