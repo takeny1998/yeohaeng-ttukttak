@@ -91,7 +91,7 @@ public class TravelController implements TravelDocument {
     public TravelPlanListResponse movePlan(
             @PathVariable Long travelId,
             @PathVariable Long planId,
-            @RequestBody TravelPlanMoveRequest request) {
+            @RequestBody @Valid TravelPlanMoveRequest request) {
 
         final String memberId =
                 AuthenticationContextHolder.getContext().uuid();

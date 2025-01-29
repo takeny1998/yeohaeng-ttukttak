@@ -1,6 +1,7 @@
 package com.yeohaeng_ttukttak.server.application.travel.controller.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 
 import java.time.LocalDate;
@@ -9,10 +10,11 @@ import java.time.LocalDate;
 public record TravelPlanMoveRequest(
 
         @Schema(title = "방문 순서", minimum = "0", example = "1")
-        @PositiveOrZero
+        @PositiveOrZero @NotNull
         Integer orderOfPlan,
 
         @Schema(title = "방문 일자", example = "2024-12-28")
+        @NotNull
         LocalDate willVisitOn
 
 ) {}

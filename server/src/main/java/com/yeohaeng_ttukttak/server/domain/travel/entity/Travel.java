@@ -237,52 +237,27 @@ public class Travel extends BaseTimeMemberEntity {
 
         return plan.getId();
     }
+
     /**
-     * 여행 계획을 이동합니다.
+     * 여행 일정을 이동한 후, 순서가 같거나 큰 일정들의 순서를 뒤로 밉니다.
      *
      * @param travelPlan 이동할 계획 엔티티
      * @param newOrderOfPlan 새로운 계획의 순서
      * @param willVisitOn 방문할 예정일
-     * @throws ArgumentOutOfRangeFailException 지정된 방문일이 여행 기간에 벗어나는 경우 발생합니다.
      */
     public void movePlan(final TravelPlan travelPlan,
-                         @Nullable final Integer newOrderOfPlan,
-                         @Nullable final LocalDate willVisitOn) {
+                         final Integer newOrderOfPlan,
+                         final LocalDate willVisitOn) {
 
-        int orderOfPlan = Objects.nonNull(newOrderOfPlan)
-                ? newOrderOfPlan
-                : travelPlan.getOrderOfPlan();
+        travelPlan.updateOrder(willVisitOn, newOrderOfPlan);
 
-        int dayOfTravel = travelPlan.getDayOfTravel();
+        final List<TravelPlan> targetPlans = plans().stream()
+                .filter(otherPlan -> otherPlan.getWillVisitOn().isEqual(willVisitOn))
+                .filter(otherPlan -> otherPlan.getOrderOfPlan() >= newOrderOfPlan)
+                .toList();
 
-        final LocalDate startDate = dates.startedOn();
-        final LocalDate endDate = dates.endedOn();
-
-        if (Objects.nonNull(willVisitOn)) {
-
-            if (!LocalDateUtil.isInRange(willVisitOn, startDate, endDate)) {
-                throw ExceptionCode.WILL_VISIT_ON_OUT_OF_TRAVEL_PERIOD_FAIL.wrap();
-            }
-
-            dayOfTravel = (int) LocalDateUtil
-                    .getBetweenDays(startDate, willVisitOn) - 1;
-        }
-
-        for (TravelPlan plan : plans) {
-            if (Objects.equals(plan.getId(), travelPlan.getId())) {
-                travelPlan
-                        .setOrderOfPlan(orderOfPlan)
-                        .setDayOfTravel(dayOfTravel);
-                continue;
-            }
-
-            final boolean isInSameDay = Objects.equals(plan.getDayOfTravel(), dayOfTravel);
-
-            final Integer otherOrderOfPlan = plan.getOrderOfPlan();
-
-            if (isInSameDay && otherOrderOfPlan >= orderOfPlan) {
-                plan.setOrderOfPlan(otherOrderOfPlan + 1);
-            }
+        for (TravelPlan targetPlan : targetPlans) {
+            targetPlan.pushBackOrder();
         }
     }
 
