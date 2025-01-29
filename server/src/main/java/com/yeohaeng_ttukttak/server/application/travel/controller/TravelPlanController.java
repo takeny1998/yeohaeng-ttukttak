@@ -1,96 +1,99 @@
 package com.yeohaeng_ttukttak.server.application.travel.controller;
 
-import com.yeohaeng_ttukttak.server.application.travel.service.dto.TravelPlanDto;
+import com.yeohaeng_ttukttak.server.application.travel.controller.dto.request.TravelPlanCommentEditRequest;
+import com.yeohaeng_ttukttak.server.application.travel.controller.dto.request.TravelPlanCommentWriteRequest;
+import com.yeohaeng_ttukttak.server.application.travel.controller.dto.response.TravelPlanResponse;
 import com.yeohaeng_ttukttak.server.application.travel.service.TravelPlanService;
 import com.yeohaeng_ttukttak.server.application.travel.controller.dto.request.TravelPlanCreateRequest;
-import com.yeohaeng_ttukttak.server.application.travel.controller.dto.response.TravelPlanListResponse;
-import com.yeohaeng_ttukttak.server.application.travel.controller.dto.request.TravelPlanMoveRequest;
+import com.yeohaeng_ttukttak.server.application.travel.service.TravelPlanCommentService;
+import com.yeohaeng_ttukttak.server.application.travel.controller.dto.response.TravelPlanCommentListResponse;
 import com.yeohaeng_ttukttak.server.common.authentication.Authentication;
 import com.yeohaeng_ttukttak.server.common.authentication.AuthenticationContextHolder;
-import com.yeohaeng_ttukttak.server.common.authorization.AuthorizationBuilder;
 import com.yeohaeng_ttukttak.server.doc.travel.TravelPlanDocument;
-import com.yeohaeng_ttukttak.server.domain.travel.role.TravelRoleService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
-@RequestMapping("/api/v2/travels/{travelId}/plans")
+@RequestMapping("/api/v2/plans")
 @RequiredArgsConstructor
 public class TravelPlanController implements TravelPlanDocument {
 
     private final TravelPlanService travelPlanService;
-
-    private final TravelRoleService travelRoleService;
-
+    private final TravelPlanCommentService travelPlanCommentService;
+    
     @PostMapping
     @Authentication
-    public TravelPlanListResponse create(
-            @PathVariable Long travelId,
+    public TravelPlanResponse create(
             @RequestBody TravelPlanCreateRequest request) {
 
+        final Long travelId = request.travelId();
         final String memberId =
                 AuthenticationContextHolder.getContext().uuid();
 
-        new AuthorizationBuilder(memberId)
-                .or(travelRoleService.creator(travelId))
-                .or(travelRoleService.participant(travelId))
-                .authorize();
+        final Long planId = travelPlanService.create(
+                travelId, request.placeId(), request.dayOfTravel(), memberId);
 
-        travelPlanService.create(
-                travelId, request.placeId(), request.dayOfTravel());
-
-        return responsePlanList(travelId);
+        return new TravelPlanResponse(travelPlanService.findById(planId));
     }
 
-    @GetMapping
-    public TravelPlanListResponse findAll(
-            @PathVariable Long travelId) {
-        return responsePlanList(travelId);
-    }
-
-    @PatchMapping("/{planId}")
+    @PostMapping("/{planId}/comments")
     @Authentication
-    public TravelPlanListResponse move(
-            @PathVariable Long travelId,
+    public TravelPlanCommentListResponse writeComment(
             @PathVariable Long planId,
-            @RequestBody TravelPlanMoveRequest request) {
+            @RequestBody @Valid TravelPlanCommentWriteRequest request) {
 
         final String memberId =
                 AuthenticationContextHolder.getContext().uuid();
 
-        new AuthorizationBuilder(memberId)
-                .or(travelRoleService.creator(travelId))
-                .or(travelRoleService.participant(travelId))
-                .authorize();
+        travelPlanCommentService.write(planId, memberId, request.content());
 
-        travelPlanService.move(travelId, planId, request.orderOfPlan(), request.willVisitOn());
-
-        return responsePlanList(travelId);
+        return toCommentListResponse(planId);
     }
 
-    @DeleteMapping("/{planId}")
+
+    @GetMapping("/{planId}/comments")
+    public TravelPlanCommentListResponse findAllComments(
+            @PathVariable Long planId) {
+
+        return toCommentListResponse(planId);
+    }
+
+    @PatchMapping("/{planId}/comments/{commentId}")
     @Authentication
-    public TravelPlanListResponse delete(
-            @PathVariable Long travelId, @PathVariable Long planId) {
+    public TravelPlanCommentListResponse editComment(
+            @PathVariable Long planId,
+            @PathVariable Long commentId,
+            @RequestBody @Valid TravelPlanCommentEditRequest request) {
 
-        final String memberId =
-                AuthenticationContextHolder.getContext().uuid();
+        final String memberId = AuthenticationContextHolder
+                .getContext().uuid();
 
-        new AuthorizationBuilder(memberId)
-                .or(travelRoleService.creator(travelId))
-                .or(travelRoleService.participant(travelId))
-                .authorize();
+        final String content = request.content();
 
-        travelPlanService.delete(travelId, planId);
+        travelPlanCommentService.edit(planId, commentId, memberId, content);
 
-        return responsePlanList(travelId);
+        return toCommentListResponse(planId);
     }
 
-    private TravelPlanListResponse responsePlanList(Long travelId) {
-        final List<TravelPlanDto> dtoList = travelPlanService.findAll(travelId);
-        return new TravelPlanListResponse(dtoList);
+
+    @DeleteMapping("/{planId}/comments/{commentId}")
+    @Authentication
+    public TravelPlanCommentListResponse deleteComment(
+            @PathVariable Long planId,
+            @PathVariable Long commentId) {
+
+        final String memberId = AuthenticationContextHolder.getContext().uuid();
+
+        travelPlanCommentService.delete(planId, commentId, memberId);
+
+        return toCommentListResponse(planId);
+    }
+
+    private TravelPlanCommentListResponse toCommentListResponse(final Long planId) {
+
+        return new TravelPlanCommentListResponse(
+                travelPlanCommentService.findAll(planId));
     }
 
 }

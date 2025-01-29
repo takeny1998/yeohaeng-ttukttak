@@ -1,53 +1,66 @@
 package com.yeohaeng_ttukttak.server.application.travel.controller;
 
-import com.yeohaeng_ttukttak.server.application.travel.controller.dto.response.TravelParticipantListResponse;
-import com.yeohaeng_ttukttak.server.application.travel.controller.dto.request.TravelJoinRequest;
+import com.yeohaeng_ttukttak.server.application.travel.controller.dto.request.TravelParticipantCreateRequest;
+import com.yeohaeng_ttukttak.server.application.travel.controller.dto.request.TravelParticipantTokenCreateRequest;
+import com.yeohaeng_ttukttak.server.application.travel.controller.dto.response.TravelParticipantResponse;
+import com.yeohaeng_ttukttak.server.application.travel.controller.dto.response.TravelParticipantTokenResponse;
 import com.yeohaeng_ttukttak.server.application.travel.service.TravelParticipantService;
+import com.yeohaeng_ttukttak.server.application.travel.service.dto.TravelParticipantDto;
+import com.yeohaeng_ttukttak.server.application.travel.service.dto.TravelParticipantTokenDto;
 import com.yeohaeng_ttukttak.server.common.authentication.Authentication;
-import com.yeohaeng_ttukttak.server.domain.auth.dto.AuthenticationContext;
-import com.yeohaeng_ttukttak.server.domain.travel.dto.TravelParticipantDto;
-import jakarta.validation.Valid;
+import com.yeohaeng_ttukttak.server.common.authentication.AuthenticationContextHolder;
+import com.yeohaeng_ttukttak.server.common.dto.VoidResponse;
+import com.yeohaeng_ttukttak.server.doc.travel.TravelParticipantDocument;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
-@RequestMapping("/api/v2/travels/{travelId}/participants")
+@RequestMapping("/api/v2")
 @RequiredArgsConstructor
-public class TravelParticipantController {
+public class TravelParticipantController implements TravelParticipantDocument {
 
-    private final TravelParticipantService participantService;
+    private final TravelParticipantService travelParticipantService;
 
-    @PostMapping
+    @PostMapping("/participant-token")
     @Authentication
-    public void join(
-            @PathVariable Long travelId,
-            @Valid @RequestBody TravelJoinRequest request,
-            AuthenticationContext authorization) {
+    public TravelParticipantTokenResponse createToken(
+            @RequestBody TravelParticipantTokenCreateRequest request) {
 
-        participantService.join(travelId,
-                request.invitationId(),
-                authorization.uuid());
+        final String uuid = AuthenticationContextHolder.getContext().uuid();
+
+        final TravelParticipantTokenDto travelParticipantTokenDto =
+                travelParticipantService.createToken(request.travelId(), uuid);
+
+        return new TravelParticipantTokenResponse(travelParticipantTokenDto);
     }
 
-    @GetMapping
-    public TravelParticipantListResponse find(
-            @PathVariable Long travelId) {
-        final List<TravelParticipantDto> dtoList =
-                participantService.find(travelId);
-
-        return new TravelParticipantListResponse(dtoList);
-    }
-
-    @DeleteMapping("/{participantId}")
+    @PostMapping("/participants")
     @Authentication
-    public void leave(
-            @PathVariable Long travelId,
-            @PathVariable Long participantId,
-            AuthenticationContext authorization) {
+    public TravelParticipantResponse create(
+            @RequestBody TravelParticipantCreateRequest request) {
 
-        participantService.leave(travelId, authorization.uuid(), participantId);
+        final String inviteeId =
+                AuthenticationContextHolder.getContext().uuid();
+
+        final Long createdId = travelParticipantService
+                .create(request.participantToken(), inviteeId);
+
+        final TravelParticipantDto travelParticipantDto = travelParticipantService.findById(createdId);
+
+        return new TravelParticipantResponse(travelParticipantDto);
     }
+
+    @DeleteMapping("/participants/{participantId}")
+    @Authentication
+    public VoidResponse leave(@PathVariable Long participantId) {
+
+        final String memberId =
+                AuthenticationContextHolder.getContext().uuid();
+
+        travelParticipantService.delete(participantId, memberId);
+
+        return new VoidResponse();
+    }
+
 
 }

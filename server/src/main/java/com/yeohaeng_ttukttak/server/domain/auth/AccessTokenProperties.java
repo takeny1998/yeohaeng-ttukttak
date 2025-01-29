@@ -6,7 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.time.Duration;
 
-@ConfigurationProperties("auth.access-token")
+@ConfigurationProperties("access-token")
 public record AccessTokenProperties(
         @NotBlank String issuer,
         @NotBlank String secret,

@@ -1,10 +1,13 @@
 package com.yeohaeng_ttukttak.server.application.travel.controller;
 
-import com.yeohaeng_ttukttak.server.application.travel.controller.dto.request.TravelCreateRequest;
-import com.yeohaeng_ttukttak.server.application.travel.controller.dto.request.TravelUpdateRequest;
+import com.yeohaeng_ttukttak.server.application.travel.controller.dto.request.*;
+import com.yeohaeng_ttukttak.server.application.travel.controller.dto.response.TravelPlanListResponse;
+import com.yeohaeng_ttukttak.server.application.travel.service.TravelParticipantService;
+import com.yeohaeng_ttukttak.server.application.travel.service.TravelPlanService;
+import com.yeohaeng_ttukttak.server.application.travel.service.dto.TravelParticipantDto;
+import com.yeohaeng_ttukttak.server.application.travel.controller.dto.response.TravelParticipantListResponse;
+import com.yeohaeng_ttukttak.server.application.travel.service.dto.TravelPlanDto;
 import com.yeohaeng_ttukttak.server.common.authentication.AuthenticationContextHolder;
-import com.yeohaeng_ttukttak.server.common.authorization.AuthorizationBuilder;
-import com.yeohaeng_ttukttak.server.domain.travel.role.TravelRoleService;
 import com.yeohaeng_ttukttak.server.doc.travel.TravelDocument;
 import com.yeohaeng_ttukttak.server.application.travel.service.TravelService;
 import com.yeohaeng_ttukttak.server.common.authentication.Authentication;
@@ -15,14 +18,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v2/travels")
 @RequiredArgsConstructor
 public class TravelController implements TravelDocument {
 
     private final TravelService travelService;
+    private final TravelParticipantService travelParticipantService;
 
-    private final TravelRoleService travelRoleService;
+    private final TravelPlanService travelPlanService;
 
     @PostMapping
     @Authentication
@@ -46,6 +52,18 @@ public class TravelController implements TravelDocument {
         return toTravelResponse(travelId);
     }
 
+    @GetMapping("/{travelId}/participants")
+    public TravelParticipantListResponse findAllParticipants(
+            @PathVariable Long travelId) {
+
+        return toParticipantListResponse(travelId);
+    }
+
+    @GetMapping("/{travelId}/plans")
+    public TravelPlanListResponse findAllPlans(@PathVariable Long travelId) {
+        return toPlanListResponse(travelId);
+    }
+
     @PatchMapping(value = "/{travelId}")
     @Authentication
     public TravelResponse update(
@@ -55,11 +73,6 @@ public class TravelController implements TravelDocument {
         final String memberId =
                 AuthenticationContextHolder.getContext().uuid();
 
-        new AuthorizationBuilder(memberId)
-                .or(travelRoleService.creator(travelId))
-                .or(travelRoleService.participant(travelId))
-                .authorize();
-
         travelService.update(
                 travelId,
                 request.name(),
@@ -67,14 +80,70 @@ public class TravelController implements TravelDocument {
                 request.endedOn(),
                 request.motivationTypes(),
                 request.companionTypes(),
-                request.cityIds());
+                request.cityIds(),
+                memberId);
 
         return toTravelResponse(travelId);
+    }
+
+    @PatchMapping("/{travelId}/plans/{planId}")
+    @Authentication
+    public TravelPlanListResponse movePlan(
+            @PathVariable Long travelId,
+            @PathVariable Long planId,
+            @RequestBody TravelPlanMoveRequest request) {
+
+        final String memberId =
+                AuthenticationContextHolder.getContext().uuid();
+
+        travelPlanService.move(
+                travelId, planId, request.orderOfPlan(), request.willVisitOn(), memberId);
+
+        return toPlanListResponse(travelId);
+    }
+
+    @DeleteMapping("/{travelId}/participants/{participantId}")
+    @Authentication
+    public TravelParticipantListResponse kickParticipant(
+            @PathVariable Long travelId,
+            @PathVariable Long participantId) {
+
+        final String kickerId =
+                AuthenticationContextHolder.getContext().uuid();
+
+        travelParticipantService.delete(participantId, kickerId);
+
+        return toParticipantListResponse(travelId);
+    }
+
+    @DeleteMapping("/{travelId}/plans/{planId}")
+    @Authentication
+    public TravelPlanListResponse deletePlan(
+            @PathVariable Long travelId, @PathVariable Long planId) {
+
+        final String memberId =
+                AuthenticationContextHolder.getContext().uuid();
+
+        travelPlanService.delete(travelId, planId, memberId);
+
+        return toPlanListResponse(travelId);
     }
 
     private TravelResponse toTravelResponse(Long travelId) {
         final TravelDto travelDto = travelService.findById(travelId);
         return new TravelResponse(travelDto);
+    }
+
+    private TravelParticipantListResponse toParticipantListResponse(Long travelId) {
+        final List<TravelParticipantDto> dtoList =
+                travelParticipantService.findAllByTravelId(travelId);
+
+        return new TravelParticipantListResponse(dtoList);
+    }
+
+    private TravelPlanListResponse toPlanListResponse(Long travelId) {
+        final List<TravelPlanDto> dtoList = travelPlanService.findAllByTravelId(travelId);
+        return new TravelPlanListResponse(dtoList);
     }
 
 }

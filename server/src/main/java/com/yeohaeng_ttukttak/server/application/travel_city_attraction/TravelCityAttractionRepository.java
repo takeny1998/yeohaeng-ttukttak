@@ -102,7 +102,7 @@ public class TravelCityAttractionRepository {
         final NumberExpression<Double> p2 = travelogue.genderSum.sum().divide(numOfParticipantSumExpr);
 
         final List<Member> members = Stream.concat(
-                travel.participants().stream().map(TravelParticipant::invitee),
+                travel.participants().stream().map(TravelParticipant::getInvitee),
                 Stream.of(travel.createdBy())
                 ).toList();
 

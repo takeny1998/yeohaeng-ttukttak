@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.time.Duration;
 
-@ConfigurationProperties("auth.refresh-token")
+@ConfigurationProperties("refresh-token")
 public record RefreshTokenProperties(
         @NotNull Duration expiration
 ){ }

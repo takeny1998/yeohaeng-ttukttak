@@ -1,4 +1,4 @@
-package com.yeohaeng_ttukttak.server.application.travel_plan_comment.dto;
+package com.yeohaeng_ttukttak.server.application.travel.controller.dto.response;
 
 import com.yeohaeng_ttukttak.server.common.dto.ServerSuccessResponse;
 import com.yeohaeng_ttukttak.server.application.travel.service.dto.TravelPlanCommentDto;

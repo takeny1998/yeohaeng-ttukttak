@@ -1,6 +1,7 @@
 package com.yeohaeng_ttukttak.server.application.travel.service;
 
 import com.yeohaeng_ttukttak.server.application.travel.service.dto.TravelPlanDto;
+import com.yeohaeng_ttukttak.server.common.authorization.AuthorizationBuilder;
 import com.yeohaeng_ttukttak.server.common.exception.ExceptionCode;
 import com.yeohaeng_ttukttak.server.domain.place.entity.Place;
 import com.yeohaeng_ttukttak.server.domain.place.repository.PlaceRepository;
@@ -8,6 +9,9 @@ import com.yeohaeng_ttukttak.server.domain.travel.entity.Travel;
 import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelPlanRepository;
 import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelRepository;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelPlan;
+import com.yeohaeng_ttukttak.server.domain.travel.role.TravelCreatorRole;
+import com.yeohaeng_ttukttak.server.domain.travel.role.TravelParticipantRole;
+import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +30,10 @@ public class TravelPlanService {
     private final PlaceRepository placeRepository;
 
     @Transactional
-    public void create(Long travelId, Long placeId, Integer dayOfTravel) {
+    public Long create(final Long travelId,
+                       final Long placeId,
+                       final Integer dayOfTravel,
+                       final String memberId) {
 
         final Travel travel = travelRepository
                 .findById(travelId)
@@ -36,42 +43,66 @@ public class TravelPlanService {
                 .findById(placeId)
                 .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::wrap);
 
-        travel.addPlan(place, dayOfTravel);
+        new AuthorizationBuilder(memberId)
+                .or(new TravelCreatorRole(travel))
+                .or(new TravelParticipantRole(travel))
+                .authorize();
 
+        return travel.addPlan(place, dayOfTravel);
     }
 
     @Transactional(readOnly = true)
-    public List<TravelPlanDto> findAll(Long travelId) {
+    public TravelPlanDto findById(final Long planId) {
+        final TravelPlan plan = travelPlanRepository.findById(planId)
+                .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::wrap);
+
+        return TravelPlanDto.of(plan);
+    }
+
+    @Transactional(readOnly = true)
+    public List<TravelPlanDto> findAllByTravelId(final Long travelId) {
         final Travel travel = travelRepository.findById(travelId)
                 .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::wrap);
 
         return travel.plans().stream()
-                .map((TravelPlanDto::of))
+                .map(TravelPlanDto::of)
                 .toList();
     }
 
     @Transactional
-    public void move(Long travelId, Long planId, Integer orderOfPlan, LocalDate willVisitOn) {
-
-        final Travel travel = travelRepository.findById(travelId)
-                .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::wrap);
+    public void move(final Long travelId,
+                     final Long planId,
+                     @Nullable final Integer orderOfPlan,
+                     @Nullable final LocalDate willVisitOn,
+                     final String memberId) {
 
         final TravelPlan travelPlan = travelPlanRepository
-                .findByIdAndTravelId(planId, travelId)
+                .findWithTravelId(travelId, planId)
                 .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::wrap);
+
+        final Travel travel = travelPlan.getTravel();
+
+        new AuthorizationBuilder(memberId)
+                .or(new TravelCreatorRole(travel))
+                .or(new TravelParticipantRole(travel))
+                .authorize();
 
         travel.movePlan(travelPlan, orderOfPlan, willVisitOn);
     }
 
     @Transactional
-    public void delete(Long travelId, Long planId) {
-
-        final Travel travel = travelRepository.findById(travelId)
-                .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::wrap);
+    public void delete(final Long travelId, final Long planId, final String memberId) {
 
         final TravelPlan travelPlan = travelPlanRepository
-                .findByIdAndTravelId(planId, travelId)
+                .findWithTravelId(travelId, planId)
                 .orElseThrow(ExceptionCode.ENTITY_NOT_FOUND_FAIL::wrap);
+
+        final Travel travel = travelPlan.getTravel();
+
+        new AuthorizationBuilder(memberId)
+                .or(new TravelCreatorRole(travel))
+                .or(new TravelParticipantRole(travel))
+                .authorize();
 
         travel.deletePlan(travelPlan);
 

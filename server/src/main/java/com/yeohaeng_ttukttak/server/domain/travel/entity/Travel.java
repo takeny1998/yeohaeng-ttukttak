@@ -10,6 +10,7 @@ import com.yeohaeng_ttukttak.server.domain.place.entity.Place;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.BaseTimeMemberEntity;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.CompanionType;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.MotivationType;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -205,48 +206,13 @@ public class Travel extends BaseTimeMemberEntity {
     }
 
     /**
-     * 지정된 사용자를 해당 여행에 참여자로 추가한다.
-     * @param inviter 해당 사용자를 초대한 자
-     * @param invitee 여행에 참여할 사용자
-     * @throws FailException 이미 참여한 사용자일 때 발생한다.
-     */
-    public void joinParticipant(Member inviter, Member invitee) {
-        final boolean isInviteeParticipated = participants.stream()
-                .anyMatch(participant -> participant.invitee().equals(invitee));
-
-        final boolean isOwnerInvited = Objects.equals(invitee.uuid(), createdBy().uuid());
-
-        if (isInviteeParticipated || isOwnerInvited) {
-            throw ExceptionCode.TRAVEL_ALREADY_JOINED_FAIL.wrap();
-        }
-
-        participants.add(new TravelParticipant(this, invitee, inviter));
-    }
-
-    /**
-     * 지정된 참여자를 해당 여행에서 쫒아(kick)낸다.
-     * @param member 쫒아낼 사용자
-     * @param participant 쫒을 대상 참여자의 식별자
-     */
-    public void leaveParticipant(Member member, TravelParticipant participant) {
-        final boolean isInvitedByKicker = Objects.equals(member.uuid(), participant.invitee().uuid());
-        final boolean isMemberOwner = Objects.equals(member.uuid(), createdBy().uuid());
-
-        if (!isInvitedByKicker && !isMemberOwner) {
-            throw ExceptionCode.AUTHORIZATION_FAIL.wrap();
-        }
-
-        participants.remove(participant);
-    }
-
-    /**
      * 지정한 여행에 새로운 계획을 생성합니다.
      *
      * @param place 계획에 지정할 장소(Place) 엔티티
      * @param dayOfTravel 계획을 수행할 일자; {@code dayOfTravel >= 0}
      * @throws ArgumentOutOfRangeFailException 여행 기간에 벗어나는 일자를 지정했을 경우 발생한다.
      */
-    public void addPlan(Place place, Integer dayOfTravel) {
+    public Long addPlan(Place place, Integer dayOfTravel) {
 
         // 여행 날짜의 차를 구하고, 하루를 더해 총 여행 기간을 산출한다.
         final long totalTravelDays = LocalDateUtil
@@ -268,6 +234,8 @@ public class Travel extends BaseTimeMemberEntity {
                 dayOfTravel, orderOfPlan + 1, place, this);
 
         plans.add(plan);
+
+        return plan.getId();
     }
     /**
      * 여행 계획을 이동합니다.
@@ -278,8 +246,12 @@ public class Travel extends BaseTimeMemberEntity {
      * @throws ArgumentOutOfRangeFailException 지정된 방문일이 여행 기간에 벗어나는 경우 발생합니다.
      */
     public void movePlan(final TravelPlan travelPlan,
-                         final Integer newOrderOfPlan,
-                         final LocalDate willVisitOn) {
+                         @Nullable final Integer newOrderOfPlan,
+                         @Nullable final LocalDate willVisitOn) {
+
+        int orderOfPlan = Objects.nonNull(newOrderOfPlan)
+                ? newOrderOfPlan
+                : travelPlan.getOrderOfPlan();
 
         int dayOfTravel = travelPlan.getDayOfTravel();
 
@@ -299,17 +271,17 @@ public class Travel extends BaseTimeMemberEntity {
         for (TravelPlan plan : plans) {
             if (Objects.equals(plan.getId(), travelPlan.getId())) {
                 travelPlan
-                        .setOrderOfPlan(newOrderOfPlan)
+                        .setOrderOfPlan(orderOfPlan)
                         .setDayOfTravel(dayOfTravel);
                 continue;
             }
 
             final boolean isInSameDay = Objects.equals(plan.getDayOfTravel(), dayOfTravel);
 
-            final Integer orderOfPlan = plan.getOrderOfPlan();
+            final Integer otherOrderOfPlan = plan.getOrderOfPlan();
 
-            if (isInSameDay && orderOfPlan >= newOrderOfPlan) {
-                plan.setOrderOfPlan(orderOfPlan + 1);
+            if (isInSameDay && otherOrderOfPlan >= orderOfPlan) {
+                plan.setOrderOfPlan(otherOrderOfPlan + 1);
             }
         }
     }

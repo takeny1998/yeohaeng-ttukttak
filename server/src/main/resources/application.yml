@@ -2,11 +2,11 @@ spring:
   profiles:
     active: dev
 
+---
+
 springdoc:
   default-produces-media-type: application/json
   default-consumes-media-type: application/json
-
----
 
 oauth:
   apple:
@@ -14,12 +14,18 @@ oauth:
   google:
     client-id: 951324022006-eigc5h6tj71rm2v31eqr5u0v07cbmpn1.apps.googleusercontent.com
 
-auth:
-  access-token:
-    issuer: yeohaeng-ttukttak.com
-    expiration: 30m
-  refresh-token:
-    expiration: 14d
+access-token:
+  issuer: yeohaeng-ttukttak.com
+  expiration: 30m
+  secret: y$gF4fr*v1l6Em
+
+refresh-token:
+  expiration: 14d
+
+participant-token:
+  issuer: yeohaeng-ttukttak.com
+  expiration: 30m
+  secret: PCkH5@nPnEEepy
 
 ---
 
@@ -30,10 +36,6 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create-drop
-
-auth:
-  access-token:
-    secret: y$gF4fr*v1l6Em
 
 ---
 

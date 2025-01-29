@@ -11,6 +11,6 @@ public interface TravelPlanRepository extends JpaRepository<TravelPlan, Long> {
     @Query("SELECT p FROM TravelPlan p " +
             "JOIN FETCH p.travel t " +
             "WHERE t.id = :travelId AND p.id = :planId")
-    Optional<TravelPlan> findByIdAndTravelId(Long planId, Long travelId);
+    Optional<TravelPlan> findWithTravelId(Long travelId, Long planId);
 
 }
