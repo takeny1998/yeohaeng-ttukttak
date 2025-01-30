@@ -2,15 +2,11 @@ package com.yeohaeng_ttukttak.server.domain.travel.entity;
 
 import com.yeohaeng_ttukttak.server.common.exception.ExceptionCode;
 import com.yeohaeng_ttukttak.server.common.exception.exception.FailException;
-import com.yeohaeng_ttukttak.server.common.exception.exception.fail.argument.ArgumentOutOfRangeFailException;
-import com.yeohaeng_ttukttak.server.common.util.LocalDateUtil;
 import com.yeohaeng_ttukttak.server.domain.geography.entity.City;
-import com.yeohaeng_ttukttak.server.domain.member.entity.Member;
-import com.yeohaeng_ttukttak.server.domain.place.entity.Place;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.BaseTimeMemberEntity;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.CompanionType;
 import com.yeohaeng_ttukttak.server.domain.shared.entity.MotivationType;
-import jakarta.annotation.Nullable;
+import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -206,100 +202,42 @@ public class Travel extends BaseTimeMemberEntity {
     }
 
     /**
-     * 지정한 여행에 새로운 계획을 생성합니다.
+     * 지정한 여행에 새로운 일정을 추가한 뒤 순서를 할당합니다.
      *
-     * @param place 계획에 지정할 장소(Place) 엔티티
-     * @param dayOfTravel 계획을 수행할 일자; {@code dayOfTravel >= 0}
-     * @throws ArgumentOutOfRangeFailException 여행 기간에 벗어나는 일자를 지정했을 경우 발생한다.
+     * @param newPlan 추가할 여행 일정
+     * @param willVisitOn 방문할 날짜
      */
-    public Long addPlan(Place place, Integer dayOfTravel) {
+    public void addPlan(final TravelPlan newPlan, final LocalDate willVisitOn) {
 
-        // 여행 날짜의 차를 구하고, 하루를 더해 총 여행 기간을 산출한다.
-        final long totalTravelDays = LocalDateUtil
-                .getBetweenDays(startedOn(), endedOn());
+        final int maxOrderOfPlan = plans().stream()
+                .filter(plan -> plan.getWillVisitOn().equals(willVisitOn))
+                .mapToInt(TravelPlan::getOrderOfPlan)
+                .max().orElse(0);
 
-        if (dayOfTravel >= totalTravelDays) {
-            throw ExceptionCode.DAY_OF_TRAVEL_OUT_OF_RANGE_FAIL.wrap();
-        }
+        newPlan.setTravel(this);
 
-        int orderOfPlan = -1;
-
-        for (TravelPlan plan : plans) {
-            if (Objects.equals(plan.getDayOfTravel(), dayOfTravel)) {
-                orderOfPlan = Math.max(orderOfPlan, plan.getOrderOfPlan());
-            }
-        }
-
-        final TravelPlan plan = new TravelPlan(
-                dayOfTravel, orderOfPlan + 1, place, this);
-
-        plans.add(plan);
-
-        return plan.getId();
+        newPlan.updateOrder(willVisitOn, maxOrderOfPlan + 1);
+        plans().add(newPlan);
     }
+
     /**
-     * 여행 계획을 이동합니다.
+     * 여행 일정을 이동한 후, 순서가 같거나 큰 일정들의 순서를 뒤로 밉니다.
      *
      * @param travelPlan 이동할 계획 엔티티
-     * @param newOrderOfPlan 새로운 계획의 순서
-     * @param willVisitOn 방문할 예정일
-     * @throws ArgumentOutOfRangeFailException 지정된 방문일이 여행 기간에 벗어나는 경우 발생합니다.
      */
-    public void movePlan(final TravelPlan travelPlan,
-                         @Nullable final Integer newOrderOfPlan,
-                         @Nullable final LocalDate willVisitOn) {
+    public void reorderBehindPlans(final TravelPlan travelPlan) {
 
-        int orderOfPlan = Objects.nonNull(newOrderOfPlan)
-                ? newOrderOfPlan
-                : travelPlan.getOrderOfPlan();
+        final List<TravelPlan> behindPlans = plans().stream()
+                .filter(otherPlan -> otherPlan.getWillVisitOn().isEqual(travelPlan.getWillVisitOn()))
+                .filter(otherPlan -> otherPlan.getOrderOfPlan() >= travelPlan.getOrderOfPlan())
+                .filter(otherPlan -> !otherPlan.getId().equals(travelPlan.getId()))
+                .toList();
 
-        int dayOfTravel = travelPlan.getDayOfTravel();
+        int newOrderOfPlan = travelPlan.getOrderOfPlan() + 1;
 
-        final LocalDate startDate = dates.startedOn();
-        final LocalDate endDate = dates.endedOn();
-
-        if (Objects.nonNull(willVisitOn)) {
-
-            if (!LocalDateUtil.isInRange(willVisitOn, startDate, endDate)) {
-                throw ExceptionCode.WILL_VISIT_ON_OUT_OF_TRAVEL_PERIOD_FAIL.wrap();
-            }
-
-            dayOfTravel = (int) LocalDateUtil
-                    .getBetweenDays(startDate, willVisitOn) - 1;
+        for (TravelPlan behindPlan : behindPlans) {
+            behindPlan.updateOrder(behindPlan.getWillVisitOn(), newOrderOfPlan ++);
         }
-
-        for (TravelPlan plan : plans) {
-            if (Objects.equals(plan.getId(), travelPlan.getId())) {
-                travelPlan
-                        .setOrderOfPlan(orderOfPlan)
-                        .setDayOfTravel(dayOfTravel);
-                continue;
-            }
-
-            final boolean isInSameDay = Objects.equals(plan.getDayOfTravel(), dayOfTravel);
-
-            final Integer otherOrderOfPlan = plan.getOrderOfPlan();
-
-            if (isInSameDay && otherOrderOfPlan >= orderOfPlan) {
-                plan.setOrderOfPlan(otherOrderOfPlan + 1);
-            }
-        }
-    }
-
-
-    /**
-     * 지정된 여행 계획을 삭제합니다.
-     *
-     * @param travelPlan 삭제할 여행 계획
-     */
-    public void deletePlan(TravelPlan travelPlan) {
-
-        // 여행 계획을 삭제
-        if (!plans.contains(travelPlan)) {
-            throw ExceptionCode.ENTITY_NOT_FOUND_FAIL.wrap();
-        }
-
-        plans.remove(travelPlan);
     }
 
 

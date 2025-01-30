@@ -11,7 +11,6 @@ import com.yeohaeng_ttukttak.server.domain.travel.repository.TravelRepository;
 import com.yeohaeng_ttukttak.server.domain.travel.entity.TravelPlan;
 import com.yeohaeng_ttukttak.server.domain.travel.role.TravelCreatorRole;
 import com.yeohaeng_ttukttak.server.domain.travel.role.TravelParticipantRole;
-import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,8 +31,8 @@ public class TravelPlanService {
     @Transactional
     public Long create(final Long travelId,
                        final Long placeId,
-                       final Integer dayOfTravel,
-                       final String memberId) {
+                       final String memberId,
+                       final LocalDate willVisitOn) {
 
         final Travel travel = travelRepository
                 .findById(travelId)
@@ -48,7 +47,11 @@ public class TravelPlanService {
                 .or(new TravelParticipantRole(travel))
                 .authorize();
 
-        return travel.addPlan(place, dayOfTravel);
+        final TravelPlan travelPlan = new TravelPlan(place);
+        travel.addPlan(travelPlan, willVisitOn);
+
+        travelPlanRepository.save(travelPlan);
+        return travelPlan.getId();
     }
 
     @Transactional(readOnly = true)
@@ -72,8 +75,8 @@ public class TravelPlanService {
     @Transactional
     public void move(final Long travelId,
                      final Long planId,
-                     @Nullable final Integer orderOfPlan,
-                     @Nullable final LocalDate willVisitOn,
+                     final Integer orderOfPlan,
+                     final LocalDate willVisitOn,
                      final String memberId) {
 
         final TravelPlan travelPlan = travelPlanRepository
@@ -87,7 +90,8 @@ public class TravelPlanService {
                 .or(new TravelParticipantRole(travel))
                 .authorize();
 
-        travel.movePlan(travelPlan, orderOfPlan, willVisitOn);
+        travelPlan.updateOrder(willVisitOn, orderOfPlan);
+        travel.reorderBehindPlans(travelPlan);
     }
 
     @Transactional
@@ -104,8 +108,8 @@ public class TravelPlanService {
                 .or(new TravelParticipantRole(travel))
                 .authorize();
 
-        travel.deletePlan(travelPlan);
-
+        travel.reorderBehindPlans(travelPlan);
+        travelPlanRepository.delete(travelPlan);
     }
 
 }

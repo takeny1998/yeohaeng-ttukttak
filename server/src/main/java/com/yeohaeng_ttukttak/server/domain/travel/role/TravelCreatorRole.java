@@ -13,6 +13,8 @@ public class TravelCreatorRole implements Role {
 
     @Override
     public boolean checkGrantable(final String memberId) {
+
+        System.out.println("creatorId.equals(memberId) = " + creatorId.equals(memberId));
         return creatorId.equals(memberId);
     }
 

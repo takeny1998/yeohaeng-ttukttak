@@ -27,12 +27,14 @@ public class TravelPlanController implements TravelPlanDocument {
     public TravelPlanResponse create(
             @RequestBody TravelPlanCreateRequest request) {
 
-        final Long travelId = request.travelId();
         final String memberId =
                 AuthenticationContextHolder.getContext().uuid();
 
         final Long planId = travelPlanService.create(
-                travelId, request.placeId(), request.dayOfTravel(), memberId);
+                request.travelId(),
+                request.placeId(),
+                memberId,
+                request.willVisitOn());
 
         return new TravelPlanResponse(travelPlanService.findById(planId));
     }
